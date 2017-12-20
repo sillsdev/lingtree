@@ -52,6 +52,7 @@ public class BuildTreeFromDescriptionListener extends DescriptionBaseListener {
 		LingTreeNode node = new LingTreeNode();
 		nodeMap.put(ctx.hashCode(), node);
 		if (tree.getRootNode() == null) {
+			node.setiLevel(1);
 			tree.setRootNode(node);
 		} else {
 			DescriptionParser.NodeContext parentCtx = (NodeContext) ctx.getParent();
@@ -60,8 +61,9 @@ public class BuildTreeFromDescriptionListener extends DescriptionBaseListener {
 			if (i > 0) {
 				mother.getDaughters().get(i-1).setRightSister(node);
 			}
-			mother.getDaughters().add(node);
+			node.setiLevel(mother.getiLevel()+1);
 			node.setMother(mother);
+			mother.getDaughters().add(node);
 		}
 	}
 	

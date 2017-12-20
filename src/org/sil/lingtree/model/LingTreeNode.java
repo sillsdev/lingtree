@@ -103,6 +103,12 @@ public class LingTreeNode extends Node {
 	public void setMother(LingTreeNode mother) {
 		this.mother = mother;
 	}
+	public int getiLevel() {
+		return iLevel;
+	}
+	public void setiLevel(int iLevel) {
+		this.iLevel = iLevel;
+	}
 	public ObservableList<LingTreeNode> getDaughters() {
 		return daughters;
 	}
