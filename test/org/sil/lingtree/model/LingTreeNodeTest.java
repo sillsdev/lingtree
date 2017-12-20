@@ -10,13 +10,17 @@ import static org.junit.Assert.*;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.sil.lingtree.view.JavaFXThreadingRule;
 
 /**
  * @author Andy Black
  *
  */
 public class LingTreeNodeTest {
+	@Rule
+	public JavaFXThreadingRule javafxRule = new JavaFXThreadingRule();
 
 	/**
 	 * @throws java.lang.Exception
@@ -33,8 +37,74 @@ public class LingTreeNodeTest {
 	}
 
 	@Test
-	public void test() {
-		fail("Not yet implemented");
+	public void textBoxDimensionsTest() {
+		LingTreeNode node = new LingTreeNode();
+		node.setContent("node");
+		node.setNodeType(NodeType.NonTerminal);
+		assertEquals(23.326171875, node.getWidth(), 0.0);
+		assertEquals(13.2890625, node.getHeight(), 0.0);
+		node.setNodeType(NodeType.Lex);
+		assertEquals(25.98046875, node.getWidth(), 0.0);
+		assertEquals(19.62890625, node.getHeight(), 0.0);
+		node.setNodeType(NodeType.Gloss);
+		assertEquals(26.6953125, node.getWidth(), 0.0);
+		assertEquals(13.40625, node.getHeight(), 0.0);
+
+		node.setSubscript("subscript");
+		node.setNodeType(NodeType.NonTerminal);
+		assertEquals(56.59716796875, node.getWidth(), 0.0);
+		assertEquals(17.2890585, node.getHeight(), 0.0);
+		node.setNodeType(NodeType.Lex);
+		assertEquals(59.25146484375, node.getWidth(), 0.0);
+		assertEquals(23.62890225, node.getHeight(), 0.0);
+		node.setNodeType(NodeType.Gloss);
+		assertEquals(59.96630859375, node.getWidth(), 0.0);
+		assertEquals(17.406246, node.getHeight(), 0.0);
+		
+		node.setSubscript("");
+		node.setNodeType(NodeType.NonTerminal);
+		assertEquals(23.326171875, node.getWidth(), 0.0);
+		assertEquals(13.2890625, node.getHeight(), 0.0);
+		node.setNodeType(NodeType.Lex);
+		assertEquals(25.98046875, node.getWidth(), 0.0);
+		assertEquals(19.62890625, node.getHeight(), 0.0);
+		node.setNodeType(NodeType.Gloss);
+		assertEquals(26.6953125, node.getWidth(), 0.0);
+		assertEquals(13.40625, node.getHeight(), 0.0);
+
+		node.setSuperscript("superscript");
+		node.setNodeType(NodeType.NonTerminal);
+		assertEquals(66.8232421875, node.getWidth(), 0.0);
+		assertEquals(17.2890585, node.getHeight(), 0.0);
+		node.setNodeType(NodeType.Lex);
+		assertEquals(69.4775390625, node.getWidth(), 0.0);
+		assertEquals(23.62890225, node.getHeight(), 0.0);
+		node.setNodeType(NodeType.Gloss);
+		assertEquals(70.1923828125, node.getWidth(), 0.0);
+		assertEquals(17.406246, node.getHeight(), 0.0);
+		
+		node.setSuperscript("");
+		node.setNodeType(NodeType.NonTerminal);
+		assertEquals(23.326171875, node.getWidth(), 0.0);
+		assertEquals(13.2890625, node.getHeight(), 0.0);
+		node.setNodeType(NodeType.Lex);
+		assertEquals(25.98046875, node.getWidth(), 0.0);
+		assertEquals(19.62890625, node.getHeight(), 0.0);
+		node.setNodeType(NodeType.Gloss);
+		assertEquals(26.6953125, node.getWidth(), 0.0);
+		assertEquals(13.40625, node.getHeight(), 0.0);
+		
+		node.setSubscript("subscript");
+		node.setSuperscript("superscript");
+		node.setNodeType(NodeType.NonTerminal);
+		assertEquals(66.8232421875, node.getWidth(), 0.0);
+		assertEquals(21.2890545, node.getHeight(), 0.0);
+		node.setNodeType(NodeType.Lex);
+		assertEquals(69.4775390625, node.getWidth(), 0.0);
+		assertEquals(27.62889825, node.getHeight(), 0.0);
+		node.setNodeType(NodeType.Gloss);
+		assertEquals(70.1923828125, node.getWidth(), 0.0);
+		assertEquals(21.406242, node.getHeight(), 0.0);
 	}
 
 }

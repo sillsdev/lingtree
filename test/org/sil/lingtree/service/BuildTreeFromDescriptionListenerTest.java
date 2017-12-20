@@ -53,6 +53,7 @@ public class BuildTreeFromDescriptionListenerTest {
 
 	@Test
 	public void fontInfoTextTest() {
+		// Non-terminal, lex, and gloss nodes
 		LingTreeTree ltTree = parseAString("(NP (\\L Juan (\\G John)))");
 		LingTreeNode node = ltTree.getRootNode();
 		checkFontInfo(node, node.getContentTextBox(), "Times New Roman", 12.0, "Regular", Color.BLACK);
@@ -62,7 +63,8 @@ public class BuildTreeFromDescriptionListenerTest {
 		daughters = node.getDaughters();
 		node = daughters.get(0);
 		checkFontInfo(node, node.getContentTextBox(), "Arial", 12.0, "Regular", Color.GREEN);
-		
+
+		// subscript and superscript
 		ltTree = parseAString("(NP/si (N/S'))");
 		node = ltTree.getRootNode();
 		checkFontInfo(node, node.getContentTextBox(), "Times New Roman", 12.0, "Regular", Color.BLACK);
