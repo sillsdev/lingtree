@@ -9,6 +9,10 @@ import static org.junit.Assert.*;
 
 import java.util.List;
 
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -47,6 +51,37 @@ public class BuildTreeFromDescriptionListenerTest {
 	public void tearDown() throws Exception {
 	}
 
+	@Test
+	public void fontInfoTextTest() {
+		LingTreeTree ltTree = parseAString("(NP (\\L Juan (\\G John)))");
+		LingTreeNode node = ltTree.getRootNode();
+		checkFontInfo(node, node.getContentTextBox(), "Times New Roman", 12.0, "Regular", Color.BLACK);
+		List<LingTreeNode> daughters = node.getDaughters();
+		node = daughters.get(0);
+		checkFontInfo(node, node.getContentTextBox(), "Charis SIL", 12.0, "Regular", Color.BLUE);
+		daughters = node.getDaughters();
+		node = daughters.get(0);
+		checkFontInfo(node, node.getContentTextBox(), "Arial", 12.0, "Regular", Color.GREEN);
+		
+		ltTree = parseAString("(NP/si (N/S'))");
+		node = ltTree.getRootNode();
+		checkFontInfo(node, node.getContentTextBox(), "Times New Roman", 12.0, "Regular", Color.BLACK);
+		checkFontInfo(node, node.getSubscriptTextBox(), "Times New Roman", 9.0, "Italic", Color.BROWN);
+		daughters = node.getDaughters();
+		node = daughters.get(0);
+		checkFontInfo(node, node.getContentTextBox(), "Times New Roman", 12.0, "Regular", Color.BLACK);
+		checkFontInfo(node, node.getSuperscriptTextBox(), "Times New Roman", 9.0, "Bold", Color.RED);
+	}
+
+	private void checkFontInfo(LingTreeNode node, Text textBox, String fontFamily,
+			double fontSize, String fontType, Color color) {
+		Font font = textBox.getFont();
+		assertEquals(fontFamily, font.getFamily());
+		assertEquals(fontSize, font.getSize(), 0.0);
+		assertEquals(fontType, font.getStyle());
+		assertEquals(color, textBox.getFill());
+	}
+	
 	@Test
 	public void buildTreesTest() {
 		// Basic example

@@ -60,18 +60,50 @@ public class LingTreeNode extends Node {
 	}
 	public void setContent(String content) {
 		contentTextBox.setText(content);
+		FontInfo fontInfo;
+		switch (nodeType) {
+
+		case Gloss:
+			fontInfo = GlossFontInfo.getInstance();
+			break;
+			
+		case Lex:
+			fontInfo = LexFontInfo.getInstance();
+			break;
+			
+		default:
+			fontInfo = NonTerminalFontInfo.getInstance();
+			break;
+		};
+		contentTextBox.setFont(fontInfo.getFont());
+		contentTextBox.setFill(fontInfo.getColor());
 	}
 	public String getSubscript() {
 		return subscriptTextBox.getText();
 	}
 	public void setSubscript(String subscript) {
 		subscriptTextBox.setText(subscript);
+		FontInfo fontInfo = SubscriptFontInfo.getInstance();
+		subscriptTextBox.setFont(fontInfo.getFont());
+		subscriptTextBox.setFill(fontInfo.getColor());
 	}
 	public String getSuperscript() {
 		return superscriptTextBox.getText();
 	}
 	public void setSuperscript(String superscript) {
 		superscriptTextBox.setText(superscript);
+		FontInfo fontInfo = SuperscriptFontInfo.getInstance();
+		superscriptTextBox.setFont(fontInfo.getFont());
+		superscriptTextBox.setFill(fontInfo.getColor());
+	}
+	public Text getContentTextBox() {
+		return contentTextBox;
+	}
+	public Text getSubscriptTextBox() {
+		return subscriptTextBox;
+	}
+	public Text getSuperscriptTextBox() {
+		return superscriptTextBox;
 	}
 	public NodeType getNodeType() {
 		return nodeType;
