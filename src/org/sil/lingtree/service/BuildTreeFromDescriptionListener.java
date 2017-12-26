@@ -61,7 +61,7 @@ public class BuildTreeFromDescriptionListener extends DescriptionBaseListener {
 			if (i > 0) {
 				mother.getDaughters().get(i-1).setRightSister(node);
 			}
-			node.setiLevel(mother.getiLevel()+1);
+			node.setiLevel(mother.getLevel()+1);
 			node.setMother(mother);
 			mother.getDaughters().add(node);
 		}

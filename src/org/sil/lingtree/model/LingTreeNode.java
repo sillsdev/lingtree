@@ -23,15 +23,14 @@ import javafx.scene.text.Text;
 public class LingTreeNode {
 
 	private ObservableList<LingTreeNode> daughters = FXCollections.observableArrayList();
-	private NodeType nodeType = NodeType.values()[0]; // node type
-														// (non-terminal, lex,
-														// gloss)
-
-	Text contentTextBox = new Text(0, 0, ""); // content of the node
-	Text subscriptTextBox = new Text(0, 0, ""); // subscript at the end of the
-												// node content
-	Text superscriptTextBox = new Text(0, 0, ""); // superscript at the end of
-													// the node content
+	// node type (non-terminal, lex, gloss)
+	private NodeType nodeType = NodeType.values()[0];
+	// content of the node
+	Text contentTextBox = new Text(0, 0, "");
+	// subscript at the end of the node content
+	Text subscriptTextBox = new Text(0, 0, "");
+	// superscript at the end of the node content
+	Text superscriptTextBox = new Text(0, 0, "");
 
 	private int iLevel; // level (or depth) of the node within the tree
 
@@ -41,27 +40,27 @@ public class LingTreeNode {
 	// TODO: why these and not a (Observable?) List<LingTreeNode>? or some such?
 	// private LingTreeNode daughter; // leftmost daughter of this node in the
 	// tree
-	private LingTreeNode rightSister; // immediate sister to the right of this
-										// node in the tree
-	private LingTreeNode mother; // mother of this node in the tree
+	// immediate sister to the right of this node in the tree
+	private LingTreeNode rightSister;
+	// mother of this node in the tree
+	private LingTreeNode mother;
 
 	private double dHeight; // height of the node
 	private double dWidth; // width of the node
 
 	private int iIndex; // index of node within its tree
-	private double dXCoord; // left horizontal position of the node
-	private double dXMid; // mid horizontal position of the node
-	private double dYCoord; // upper vertical position of the node
-	private double dYLowerMid; // lower mid position of the node for drawing a
-								// line below the node
-	private double dYUpperMid; // upper mid position of the node for drawing a
-								// line above the node
-	private String id; // id of the node (used, e.g., by PcPatrBrowser to refer
-						// to a rule id)
-
-	// TODO: what are these for?
-	private static final double dYCoordAdjustment = 40; // adjustment value
-	private static final double dTriangleOffset = 300;
+	// left horizontal position of the node
+	private double dXCoordinate;
+	// mid horizontal position of the node
+	private double dXMid;
+	// upper vertical position of the node
+	private double dYCoordinate;
+	// lower mid position of the node for drawing a line below the node
+	private double dYLowerMid;
+	// upper mid position of the node for drawing a line above the node
+	private double dYUpperMid;
+	// id of the node (used, e.g., by PcPatrBrowser to refer to a rule id)
+	private String id;
 
 	public String getContent() {
 		return contentTextBox.getText();
@@ -147,7 +146,7 @@ public class LingTreeNode {
 		this.mother = mother;
 	}
 
-	public int getiLevel() {
+	public int getLevel() {
 		return iLevel;
 	}
 
@@ -219,6 +218,32 @@ public class LingTreeNode {
 		}
 		;
 		return fontInfo;
+	}
+
+	public double getYCoordinate() {
+		return dYCoordinate;
+	}
+
+	public void setYCoordinate(double dYCoordinate) {
+		this.dYCoordinate = dYCoordinate;
+		contentTextBox.setY(dYCoordinate);
+		// TODO: fix subscript and superscript text boxes
+	}
+
+	public double getYLowerMid() {
+		return dYLowerMid;
+	}
+
+	public void setYLowerMid(double dYLowerMid) {
+		this.dYLowerMid = dYLowerMid;
+	}
+
+	public double getYUpperMid() {
+		return dYUpperMid;
+	}
+
+	public void setYUpperMid(double dYUpperMid) {
+		this.dYUpperMid = dYUpperMid;
 	}
 
 	private void adjustHeightForSubscript() {

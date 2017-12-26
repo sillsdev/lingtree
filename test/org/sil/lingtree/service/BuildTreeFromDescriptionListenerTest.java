@@ -33,23 +33,9 @@ import org.sil.lingtree.view.JavaFXThreadingRule;
  * @author Andy Black
  *
  */
-public class BuildTreeFromDescriptionListenerTest {
+public class BuildTreeFromDescriptionListenerTest extends ServiceBaseTest {
 	@Rule
 	public JavaFXThreadingRule javafxRule = new JavaFXThreadingRule();
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@Before
-	public void setUp() throws Exception {
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@After
-	public void tearDown() throws Exception {
-	}
 
 	@Test
 	public void fontInfoTextTest() {
@@ -285,30 +271,9 @@ public class BuildTreeFromDescriptionListenerTest {
 		assertEquals(fOmitLine, node.isOmitLine());
 		assertEquals(fTriangle, node.isTriangle());
 		assertEquals(nodeType, node.getNodeType());
-		assertEquals(iLevel, node.getiLevel());
+		assertEquals(iLevel, node.getLevel());
 		List<LingTreeNode> daughters = node.getDaughters();
 		assertEquals(iNumDaughters, daughters.size());
-	}
-
-	private LingTreeTree parseAString(String sInput) {
-		CharStream input = CharStreams.fromString(sInput);
-		DescriptionLexer lexer = new DescriptionLexer(input);
-		CommonTokenStream tokens = new CommonTokenStream(lexer);
-		DescriptionParser parser = new DescriptionParser(tokens);
-
-		// begin parsing at rule 'description'
-		ParseTree parseTree = parser.description();
-		int numErrors = parser.getNumberOfSyntaxErrors();
-		assertEquals(0, numErrors);
-		ParseTreeWalker walker = new ParseTreeWalker(); // create standard
-														// walker
-		BuildTreeFromDescriptionListener validator = new BuildTreeFromDescriptionListener(parser);
-		walker.walk(validator, parseTree); // initiate walk of tree with
-											// listener
-		LingTreeTree ltTree = validator.getTree();
-		assertNotNull(ltTree);
-
-		return ltTree;
 	}
 
 }
