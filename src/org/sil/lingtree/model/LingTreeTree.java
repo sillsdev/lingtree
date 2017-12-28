@@ -10,13 +10,13 @@ public class LingTreeTree {
 	LingTreeNode rootNode;
 
 	double dInitialXCoordinate; // initial, leftmost X coordinate
-	double dInitialYCoordinate;
+	double dInitialYCoordinate; // initial, leftmost Y coordinate
 	double dXSize; // total width of tree
 	double dYSize; // total height of tree
-	double dVerticalGap = 40; // extra gap between levels
+	double dVerticalGap; // extra gap between levels
 
-	double dHorizontalGap; // extra gap between terminal nodes
-	double dHorizontalOffset; // current XCoord of last terminal node processed
+	double dHorizontalGap; // extra gap between leaf nodes
+	double dHorizontalOffset; // current XCoord of last leaf node processed
 
 	double dGlossBottomYCoordinate; // lowest Gloss Y Coordinate (for "flat" view)
 	double dLexBottomYCoordinate; // lowest Lex Y Coordinate (for "flat" view)
@@ -29,6 +29,10 @@ public class LingTreeTree {
 	public LingTreeTree() {
 		dInitialXCoordinate = 100;
 		dInitialYCoordinate = 100;
+		dVerticalGap = 20;
+		dHorizontalGap = 30;
+		dHorizontalOffset = 100;
+		dLexGlossGapAdjustment = 0;
 	}
 
 	public LingTreeNode getRootNode() {

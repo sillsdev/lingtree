@@ -36,3 +36,4 @@ resources/images
 *.orig
 *.bak
 *.xso
+*.properties~

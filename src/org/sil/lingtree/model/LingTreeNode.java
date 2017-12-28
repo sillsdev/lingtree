@@ -162,6 +162,18 @@ public class LingTreeNode {
 		this.daughters = daughters;
 	}
 
+	public boolean hasMother() {
+		return (mother == null) ? false : true;
+	}
+
+	public boolean hasSubscript() {
+		return (subscriptTextBox.getText().length() == 0) ? false : true;
+	}
+
+	public boolean hasSuperscript() {
+		return (superscriptTextBox.getText().length() == 0) ? false : true;
+	}
+
 	public double getHeight() {
 		final double dSubscriptPercentage = 0.333333;
 		final double dSuperscriptPercentage = 0.333333;
@@ -220,14 +232,35 @@ public class LingTreeNode {
 		return fontInfo;
 	}
 
+	public double getXCoordinate() {
+		return dXCoordinate;
+	}
+
+	public void setXCoordinate(double dXCoordinate) {
+		this.dXCoordinate = dXCoordinate;
+		contentTextBox.setX(dXCoordinate);
+	}
+
+	public double getXMid() {
+		return dXMid;
+	}
+
+	public void setXMid(double dXMid) {
+		this.dXMid = dXMid;
+	}
+
 	public double getYCoordinate() {
 		return dYCoordinate;
 	}
 
 	public void setYCoordinate(double dYCoordinate) {
+		// the baseline y coordinate
 		this.dYCoordinate = dYCoordinate;
 		contentTextBox.setY(dYCoordinate);
 		// TODO: fix subscript and superscript text boxes
+		// set y upper mid and lower mid (top of box and bottom of box)
+		dYUpperMid = contentTextBox.getLayoutBounds().getMinY();
+		dYLowerMid = contentTextBox.getLayoutBounds().getMaxY();
 	}
 
 	public double getYLowerMid() {

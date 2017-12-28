@@ -8,6 +8,10 @@ package org.sil.lingtree.service;
 
 import java.util.HashMap;
 
+import javafx.scene.Parent;
+import javafx.scene.layout.Pane;
+import javafx.scene.shape.Line;
+
 import org.sil.lingtree.model.LingTreeNode;
 import org.sil.lingtree.model.LingTreeTree;
 import org.sil.lingtree.model.NodeType;
@@ -20,7 +24,7 @@ public class TreeDrawer {
 	LingTreeTree ltTree;
 	HashMap<Integer, Double> maxHeightPerLevel = new HashMap<>();
 
-	private static final double dYCoordAdjustment = 40; // adjustment value
+	private static final double dYCoordAdjustment = 3; // adjustment value
 	private static final double dTriangleOffset = 300;
 
 	public TreeDrawer(LingTreeTree ltTree) {
@@ -54,52 +58,153 @@ public class TreeDrawer {
 		LingTreeNode node = ltTree.getRootNode();
 		calculateYCoordinateOfANode(node, ltTree.getInitialYCoordinate());
 	}
-	
+
 	// Determine Y-axis coordinates for this node
 	private void calculateYCoordinateOfANode(LingTreeNode node, double dVerticalOffset) {
 		node.setYCoordinate(dVerticalOffset);
-		node.setYLowerMid(node.getYCoordinate() + node.getHeight() + dYCoordAdjustment);
-		node.setYUpperMid(node.getYCoordinate() - dYCoordAdjustment);
-		if (node.getYLowerMid() > ltTree.getYSize())
-		{
-			ltTree.setYSize(node.getYLowerMid()); // Keep track of total height for scrolling
+		node.setYLowerMid(node.getYLowerMid() + dYCoordAdjustment);
+		node.setYUpperMid(node.getYUpperMid() - dYCoordAdjustment);
+		if (node.getYLowerMid() > ltTree.getYSize()) {
+			// Keep track of total height for scrolling
+			ltTree.setYSize(node.getYLowerMid());
 		}
-		if (node.getNodeType() == NodeType.Lex)
-		{ // keep track of lowest for "flat" view
-			if (node.getYCoordinate() > ltTree.getLexBottomYCoordinate())
-			{
+		if (node.getNodeType() == NodeType.Lex) {
+			// keep track of lowest for "flat" view
+			if (node.getYCoordinate() > ltTree.getLexBottomYCoordinate()) {
 				ltTree.setLexBottomYCoordinate(node.getYCoordinate());
 			}
-			if (node.getYUpperMid() > ltTree.getLexBottomYUpperMid())
-			{
+			if (node.getYUpperMid() > ltTree.getLexBottomYUpperMid()) {
 				ltTree.setLexBottomYUpperMid(node.getYUpperMid());
 			}
 		}
-		if (node.getNodeType() == NodeType.Gloss)
-		{ // keep track of lowest for "flat" view
-			if (node.getYCoordinate() > ltTree.getGlossBottomYCoordinate())
-			{
+		if (node.getNodeType() == NodeType.Gloss) {
+			// keep track of lowest for "flat" view
+			if (node.getYCoordinate() > ltTree.getGlossBottomYCoordinate()) {
 				ltTree.setGlossBottomYCoordinate(node.getYCoordinate());
 			}
 		}
 		// Determine Y-axis coordinate for any daughters
 		for (LingTreeNode daughterNode : node.getDaughters()) {
-			double dDaughterYCoordinate = node.getYCoordinate() + maxHeightPerLevel.get(daughterNode.getLevel());
-			if (node.getNodeType() != NodeType.Gloss)
-			{
+			double dDaughterYCoordinate = node.getYCoordinate()
+					+ maxHeightPerLevel.get(node.getLevel());
+			if (daughterNode.getNodeType() != NodeType.Gloss) {
 				dDaughterYCoordinate += ltTree.getVerticalGap();
-			}
-			else
-			{
+			} else {
 				dDaughterYCoordinate += ltTree.getLexGlossGapAdjustment();
 			}
 			calculateYCoordinateOfANode(daughterNode, dDaughterYCoordinate);
 		}
 	}
 
+	public void calculateXCoordinateOfEveryNode() {
+		LingTreeNode node = ltTree.getRootNode();
+		calculateXCoordinateOfANode(node, 0);
+	}
+
+	// Determine the X-axis coordinate for this node
+	// It assumes that the width of this and all other nodes have
+	// already been established.
+	// It also assumes that higher branching nodes are not wider than the
+	// total width of their daughters (which may not always be true...)
+	private double calculateXCoordinateOfANode(LingTreeNode node, double dMaxColumnWidth) {
+		node.setXMid(0);
+		if (dMaxColumnWidth < node.getWidth()) {
+			// remember widest node in the column
+			dMaxColumnWidth = node.getWidth();
+		}
+
+		if (node.getDaughters().size() > 0) { // is a non-leaf node
+			LingTreeNode firstDaughterNode = node.getDaughters().get(0);
+			LingTreeNode nextDaughter = firstDaughterNode.getRightSister();
+			double dLeftMost = calculateXCoordinateOfANode(firstDaughterNode, dMaxColumnWidth);
+			double dRightMost = dLeftMost;
+			while (nextDaughter != null) { // calculate coordinates for other
+											// daughters
+				dRightMost = calculateXCoordinateOfANode(nextDaughter, dMaxColumnWidth);
+				nextDaughter = nextDaughter.getRightSister();
+			}
+			// take mid point between first & last daughter
+			node.setXMid((dLeftMost + dRightMost) / 2);
+			if (dRightMost > dLeftMost) {
+				if (node.getWidth() > (dRightMost - dLeftMost)) {
+					double dAdjust = (node.getWidth() - (dRightMost - dLeftMost)) / 2;
+					node.setXMid(node.getXMid() + dAdjust);
+
+					nextDaughter = firstDaughterNode;
+					while (nextDaughter != null) {
+						adjustXValues(nextDaughter, dAdjust);
+						nextDaughter = nextDaughter.getRightSister();
+					}
+				}
+			}
+		} else { // is a leaf node
+			// half the width of this column - Offset from last terminal
+			// node plus
+			// half the width of the widest node in this column - gap
+			// between terminal nodes plus - have a new offset for next
+			// terminal node
+
+			// The mid point of this leaf node is the current horizontal offset
+			// plus half of the widest node in the column.
+			node.setXMid(ltTree.getHorizontalOffset() + dMaxColumnWidth / 2);
+			// Update the current horizontal offset to be that mid point plus
+			// half of the widest node in the column plus the gap between leaf
+			// nodes.
+			ltTree.setHorizontalOffset(node.getXMid() + ltTree.getHorizontalGap() + dMaxColumnWidth
+					/ 2);
+		}
+		node.setXCoordinate(node.getXMid() - node.getWidth() / 2); // adjust for
+																	// width of
+																	// this node
+		double dEnd = node.getXCoordinate() + node.getWidth();
+		if (node.isTriangle()) {
+			dEnd += ltTree.getHorizontalGap() / 2;
+		}
+		if (dEnd > ltTree.getXSize()) {
+			ltTree.setXSize(dEnd); // Keep track of total width for scrolling
+		}
+		System.out.printf(
+				"%1$s\tXSize = %2$s,\tWidth = %3$s,\tXCoord = %4$s,\tYCoord = %5$s, \tXMid = %5$s"
+						+ "\r\n", node.getContent(), ltTree.getXSize(), node.getWidth(),
+				node.getXCoordinate(), node.getYCoordinate(), node.getXMid());
+		System.out.printf("\tYUpperMid = %1$s, \tYLowerMid = %2$s\r\n", node.getYUpperMid(), node.getYLowerMid());
+		return node.getXMid();
+	}
+
+	private void adjustXValues(LingTreeNode node, double dAdjust) {
+		// adjust this node
+		node.setXCoordinate(node.getXCoordinate() + dAdjust);
+		node.setXMid(node.getXMid() + dAdjust);
+		ltTree.setHorizontalOffset(ltTree.getHorizontalOffset() + dAdjust);
+		// adjust any daughter nodes
+		for (LingTreeNode daughterNode : node.getDaughters()) {
+			adjustXValues(daughterNode, dAdjust);
+		}
+	}
+
+	public void draw(Pane pane) {
+		LingTreeNode node = ltTree.getRootNode();
+		drawNodes(node, pane);
+	}
+
+	private void drawNodes(LingTreeNode node, Pane pane) {
+		pane.getChildren().add(node.getContentTextBox());
+		if (node.hasMother() && !node.isOmitLine()) {
+			LingTreeNode mother = node.getMother();
+			if (!node.isTriangle()) {
+				// need to draw a line or triangle between mother and this node
+				Line line = new Line(mother.getXMid(), mother.getYLowerMid(), node.getXMid(), node.getYUpperMid());
+				pane.getChildren().add(line);
+			}
+		}
+		for (LingTreeNode daughterNode : node.getDaughters()) {
+			drawNodes(daughterNode, pane);
+		}
+	}
+
 	public void draw() {
 		calculateMaxHeightPerLevel();
 		calculateYCoordinateOfEveryNode();
-
+		calculateXCoordinateOfEveryNode();
 	}
 }

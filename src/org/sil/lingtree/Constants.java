@@ -14,4 +14,5 @@ public class Constants {
 	
 	public static final String SUBSCRIPT = "/s";
 	public static final String SUPERSCRIPT = "/S";
+	public static final String RESOURCE_LOCATION = "org.sil.lingtree.resources.LingTree";
 }
