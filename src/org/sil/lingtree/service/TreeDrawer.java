@@ -25,7 +25,7 @@ public class TreeDrawer {
 	HashMap<Integer, Double> maxHeightPerLevel = new HashMap<>();
 
 	private static final double dYCoordAdjustment = 3; // adjustment value
-	private static final double dTriangleOffset = 300;
+	private static final double dTriangleOffset = 3;
 
 	public TreeDrawer(LingTreeTree ltTree) {
 		super();
@@ -183,18 +183,23 @@ public class TreeDrawer {
 	}
 
 	public void draw(Pane pane) {
+		calculateMaxHeightPerLevel();
+		calculateYCoordinateOfEveryNode();
+		calculateXCoordinateOfEveryNode();
 		LingTreeNode node = ltTree.getRootNode();
 		drawNodes(node, pane);
 	}
 
 	private void drawNodes(LingTreeNode node, Pane pane) {
 		pane.getChildren().add(node.getContentTextBox());
-		if (node.hasMother() && !node.isOmitLine()) {
+		if (node.hasMother() && !node.isOmitLine() && node.getNodeType() != NodeType.Gloss) {
 			LingTreeNode mother = node.getMother();
 			if (!node.isTriangle()) {
-				// need to draw a line or triangle between mother and this node
+				// need to draw a line between mother and this node
 				Line line = new Line(mother.getXMid(), mother.getYLowerMid(), node.getXMid(), node.getYUpperMid());
 				pane.getChildren().add(line);
+			} else if (node.isTriangle()){
+				drawTriangle(node, pane, mother);
 			}
 		}
 		for (LingTreeNode daughterNode : node.getDaughters()) {
@@ -202,9 +207,17 @@ public class TreeDrawer {
 		}
 	}
 
-	public void draw() {
-		calculateMaxHeightPerLevel();
-		calculateYCoordinateOfEveryNode();
-		calculateXCoordinateOfEveryNode();
+	private void drawTriangle(LingTreeNode node, Pane pane, LingTreeNode mother) {
+		double dLeftmostX = node.getXCoordinate() + dTriangleOffset;
+		double dRightmostX = node.getXCoordinate() + node.getWidth() - dTriangleOffset;
+		double dTopX = mother.getXMid();
+		double dBottomY = node.getYUpperMid();
+		double dTopY = mother.getYLowerMid();
+		Line rightPart = new Line(dLeftmostX, dBottomY,	dTopX, dTopY);
+		pane.getChildren().add(rightPart);
+		Line leftPart = new Line(dTopX, dTopY, dRightmostX, dBottomY);
+		pane.getChildren().add(leftPart);
+		Line bottomPart = new Line(dLeftmostX, dBottomY, dRightmostX, dBottomY);
+		pane.getChildren().add(bottomPart);
 	}
 }

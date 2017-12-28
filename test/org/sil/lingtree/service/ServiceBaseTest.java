@@ -43,27 +43,4 @@ public abstract class ServiceBaseTest {
 	@After
 	public void tearDown() throws Exception {
 	}
-
-	protected LingTreeTree parseAString(String sInput) {
-		CharStream input = CharStreams.fromString(sInput);
-		DescriptionLexer lexer = new DescriptionLexer(input);
-		CommonTokenStream tokens = new CommonTokenStream(lexer);
-		DescriptionParser parser = new DescriptionParser(tokens);
-
-		// begin parsing at rule 'description'
-		ParseTree parseTree = parser.description();
-		int numErrors = parser.getNumberOfSyntaxErrors();
-		assertEquals(0, numErrors);
-		ParseTreeWalker walker = new ParseTreeWalker(); // create standard
-														// walker
-		BuildTreeFromDescriptionListener validator = new BuildTreeFromDescriptionListener(parser);
-		walker.walk(validator, parseTree); // initiate walk of tree with
-											// listener
-		LingTreeTree ltTree = validator.getTree();
-		assertNotNull(ltTree);
-
-		return ltTree;
-	}
-
-
 }

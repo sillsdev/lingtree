@@ -28,7 +28,7 @@ public class TreeDrawerTest extends ServiceBaseTest {
 
 	@Test
 	public void calculateMaxHeightsPerLevelTest() {
-		LingTreeTree ltTree = parseAString("(S (NP (\\L Juan (\\G John))) (VP (V (\\L duerme (\\G sleeps)))))");
+		LingTreeTree ltTree = TreeBuilder.parseAString("(S (NP (\\L Juan (\\G John))) (VP (V (\\L duerme (\\G sleeps)))))");
 		drawer = new TreeDrawer(ltTree);
 		drawer.calculateMaxHeightPerLevel();
 		HashMap<Integer, Double> maxHeightPerLevel = drawer.getMaxHeightPerLevel();
@@ -39,7 +39,7 @@ public class TreeDrawerTest extends ServiceBaseTest {
 		assertEquals(13.40625, maxHeightPerLevel.get(5), 0.0);
 		assertNull(maxHeightPerLevel.get(6));
 		
-		ltTree = parseAString("(S (NP (N' (N (\\L Juan (\\G John))))) (VP (V (\\L duerme (\\G sleeps)))))");
+		ltTree = TreeBuilder.parseAString("(S (NP (N' (N (\\L Juan (\\G John))))) (VP (V (\\L duerme (\\G sleeps)))))");
 		drawer = new TreeDrawer(ltTree);
 		drawer.calculateMaxHeightPerLevel();
 		maxHeightPerLevel = drawer.getMaxHeightPerLevel();
@@ -54,7 +54,7 @@ public class TreeDrawerTest extends ServiceBaseTest {
 
 	@Test
 	public void calculateYCoordinateOfEveryNodeTest() {
-		LingTreeTree ltTree = parseAString("(S (NP (\\L Juan (\\G John))) (VP (V (\\L duerme (\\G sleeps)))))");
+		LingTreeTree ltTree = TreeBuilder.parseAString("(S (NP (\\L Juan (\\G John))) (VP (V (\\L duerme (\\G sleeps)))))");
 		drawer = new TreeDrawer(ltTree);
 		drawer.calculateMaxHeightPerLevel();
 		drawer.calculateYCoordinateOfEveryNode();
@@ -94,7 +94,7 @@ public class TreeDrawerTest extends ServiceBaseTest {
 
 	@Test
 	public void calculateXCoordinateOfEveryNodeTest() {
-		LingTreeTree ltTree = parseAString("(S (NP (\\L Juan (\\G John))) (VP (V (\\L duerme (\\G sleeps)))))");
+		LingTreeTree ltTree = TreeBuilder.parseAString("(S (NP (\\L Juan (\\G John))) (VP (V (\\L duerme (\\G sleeps)))))");
 		drawer = new TreeDrawer(ltTree);
 		drawer.calculateMaxHeightPerLevel();
 		drawer.calculateYCoordinateOfEveryNode();
