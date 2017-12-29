@@ -6,32 +6,33 @@
 
 package org.sil.lingtree.view;
 
+import java.io.File;
 import java.net.URL;
+import java.text.MessageFormat;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 import org.sil.lingtree.MainApp;
 import org.sil.lingtree.model.LingTreeTree;
 import org.sil.lingtree.service.TreeBuilder;
 import org.sil.lingtree.service.TreeDrawer;
-
-import com.sun.javafx.scene.control.skin.SplitPaneSkin;
+import org.sil.lingtree.view.ControllerUtilities;
+import org.sil.lingtree.Constants;
 
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 /**
@@ -41,7 +42,43 @@ import javafx.stage.Stage;
 public class RootLayoutController implements Initializable {
 
 	MainApp mainApp;
+	private Locale currentLocale;
+	ResourceBundle bundle;
+	private String sAboutHeader;
+	private String sAboutContent;
+	private String sFileFilterDescription;
 
+	@FXML
+	private Button buttonToolbarFileOpen;
+	@FXML
+	private Button buttonToolbarFileNew;
+	@FXML
+	private Button buttonToolbarFileSave;
+	@FXML
+	private Button buttonToolbarEditCut;
+	@FXML
+	private Button buttonToolbarEditCopy;
+	@FXML
+	private Button buttonToolbarEditPaste;
+	@FXML
+	private Tooltip tooltipToolbarFileOpen;
+	@FXML
+	private Tooltip tooltipToolbarFileNew;
+	@FXML
+	private Tooltip tooltipToolbarFileSave;
+	@FXML
+	private Tooltip tooltipToolbarEditCut;
+	@FXML
+	private Tooltip tooltipToolbarEditCopy;
+	@FXML
+	private Tooltip tooltipToolbarEditPaste;
+
+	@FXML
+	private MenuItem menuItemEditCopy;
+	@FXML
+	private MenuItem menuItemEditCut;
+	@FXML
+	private MenuItem menuItemEditPaste;
 	@FXML
 	MenuItem menuItemDrawTree;
 
@@ -52,6 +89,10 @@ public class RootLayoutController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		bundle = resources;
+
+		createToolbarButtons(bundle);
+
 		treeDescription.setOnKeyReleased(new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent event) {
@@ -77,7 +118,7 @@ public class RootLayoutController implements Initializable {
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
-				treeDescription.setPromptText("Enter description here");
+				treeDescription.setPromptText(bundle.getString("label.enterdescription"));
 				treeDescription.requestFocus();
 			}
 		});
@@ -91,13 +132,82 @@ public class RootLayoutController implements Initializable {
 		this.mainApp = mainApp;
 	}
 
+	public Locale getCurrentLocale() {
+		return currentLocale;
+	}
+
+	public void setLocale(Locale currentLocale) {
+		this.currentLocale = currentLocale;
+	}
+
+	protected void createToolbarButtons(ResourceBundle bundle) {
+		ControllerUtilities.createToolbarButtonWithImage("newAction.png", buttonToolbarFileNew,
+				tooltipToolbarFileNew, bundle.getString("tooltip.new"));
+		ControllerUtilities.createToolbarButtonWithImage("openAction.png", buttonToolbarFileOpen,
+				tooltipToolbarFileOpen, bundle.getString("tooltip.open"));
+		ControllerUtilities.createToolbarButtonWithImage("saveAction.png", buttonToolbarFileSave,
+				tooltipToolbarFileSave, bundle.getString("tooltip.save"));
+		ControllerUtilities.createToolbarButtonWithImage("cutAction.png", buttonToolbarEditCut,
+				tooltipToolbarEditCut, bundle.getString("tooltip.cut"));
+		ControllerUtilities.createToolbarButtonWithImage("copyAction.png", buttonToolbarEditCopy,
+				tooltipToolbarEditCopy, bundle.getString("tooltip.copy"));
+		ControllerUtilities.createToolbarButtonWithImage("pasteAction.png", buttonToolbarEditPaste,
+				tooltipToolbarEditPaste, bundle.getString("tooltip.paste"));
+//		ControllerUtilities.createToolbarButtonWithImage("syllabify.png", buttonToolbarSyllabify,
+//				tooltipToolbarSyllabify, bundle.getString("tooltip.syllabifywords"));
+	}
+
 	/**
-	 * Closes the application.
+	 * Opens an about dialog.
 	 */
 	@FXML
-	private void handleExit() {
-		// handleSaveProject();
-		System.exit(0);
+	private void handleAbout() {
+		sAboutHeader = bundle.getString("about.header");
+		Object[] args = {Constants.VERSION_NUMBER };
+		MessageFormat msgFormatter = new MessageFormat("");
+		msgFormatter.setLocale(currentLocale);
+		msgFormatter.applyPattern(bundle.getString("about.content"));
+		sAboutContent = msgFormatter.format(args);
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle(sAboutHeader);
+		alert.setHeaderText(null);
+		alert.setContentText(sAboutContent);
+		Image silLogo = ControllerUtilities
+				.getIconImageFromURL("file:resources/images/SILLogo.png");
+		alert.setGraphic(new ImageView(silLogo));
+		Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+		stage.getIcons().add(mainApp.getNewMainIconImage());
+		alert.showAndWait();
+	}
+
+	@FXML
+	private void handleCut() {
+		//currentApproachController.handleCut();
+	}
+
+	@FXML
+	private void handleToolBarCut() {
+		//currentApproachController.handleToolBarCut();
+	}
+
+	@FXML
+	private void handleCopy() {
+		//currentApproachController.handleCopy();
+	}
+
+	@FXML
+	private void handleToolBarCopy() {
+		//currentApproachController.handleToolBarCopy();
+	}
+
+	@FXML
+	private void handlePaste() {
+		//currentApproachController.handlePaste();
+	}
+
+	@FXML
+	private void handleToolBarPaste() {
+		//currentApproachController.handleToolBarPaste();
 	}
 
 	@FXML
@@ -111,6 +221,93 @@ public class RootLayoutController implements Initializable {
 		TreeDrawer drawer = new TreeDrawer(ltTree);
 		drawer.draw(drawingArea);
 	}
+
+	/**
+	 * Closes the application.
+	 */
+	@FXML
+	private void handleExit() {
+		// handleSaveProject();
+		System.out.println("exiting");
+		System.exit(0);
+	}
+
+
+	/**
+	 * Creates an empty language project.
+	 */
+	@FXML
+	public void handleNewTree() {
+//		TimerService timer = mainApp.getSaveDataPeriodicallyService();
+//		if (timer != null) {
+//			mainApp.getSaveDataPeriodicallyService().cancel();
+//		}
+//		String sDirectoryPath = applicationPreferences.getLastOpenedDirectoryPath();
+//		if (sDirectoryPath == "") {
+//			// probably creating a new file the first time the program is run;
+//			// set the directory to the closest we can to a reasonable default
+//			sDirectoryPath = tryToGetDefaultDirectoryPath();
+//		}
+//		applicationPreferences.setLastOpenedDirectoryPath(sDirectoryPath);
+//		File fileCreated = ControllerUtilities.doFileSaveAs(mainApp, currentLocale, false,
+//				syllableParserFilterDescription);
+//		if (fileCreated != null) {
+//			File file = new File(Constants.ASHENINKA_STARTER_FILE);
+//			mainApp.loadLanguageData(file);
+//			mainApp.saveLanguageData(fileCreated);
+//			mainApp.updateStageTitle(fileCreated);
+//		}
+//		if (timer != null) {
+//			mainApp.getSaveDataPeriodicallyService().restart();
+//		}
+	}
+
+	/**
+	 * Opens a FileChooser to let the user select a language project to load.
+	 */
+	@FXML
+	public void handleOpenTree() {
+		doFileOpen(false);
+	}
+
+	public void doFileOpen(Boolean fCloseIfCanceled) {
+//		File file = ControllerUtilities.getFileToOpen(mainApp, syllableParserFilterDescription,
+//				Constants.LINGTREE_DATA_FILE_EXTENSIONS);
+//		if (file != null) {
+//			mainApp.loadLanguageData(file);
+//			String sDirectoryPath = file.getParent();
+//			applicationPreferences.setLastOpenedDirectoryPath(sDirectoryPath);
+//			mainApp.updateStageTitle(file);
+//		} else if (fCloseIfCanceled) {
+//			// probably first time running and user chose to open a file
+//			// but then canceled. We quit.
+//			System.exit(0);
+//		}
+	}
+
+	/**
+	 * Saves the file to the language project file that is currently open. If
+	 * there is no open file, the "save as" dialog is shown.
+	 */
+	@FXML
+	public void handleSaveTree() {
+//		File file = mainApp.getLanguageProjectFilePath();
+//		if (file != null) {
+//			mainApp.saveLanguageData(file);
+//		} else {
+//			handleSaveProjectAs();
+//		}
+	}
+
+	/**
+	 * Opens a FileChooser to let the user select a file to save to.
+	 */
+	@FXML
+	private void handleSaveProjectAs() {
+//		ControllerUtilities.doFileSaveAs(mainApp, currentLocale, false,
+//				syllableParserFilterDescription);
+	}
+
 
 	private void processRightParenthesis() {
 		Platform.runLater(new Runnable() {
@@ -171,13 +368,13 @@ public class RootLayoutController implements Initializable {
 			treeDescription.positionCaret(iIndex);
 			treeDescription.selectForward();
 		} else {
-			Alert alert = new Alert(AlertType.INFORMATION);
+			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle(MainApp.kApplicationTitle);
-			alert.setHeaderText("No matching opening parenthesis!");
-			alert.setContentText("Missing Open Parenthesis!");
+			alert.setHeaderText(bundle.getString("error.nomatchingopeningparenthesis"));
+			alert.setContentText(bundle.getString("error.missingopenparenthesis"));
 
 			Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-			//stage.getIcons().add(getNewMainIconImage());
+			stage.getIcons().add(mainApp.getNewMainIconImage());
 
 			alert.showAndWait();
 		}

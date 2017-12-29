@@ -1,3 +1,7 @@
+// Copyright (c) 2017-2018 SIL International
+// This software is licensed under the LGPL, version 2.1 or later
+// (http://www.gnu.org/licenses/lgpl-2.1.html)
+
 package org.sil.lingtree;
 	
 import java.io.File;
@@ -8,40 +12,47 @@ import java.util.ResourceBundle;
 import org.sil.lingtree.view.RootLayoutController;
 import org.sil.lingtree.Constants;
 import org.sil.lingtree.MainApp;
+import org.sil.lingtree.view.ControllerUtilities;
+import org.sil.lingtree.ApplicationPreferences;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.text.Text;
 
 
 public class MainApp extends Application {
-
+	private static final String kApplicationIconResource = "file:resources/images/LingTree128x128.png";
 	private Stage primaryStage;
 	private BorderPane rootLayout;
 	private Locale locale;
 	public static String kApplicationTitle = "LingTree";
 	private RootLayoutController controller;
+	private ApplicationPreferences applicationPreferences;
 
 	public Stage getPrimaryStage() {
 		return primaryStage;
 	}
 
+	public ApplicationPreferences getApplicationPreferences() {
+		return applicationPreferences;
+	}
+
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-//			applicationPreferences = new ApplicationPreferences(this);
-//			locale = new Locale(applicationPreferences.getLastLocaleLanguage());
-			locale = new Locale("en");
+			applicationPreferences = new ApplicationPreferences(this);
+			locale = new Locale(applicationPreferences.getLastLocaleLanguage());
 //
 //			languageProject = new LanguageProject();
 //			xmlBackEndProvider = new XMLBackEndProvider(languageProject, locale);
 			this.primaryStage = primaryStage;
 			this.primaryStage.setTitle(kApplicationTitle);
-//			this.primaryStage.getIcons().add(getNewMainIconImage());
-//			restoreWindowSettings();
+			this.primaryStage.getIcons().add(getNewMainIconImage());
+			//this.primaryStage.getScene().getStylesheets().add(getClass().getResource("LingTree.css").toExternalForm());
+			restoreWindowSettings();
 
 			initRootLayout();
 
@@ -63,6 +74,15 @@ public class MainApp extends Application {
 		}
 	}
 	
+	@Override
+	public void stop() {
+		applicationPreferences.setLastWindowParameters(ApplicationPreferences.LAST_WINDOW,
+				primaryStage);
+		applicationPreferences.setLastLocaleLanguage(locale.getLanguage());
+		controller.handleSaveTree();
+	}
+
+
 	public static void main(String[] args) {
 		launch(args);
 	}
@@ -89,8 +109,8 @@ public class MainApp extends Application {
 			Scene scene = new Scene(rootLayout);
 			primaryStage.setScene(scene);
 			controller = loader.getController();
-			//controller.setMainApp(this, locale, languageProject);
 			controller.setMainApp(this);
+			controller.setLocale(locale);
 
 			// Try to load last opened file.
 //			File file = applicationPreferences.getLastOpenedFile();
@@ -111,6 +131,36 @@ public class MainApp extends Application {
 		} catch (Exception e) {
 			System.out.println("non-IO Exception caught!");
 			e.printStackTrace();
+		}
+	}
+
+	private void restoreWindowSettings() {
+		primaryStage = applicationPreferences.getLastWindowParameters(
+				ApplicationPreferences.LAST_WINDOW, primaryStage, 660.0, 1000.);
+	}
+
+	/**
+	 * @return the mainIconImage
+	 */
+	public Image getNewMainIconImage() {
+		Image img = ControllerUtilities.getIconImageFromURL(kApplicationIconResource);
+		return img;
+	}
+
+	public void saveTreeData(File file) {
+//		xmlBackEndProvider.saveLanguageDataToFile(file);
+//		applicationPreferences.setLastOpenedFilePath(file);
+//		applicationPreferences.setLastOpenedDirectoryPath(file.getParent());
+	}
+
+
+	public void updateStageTitle(File file) {
+		if (file != null) {
+			String sFileNameToUse = file.getName().replace(
+					"." + Constants.LINGTREE_DATA_FILE_EXTENSION, "");
+			primaryStage.setTitle(kApplicationTitle + " - " + sFileNameToUse);
+		} else {
+			primaryStage.setTitle(kApplicationTitle);
 		}
 	}
 

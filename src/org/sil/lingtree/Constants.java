@@ -15,4 +15,11 @@ public class Constants {
 	public static final String SUBSCRIPT = "/s";
 	public static final String SUPERSCRIPT = "/S";
 	public static final String RESOURCE_LOCATION = "org.sil.lingtree.resources.LingTree";
+
+	public static final String LINGTREE_DATA_FILE_EXTENSION = "tre";
+	public static final String LINGTREE_DATA_FILE_EXTENSIONS = "*."
+			+ LINGTREE_DATA_FILE_EXTENSION;
+	public static final String LINGTREE_STARTER_FILE = "resources/starterFile.tre";
+	public static final String DEFAULT_DIRECTORY_NAME = "My LingTree";
+
 }
