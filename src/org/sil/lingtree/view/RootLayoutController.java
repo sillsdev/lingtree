@@ -32,6 +32,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
@@ -90,7 +91,7 @@ public class RootLayoutController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		bundle = resources;
-
+		
 		createToolbarButtons(bundle);
 
 		treeDescription.setOnKeyReleased(new EventHandler<KeyEvent>() {
