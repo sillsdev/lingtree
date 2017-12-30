@@ -25,8 +25,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
@@ -49,6 +51,9 @@ public class RootLayoutController implements Initializable {
 	private String sAboutContent;
 	private String sFileFilterDescription;
 
+	private final String kFlatPressedStyle = "useflattreepressed";
+	private final String kFlatUnPressedStyle = "useflattreeunpressed";
+
 	@FXML
 	private Button buttonToolbarFileOpen;
 	@FXML
@@ -62,6 +67,13 @@ public class RootLayoutController implements Initializable {
 	@FXML
 	private Button buttonToolbarEditPaste;
 	@FXML
+	private Button buttonToolbarDrawTree;
+	@FXML
+	private Button buttonToolbarUseFlatTree;
+	@FXML
+	private ToggleButton toggleButtonUseFlatTree;
+
+	@FXML
 	private Tooltip tooltipToolbarFileOpen;
 	@FXML
 	private Tooltip tooltipToolbarFileNew;
@@ -73,6 +85,10 @@ public class RootLayoutController implements Initializable {
 	private Tooltip tooltipToolbarEditCopy;
 	@FXML
 	private Tooltip tooltipToolbarEditPaste;
+	@FXML
+	private Tooltip tooltipToolbarDrawTree;
+	@FXML
+	private Tooltip tooltipToolbarUseFlatTree;
 
 	@FXML
 	private MenuItem menuItemEditCopy;
@@ -81,18 +97,24 @@ public class RootLayoutController implements Initializable {
 	@FXML
 	private MenuItem menuItemEditPaste;
 	@FXML
-	MenuItem menuItemDrawTree;
+	private MenuItem menuItemDrawTree;
+	@FXML
+	private CheckMenuItem menuItemUseFlatTree;
 
 	@FXML
-	TextArea treeDescription;
+	private TextArea treeDescription;
 	@FXML
-	Pane drawingArea;
+	private Pane drawingArea;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		bundle = resources;
-		
+
 		createToolbarButtons(bundle);
+
+		toggleButtonUseFlatTree.getStyleClass().add(kFlatUnPressedStyle);
+		tooltipToolbarUseFlatTree = new Tooltip(bundle.getString("tooltip.useflattree"));
+		toggleButtonUseFlatTree.setTooltip(tooltipToolbarUseFlatTree);
 
 		treeDescription.setOnKeyReleased(new EventHandler<KeyEvent>() {
 			@Override
@@ -154,8 +176,8 @@ public class RootLayoutController implements Initializable {
 				tooltipToolbarEditCopy, bundle.getString("tooltip.copy"));
 		ControllerUtilities.createToolbarButtonWithImage("pasteAction.png", buttonToolbarEditPaste,
 				tooltipToolbarEditPaste, bundle.getString("tooltip.paste"));
-//		ControllerUtilities.createToolbarButtonWithImage("syllabify.png", buttonToolbarSyllabify,
-//				tooltipToolbarSyllabify, bundle.getString("tooltip.syllabifywords"));
+		ControllerUtilities.createToolbarButtonWithImage("drawTree.png", buttonToolbarDrawTree,
+				tooltipToolbarDrawTree, bundle.getString("tooltip.drawtree"));
 	}
 
 	/**
@@ -164,7 +186,7 @@ public class RootLayoutController implements Initializable {
 	@FXML
 	private void handleAbout() {
 		sAboutHeader = bundle.getString("about.header");
-		Object[] args = {Constants.VERSION_NUMBER };
+		Object[] args = { Constants.VERSION_NUMBER };
 		MessageFormat msgFormatter = new MessageFormat("");
 		msgFormatter.setLocale(currentLocale);
 		msgFormatter.applyPattern(bundle.getString("about.content"));
@@ -183,32 +205,32 @@ public class RootLayoutController implements Initializable {
 
 	@FXML
 	private void handleCut() {
-		//currentApproachController.handleCut();
+		// currentApproachController.handleCut();
 	}
 
 	@FXML
 	private void handleToolBarCut() {
-		//currentApproachController.handleToolBarCut();
+		// currentApproachController.handleToolBarCut();
 	}
 
 	@FXML
 	private void handleCopy() {
-		//currentApproachController.handleCopy();
+		// currentApproachController.handleCopy();
 	}
 
 	@FXML
 	private void handleToolBarCopy() {
-		//currentApproachController.handleToolBarCopy();
+		// currentApproachController.handleToolBarCopy();
 	}
 
 	@FXML
 	private void handlePaste() {
-		//currentApproachController.handlePaste();
+		// currentApproachController.handlePaste();
 	}
 
 	@FXML
 	private void handleToolBarPaste() {
-		//currentApproachController.handleToolBarPaste();
+		// currentApproachController.handleToolBarPaste();
 	}
 
 	@FXML
@@ -219,8 +241,36 @@ public class RootLayoutController implements Initializable {
 			sDescription = "(S (NP (\\L Juan (\\G John))) (VP (V (\\L duerme (\\G sleeps)))))";
 		}
 		LingTreeTree ltTree = TreeBuilder.parseAString(sDescription);
+		ltTree.setShowFlatView(menuItemUseFlatTree.isSelected());
 		TreeDrawer drawer = new TreeDrawer(ltTree);
 		drawer.draw(drawingArea);
+	}
+
+	@FXML
+	private void handleMenuUseFlatTree() {
+		setToggleButtonStyle();
+	}
+
+	@FXML
+	private void handleUseFlatTree() {
+		menuItemUseFlatTree.setSelected(!menuItemUseFlatTree.isSelected());
+		setToggleButtonStyle();
+	}
+
+	private void setToggleButtonStyle() {
+		if (menuItemUseFlatTree.isSelected()) {
+			int i = toggleButtonUseFlatTree.getStyleClass().indexOf(kFlatUnPressedStyle);
+			if (i >= 0) {
+				toggleButtonUseFlatTree.getStyleClass().remove(i);
+			}
+			toggleButtonUseFlatTree.getStyleClass().add(kFlatPressedStyle);
+		} else {
+			int i = toggleButtonUseFlatTree.getStyleClass().indexOf(kFlatPressedStyle);
+			if (i >= 0) {
+				toggleButtonUseFlatTree.getStyleClass().remove(i);
+			}
+			toggleButtonUseFlatTree.getStyleClass().add(kFlatUnPressedStyle);
+		}
 	}
 
 	/**
@@ -233,34 +283,35 @@ public class RootLayoutController implements Initializable {
 		System.exit(0);
 	}
 
-
 	/**
 	 * Creates an empty language project.
 	 */
 	@FXML
 	public void handleNewTree() {
-//		TimerService timer = mainApp.getSaveDataPeriodicallyService();
-//		if (timer != null) {
-//			mainApp.getSaveDataPeriodicallyService().cancel();
-//		}
-//		String sDirectoryPath = applicationPreferences.getLastOpenedDirectoryPath();
-//		if (sDirectoryPath == "") {
-//			// probably creating a new file the first time the program is run;
-//			// set the directory to the closest we can to a reasonable default
-//			sDirectoryPath = tryToGetDefaultDirectoryPath();
-//		}
-//		applicationPreferences.setLastOpenedDirectoryPath(sDirectoryPath);
-//		File fileCreated = ControllerUtilities.doFileSaveAs(mainApp, currentLocale, false,
-//				syllableParserFilterDescription);
-//		if (fileCreated != null) {
-//			File file = new File(Constants.ASHENINKA_STARTER_FILE);
-//			mainApp.loadLanguageData(file);
-//			mainApp.saveLanguageData(fileCreated);
-//			mainApp.updateStageTitle(fileCreated);
-//		}
-//		if (timer != null) {
-//			mainApp.getSaveDataPeriodicallyService().restart();
-//		}
+		// TimerService timer = mainApp.getSaveDataPeriodicallyService();
+		// if (timer != null) {
+		// mainApp.getSaveDataPeriodicallyService().cancel();
+		// }
+		// String sDirectoryPath =
+		// applicationPreferences.getLastOpenedDirectoryPath();
+		// if (sDirectoryPath == "") {
+		// // probably creating a new file the first time the program is run;
+		// // set the directory to the closest we can to a reasonable default
+		// sDirectoryPath = tryToGetDefaultDirectoryPath();
+		// }
+		// applicationPreferences.setLastOpenedDirectoryPath(sDirectoryPath);
+		// File fileCreated = ControllerUtilities.doFileSaveAs(mainApp,
+		// currentLocale, false,
+		// syllableParserFilterDescription);
+		// if (fileCreated != null) {
+		// File file = new File(Constants.ASHENINKA_STARTER_FILE);
+		// mainApp.loadLanguageData(file);
+		// mainApp.saveLanguageData(fileCreated);
+		// mainApp.updateStageTitle(fileCreated);
+		// }
+		// if (timer != null) {
+		// mainApp.getSaveDataPeriodicallyService().restart();
+		// }
 	}
 
 	/**
@@ -272,18 +323,19 @@ public class RootLayoutController implements Initializable {
 	}
 
 	public void doFileOpen(Boolean fCloseIfCanceled) {
-//		File file = ControllerUtilities.getFileToOpen(mainApp, syllableParserFilterDescription,
-//				Constants.LINGTREE_DATA_FILE_EXTENSIONS);
-//		if (file != null) {
-//			mainApp.loadLanguageData(file);
-//			String sDirectoryPath = file.getParent();
-//			applicationPreferences.setLastOpenedDirectoryPath(sDirectoryPath);
-//			mainApp.updateStageTitle(file);
-//		} else if (fCloseIfCanceled) {
-//			// probably first time running and user chose to open a file
-//			// but then canceled. We quit.
-//			System.exit(0);
-//		}
+		// File file = ControllerUtilities.getFileToOpen(mainApp,
+		// syllableParserFilterDescription,
+		// Constants.LINGTREE_DATA_FILE_EXTENSIONS);
+		// if (file != null) {
+		// mainApp.loadLanguageData(file);
+		// String sDirectoryPath = file.getParent();
+		// applicationPreferences.setLastOpenedDirectoryPath(sDirectoryPath);
+		// mainApp.updateStageTitle(file);
+		// } else if (fCloseIfCanceled) {
+		// // probably first time running and user chose to open a file
+		// // but then canceled. We quit.
+		// System.exit(0);
+		// }
 	}
 
 	/**
@@ -292,12 +344,12 @@ public class RootLayoutController implements Initializable {
 	 */
 	@FXML
 	public void handleSaveTree() {
-//		File file = mainApp.getLanguageProjectFilePath();
-//		if (file != null) {
-//			mainApp.saveLanguageData(file);
-//		} else {
-//			handleSaveProjectAs();
-//		}
+		// File file = mainApp.getLanguageProjectFilePath();
+		// if (file != null) {
+		// mainApp.saveLanguageData(file);
+		// } else {
+		// handleSaveProjectAs();
+		// }
 	}
 
 	/**
@@ -305,10 +357,9 @@ public class RootLayoutController implements Initializable {
 	 */
 	@FXML
 	private void handleSaveProjectAs() {
-//		ControllerUtilities.doFileSaveAs(mainApp, currentLocale, false,
-//				syllableParserFilterDescription);
+		// ControllerUtilities.doFileSaveAs(mainApp, currentLocale, false,
+		// syllableParserFilterDescription);
 	}
-
 
 	private void processRightParenthesis() {
 		Platform.runLater(new Runnable() {
@@ -317,15 +368,15 @@ public class RootLayoutController implements Initializable {
 				int iRightParenthesis = treeDescription.getCaretPosition();
 				findMatchingLeftParenthesisAndHighlightIt(iRightParenthesis);
 				treeDescription.positionCaret(iRightParenthesis);
-//				try {
-//					findMatchingLeftParenthesisAndHighlightIt(iRightParenthesis);
-//					//Thread thisThread = Thread.currentThread();// .sleep(750);
-//					//Thread.sleep(500);
-//				} catch (InterruptedException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				} finally {
-//				}
+				// try {
+				// findMatchingLeftParenthesisAndHighlightIt(iRightParenthesis);
+				// //Thread thisThread = Thread.currentThread();// .sleep(750);
+				// //Thread.sleep(500);
+				// } catch (InterruptedException e) {
+				// // TODO Auto-generated catch block
+				// e.printStackTrace();
+				// } finally {
+				// }
 			}
 		});
 		// Platform.runLater(new Runnable() {

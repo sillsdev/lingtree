@@ -90,6 +90,45 @@ public class TreeDrawerTest extends ServiceBaseTest {
 		assertEquals(225.8359375, node2.getYCoordinate(), 0.0);
 		assertEquals(211.97265625, node2.getYUpperMid(), 0.0);
 		assertEquals(231.37890625, node2.getYLowerMid(), 0.0);
+
+		// Now with "show flat view" set
+		ltTree = TreeBuilder.parseAString("(S (NP (\\L Juan (\\G John))) (VP (V (\\L duerme (\\G sleeps)))))");
+		ltTree.setShowFlatView(true);
+		drawer = new TreeDrawer(ltTree);
+		drawer.calculateMaxHeightPerLevel();
+		drawer.calculateYCoordinateOfEveryNode();
+		node = ltTree.getRootNode();
+		assertEquals(100.0, node.getYCoordinate(), 0.0);
+		assertEquals(86.306640625, node.getYUpperMid(), 0.0);
+		assertEquals(105.595703125, node.getYLowerMid(), 0.0);
+		node1 = node.getDaughters().get(0);
+		assertEquals(133.2890625, node1.getYCoordinate(), 0.0);
+		assertEquals(119.595703125, node1.getYUpperMid(), 0.0);
+		assertEquals(138.884765625, node1.getYLowerMid(), 0.0);
+		node2 = node.getDaughters().get(1);
+		assertEquals(133.2890625, node2.getYCoordinate(), 0.0);
+		assertEquals(119.595703125, node2.getYUpperMid(), 0.0);
+		assertEquals(138.884765625, node2.getYLowerMid(), 0.0);
+		node1 = node1.getDaughters().get(0);
+		assertEquals(206.20703125, node1.getYCoordinate(), 0.0);
+		assertEquals(188.8515625, node1.getYUpperMid(), 0.0);
+		assertEquals(211.48046875, node1.getYLowerMid(), 0.0);
+		node1 = node1.getDaughters().get(0);
+		assertEquals(225.8359375, node1.getYCoordinate(), 0.0);
+		assertEquals(214.97265625, node1.getYUpperMid(), 0.0);
+		assertEquals(228.37890625, node1.getYLowerMid(), 0.0);
+		node2 = node2.getDaughters().get(0);
+		assertEquals(166.578125, node2.getYCoordinate(), 0.0);
+		assertEquals(152.884765625, node2.getYUpperMid(), 0.0);
+		assertEquals(172.173828125, node2.getYLowerMid(), 0.0);
+		node2 = node2.getDaughters().get(0);
+		assertEquals(206.20703125, node2.getYCoordinate(), 0.0);
+		assertEquals(188.8515625, node2.getYUpperMid(), 0.0);
+		assertEquals(211.48046875, node2.getYLowerMid(), 0.0);
+		node2 = node2.getDaughters().get(0);
+		assertEquals(225.8359375, node2.getYCoordinate(), 0.0);
+		assertEquals(214.97265625, node2.getYUpperMid(), 0.0);
+		assertEquals(228.37890625, node2.getYLowerMid(), 0.0);
 	}
 
 	@Test

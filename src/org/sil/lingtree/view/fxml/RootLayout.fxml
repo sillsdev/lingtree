@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.CheckMenuItem?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextArea?>
@@ -35,6 +37,7 @@
                 <Menu mnemonicParsing="true" text="%menu.tree">
                   <items>
                     <MenuItem fx:id="menuItemDrawTree" accelerator="ctrl+d" mnemonicParsing="true" onAction="#handleDrawTree" text="%menu.drawtree" />
+                    <CheckMenuItem fx:id="menuItemUseFlatTree" mnemonicParsing="true" onAction="#handleMenuUseFlatTree" text="%menu.useflattree" />
                   </items>
                 </Menu>
                 <Menu mnemonicParsing="true" text="%menu.help">
@@ -54,12 +57,9 @@
 					<Button fx:id="buttonToolbarEditCopy" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" minWidth="17.0" mnemonicParsing="true" onAction="#handleToolBarCopy" prefHeight="23.0" prefWidth="17.0" text="" />
 					<Button fx:id="buttonToolbarEditPaste" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" minWidth="17.0" mnemonicParsing="true" onAction="#handleToolBarPaste" prefHeight="23.0" prefWidth="17.0" text="" />
 					<Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="3.0" />
+					<Button fx:id="buttonToolbarDrawTree" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" minWidth="17.0" mnemonicParsing="true" onAction="#handleDrawTree" prefHeight="23.0" prefWidth="17.0" text="" />
 					<Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="3.0" />
-<!-- 					<Button fx:id="buttonToolbarSyllabify" contentDisplay="GRAPHIC_ONLY" -->
-<!-- 						graphicTextGap="0.0" minWidth="19.0" mnemonicParsing="true" -->
-<!-- 						onAction="#handleSyllabifyWords" prefHeight="23.0" prefWidth="19.0" -->
-<!-- 						text="" /> -->
-                <Button mnemonicParsing="true" onAction="#handleDrawTree" text="%menu.drawtree" />
+	                <ToggleButton fx:id="toggleButtonUseFlatTree" onAction="#handleUseFlatTree" text="%label.useflattree" />
               </items>
             </ToolBar>
          </children>

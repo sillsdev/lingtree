@@ -9,3 +9,10 @@
 .toolbarbutton {
     -fx-background-color: transparent, transparent, transparent, transparent;
 }
+
+.useflattreepressed {
+    -fx-base: #F3F3F3;
+}
+.useflattreeunpressed {
+    -fx-base: white;
+}

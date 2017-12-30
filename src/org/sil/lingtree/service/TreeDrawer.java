@@ -57,6 +57,7 @@ public class TreeDrawer {
 	public void calculateYCoordinateOfEveryNode() {
 		LingTreeNode node = ltTree.getRootNode();
 		calculateYCoordinateOfANode(node, ltTree.getInitialYCoordinate());
+		adjustLexAndGlossNodesForFlatView();
 	}
 
 	// Determine Y-axis coordinates for this node
@@ -167,7 +168,8 @@ public class TreeDrawer {
 				"%1$s\tXSize = %2$s,\tWidth = %3$s,\tXCoord = %4$s,\tYCoord = %5$s, \tXMid = %5$s"
 						+ "\r\n", node.getContent(), ltTree.getXSize(), node.getWidth(),
 				node.getXCoordinate(), node.getYCoordinate(), node.getXMid());
-		System.out.printf("\tYUpperMid = %1$s, \tYLowerMid = %2$s\r\n", node.getYUpperMid(), node.getYLowerMid());
+		System.out.printf("\tYUpperMid = %1$s, \tYLowerMid = %2$s\r\n", node.getYUpperMid(),
+				node.getYLowerMid());
 		return node.getXMid();
 	}
 
@@ -179,6 +181,30 @@ public class TreeDrawer {
 		// adjust any daughter nodes
 		for (LingTreeNode daughterNode : node.getDaughters()) {
 			adjustXValues(daughterNode, dAdjust);
+		}
+	}
+
+	private void adjustLexAndGlossNodesForFlatView() {
+		if (ltTree.isShowFlatView()) { // adjust lex and gloss Y coordinates
+			LingTreeNode node = ltTree.getRootNode();
+			adjustLexOrGlossNodeForFlatView(node);
+		}
+	}
+
+	private void adjustLexOrGlossNodeForFlatView(LingTreeNode node) {
+		switch (node.getNodeType()) {
+		case Lex:
+			node.setYCoordinate(ltTree.getLexBottomYCoordinate());
+			node.setYUpperMid(ltTree.getLexBottomYUpperMid());
+			break;
+		case Gloss:
+			node.setYCoordinate(ltTree.getGlossBottomYCoordinate());
+			break;
+		default:
+			break;
+		}
+		for (LingTreeNode daughterNode : node.getDaughters()) {
+			adjustLexOrGlossNodeForFlatView(daughterNode);
 		}
 	}
 
@@ -196,9 +222,10 @@ public class TreeDrawer {
 			LingTreeNode mother = node.getMother();
 			if (!node.isTriangle()) {
 				// need to draw a line between mother and this node
-				Line line = new Line(mother.getXMid(), mother.getYLowerMid(), node.getXMid(), node.getYUpperMid());
+				Line line = new Line(mother.getXMid(), mother.getYLowerMid(), node.getXMid(),
+						node.getYUpperMid());
 				pane.getChildren().add(line);
-			} else if (node.isTriangle()){
+			} else if (node.isTriangle()) {
 				drawTriangle(node, pane, mother);
 			}
 		}
@@ -213,7 +240,7 @@ public class TreeDrawer {
 		double dTopX = mother.getXMid();
 		double dBottomY = node.getYUpperMid();
 		double dTopY = mother.getYLowerMid();
-		Line rightPart = new Line(dLeftmostX, dBottomY,	dTopX, dTopY);
+		Line rightPart = new Line(dLeftmostX, dBottomY, dTopX, dTopY);
 		pane.getChildren().add(rightPart);
 		Line leftPart = new Line(dTopX, dTopY, dRightmostX, dBottomY);
 		pane.getChildren().add(leftPart);

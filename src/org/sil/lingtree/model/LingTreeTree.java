@@ -23,6 +23,8 @@ public class LingTreeTree {
 	double dLexBottomYUpperMid; // lowest Lex Y upper mid (for "flat" view)
 	double dLexGlossGapAdjustment; // extra gap adjustment between lex and gloss
 
+	boolean fShowFlatView;
+
 	/**
 	 * 
 	 */
@@ -33,6 +35,7 @@ public class LingTreeTree {
 		dHorizontalGap = 30;
 		dHorizontalOffset = 100;
 		dLexGlossGapAdjustment = 0;
+		fShowFlatView = false;
 	}
 
 	public LingTreeNode getRootNode() {
@@ -111,7 +114,7 @@ public class LingTreeTree {
 		return dVerticalGap;
 	}
 
-	public void setderticalGap(double dVerticalGap) {
+	public void setVerticalGap(double dVerticalGap) {
 		this.dVerticalGap = dVerticalGap;
 	}
 
@@ -129,6 +132,14 @@ public class LingTreeTree {
 
 	public void setHorizontalOffset(double dHorizontalOffset) {
 		this.dHorizontalOffset = dHorizontalOffset;
+	}
+
+	public boolean isShowFlatView() {
+		return fShowFlatView;
+	}
+
+	public void setShowFlatView(boolean showFlatView) {
+		this.fShowFlatView = showFlatView;
 	}
 
 }
