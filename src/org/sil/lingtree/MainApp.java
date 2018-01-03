@@ -9,18 +9,23 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import org.sil.lingtree.backendprovider.XMLBackEndProviderTest;
+import org.sil.lingtree.model.LingTreeTree;
 import org.sil.lingtree.view.RootLayoutController;
 import org.sil.lingtree.Constants;
 import org.sil.lingtree.MainApp;
 import org.sil.lingtree.view.ControllerUtilities;
 import org.sil.lingtree.ApplicationPreferences;
+import org.sil.lingtree.backendprovider.XMLBackEndProvider;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
+import javafx.scene.control.MenuBar;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 
 
 public class MainApp extends Application {
@@ -31,6 +36,9 @@ public class MainApp extends Application {
 	public static String kApplicationTitle = "LingTree";
 	private RootLayoutController controller;
 	private ApplicationPreferences applicationPreferences;
+	private XMLBackEndProvider xmlBackEndProvider;
+	private LingTreeTree ltTree;
+	private final String sOperatingSystem = System.getProperty("os.name");
 
 	public Stage getPrimaryStage() {
 		return primaryStage;
@@ -40,14 +48,18 @@ public class MainApp extends Application {
 		return applicationPreferences;
 	}
 
+	public XMLBackEndProvider getBackEndProvider() {
+		return xmlBackEndProvider;
+	}
+
 	@Override
 	public void start(Stage primaryStage) {
 		try {
 			applicationPreferences = new ApplicationPreferences(this);
 			locale = new Locale(applicationPreferences.getLastLocaleLanguage());
-//
-//			languageProject = new LanguageProject();
-//			xmlBackEndProvider = new XMLBackEndProvider(languageProject, locale);
+
+			ltTree = new LingTreeTree();
+			xmlBackEndProvider = new XMLBackEndProvider(ltTree, locale);
 			this.primaryStage = primaryStage;
 			this.primaryStage.setTitle(kApplicationTitle);
 			this.primaryStage.getIcons().add(getNewMainIconImage());
@@ -57,18 +69,6 @@ public class MainApp extends Application {
 			initRootLayout();
 
 //			saveDataPeriodically(Constants.SAVE_DATA_PERIODICITY);
-
-//			BorderPane root = new BorderPane();
-//			Scene scene = new Scene(root,400,400);
-//			scene.getStylesheets().add(getClass().getResource("LingTree.css").toExternalForm());
-//			Text t = new Text(0.0, 10.0, "Here is some text");
-//			System.out.println("t.y=" + t.getY());
-//			System.out.println("layout=" + t.getLayoutY());
-//			System.out.println("bounds, local, height:" + t.getBoundsInLocal().getHeight());
-//			System.out.println("bounds, parent, height:" + t.getBoundsInParent().getHeight());
-//			root.getChildren().add(t);
-//			primaryStage.setScene(scene);
-//			primaryStage.show();
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -98,10 +98,10 @@ public class MainApp extends Application {
 			ResourceBundle bundle = ResourceBundle.getBundle(Constants.RESOURCE_LOCATION, locale);
 			loader.setResources(bundle);
 			rootLayout = (BorderPane) loader.load();
-//			if (getOperatingSystem().equals("Mac OS X")) {
-//				adjustMenusForMacOSX();
-//			}
-//
+			if (getOperatingSystem().equals("Mac OS X")) {
+				adjustMenusForMacOSX();
+			}
+
 //			sNotImplementedYetHeader = bundle.getString("misc.niyheader");
 //			sNotImplementedYetContent = bundle.getString("misc.niycontent");
 
@@ -113,16 +113,17 @@ public class MainApp extends Application {
 			controller.setLocale(locale);
 
 			// Try to load last opened file.
-//			File file = applicationPreferences.getLastOpenedFile();
-//			if (file != null && file.exists()) {
-//				loadLanguageData(file);
-//			} else {
-//				boolean fSucceeded = askUserForNewOrToOpenExistingFile(bundle, controller);
-//				if (!fSucceeded) {
-//					System.exit(0);
-//				}
-//			}
-//
+			File file = applicationPreferences.getLastOpenedFile();
+			if (file != null && file.exists()) {
+				loadTreeData(file);
+				controller.setTree(ltTree);
+			} else {
+				boolean fSucceeded = false; // askUserForNewOrToOpenExistingFile(bundle, controller);
+				if (!fSucceeded) {
+					System.exit(0);
+				}
+			}
+
 //			updateStatusBarNumberOfItems("");
 
 			primaryStage.show();
@@ -132,6 +133,27 @@ public class MainApp extends Application {
 			System.out.println("non-IO Exception caught!");
 			e.printStackTrace();
 		}
+	}
+
+	public void loadTreeData(File file) {
+//		DatabaseMigrator migrator = new DatabaseMigrator(file);
+//		int version = migrator.getVersion();
+//		if (version < Constants.CURRENT_DATABASE_VERSION) {
+//			migrator.doMigration();
+//		}
+		xmlBackEndProvider.loadTreeDataFromFile(file);
+		ltTree = xmlBackEndProvider.getLingTree();
+		applicationPreferences.setLastOpenedFilePath(file);
+		applicationPreferences.setLastOpenedDirectoryPath(file.getParent());
+		updateStageTitle(file);
+	}
+
+
+
+	protected void adjustMenusForMacOSX() {
+		VBox vbox = (VBox) rootLayout.getChildren().get(0);
+		MenuBar menuBar = (MenuBar) vbox.getChildren().get(0);
+		menuBar.useSystemMenuBarProperty().set(true);
 	}
 
 	private void restoreWindowSettings() {
@@ -148,9 +170,9 @@ public class MainApp extends Application {
 	}
 
 	public void saveTreeData(File file) {
-//		xmlBackEndProvider.saveLanguageDataToFile(file);
-//		applicationPreferences.setLastOpenedFilePath(file);
-//		applicationPreferences.setLastOpenedDirectoryPath(file.getParent());
+		xmlBackEndProvider.saveTreeDataToFile(file);
+		applicationPreferences.setLastOpenedFilePath(file);
+		applicationPreferences.setLastOpenedDirectoryPath(file.getParent());
 	}
 
 
@@ -162,6 +184,25 @@ public class MainApp extends Application {
 		} else {
 			primaryStage.setTitle(kApplicationTitle);
 		}
+	}
+
+	/**
+	 * Returns the language project file preference, i.e. the file that was last
+	 * opened. The preference is read from the OS specific registry. If no such
+	 * preference can be found, null is returned.
+	 *
+	 * @return
+	 */
+	public File getTreeDataFile() {
+		String filePath = applicationPreferences.getLastOpenedFilePath();
+		if (filePath != null) {
+			return new File(filePath);
+		} else {
+			return null;
+		}
+	}
+	public String getOperatingSystem() {
+		return sOperatingSystem;
 	}
 
 }

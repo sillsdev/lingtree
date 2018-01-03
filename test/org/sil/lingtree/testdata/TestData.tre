@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<lingTreeTree version="1.0.0">
+    <backgroundColor>#ffffff</backgroundColor>
+    <description>(S (NP (\L Juan (\G John))) (VP (V (\L duerme (\G sleeps)))))</description>
+    <glossFontInfo>
+        <color>#008000</color>
+        <fontFamily>Arial</fontFamily>
+        <fontSize>12.0</fontSize>
+        <fontType>Regular</fontType>
+    </glossFontInfo>
+    <horizontalGap>30.0</horizontalGap>
+    <horizontalOffset>226.275390625</horizontalOffset>
+    <initialXCoordinate>100.0</initialXCoordinate>
+    <initialYCoordinate>100.0</initialYCoordinate>
+    <lexGlossGapAdjustment>0.0</lexGlossGapAdjustment>
+    <lexicalFontInfo>
+        <color>#0000ff</color>
+        <fontFamily>Charis SIL</fontFamily>
+        <fontSize>12.0</fontSize>
+        <fontType>Regular</fontType>
+    </lexicalFontInfo>
+    <lineColor>#000000</lineColor>
+    <lineWidth>10.0</lineWidth>
+    <nonTerinalFontInfo>
+        <color>#000000</color>
+        <fontFamily>Times New Roman</fontFamily>
+        <fontSize>12.0</fontSize>
+        <fontType>Regular</fontType>
+    </nonTerinalFontInfo>
+    <showFlatView>true</showFlatView>
+    <subscriptFontInfo>
+        <color>#800080</color>
+        <fontFamily>Times New Roman</fontFamily>
+        <fontSize>9.0</fontSize>
+        <fontType>Italic</fontType>
+    </subscriptFontInfo>
+    <superscriptFontInfo>
+        <color>#ff0000</color>
+        <fontFamily>Times New Roman</fontFamily>
+        <fontSize>9.0</fontSize>
+        <fontType>Bold</fontType>
+    </superscriptFontInfo>
+    <verticalGap>20.0</verticalGap>
+</lingTreeTree>

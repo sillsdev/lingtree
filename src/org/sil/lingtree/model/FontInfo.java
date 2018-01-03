@@ -8,6 +8,7 @@
 package org.sil.lingtree.model;
 
 import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.controlsfx.dialog.FontSelectorDialog;
 
@@ -25,7 +26,6 @@ import javafx.stage.Stage;
  * @author Andy Black
  *
  */
-//@XmlAccessorType(XmlAccessType.FIELD)
 public class FontInfo {
 
 	private Font font;
@@ -88,20 +88,21 @@ public class FontInfo {
 		return fontType;
 	}
 
-	public Color getColor() {
-		return color;
-	}
-
-	public void setColor(Color color) {
-		this.color = color;
-	}
-
 	/**
 	 * @param fontType
 	 *            the fontType to set
 	 */
 	public void setFontType(String fontType) {
 		this.font = createFont(this.fontFamily, this.fontSize, fontType);
+	}
+
+	@XmlJavaTypeAdapter(ColorXmlAdaptor.class)
+	public Color getColor() {
+		return color;
+	}
+
+	public void setColor(Color color) {
+		this.color = color;
 	}
 
 	public FontInfo(String fontFamily, double fontSize, String fontType) {

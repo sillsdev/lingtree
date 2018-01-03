@@ -47,9 +47,12 @@ public class RootLayoutController implements Initializable {
 	MainApp mainApp;
 	private Locale currentLocale;
 	ResourceBundle bundle;
+	LingTreeTree ltTree;
+	String sDescription;
 	private String sAboutHeader;
 	private String sAboutContent;
 	private String sFileFilterDescription;
+	private String lingTreeFilterDescription;
 
 	private final String kFlatPressedStyle = "useflattreepressed";
 	private final String kFlatUnPressedStyle = "useflattreeunpressed";
@@ -161,6 +164,16 @@ public class RootLayoutController implements Initializable {
 
 	public void setLocale(Locale currentLocale) {
 		this.currentLocale = currentLocale;
+		lingTreeFilterDescription = sFileFilterDescription + " ("
+				+ Constants.LINGTREE_DATA_FILE_EXTENSIONS + ")";
+
+	}
+
+	public void setTree(LingTreeTree ltTree) {
+		this.ltTree = ltTree;
+		treeDescription.setText(ltTree.getDescription());
+		menuItemUseFlatTree.setSelected(ltTree.isShowFlatView());
+		setToggleButtonStyle();
 	}
 
 	protected void createToolbarButtons(ResourceBundle bundle) {
@@ -236,12 +249,14 @@ public class RootLayoutController implements Initializable {
 	@FXML
 	private void handleDrawTree() {
 		drawingArea.getChildren().clear();
-		String sDescription = treeDescription.getText();
+		sDescription = treeDescription.getText();
 		if (sDescription.length() == 0) {
 			sDescription = "(S (NP (\\L Juan (\\G John))) (VP (V (\\L duerme (\\G sleeps)))))";
 		}
-		LingTreeTree ltTree = TreeBuilder.parseAString(sDescription);
+		ltTree = TreeBuilder.parseAString(sDescription);
+		mainApp.getBackEndProvider().setLingTree(ltTree);
 		ltTree.setShowFlatView(menuItemUseFlatTree.isSelected());
+		ltTree.setDescription(sDescription);
 		TreeDrawer drawer = new TreeDrawer(ltTree);
 		drawer.draw(drawingArea);
 	}
@@ -344,21 +359,21 @@ public class RootLayoutController implements Initializable {
 	 */
 	@FXML
 	public void handleSaveTree() {
-		// File file = mainApp.getLanguageProjectFilePath();
-		// if (file != null) {
-		// mainApp.saveLanguageData(file);
-		// } else {
-		// handleSaveProjectAs();
-		// }
+		 File file = mainApp.getTreeDataFile();
+		 if (file != null) {
+		 mainApp.saveTreeData(file);
+		 } else {
+		 handleSaveTreeAs();
+		 }
 	}
 
 	/**
 	 * Opens a FileChooser to let the user select a file to save to.
 	 */
 	@FXML
-	private void handleSaveProjectAs() {
-		// ControllerUtilities.doFileSaveAs(mainApp, currentLocale, false,
-		// syllableParserFilterDescription);
+	private void handleSaveTreeAs() {
+		ControllerUtilities.doFileSaveAs(mainApp, currentLocale, false,
+		 lingTreeFilterDescription);
 	}
 
 	private void processRightParenthesis() {

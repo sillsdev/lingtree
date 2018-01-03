@@ -6,8 +6,19 @@
 
 package org.sil.lingtree.model;
 
+import javafx.scene.paint.Color;
+
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+@XmlRootElement(name = "lingTreeTree")
 public class LingTreeTree {
 	LingTreeNode rootNode;
+	private String version;
+	private String description;
 
 	double dInitialXCoordinate; // initial, leftmost X coordinate
 	double dInitialYCoordinate; // initial, leftmost Y coordinate
@@ -23,6 +34,16 @@ public class LingTreeTree {
 	double dLexBottomYUpperMid; // lowest Lex Y upper mid (for "flat" view)
 	double dLexGlossGapAdjustment; // extra gap adjustment between lex and gloss
 
+	FontInfo nonTerminalFontInfo;
+	FontInfo lexicalFontInfo;
+	FontInfo glossFontInfo;
+	FontInfo subscriptFontInfo;
+	FontInfo superscriptFontInfo;
+
+	Color backgroundColor;
+	Color lineColor;
+	double lineWidth;
+
 	boolean fShowFlatView;
 
 	/**
@@ -36,8 +57,18 @@ public class LingTreeTree {
 		dHorizontalOffset = 100;
 		dLexGlossGapAdjustment = 0;
 		fShowFlatView = false;
+		nonTerminalFontInfo = NonTerminalFontInfo.getInstance();
+		lexicalFontInfo = LexFontInfo.getInstance();
+		glossFontInfo = GlossFontInfo.getInstance();
+		subscriptFontInfo = SubscriptFontInfo.getInstance();
+		superscriptFontInfo = SuperscriptFontInfo.getInstance();
+		lineWidth = 10;
+		lineColor = Color.BLACK;
+		backgroundColor = Color.WHITE;
+		version="1.0.0";
 	}
 
+	@XmlTransient
 	public LingTreeNode getRootNode() {
 		return rootNode;
 	}
@@ -46,6 +77,7 @@ public class LingTreeTree {
 		this.rootNode = rootNode;
 	}
 
+	@XmlElement(name = "initialXCoordinate")
 	public double getInitialXCoordinate() {
 		return dInitialXCoordinate;
 	}
@@ -54,6 +86,7 @@ public class LingTreeTree {
 		this.dInitialXCoordinate = dInitialXCoordinate;
 	}
 
+	@XmlElement(name = "initialYCoordinate")
 	public double getInitialYCoordinate() {
 		return dInitialYCoordinate;
 	}
@@ -62,6 +95,7 @@ public class LingTreeTree {
 		this.dInitialYCoordinate = dInitialYCoordinate;
 	}
 
+	@XmlTransient
 	public double getXSize() {
 		return dXSize;
 	}
@@ -70,6 +104,7 @@ public class LingTreeTree {
 		this.dXSize = dXSize;
 	}
 
+	@XmlTransient
 	public double getYSize() {
 		return dYSize;
 	}
@@ -78,6 +113,7 @@ public class LingTreeTree {
 		this.dYSize = dYSize;
 	}
 
+	@XmlTransient
 	public double getGlossBottomYCoordinate() {
 		return dGlossBottomYCoordinate;
 	}
@@ -86,6 +122,7 @@ public class LingTreeTree {
 		this.dGlossBottomYCoordinate = dGlossBottomYCoordinate;
 	}
 
+	@XmlTransient
 	public double getLexBottomYCoordinate() {
 		return dLexBottomYCoordinate;
 	}
@@ -94,6 +131,7 @@ public class LingTreeTree {
 		this.dLexBottomYCoordinate = dLexBottomYCoordinate;
 	}
 
+	@XmlTransient
 	public double getLexBottomYUpperMid() {
 		return dLexBottomYUpperMid;
 	}
@@ -102,6 +140,7 @@ public class LingTreeTree {
 		this.dLexBottomYUpperMid = dLexBottomYUpperMid;
 	}
 
+	@XmlElement(name = "lexGlossGapAdjustment")
 	public double getLexGlossGapAdjustment() {
 		return dLexGlossGapAdjustment;
 	}
@@ -110,6 +149,7 @@ public class LingTreeTree {
 		this.dLexGlossGapAdjustment = dLexGlossGapAdjustment;
 	}
 
+	@XmlElement(name = "verticalGap")
 	public double getVerticalGap() {
 		return dVerticalGap;
 	}
@@ -118,6 +158,7 @@ public class LingTreeTree {
 		this.dVerticalGap = dVerticalGap;
 	}
 
+	@XmlElement(name = "horizontalGap")
 	public double getHorizontalGap() {
 		return dHorizontalGap;
 	}
@@ -126,6 +167,7 @@ public class LingTreeTree {
 		this.dHorizontalGap = dHorizontalGap;
 	}
 
+	@XmlElement(name = "horizontalOffset")
 	public double getHorizontalOffset() {
 		return dHorizontalOffset;
 	}
@@ -134,6 +176,7 @@ public class LingTreeTree {
 		this.dHorizontalOffset = dHorizontalOffset;
 	}
 
+	@XmlElement(name = "showFlatView")
 	public boolean isShowFlatView() {
 		return fShowFlatView;
 	}
@@ -141,5 +184,117 @@ public class LingTreeTree {
 	public void setShowFlatView(boolean showFlatView) {
 		this.fShowFlatView = showFlatView;
 	}
+
+	@XmlElement(name = "nonTerinalFontInfo")
+	public FontInfo getNonTerminalFontInfo() {
+		return nonTerminalFontInfo;
+	}
+
+	public void setNonTerminalFontInfo(FontInfo nonTerminalFontInfo) {
+		this.nonTerminalFontInfo = nonTerminalFontInfo;
+	}
+
+	@XmlElement(name = "lexicalFontInfo")
+	public FontInfo getLexicalFontInfo() {
+		return lexicalFontInfo;
+	}
+
+	public void setLexicalFontInfo(FontInfo lexicalFontInfo) {
+		this.lexicalFontInfo = lexicalFontInfo;
+	}
+
+	@XmlElement(name = "glossFontInfo")
+	public FontInfo getGlossFontInfo() {
+		return glossFontInfo;
+	}
+
+	public void setGlossFontInfo(FontInfo glossFontInfo) {
+		this.glossFontInfo = glossFontInfo;
+	}
+
+	@XmlElement(name = "subscriptFontInfo")
+	public FontInfo getSubscriptFontInfo() {
+		return subscriptFontInfo;
+	}
+
+	public void setSubscriptFontInfo(FontInfo subscriptFontInfo) {
+		this.subscriptFontInfo = subscriptFontInfo;
+	}
+
+	@XmlElement(name = "superscriptFontInfo")
+	public FontInfo getSuperscriptFontInfo() {
+		return superscriptFontInfo;
+	}
+
+	public void setSuperscriptFontInfo(FontInfo superscriptFontInfo) {
+		this.superscriptFontInfo = superscriptFontInfo;
+	}
+
+	@XmlJavaTypeAdapter(ColorXmlAdaptor.class)
+	public Color getLineColor() {
+		return lineColor;
+	}
+
+	public void setLineColor(Color lineColor) {
+		this.lineColor = lineColor;
+	}
+
+	@XmlElement(name = "lineWidth")
+	public double getLineWidth() {
+		return lineWidth;
+	}
+
+	public void setLineWidth(double lineWidth) {
+		this.lineWidth = lineWidth;
+	}
+
+	@XmlJavaTypeAdapter(ColorXmlAdaptor.class)
+	public Color getBackgroundColor() {
+		return backgroundColor;
+	}
+
+	public void setBackgroundColor(Color backgroundColor) {
+		this.backgroundColor = backgroundColor;
+	}
+
+	public String getVersion() {
+		return version;
+	}
+
+	@XmlAttribute(name="version")
+	public void setVersion(String version) {
+		this.version = version;
+	}
+
+	/**
+	 * @return the description
+	 */
+	@XmlElement(name = "description")
+	public String getDescription() {
+		return description;
+	}
+
+	/**
+	 * @param description the description to set
+	 */
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	/**
+	 * Clear out all data in this language project
+	 */
+	public void clear() {
+		rootNode = null;
+		// TODO: set default values of parameters
+	}
+
+	/**
+	 * @param ltTree
+	 */
+	public void load(LingTreeTree ltTree) {
+		version = ltTree.getVersion();
+	}
+
 
 }

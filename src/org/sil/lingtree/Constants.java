@@ -22,4 +22,7 @@ public class Constants {
 	public static final String LINGTREE_STARTER_FILE = "resources/starterFile.tre";
 	public static final String DEFAULT_DIRECTORY_NAME = "My LingTree";
 
+	// Unit Testing constants
+	public static final String UNIT_TEST_DATA_FILE_NAME = "test/org/sil/lingtree/testData/TestData.";
+	public static final String UNIT_TEST_DATA_FILE = "test/org/sil/lingtree/testData/TestData.tre";
 }

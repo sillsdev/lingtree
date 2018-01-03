@@ -108,10 +108,10 @@ public class ControllerUtilities {
 		return fileChooser;
 	}
 
-	public static File doFileSaveAs(MainApp mainApp, Locale locale,
-			Boolean fForceSave, String syllableParserFilterDescription) {
+	public static File doFileSaveAs(MainApp mainApp, Locale locale, Boolean fForceSave,
+			String lingTreeFilterDescription) {
 		FileChooser fileChooser = ControllerUtilities.initFileChooser(mainApp,
-				syllableParserFilterDescription, Constants.LINGTREE_DATA_FILE_EXTENSIONS);
+				lingTreeFilterDescription, Constants.LINGTREE_DATA_FILE_EXTENSIONS);
 
 		File file = null;
 		if (fForceSave) {
@@ -119,7 +119,7 @@ public class ControllerUtilities {
 				file = askUserToSaveFile(mainApp, fileChooser);
 				if (file == null) {
 					ResourceBundle bundle = ResourceBundle.getBundle(
-							"org.sil.syllableparser.resources.SyllableParser", locale);
+							"org.sil.lingtree.resources.LingTree", locale);
 					String sHeader = bundle.getString("file.requiresaveheader");
 					String sContent = bundle.getString("file.requiresavecontent");
 					Alert alert = new Alert(AlertType.INFORMATION);
@@ -179,7 +179,8 @@ public class ControllerUtilities {
 	public static FXMLLoader getLoader(MainApp mainApp, Locale locale, Stage dialogStage,
 			String resource, String title) throws IOException {
 		FXMLLoader loader = new FXMLLoader();
-		// TODO: Do we need this?  loader.setLocation(ApproachViewNavigator.class.getResource(resource));
+		// TODO: Do we need this?
+		// loader.setLocation(ApproachViewNavigator.class.getResource(resource));
 		loader.setResources(ResourceBundle.getBundle(
 				"org.sil.syllableparser.resources.SyllableParser", locale));
 
