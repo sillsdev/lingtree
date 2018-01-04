@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.CheckMenuItem?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.SplitPane?>
@@ -26,6 +27,15 @@
               <menus>
                 <Menu mnemonicParsing="true" text="%menu.file">
                   <items>
+                    <MenuItem mnemonicParsing="true" onAction="#handleNewTree"
+						text="%menu.new" accelerator="Ctrl+n" />
+					<MenuItem mnemonicParsing="true" onAction="#handleOpenTree"
+						text="%menu.open" accelerator="Ctrl+o" />
+					<MenuItem mnemonicParsing="true" onAction="#handleSaveTree"
+						text="%menu.save" accelerator="Ctrl+s" />
+					<MenuItem mnemonicParsing="true" onAction="#handleSaveTreeAs"
+						text="%menu.saveas" />
+                    <SeparatorMenuItem />
                     <MenuItem mnemonicParsing="true" onAction="#handleExit" text="%menu.exit" />
                   </items>
                 </Menu>
@@ -40,6 +50,31 @@
                     <CheckMenuItem fx:id="menuItemUseFlatTree" mnemonicParsing="true" onAction="#handleMenuUseFlatTree" text="%menu.useflattree" />
                   </items>
                 </Menu>
+
+					<Menu mnemonicParsing="true" text="%menu.settings">
+						<items>
+<!-- 							<MenuItem mnemonicParsing="true" onAction="#handleVernacularFont" -->
+<!-- 								text="%menu.vernacularfont" fx:id="menuItemVernacularFont" /> -->
+<!-- 							<MenuItem mnemonicParsing="true" onAction="#handleAnalysisFont" -->
+<!-- 								text="%menu.analysisfont" fx:id="menuItemAnalysisFont" /> -->
+<!-- 							<SeparatorMenuItem /> -->
+<!-- 							<Menu mnemonicParsing="true" text="%menu.exporthyphenationparameters"> -->
+<!-- 								<MenuItem mnemonicParsing="true" -->
+<!-- 									onAction="#handleHyphenationParametersSimpleList" text="%menu.exporthyphenationparametersforindesign" /> -->
+<!-- 								<MenuItem mnemonicParsing="true" -->
+<!-- 									onAction="#handleHyphenationParametersParaTExt" text="%menu.exporthyphenationparametersforparatext" /> -->
+<!-- 								<MenuItem mnemonicParsing="true" -->
+<!-- 									onAction="#handleHyphenationParametersXLingPaper" text="%menu.exporthyphenationparametersforxlingpaper" /> -->
+<!-- 							</Menu> -->
+							<MenuItem mnemonicParsing="true"
+								onAction="#handleSaveTreeParameters" text="%menu.savetreeparameters" />
+							<SeparatorMenuItem />
+							<MenuItem mnemonicParsing="true"
+								onAction="#handleChangeInterfaceLanguage" text="%menu.changeinterfacelanguage" />
+						</items>
+					</Menu>
+
+
                 <Menu mnemonicParsing="true" text="%menu.help">
                   <items>
                     <MenuItem mnemonicParsing="true" onAction="#handleAbout" text="%menu.about" />

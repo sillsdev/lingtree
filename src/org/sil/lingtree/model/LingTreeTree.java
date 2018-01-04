@@ -185,7 +185,7 @@ public class LingTreeTree {
 		this.fShowFlatView = showFlatView;
 	}
 
-	@XmlElement(name = "nonTerinalFontInfo")
+	@XmlElement(name = "nonTerminalFontInfo")
 	public FontInfo getNonTerminalFontInfo() {
 		return nonTerminalFontInfo;
 	}

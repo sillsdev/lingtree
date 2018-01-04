@@ -49,5 +49,6 @@ public class ColorXmlAdaptorTest {
 		assertEquals("#a52929", adaptor.marshal(Color.BROWN));
 		assertEquals("#deb887", adaptor.marshal(Color.BURLYWOOD));
 		assertEquals("#008b8b", adaptor.marshal(Color.DARKCYAN));
+		assertEquals("#8a2ae2", adaptor.marshal(Color.BLUEVIOLET));
 	}
 }

@@ -30,9 +30,18 @@ public class ColorXmlAdaptor extends XmlAdapter<String, Color> {
 		return hex;
 	}
 	
+	// the result does not always exactly match the code shown on
+	//  https://docs.oracle.com/javase/8/javafx/api/javafx/scene/paint/Color.html.
+	// Could not find a way to get that code from the Color.name
 	private int convertColorRGBToHexInt(double d) {
 		int iResult = Integer.valueOf((int) Math.round(d * 256));
 		iResult = (iResult == 0) ? 0 : iResult - 1;
+//		System.out.println("d =" + d);
+//		System.out.println("\tfactor  =" + (d * 256));
+//		System.out.println("\trounded =" + Math.round(d * 256));
+//		System.out.println("\trnd int =" + ((int)Math.round(d * 256)));
+//		System.out.println("\trnd use =" + Integer.valueOf((int)Math.round(d * 256)));
+//		System.out.println("\tresult  =" + iResult);
 		return iResult;
 	}
 }

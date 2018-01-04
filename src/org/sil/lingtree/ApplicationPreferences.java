@@ -6,8 +6,12 @@ package org.sil.lingtree;
 import java.io.File;
 import java.util.prefs.Preferences;
 
+import org.sil.lingtree.model.ColorXmlAdaptor;
+import org.sil.lingtree.model.FontInfo;
+import org.sil.lingtree.model.LingTreeTree;
 import org.sil.utility.*;
 
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class ApplicationPreferences {
@@ -27,10 +31,44 @@ public class ApplicationPreferences {
 	// Window parameters for main window and various dialogs
 	public static final String LAST_WINDOW = "lastWindow";
 
+	// Tree paramters to remember
+	static final String BACKGROUND_COLOR = "backgroundColor";
+	static final String GLOSS_FONT_COLOR = "glossFontColor";
+	static final String GLOSS_FONT_FAMILY = "glossFontFamily";
+	static final String GLOSS_FONT_SIZE = "glossFontSize";
+	static final String GLOSS_FONT_TYPE = "glossFontType";
+	static final String HORIZONTAL_GAP = "horizontalGap";
+	static final String HORIZONTAL_OFFSET = "horizontalOffset";
+	static final String INITIAL_X_COORDINATE = "initialXCoordinate";
+	static final String INITIAL_Y_COORDINATE = "initialYCoordinate";
+	static final String LEX_GLOSS_GAP_ADJUSTMENT = "lexGlossGapAdjustment";
+	static final String LEXICAL_FONT_COLOR = "lexicalFontColor";
+	static final String LEXICAL_FONT_FAMILY = "lexicalFontFamily";
+	static final String LEXICAL_FONT_SIZE = "lexicalFontSize";
+	static final String LEXICAL_FONT_TYPE = "lexicalFontType";
+	static final String LINE_COLOR = "lineColor";
+	static final String LINE_WIDTH = "lineWidth";
+	static final String NON_TERMINAL_FONT_COLOR = "nonTerminalFontColor";
+	static final String NON_TERMINAL_FONT_FAMILY = "nonTerminalFontFamily";
+	static final String NON_TERMINAL_FONT_SIZE = "nonTerminalFontSize";
+	static final String NON_TERMINAL_FONT_TYPE = "nonTerminalFontType";
+	static final String SHOW_FLAT_VIEW = "showFlatView";
+	static final String SUBSCRIPT_FONT_COLOR = "subscriptFontColor";
+	static final String SUBSCRIPT_FONT_FAMILY = "subscriptFontFamily";
+	static final String SUBSCRIPT_FONT_SIZE = "subscriptFontSize";
+	static final String SUBSCRIPT_FONT_TYPE = "subscriptFontType";
+	static final String SUPERSCRIPT_FONT_COLOR = "superscriptFontColor";
+	static final String SUPERSCRIPT_FONT_FAMILY = "superscriptFontFamily";
+	static final String SUPERSCRIPT_FONT_SIZE = "superscriptFontSize";
+	static final String SUPERSCRIPT_FONT_TYPE = "superscriptFontType";
+	static final String VERTICAL_GAP = "verticalGap";
+
 	Preferences prefs;
+	ColorXmlAdaptor adaptor;
 
 	public ApplicationPreferences(Object app) {
 		prefs = Preferences.userNodeForPackage(app.getClass());
+		adaptor = new ColorXmlAdaptor();
 	}
 
 	public String getLastOpenedFilePath() {
@@ -75,7 +113,8 @@ public class ApplicationPreferences {
 		setPreferencesKey(LAST_OPENED_DIRECTORY_PATH, directoryPath);
 	}
 
-	public Stage getLastWindowParameters(String sWindow, Stage stage, Double defaultHeight, Double defaultWidth) {
+	public Stage getLastWindowParameters(String sWindow, Stage stage, Double defaultHeight,
+			Double defaultWidth) {
 		Double value = prefs.getDouble(sWindow + HEIGHT, defaultHeight);
 		stage.setHeight(value);
 		value = prefs.getDouble(sWindow + WIDTH, defaultWidth);
@@ -100,6 +139,87 @@ public class ApplicationPreferences {
 		setPreferencesKey(sWindow + MAXIMIZED, stage.isMaximized());
 	}
 
+	public void getSavedTreeParameters(LingTreeTree ltTree) {
+		ltTree.setHorizontalGap(prefs.getDouble(HORIZONTAL_GAP, 20));
+		ltTree.setHorizontalOffset(prefs.getDouble(HORIZONTAL_OFFSET, 225));
+		ltTree.setInitialXCoordinate(prefs.getDouble(INITIAL_X_COORDINATE, 10));
+		ltTree.setInitialYCoordinate(prefs.getDouble(INITIAL_Y_COORDINATE, 10));
+		ltTree.setLexGlossGapAdjustment(prefs.getDouble(LEX_GLOSS_GAP_ADJUSTMENT, 0));
+		ltTree.setLineWidth(prefs.getDouble(LINE_WIDTH, 10));
+		ltTree.setShowFlatView(prefs.getBoolean(SHOW_FLAT_VIEW, false));
+		ltTree.setVerticalGap(prefs.getDouble(VERTICAL_GAP, 20));
+
+		ltTree.setBackgroundColor(Color.web(prefs.get(BACKGROUND_COLOR, "#ffffff")));
+		ltTree.setLineColor(Color.web(prefs.get(LINE_COLOR, "#000000")));
+
+		final String sDefaultFamily = "Arial";
+		final String sDefaultType = "Regular";
+		final String sDefaultColor = "#000000";
+		FontInfo fontInfo = new FontInfo(prefs.get(GLOSS_FONT_FAMILY, sDefaultFamily),
+				prefs.getDouble(GLOSS_FONT_SIZE, 12), prefs.get(GLOSS_FONT_TYPE, sDefaultType));
+		fontInfo.setColor(Color.web(prefs.get(GLOSS_FONT_COLOR, sDefaultColor)));
+
+		ltTree.setGlossFontInfo(fontInfo);
+		fontInfo = new FontInfo(prefs.get(LEXICAL_FONT_FAMILY, sDefaultFamily),
+				prefs.getDouble(LEXICAL_FONT_SIZE, 12), prefs.get(LEXICAL_FONT_TYPE, sDefaultType));
+		fontInfo.setColor(Color.web(prefs.get(LEXICAL_FONT_COLOR, sDefaultColor)));
+		ltTree.setLexicalFontInfo(fontInfo);
+
+		fontInfo = new FontInfo(prefs.get(NON_TERMINAL_FONT_FAMILY, sDefaultFamily),
+				prefs.getDouble(NON_TERMINAL_FONT_SIZE, 12), prefs.get(NON_TERMINAL_FONT_TYPE, sDefaultType));
+		fontInfo.setColor(Color.web(prefs.get(NON_TERMINAL_FONT_COLOR, sDefaultColor)));
+		ltTree.setNonTerminalFontInfo(fontInfo);
+
+		fontInfo = new FontInfo(prefs.get(SUBSCRIPT_FONT_FAMILY, sDefaultFamily),
+				prefs.getDouble(SUBSCRIPT_FONT_SIZE, 9), prefs.get(SUBSCRIPT_FONT_TYPE, sDefaultType));
+		fontInfo.setColor(Color.web(prefs.get(SUBSCRIPT_FONT_COLOR, sDefaultColor)));
+		ltTree.setSubscriptFontInfo(fontInfo);
+
+		fontInfo = new FontInfo(prefs.get(SUPERSCRIPT_FONT_FAMILY, sDefaultFamily),
+				prefs.getDouble(SUPERSCRIPT_FONT_SIZE, 9), prefs.get(SUPERSCRIPT_FONT_TYPE, sDefaultType));
+		fontInfo.setColor(Color.web(prefs.get(SUPERSCRIPT_FONT_COLOR, sDefaultColor)));
+		ltTree.setSuperscriptFontInfo(fontInfo);
+	}
+
+	public void setSavedTreeParameters(LingTreeTree ltTree) throws Exception {
+		setPreferencesKey(HORIZONTAL_GAP, ltTree.getHorizontalGap());
+		setPreferencesKey(HORIZONTAL_OFFSET, ltTree.getHorizontalOffset());
+		setPreferencesKey(INITIAL_X_COORDINATE, ltTree.getInitialXCoordinate());
+		setPreferencesKey(INITIAL_Y_COORDINATE, ltTree.getInitialYCoordinate());
+		setPreferencesKey(LEX_GLOSS_GAP_ADJUSTMENT, ltTree.getLexGlossGapAdjustment());
+		setPreferencesKey(LINE_WIDTH, ltTree.getLineWidth());
+		setPreferencesKey(SHOW_FLAT_VIEW, ltTree.isShowFlatView());
+		setPreferencesKey(VERTICAL_GAP, ltTree.getVerticalGap());
+
+		setPreferencesKey(BACKGROUND_COLOR, ltTree.getBackgroundColor());
+		setPreferencesKey(LINE_COLOR, ltTree.getLineColor());
+		FontInfo fontInfo = ltTree.getGlossFontInfo();
+		setPreferencesKey(GLOSS_FONT_COLOR, fontInfo.getColor());
+		setPreferencesKey(GLOSS_FONT_FAMILY, fontInfo.getFontFamily());
+		setPreferencesKey(GLOSS_FONT_SIZE, fontInfo.getFontSize());
+		setPreferencesKey(GLOSS_FONT_TYPE, fontInfo.getFontType());
+		fontInfo = ltTree.getLexicalFontInfo();
+		setPreferencesKey(LEXICAL_FONT_COLOR, fontInfo.getColor());
+		setPreferencesKey(LEXICAL_FONT_FAMILY, fontInfo.getFontFamily());
+		setPreferencesKey(LEXICAL_FONT_SIZE, fontInfo.getFontSize());
+		setPreferencesKey(LEXICAL_FONT_TYPE, fontInfo.getFontType());
+		fontInfo = ltTree.getNonTerminalFontInfo();
+		setPreferencesKey(NON_TERMINAL_FONT_COLOR, fontInfo.getColor());
+		setPreferencesKey(NON_TERMINAL_FONT_FAMILY, fontInfo.getFontFamily());
+		setPreferencesKey(NON_TERMINAL_FONT_SIZE, fontInfo.getFontSize());
+		setPreferencesKey(NON_TERMINAL_FONT_TYPE, fontInfo.getFontType());
+		fontInfo = ltTree.getSubscriptFontInfo();
+		setPreferencesKey(SUBSCRIPT_FONT_COLOR, fontInfo.getColor());
+		setPreferencesKey(SUBSCRIPT_FONT_FAMILY, fontInfo.getFontFamily());
+		setPreferencesKey(SUBSCRIPT_FONT_SIZE, fontInfo.getFontSize());
+		setPreferencesKey(SUBSCRIPT_FONT_TYPE, fontInfo.getFontType());
+		fontInfo = ltTree.getSuperscriptFontInfo();
+		setPreferencesKey(SUPERSCRIPT_FONT_COLOR, fontInfo.getColor());
+		setPreferencesKey(SUPERSCRIPT_FONT_FAMILY, fontInfo.getFontFamily());
+		setPreferencesKey(SUPERSCRIPT_FONT_SIZE, fontInfo.getFontSize());
+		setPreferencesKey(SUPERSCRIPT_FONT_TYPE, fontInfo.getFontType());
+	}
+
 	private void setPreferencesKey(String key, boolean value) {
 		if (!StringUtilities.isNullOrEmpty(key)) {
 			if (key != null) {
@@ -111,10 +231,11 @@ public class ApplicationPreferences {
 		}
 	}
 
-	private void setPreferencesKey(String key, int value) {
+	private void setPreferencesKey(String key, Color color) throws Exception {
 		if (!StringUtilities.isNullOrEmpty(key)) {
 			if (key != null) {
-				prefs.putInt(key, value);
+				String value = adaptor.marshal(color);
+				prefs.put(key, value);
 
 			} else {
 				prefs.remove(key);

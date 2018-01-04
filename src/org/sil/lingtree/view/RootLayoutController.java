@@ -10,14 +10,25 @@ import java.io.File;
 import java.net.URL;
 import java.text.MessageFormat;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.TreeMap;
 
 import org.sil.lingtree.MainApp;
+import org.sil.lingtree.model.FontInfo;
+import org.sil.lingtree.model.GlossFontInfo;
+import org.sil.lingtree.model.LexFontInfo;
 import org.sil.lingtree.model.LingTreeTree;
+import org.sil.lingtree.model.NonTerminalFontInfo;
+import org.sil.lingtree.model.SubscriptFontInfo;
+import org.sil.lingtree.model.SuperscriptFontInfo;
 import org.sil.lingtree.service.TreeBuilder;
 import org.sil.lingtree.service.TreeDrawer;
 import org.sil.lingtree.view.ControllerUtilities;
 import org.sil.lingtree.Constants;
+import org.sil.lingtree.ApplicationPreferences;
+import org.sil.utility.StringUtilities;
 
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -26,6 +37,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckMenuItem;
+import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.ToggleButton;
@@ -34,7 +46,6 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
@@ -49,6 +60,8 @@ public class RootLayoutController implements Initializable {
 	ResourceBundle bundle;
 	LingTreeTree ltTree;
 	String sDescription;
+	ApplicationPreferences applicationPreferences;
+
 	private String sAboutHeader;
 	private String sAboutContent;
 	private String sFileFilterDescription;
@@ -156,6 +169,7 @@ public class RootLayoutController implements Initializable {
 
 	public void setMainApp(MainApp mainApp) {
 		this.mainApp = mainApp;
+		this.applicationPreferences = mainApp.getApplicationPreferences();
 	}
 
 	public Locale getCurrentLocale() {
@@ -286,6 +300,7 @@ public class RootLayoutController implements Initializable {
 			}
 			toggleButtonUseFlatTree.getStyleClass().add(kFlatUnPressedStyle);
 		}
+		ltTree.setShowFlatView(menuItemUseFlatTree.isSelected());
 	}
 
 	/**
@@ -299,34 +314,44 @@ public class RootLayoutController implements Initializable {
 	}
 
 	/**
-	 * Creates an empty language project.
+	 * Creates an empty tree.
 	 */
 	@FXML
 	public void handleNewTree() {
-		// TimerService timer = mainApp.getSaveDataPeriodicallyService();
-		// if (timer != null) {
-		// mainApp.getSaveDataPeriodicallyService().cancel();
-		// }
-		// String sDirectoryPath =
-		// applicationPreferences.getLastOpenedDirectoryPath();
-		// if (sDirectoryPath == "") {
-		// // probably creating a new file the first time the program is run;
-		// // set the directory to the closest we can to a reasonable default
-		// sDirectoryPath = tryToGetDefaultDirectoryPath();
-		// }
-		// applicationPreferences.setLastOpenedDirectoryPath(sDirectoryPath);
-		// File fileCreated = ControllerUtilities.doFileSaveAs(mainApp,
-		// currentLocale, false,
-		// syllableParserFilterDescription);
-		// if (fileCreated != null) {
-		// File file = new File(Constants.ASHENINKA_STARTER_FILE);
-		// mainApp.loadLanguageData(file);
-		// mainApp.saveLanguageData(fileCreated);
-		// mainApp.updateStageTitle(fileCreated);
-		// }
-		// if (timer != null) {
-		// mainApp.getSaveDataPeriodicallyService().restart();
-		// }
+		String sDirectoryPath = applicationPreferences.getLastOpenedDirectoryPath();
+		if (sDirectoryPath == "") {
+			// probably creating a new file the first time the program is run;
+			// set the directory to the closest we can to a reasonable default
+			sDirectoryPath = tryToGetDefaultDirectoryPath();
+		}
+		applicationPreferences.setLastOpenedDirectoryPath(sDirectoryPath);
+		File fileCreated = ControllerUtilities.doFileSaveAs(mainApp, currentLocale, false,
+				lingTreeFilterDescription);
+		if (fileCreated != null) {
+			final String initialDescription = "()";
+			ltTree = new LingTreeTree();
+			applicationPreferences.getSavedTreeParameters(ltTree);
+			ltTree.setDescription(initialDescription);
+			updateAllFontInfos();
+			this.treeDescription.setText(initialDescription);
+			this.menuItemUseFlatTree.setSelected(ltTree.isShowFlatView());
+			mainApp.updateStageTitle(fileCreated);
+		}
+	}
+
+	private void updateAllFontInfos() {
+		updateFontInfoValues(GlossFontInfo.getInstance(), ltTree.getGlossFontInfo());
+		updateFontInfoValues(LexFontInfo.getInstance(), ltTree.getLexicalFontInfo());
+		updateFontInfoValues(NonTerminalFontInfo.getInstance(), ltTree.getNonTerminalFontInfo());
+		updateFontInfoValues(SubscriptFontInfo.getInstance(), ltTree.getSubscriptFontInfo());
+		updateFontInfoValues(SuperscriptFontInfo.getInstance(), ltTree.getSuperscriptFontInfo());
+	}
+
+	private void updateFontInfoValues(FontInfo fiUsedWhenDrawing, FontInfo fiFromTree) {
+		fiUsedWhenDrawing.setColor(fiFromTree.getColor());
+		fiUsedWhenDrawing.setFontFamily(fiFromTree.getFontFamily());
+		fiUsedWhenDrawing.setFontSize(fiFromTree.getFontSize());
+		fiUsedWhenDrawing.setFontType(fiFromTree.getFontType());
 	}
 
 	/**
@@ -338,19 +363,18 @@ public class RootLayoutController implements Initializable {
 	}
 
 	public void doFileOpen(Boolean fCloseIfCanceled) {
-		// File file = ControllerUtilities.getFileToOpen(mainApp,
-		// syllableParserFilterDescription,
-		// Constants.LINGTREE_DATA_FILE_EXTENSIONS);
-		// if (file != null) {
-		// mainApp.loadLanguageData(file);
-		// String sDirectoryPath = file.getParent();
-		// applicationPreferences.setLastOpenedDirectoryPath(sDirectoryPath);
-		// mainApp.updateStageTitle(file);
-		// } else if (fCloseIfCanceled) {
-		// // probably first time running and user chose to open a file
-		// // but then canceled. We quit.
-		// System.exit(0);
-		// }
+		File file = ControllerUtilities.getFileToOpen(mainApp, lingTreeFilterDescription,
+				Constants.LINGTREE_DATA_FILE_EXTENSIONS);
+		if (file != null) {
+			mainApp.loadTreeData(file);
+			String sDirectoryPath = file.getParent();
+			applicationPreferences.setLastOpenedDirectoryPath(sDirectoryPath);
+			mainApp.updateStageTitle(file);
+		} else if (fCloseIfCanceled) {
+			// probably first time running and user chose to open a file
+			// but then canceled. We quit.
+			System.exit(0);
+		}
 	}
 
 	/**
@@ -359,12 +383,12 @@ public class RootLayoutController implements Initializable {
 	 */
 	@FXML
 	public void handleSaveTree() {
-		 File file = mainApp.getTreeDataFile();
-		 if (file != null) {
-		 mainApp.saveTreeData(file);
-		 } else {
-		 handleSaveTreeAs();
-		 }
+		File file = mainApp.getTreeDataFile();
+		if (file != null) {
+			mainApp.saveTreeData(file);
+		} else {
+			handleSaveTreeAs();
+		}
 	}
 
 	/**
@@ -372,8 +396,50 @@ public class RootLayoutController implements Initializable {
 	 */
 	@FXML
 	private void handleSaveTreeAs() {
-		ControllerUtilities.doFileSaveAs(mainApp, currentLocale, false,
-		 lingTreeFilterDescription);
+		ControllerUtilities.doFileSaveAs(mainApp, currentLocale, false, lingTreeFilterDescription);
+	}
+
+
+	/**
+	 * Change interface language.
+	 * @throws Exception
+	 */
+	@FXML
+	private void handleSaveTreeParameters() throws Exception {
+		applicationPreferences.setSavedTreeParameters(ltTree);
+	}
+
+	/**
+	 * Change interface language.
+	 */
+	@FXML
+	private void handleChangeInterfaceLanguage() {
+
+		Map<String, ResourceBundle> validLocales = new TreeMap<String, ResourceBundle>();
+		getListOfValidLocales(validLocales);
+
+		ChoiceDialog<String> dialog = new ChoiceDialog<>(
+				currentLocale.getDisplayLanguage(currentLocale), validLocales.keySet());
+		dialog.setTitle(bundle.getString("menu.changeinterfacelanguage"));
+		dialog.setHeaderText(bundle.getString("dialog.chooseinterfacelanguage"));
+		dialog.setContentText(bundle.getString("dialog.chooselanguage"));
+
+		Optional<String> result = dialog.showAndWait();
+		result.ifPresent(locale -> mainApp.setLocale(validLocales.get(locale).getLocale()));
+	}
+
+	private void getListOfValidLocales(Map<String, ResourceBundle> choices) {
+		Locale[] locales = Locale.getAvailableLocales();
+		for (Locale locale : locales) {
+			ResourceBundle rb = ResourceBundle.getBundle("org.sil.lingtree.resources.LingTree",
+					locale);
+			if (rb != null) {
+				String localeName = rb.getLocale().getDisplayName(currentLocale);
+				if (!StringUtilities.isNullOrEmpty(localeName)) {
+					choices.putIfAbsent(localeName, rb);
+				}
+			}
+		}
 	}
 
 	private void processRightParenthesis() {
@@ -450,4 +516,36 @@ public class RootLayoutController implements Initializable {
 		// rtbTreeDescription.SelectionColor = m_clrSynTagmeme;
 		// rtbTreeDescription.Select(iCurrent, 0);
 	}
+
+	protected String tryToGetDefaultDirectoryPath() {
+		String sDirectoryPath = System.getProperty("user.home") + File.separator;
+		File dir = new File(sDirectoryPath);
+		if (dir.exists()) {
+			// See if there is a "Documents" directory as Windows, Linux, and
+			// Mac OS X tend to have
+			String sDocumentsDirectoryPath = sDirectoryPath + "Documents" + File.separator;
+			dir = new File(sDocumentsDirectoryPath);
+			if (dir.exists()) {
+				// Try and find or make the "My LingTree" subdirectory of
+				// Documents
+				String sMyLingTreeDirectoryPath = sDocumentsDirectoryPath
+						+ Constants.DEFAULT_DIRECTORY_NAME + File.separator;
+				dir = new File(sMyLingTreeDirectoryPath);
+				if (dir.exists()) {
+					sDirectoryPath = sMyLingTreeDirectoryPath;
+				} else {
+					boolean success = (dir.mkdir());
+					if (success) {
+						sDirectoryPath = sMyLingTreeDirectoryPath;
+					} else {
+						sDirectoryPath = sDocumentsDirectoryPath;
+					}
+				}
+			}
+		} else { // give up; let user set it
+			sDirectoryPath = "";
+		}
+		return sDirectoryPath;
+	}
+
 }

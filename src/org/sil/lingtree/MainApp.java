@@ -205,4 +205,10 @@ public class MainApp extends Application {
 		return sOperatingSystem;
 	}
 
+	public void setLocale(Locale locale) {
+
+		this.locale = locale;
+		initRootLayout();
+	}
+
 }
