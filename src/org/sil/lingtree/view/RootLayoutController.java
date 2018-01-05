@@ -7,6 +7,7 @@
 package org.sil.lingtree.view;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.text.MessageFormat;
 import java.util.Locale;
@@ -15,7 +16,6 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.TreeMap;
 
-import org.controlsfx.dialog.FontSelectorDialog;
 import org.controlsfx.dialog.FontSelectorDialogWithColor;
 import org.sil.lingtree.MainApp;
 import org.sil.lingtree.model.FontInfo;
@@ -35,7 +35,9 @@ import org.sil.utility.StringUtilities;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckMenuItem;
@@ -48,9 +50,11 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 /**
@@ -268,10 +272,7 @@ public class RootLayoutController implements Initializable {
 	private void handleDrawTree() {
 		drawingArea.getChildren().clear();
 		sDescription = treeDescription.getText();
-		if (sDescription.length() == 0) {
-			sDescription = "(S (NP (\\L Juan (\\G John))) (VP (V (\\L duerme (\\G sleeps)))))";
-		}
-		ltTree = TreeBuilder.parseAString(sDescription);
+		ltTree = TreeBuilder.parseAString(sDescription, ltTree);
 		mainApp.getBackEndProvider().setLingTree(ltTree);
 		ltTree.setShowFlatView(menuItemUseFlatTree.isSelected());
 		ltTree.setDescription(sDescription);
@@ -607,4 +608,23 @@ public class RootLayoutController implements Initializable {
 		return fontInfo;
 	}
 
+	public void handleTreeSpacingParameters() {
+		try {
+			// Load the fxml file and create a new stage for the popup.
+			Stage dialogStage = new Stage();
+			String resource = "fxml/TreeSpacingParametersChooser.fxml";
+			String title = bundle.getString("spacingdialog.title");
+			FXMLLoader loader = ControllerUtilities.getLoader(mainApp, currentLocale, dialogStage,
+					resource, title);
+
+			TreeSpacingParametersController controller = loader.getController();
+			controller.setDialogStage(dialogStage);
+			controller.setMainApp(mainApp);
+			controller.setData(ltTree);
+			dialogStage.setResizable(false);
+			dialogStage.showAndWait();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }

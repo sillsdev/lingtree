@@ -98,6 +98,7 @@ public class TreeDrawer {
 	}
 
 	public void calculateXCoordinateOfEveryNode() {
+		ltTree.setHorizontalOffset(ltTree.getInitialXCoordinate());
 		LingTreeNode node = ltTree.getRootNode();
 		calculateXCoordinateOfANode(node, 0);
 	}

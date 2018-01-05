@@ -40,7 +40,8 @@ public class BuildTreeFromDescriptionListenerTest extends ServiceBaseTest {
 	@Test
 	public void fontInfoTextTest() {
 		// Non-terminal, lex, and gloss nodes
-		LingTreeTree ltTree = TreeBuilder.parseAString("(NP (\\L Juan (\\G John)))");
+		LingTreeTree origTree = new LingTreeTree();
+		LingTreeTree ltTree = TreeBuilder.parseAString("(NP (\\L Juan (\\G John)))", origTree);
 		LingTreeNode node = ltTree.getRootNode();
 		checkFontInfo(node, node.getContentTextBox(), "Times New Roman", 12.0, "Regular", Color.BLACK);
 		List<LingTreeNode> daughters = node.getDaughters();
@@ -51,7 +52,7 @@ public class BuildTreeFromDescriptionListenerTest extends ServiceBaseTest {
 		checkFontInfo(node, node.getContentTextBox(), "Arial", 12.0, "Regular", Color.GREEN);
 
 		// subscript and superscript
-		ltTree = TreeBuilder.parseAString("(NP/si (N/S'))");
+		ltTree = TreeBuilder.parseAString("(NP/si (N/S'))", ltTree);
 		node = ltTree.getRootNode();
 		checkFontInfo(node, node.getContentTextBox(), "Times New Roman", 12.0, "Regular", Color.BLACK);
 		checkFontInfo(node, node.getSubscriptTextBox(), "Times New Roman", 9.0, "Italic", Color.BROWN);
@@ -73,7 +74,8 @@ public class BuildTreeFromDescriptionListenerTest extends ServiceBaseTest {
 	@Test
 	public void buildTreesTest() {
 		// Basic example
-		LingTreeTree ltTree = TreeBuilder.parseAString("(S (NP) (VP))");
+		LingTreeTree origTree = new LingTreeTree();
+		LingTreeTree ltTree = TreeBuilder.parseAString("(S (NP) (VP))", origTree);
 		LingTreeNode rootNode = ltTree.getRootNode();
 		checkNodeResult(rootNode, "S", "", "", false, false, NodeType.NonTerminal, 1, 2);
 		assertNull(rootNode.getMother());
@@ -89,7 +91,7 @@ public class BuildTreeFromDescriptionListenerTest extends ServiceBaseTest {
 		assertNull(node2.getRightSister());
 		
 		// lex/gloss example
-		ltTree = TreeBuilder.parseAString("(S (NP (\\L Juan (\\G John))) (VP (V (\\L duerme (\\G sleeps)))))");
+		ltTree = TreeBuilder.parseAString("(S (NP (\\L Juan (\\G John))) (VP (V (\\L duerme (\\G sleeps)))))", origTree);
 		// root node
 		rootNode = ltTree.getRootNode();
 		checkNodeResult(rootNode, "S", "", "", false, false, NodeType.NonTerminal, 1, 2);
@@ -132,7 +134,7 @@ public class BuildTreeFromDescriptionListenerTest extends ServiceBaseTest {
 		assertNull(node1.getRightSister());
 		
 		// triangle example
-		ltTree = TreeBuilder.parseAString("(NP (\\T all the King’s men))");
+		ltTree = TreeBuilder.parseAString("(NP (\\T all the King’s men))", origTree);
 		rootNode = ltTree.getRootNode();
 		checkNodeResult(rootNode, "NP", "", "", false, false, NodeType.NonTerminal, 1, 1);
 		assertNull(rootNode.getMother());
@@ -144,7 +146,7 @@ public class BuildTreeFromDescriptionListenerTest extends ServiceBaseTest {
 		assertNull(node1.getRightSister());
 		
 		// omit lines example
-		ltTree = TreeBuilder.parseAString("((\\O σ (O (\\L t)) (N (R (\\L e)))) (\\O σ (O (\\L p)) (N (R (\\L i)) (C (\\L k)))))");
+		ltTree = TreeBuilder.parseAString("((\\O σ (O (\\L t)) (N (R (\\L e)))) (\\O σ (O (\\L p)) (N (R (\\L i)) (C (\\L k)))))", origTree);
 		// root node
 		rootNode = ltTree.getRootNode();
 		checkNodeResult(rootNode, "", "", "", false, false, NodeType.NonTerminal, 1, 2);
@@ -193,7 +195,7 @@ public class BuildTreeFromDescriptionListenerTest extends ServiceBaseTest {
 		checkNodeResult(node3, "k", "", "", false, false, NodeType.Lex, 5, 0);
 		
 		// subscript and superscript example
-		ltTree = TreeBuilder.parseAString("(S (NP/s1/S' (N (dogs))) (VP (V (chase)) (NP/S'/s2 (N (cats)))))");
+		ltTree = TreeBuilder.parseAString("(S (NP/s1/S' (N (dogs))) (VP (V (chase)) (NP/S'/s2 (N (cats)))))", origTree);
 		// root node
 		rootNode = ltTree.getRootNode();
 		checkNodeResult(rootNode, "S", "", "", false, false, NodeType.NonTerminal, 1, 2);
@@ -227,7 +229,7 @@ public class BuildTreeFromDescriptionListenerTest extends ServiceBaseTest {
 		checkNodeResult(node3, "cats", "", "", false, false, NodeType.NonTerminal, 5, 0);
 		
 		// backslash and forward slash as text node content
-		ltTree = TreeBuilder.parseAString("(S (/S'/Comp (N (do\\gs))) (VP (V (chase)) (/s2 (N (cats)))))");
+		ltTree = TreeBuilder.parseAString("(S (/S'/Comp (N (do\\gs))) (VP (V (chase)) (/s2 (N (cats)))))", origTree);
 		// root node
 		rootNode = ltTree.getRootNode();
 		checkNodeResult(rootNode, "S", "", "", false, false, NodeType.NonTerminal, 1, 2);

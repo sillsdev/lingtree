@@ -179,10 +179,9 @@ public class ControllerUtilities {
 	public static FXMLLoader getLoader(MainApp mainApp, Locale locale, Stage dialogStage,
 			String resource, String title) throws IOException {
 		FXMLLoader loader = new FXMLLoader();
-		// TODO: Do we need this?
-		// loader.setLocation(ApproachViewNavigator.class.getResource(resource));
+		loader.setLocation(RootLayoutController.class.getResource(resource));
 		loader.setResources(ResourceBundle.getBundle(
-				"org.sil.syllableparser.resources.SyllableParser", locale));
+				"org.sil.lingtree.resources.LingTree", locale));
 
 		AnchorPane page = loader.load();
 		dialogStage.initModality(Modality.WINDOW_MODAL);

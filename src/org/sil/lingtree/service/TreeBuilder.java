@@ -24,7 +24,7 @@ import org.sil.lingtree.model.LingTreeTree;
 public class TreeBuilder {
 
 	
-	public static LingTreeTree parseAString(String sInput) {
+	public static LingTreeTree parseAString(String sInput, LingTreeTree origTree) {
 		CharStream input = CharStreams.fromString(sInput);
 		DescriptionLexer lexer = new DescriptionLexer(input);
 		CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -40,8 +40,24 @@ public class TreeBuilder {
 		walker.walk(validator, parseTree); // initiate walk of tree with
 											// listener
 		LingTreeTree ltTree = validator.getTree();
-
+		restoreTreeParameters(origTree, ltTree);
 		return ltTree;
 	}
 
+	private static void restoreTreeParameters(LingTreeTree origTree, LingTreeTree ltTree) {
+		ltTree.setBackgroundColor(origTree.getBackgroundColor());
+		ltTree.setGlossFontInfo(origTree.getGlossFontInfo());
+		ltTree.setHorizontalGap(origTree.getHorizontalGap());
+		ltTree.setInitialXCoordinate(origTree.getInitialXCoordinate());
+		ltTree.setInitialYCoordinate(origTree.getInitialYCoordinate());
+		ltTree.setLexGlossGapAdjustment(origTree.getLexGlossGapAdjustment());
+		ltTree.setLexicalFontInfo(origTree.getLexicalFontInfo());
+		ltTree.setLineColor(origTree.getLineColor());
+		ltTree.setLineWidth(origTree.getLineWidth());
+		ltTree.setNonTerminalFontInfo(origTree.getNonTerminalFontInfo());
+		ltTree.setShowFlatView(origTree.isShowFlatView());
+		ltTree.setSubscriptFontInfo(origTree.getSubscriptFontInfo());
+		ltTree.setSuperscriptFontInfo(origTree.getSuperscriptFontInfo());
+		ltTree.setVerticalGap(origTree.getVerticalGap());
+	}
 }

@@ -21,7 +21,7 @@ public class LingTreeTree {
 	private String description;
 
 	double dInitialXCoordinate; // initial, leftmost X coordinate
-	double dInitialYCoordinate; // initial, leftmost Y coordinate
+	double dInitialYCoordinate; // initial, topmost Y coordinate
 	double dXSize; // total width of tree
 	double dYSize; // total height of tree
 	double dVerticalGap; // extra gap between levels
