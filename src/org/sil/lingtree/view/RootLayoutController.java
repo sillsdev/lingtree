@@ -627,4 +627,24 @@ public class RootLayoutController implements Initializable {
 			e.printStackTrace();
 		}
 	}
+
+	public void handleBackgroundAndLineParameters() {
+		try {
+			// Load the fxml file and create a new stage for the popup.
+			Stage dialogStage = new Stage();
+			String resource = "fxml/BackgroundAndLineParametersChooser.fxml";
+			String title = bundle.getString("backlinedialog.title");
+			FXMLLoader loader = ControllerUtilities.getLoader(mainApp, currentLocale, dialogStage,
+					resource, title);
+
+			BackgroundAndLineParametersController controller = loader.getController();
+			controller.setDialogStage(dialogStage);
+			controller.setMainApp(mainApp);
+			controller.setData(ltTree);
+			dialogStage.setResizable(false);
+			dialogStage.showAndWait();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }

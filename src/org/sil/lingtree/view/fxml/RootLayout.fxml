@@ -57,6 +57,7 @@
 							<MenuItem mnemonicParsing="true" onAction="#handleSuperscriptFontInfo" text="%menu.superscriptfont" />
 							<SeparatorMenuItem />
 							<MenuItem mnemonicParsing="true" onAction="#handleTreeSpacingParameters" text="%menu.treespacingparameters" />
+							<MenuItem mnemonicParsing="true" onAction="#handleBackgroundAndLineParameters" text="%menu.backgroundandlineparameters" />
 							<SeparatorMenuItem />
 							<MenuItem mnemonicParsing="true" onAction="#handleSaveTreeParameters" text="%menu.savetreeparameters" />
 							<SeparatorMenuItem />

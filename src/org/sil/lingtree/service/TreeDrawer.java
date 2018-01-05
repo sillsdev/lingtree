@@ -15,6 +15,7 @@ import javafx.scene.shape.Line;
 import org.sil.lingtree.model.LingTreeNode;
 import org.sil.lingtree.model.LingTreeTree;
 import org.sil.lingtree.model.NodeType;
+import org.sil.utility.StringUtilities;
 
 /**
  * @author Andy Black
@@ -215,6 +216,7 @@ public class TreeDrawer {
 		calculateXCoordinateOfEveryNode();
 		LingTreeNode node = ltTree.getRootNode();
 		drawNodes(node, pane);
+		pane.setStyle("-fx-background-color:" + StringUtilities.toRGBCode(ltTree.getBackgroundColor()) + ";");
 	}
 
 	private void drawNodes(LingTreeNode node, Pane pane) {
@@ -225,6 +227,8 @@ public class TreeDrawer {
 				// need to draw a line between mother and this node
 				Line line = new Line(mother.getXMid(), mother.getYLowerMid(), node.getXMid(),
 						node.getYUpperMid());
+				line.setStroke(ltTree.getLineColor());
+				line.setStrokeWidth(ltTree.getLineWidth());
 				pane.getChildren().add(line);
 			} else if (node.isTriangle()) {
 				drawTriangle(node, pane, mother);
