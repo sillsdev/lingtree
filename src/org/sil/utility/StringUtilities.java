@@ -6,6 +6,8 @@ package org.sil.utility;
 import java.io.File;
 import java.text.BreakIterator;
 
+import javafx.scene.paint.Color;
+
 /**
  * @author Andy Black
  *
@@ -88,5 +90,15 @@ public class StringUtilities {
 		return sPath;
 	}
 
-
+	  /**
+	 * @param color
+	 * @return color in web RGB format
+	 */
+	public static String toRGBCode(Color color)
+	    {
+	        return String.format( "#%02x%02x%02x",
+	            (int)( color.getRed() * 255 ),
+	            (int)( color.getGreen() * 255 ),
+	            (int)( color.getBlue() * 255 ) );
+	    }
 }

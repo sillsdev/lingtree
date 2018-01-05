@@ -53,19 +53,12 @@
 
 					<Menu mnemonicParsing="true" text="%menu.settings">
 						<items>
-<!-- 							<MenuItem mnemonicParsing="true" onAction="#handleVernacularFont" -->
-<!-- 								text="%menu.vernacularfont" fx:id="menuItemVernacularFont" /> -->
-<!-- 							<MenuItem mnemonicParsing="true" onAction="#handleAnalysisFont" -->
-<!-- 								text="%menu.analysisfont" fx:id="menuItemAnalysisFont" /> -->
-<!-- 							<SeparatorMenuItem /> -->
-<!-- 							<Menu mnemonicParsing="true" text="%menu.exporthyphenationparameters"> -->
-<!-- 								<MenuItem mnemonicParsing="true" -->
-<!-- 									onAction="#handleHyphenationParametersSimpleList" text="%menu.exporthyphenationparametersforindesign" /> -->
-<!-- 								<MenuItem mnemonicParsing="true" -->
-<!-- 									onAction="#handleHyphenationParametersParaTExt" text="%menu.exporthyphenationparametersforparatext" /> -->
-<!-- 								<MenuItem mnemonicParsing="true" -->
-<!-- 									onAction="#handleHyphenationParametersXLingPaper" text="%menu.exporthyphenationparametersforxlingpaper" /> -->
-<!-- 							</Menu> -->
+							<MenuItem mnemonicParsing="true" onAction="#handleGlossFontInfo" text="%menu.glossfont" />
+							<MenuItem mnemonicParsing="true" onAction="#handleLexicalFontInfo" text="%menu.lexicalfont" />
+							<MenuItem mnemonicParsing="true" onAction="#handleNonTerminalFontInfo" text="%menu.nonterminalfont" />
+							<MenuItem mnemonicParsing="true" onAction="#handleSubscriptFontInfo" text="%menu.subscriptfont" />
+							<MenuItem mnemonicParsing="true" onAction="#handleSuperscriptFontInfo" text="%menu.superscriptfont" />
+							<SeparatorMenuItem />
 							<MenuItem mnemonicParsing="true"
 								onAction="#handleSaveTreeParameters" text="%menu.savetreeparameters" />
 							<SeparatorMenuItem />

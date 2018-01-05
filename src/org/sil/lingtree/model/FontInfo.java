@@ -49,6 +49,9 @@ public class FontInfo {
 	@XmlTransient
 	public void setFont(Font font) {
 		this.font = font;
+		fontFamily = font.getFamily();
+		fontSize = font.getSize();
+		fontType = font.getStyle();
 	}
 
 	/**

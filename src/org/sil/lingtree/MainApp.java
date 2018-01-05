@@ -10,7 +10,12 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 import org.sil.lingtree.backendprovider.XMLBackEndProviderTest;
+import org.sil.lingtree.model.GlossFontInfo;
+import org.sil.lingtree.model.LexFontInfo;
 import org.sil.lingtree.model.LingTreeTree;
+import org.sil.lingtree.model.NonTerminalFontInfo;
+import org.sil.lingtree.model.SubscriptFontInfo;
+import org.sil.lingtree.model.SuperscriptFontInfo;
 import org.sil.lingtree.view.RootLayoutController;
 import org.sil.lingtree.Constants;
 import org.sil.lingtree.MainApp;
@@ -143,6 +148,11 @@ public class MainApp extends Application {
 //		}
 		xmlBackEndProvider.loadTreeDataFromFile(file);
 		ltTree = xmlBackEndProvider.getLingTree();
+		GlossFontInfo.getInstance().setFont(ltTree.getGlossFontInfo().getFont());
+		LexFontInfo.getInstance().setFont(ltTree.getLexicalFontInfo().getFont());
+		NonTerminalFontInfo.getInstance().setFont(ltTree.getNonTerminalFontInfo().getFont());
+		SubscriptFontInfo.getInstance().setFont(ltTree.getSubscriptFontInfo().getFont());
+		SuperscriptFontInfo.getInstance().setFont(ltTree.getSuperscriptFontInfo().getFont());
 		applicationPreferences.setLastOpenedFilePath(file);
 		applicationPreferences.setLastOpenedDirectoryPath(file.getParent());
 		updateStageTitle(file);

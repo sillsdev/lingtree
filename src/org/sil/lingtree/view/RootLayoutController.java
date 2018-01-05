@@ -15,6 +15,8 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.TreeMap;
 
+import org.controlsfx.dialog.FontSelectorDialog;
+import org.controlsfx.dialog.FontSelectorDialogWithColor;
 import org.sil.lingtree.MainApp;
 import org.sil.lingtree.model.FontInfo;
 import org.sil.lingtree.model.GlossFontInfo;
@@ -47,6 +49,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 /**
@@ -546,6 +550,61 @@ public class RootLayoutController implements Initializable {
 			sDirectoryPath = "";
 		}
 		return sDirectoryPath;
+	}
+
+	@FXML
+	public void handleGlossFontInfo() {
+		FontInfo fontInfo = handleFont(mainApp.getPrimaryStage(), ltTree.getGlossFontInfo());
+		ltTree.setGlossFontInfo(fontInfo);
+		GlossFontInfo.getInstance().setFont(fontInfo.getFont());
+		GlossFontInfo.getInstance().setColor(fontInfo.getColor());
+	}
+
+	@FXML
+	public void handleLexicalFontInfo() {
+		FontInfo fontInfo = handleFont(mainApp.getPrimaryStage(), ltTree.getLexicalFontInfo());
+		ltTree.setLexicalFontInfo(fontInfo);
+		LexFontInfo.getInstance().setFont(fontInfo.getFont());
+		LexFontInfo.getInstance().setColor(fontInfo.getColor());
+	}
+
+	@FXML
+	public void handleNonTerminalFontInfo() {
+		FontInfo fontInfo = handleFont(mainApp.getPrimaryStage(), ltTree.getNonTerminalFontInfo());
+		ltTree.setNonTerminalFontInfo(fontInfo);
+		NonTerminalFontInfo.getInstance().setFont(fontInfo.getFont());
+		NonTerminalFontInfo.getInstance().setColor(fontInfo.getColor());
+	}
+
+	@FXML
+	public void handleSubscriptFontInfo() {
+		FontInfo fontInfo = handleFont(mainApp.getPrimaryStage(), ltTree.getSubscriptFontInfo());
+		ltTree.setSubscriptFontInfo(fontInfo);
+		SubscriptFontInfo.getInstance().setFont(fontInfo.getFont());
+		SubscriptFontInfo.getInstance().setColor(fontInfo.getColor());
+	}
+
+	@FXML
+	public void handleSuperscriptFontInfo() {
+		FontInfo fontInfo = handleFont(mainApp.getPrimaryStage(), ltTree.getSuperscriptFontInfo());
+		ltTree.setSuperscriptFontInfo(fontInfo);
+		SuperscriptFontInfo.getInstance().setFont(fontInfo.getFont());
+		SuperscriptFontInfo.getInstance().setColor(fontInfo.getColor());
+	}
+
+	public FontInfo handleFont(Stage stage, FontInfo fontInfo) {
+		// TODO: improve the font selector dialog so that one can type the font family name
+		// Can we improve the color picker to use color names, too?
+		FontSelectorDialogWithColor dlg = new FontSelectorDialogWithColor(fontInfo.getFont(), fontInfo.getColor(), bundle);
+		dlg.initOwner(stage);
+		dlg.showAndWait();
+		Font chosenFont = dlg.getResult();
+		if (chosenFont != null) {
+			fontInfo.setFont(chosenFont);
+			Color color = dlg.getColor();
+			fontInfo.setColor(color);
+		}
+		return fontInfo;
 	}
 
 }

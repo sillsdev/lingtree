@@ -26,6 +26,7 @@ hs_err_pid*
 XLingPaperPDFTemp
 *.xml~
 /.settings/
+/target/
 build/build
 build/deploy
 build/dist
