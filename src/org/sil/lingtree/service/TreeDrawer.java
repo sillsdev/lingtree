@@ -246,10 +246,16 @@ public class TreeDrawer {
 		double dBottomY = node.getYUpperMid();
 		double dTopY = mother.getYLowerMid();
 		Line rightPart = new Line(dLeftmostX, dBottomY, dTopX, dTopY);
+		rightPart.setStroke(ltTree.getLineColor());
+		rightPart.setStrokeWidth(ltTree.getLineWidth());
 		pane.getChildren().add(rightPart);
 		Line leftPart = new Line(dTopX, dTopY, dRightmostX, dBottomY);
+		leftPart.setStroke(ltTree.getLineColor());
+		leftPart.setStrokeWidth(ltTree.getLineWidth());
 		pane.getChildren().add(leftPart);
 		Line bottomPart = new Line(dLeftmostX, dBottomY, dRightmostX, dBottomY);
+		bottomPart.setStroke(ltTree.getLineColor());
+		bottomPart.setStrokeWidth(ltTree.getLineWidth());
 		pane.getChildren().add(bottomPart);
 	}
 }

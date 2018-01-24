@@ -94,6 +94,7 @@ public class StringUtilities {
 	 * @param color
 	 * @return color in web RGB format
 	 */
+	// from https://stackoverflow.com/questions/17925318/how-to-get-hex-web-string-from-javafx-colorpicker-color
 	public static String toRGBCode(Color color)
 	    {
 	        return String.format( "#%02x%02x%02x",

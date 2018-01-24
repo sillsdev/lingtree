@@ -45,11 +45,7 @@
                   <items>
                     <MenuItem fx:id="menuItemDrawTree" accelerator="ctrl+d" mnemonicParsing="true" onAction="#handleDrawTree" text="%menu.drawtree" />
                     <CheckMenuItem fx:id="menuItemUseFlatTree" mnemonicParsing="true" onAction="#handleMenuUseFlatTree" text="%menu.useflattree" />
-                  </items>
-                </Menu>
-
-					<Menu mnemonicParsing="true" text="%menu.settings">
-						<items>
+							<SeparatorMenuItem />
 							<MenuItem mnemonicParsing="true" onAction="#handleGlossFontInfo" text="%menu.glossfont" />
 							<MenuItem mnemonicParsing="true" onAction="#handleLexicalFontInfo" text="%menu.lexicalfont" />
 							<MenuItem mnemonicParsing="true" onAction="#handleNonTerminalFontInfo" text="%menu.nonterminalfont" />
@@ -58,7 +54,11 @@
 							<SeparatorMenuItem />
 							<MenuItem mnemonicParsing="true" onAction="#handleTreeSpacingParameters" text="%menu.treespacingparameters" />
 							<MenuItem mnemonicParsing="true" onAction="#handleBackgroundAndLineParameters" text="%menu.backgroundandlineparameters" />
-							<SeparatorMenuItem />
+                  </items>
+                </Menu>
+
+					<Menu mnemonicParsing="true" text="%menu.settings">
+						<items>
 							<MenuItem mnemonicParsing="true" onAction="#handleSaveTreeParameters" text="%menu.savetreeparameters" />
 							<SeparatorMenuItem />
 							<MenuItem mnemonicParsing="true" onAction="#handleChangeInterfaceLanguage" text="%menu.changeinterfacelanguage" />

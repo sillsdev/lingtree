@@ -283,12 +283,14 @@ public class RootLayoutController implements Initializable {
 	@FXML
 	private void handleMenuUseFlatTree() {
 		setToggleButtonStyle();
+		handleDrawTree();
 	}
 
 	@FXML
 	private void handleUseFlatTree() {
 		menuItemUseFlatTree.setSelected(!menuItemUseFlatTree.isSelected());
 		setToggleButtonStyle();
+		handleDrawTree();
 	}
 
 	private void setToggleButtonStyle() {
@@ -555,45 +557,50 @@ public class RootLayoutController implements Initializable {
 
 	@FXML
 	public void handleGlossFontInfo() {
-		FontInfo fontInfo = handleFont(mainApp.getPrimaryStage(), ltTree.getGlossFontInfo());
+		FontInfo fontInfo = showFontInfo(mainApp.getPrimaryStage(), ltTree.getGlossFontInfo());
 		ltTree.setGlossFontInfo(fontInfo);
 		GlossFontInfo.getInstance().setFont(fontInfo.getFont());
 		GlossFontInfo.getInstance().setColor(fontInfo.getColor());
+		handleDrawTree();
 	}
 
 	@FXML
 	public void handleLexicalFontInfo() {
-		FontInfo fontInfo = handleFont(mainApp.getPrimaryStage(), ltTree.getLexicalFontInfo());
+		FontInfo fontInfo = showFontInfo(mainApp.getPrimaryStage(), ltTree.getLexicalFontInfo());
 		ltTree.setLexicalFontInfo(fontInfo);
 		LexFontInfo.getInstance().setFont(fontInfo.getFont());
 		LexFontInfo.getInstance().setColor(fontInfo.getColor());
+		handleDrawTree();
 	}
 
 	@FXML
 	public void handleNonTerminalFontInfo() {
-		FontInfo fontInfo = handleFont(mainApp.getPrimaryStage(), ltTree.getNonTerminalFontInfo());
+		FontInfo fontInfo = showFontInfo(mainApp.getPrimaryStage(), ltTree.getNonTerminalFontInfo());
 		ltTree.setNonTerminalFontInfo(fontInfo);
 		NonTerminalFontInfo.getInstance().setFont(fontInfo.getFont());
 		NonTerminalFontInfo.getInstance().setColor(fontInfo.getColor());
+		handleDrawTree();
 	}
 
 	@FXML
 	public void handleSubscriptFontInfo() {
-		FontInfo fontInfo = handleFont(mainApp.getPrimaryStage(), ltTree.getSubscriptFontInfo());
+		FontInfo fontInfo = showFontInfo(mainApp.getPrimaryStage(), ltTree.getSubscriptFontInfo());
 		ltTree.setSubscriptFontInfo(fontInfo);
 		SubscriptFontInfo.getInstance().setFont(fontInfo.getFont());
 		SubscriptFontInfo.getInstance().setColor(fontInfo.getColor());
+		handleDrawTree();
 	}
 
 	@FXML
 	public void handleSuperscriptFontInfo() {
-		FontInfo fontInfo = handleFont(mainApp.getPrimaryStage(), ltTree.getSuperscriptFontInfo());
+		FontInfo fontInfo = showFontInfo(mainApp.getPrimaryStage(), ltTree.getSuperscriptFontInfo());
 		ltTree.setSuperscriptFontInfo(fontInfo);
 		SuperscriptFontInfo.getInstance().setFont(fontInfo.getFont());
 		SuperscriptFontInfo.getInstance().setColor(fontInfo.getColor());
+		handleDrawTree();
 	}
 
-	public FontInfo handleFont(Stage stage, FontInfo fontInfo) {
+	public FontInfo showFontInfo(Stage stage, FontInfo fontInfo) {
 		// TODO: improve the font selector dialog so that one can type the font family name
 		// Can we improve the color picker to use color names, too?
 		FontSelectorDialogWithColor dlg = new FontSelectorDialogWithColor(fontInfo.getFont(), fontInfo.getColor(), bundle);
@@ -623,6 +630,7 @@ public class RootLayoutController implements Initializable {
 			controller.setData(ltTree);
 			dialogStage.setResizable(false);
 			dialogStage.showAndWait();
+			handleDrawTree();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -643,6 +651,7 @@ public class RootLayoutController implements Initializable {
 			controller.setData(ltTree);
 			dialogStage.setResizable(false);
 			dialogStage.showAndWait();
+			handleDrawTree();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
