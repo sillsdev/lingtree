@@ -166,12 +166,12 @@ public class TreeDrawer {
 		if (dEnd > ltTree.getXSize()) {
 			ltTree.setXSize(dEnd); // Keep track of total width for scrolling
 		}
-		System.out.printf(
-				"%1$s\tXSize = %2$s,\tWidth = %3$s,\tXCoord = %4$s,\tYCoord = %5$s, \tXMid = %5$s"
-						+ "\r\n", node.getContent(), ltTree.getXSize(), node.getWidth(),
-				node.getXCoordinate(), node.getYCoordinate(), node.getXMid());
-		System.out.printf("\tYUpperMid = %1$s, \tYLowerMid = %2$s\r\n", node.getYUpperMid(),
-				node.getYLowerMid());
+//		System.out.printf(
+//				"%1$s\tXSize = %2$s,\tWidth = %3$s,\tXCoord = %4$s,\tYCoord = %5$s, \tXMid = %5$s"
+//						+ "\r\n", node.getContent(), ltTree.getXSize(), node.getWidth(),
+//				node.getXCoordinate(), node.getYCoordinate(), node.getXMid());
+//		System.out.printf("\tYUpperMid = %1$s, \tYLowerMid = %2$s\r\n", node.getYUpperMid(),
+//				node.getYLowerMid());
 		return node.getXMid();
 	}
 
@@ -221,6 +221,12 @@ public class TreeDrawer {
 
 	private void drawNodes(LingTreeNode node, Pane pane) {
 		pane.getChildren().add(node.getContentTextBox());
+		if (node.hasSubscript()) {
+			pane.getChildren().add(node.getSubscriptTextBox());
+		}
+		if (node.hasSuperscript()) {
+			pane.getChildren().add(node.getSuperscriptTextBox());
+		}
 		if (node.hasMother() && !node.isOmitLine() && node.getNodeType() != NodeType.Gloss) {
 			LingTreeNode mother = node.getMother();
 			if (!node.isTriangle()) {

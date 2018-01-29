@@ -239,6 +239,13 @@ public class LingTreeNode {
 	public void setXCoordinate(double dXCoordinate) {
 		this.dXCoordinate = dXCoordinate;
 		contentTextBox.setX(dXCoordinate);
+		double dContentWidth = contentTextBox.getBoundsInLocal().getWidth();
+		if (hasSubscript()) {
+			subscriptTextBox.setX(dXCoordinate + dContentWidth);
+		}
+		if (hasSuperscript()) {
+			superscriptTextBox.setX(dXCoordinate + dContentWidth);
+		}
 	}
 
 	public double getXMid() {
@@ -257,6 +264,12 @@ public class LingTreeNode {
 		// the baseline y coordinate
 		this.dYCoordinate = dYCoordinate;
 		contentTextBox.setY(dYCoordinate);
+		if (hasSubscript()) {
+			subscriptTextBox.setY(dYCoordinate + adjustHeightForSubscript());
+		}
+		if (hasSuperscript()) {
+			superscriptTextBox.setY(dYCoordinate - adjustHeightForSuperscript());
+		}
 		// TODO: fix subscript and superscript text boxes
 		// set y upper mid and lower mid (top of box and bottom of box)
 		dYUpperMid = contentTextBox.getLayoutBounds().getMinY();
@@ -279,10 +292,18 @@ public class LingTreeNode {
 		this.dYUpperMid = dYUpperMid;
 	}
 
-	private void adjustHeightForSubscript() {
+	private double adjustHeightForSubscript() {
+		FontInfo fontInfo = getFontInfoFromNodeType();
+		double dContentFontSize = fontInfo.getFontSize();
+		double dHeightAdjust = .14 * dContentFontSize;
+		//dHeight = contentTextBox.getBoundsInLocal().getHeight() + dHeightAdjust;
+		return dHeightAdjust;
+	}
+	private double adjustHeightForSuperscript() {
 		FontInfo fontInfo = getFontInfoFromNodeType();
 		double dContentFontSize = fontInfo.getFontSize();
 		double dHeightAdjust = .33333 * dContentFontSize;
-		dHeight = contentTextBox.getBoundsInLocal().getHeight() + dHeightAdjust;
+		//dHeight = contentTextBox.getBoundsInLocal().getHeight() - dHeightAdjust;
+		return dHeightAdjust;
 	}
 }

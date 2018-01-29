@@ -131,6 +131,45 @@ public class TreeDrawerTest extends ServiceBaseTest {
 		assertEquals(225.8359375, node2.getYCoordinate(), 0.0);
 		assertEquals(214.97265625, node2.getYUpperMid(), 0.0);
 		assertEquals(228.37890625, node2.getYLowerMid(), 0.0);
+
+		// with subscript and superescript
+		ltTree = TreeBuilder.parseAString("(S (NP/Ssuper (\\L Juan (\\G John))) (VP (V/ssub (\\L duerme (\\G sleeps)))))", origTree);
+		ltTree.setShowFlatView(false);
+		drawer = new TreeDrawer(ltTree);
+		drawer.calculateMaxHeightPerLevel();
+		drawer.calculateYCoordinateOfEveryNode();
+		node = ltTree.getRootNode();
+		assertEquals(100.0, node.getYCoordinate(), 0.0);
+		assertEquals(86.306640625, node.getYUpperMid(), 0.0);
+		assertEquals(105.595703125, node.getYLowerMid(), 0.0);
+		node1 = node.getDaughters().get(0);
+		assertEquals(133.2890625, node1.getYCoordinate(), 0.0);
+		assertEquals(119.595703125, node1.getYUpperMid(), 0.0);
+		assertEquals(138.884765625, node1.getYLowerMid(), 0.0);
+		node2 = node.getDaughters().get(1);
+		assertEquals(133.2890625, node2.getYCoordinate(), 0.0);
+		assertEquals(119.595703125, node2.getYUpperMid(), 0.0);
+		assertEquals(138.884765625, node2.getYLowerMid(), 0.0);
+		node1 = node1.getDaughters().get(0);
+		assertEquals(170.578121, node1.getYCoordinate(), 0.0);
+		assertEquals(153.22265225, node1.getYUpperMid(), 0.0);
+		assertEquals(178.8515585, node1.getYLowerMid(), 0.0);
+		node1 = node1.getDaughters().get(0);
+		assertEquals(190.20702725, node1.getYCoordinate(), 0.0);
+		assertEquals(176.343746, node1.getYUpperMid(), 0.0);
+		assertEquals(195.749996, node1.getYLowerMid(), 0.0);
+		node2 = node2.getDaughters().get(0);
+		assertEquals(170.578121, node2.getYCoordinate(), 0.0);
+		assertEquals(156.884761625, node2.getYUpperMid(), 0.0);
+		assertEquals(176.173824125, node2.getYLowerMid(), 0.0);
+		node2 = node2.getDaughters().get(0);
+		assertEquals(210.20702725, node2.getYCoordinate(), 0.0);
+		assertEquals(192.8515585, node2.getYUpperMid(), 0.0);
+		assertEquals(218.48046475, node2.getYLowerMid(), 0.0);
+		node2 = node2.getDaughters().get(0);
+		assertEquals(229.8359335, node2.getYCoordinate(), 0.0);
+		assertEquals(215.97265225, node2.getYUpperMid(), 0.0);
+		assertEquals(235.37890225, node2.getYLowerMid(), 0.0);
 	}
 
 	@Test
@@ -157,5 +196,30 @@ public class TreeDrawerTest extends ServiceBaseTest {
 		assertEquals(156.021484375, node2.getXCoordinate(), 0.0);
 		node2 = node2.getDaughters().get(0);
 		assertEquals(158.8046875, node2.getXCoordinate(), 0.0);
+
+		// with subscript and superscript
+		origTree = new LingTreeTree();
+		ltTree = TreeBuilder.parseAString("(S (NP/Ssuper (\\L Juan (\\G John))) (VP (V/ssub (\\L duerme (\\G sleeps)))))", origTree);
+		drawer = new TreeDrawer(ltTree);
+		drawer.calculateMaxHeightPerLevel();
+		drawer.calculateYCoordinateOfEveryNode();
+		drawer.calculateXCoordinateOfEveryNode();
+		node = ltTree.getRootNode();
+		assertEquals(149.4769287109375, node.getXCoordinate(), 0.0);
+		node1 = node.getDaughters().get(0);
+		assertEquals(100.0, node1.getXCoordinate(), 0.0);
+		node2 = node.getDaughters().get(1);
+		assertEquals(179.45751953125, node2.getXCoordinate(), 0.0);
+		node1 = node1.getDaughters().get(0);
+		assertEquals(105.723876953125, node1.getXCoordinate(), 0.0);
+		node1 = node1.getDaughters().get(0);
+		assertEquals(105.489501953125, node1.getXCoordinate(), 0.0);
+		node2 = node2.getDaughters().get(0);
+		assertEquals(176.50146484375, node2.getXCoordinate(), 0.0);
+		node2 = node2.getDaughters().get(0);
+		assertEquals(167.00048828125, node2.getXCoordinate(), 0.0);
+		node2 = node2.getDaughters().get(0);
+		assertEquals(169.78369140625, node2.getXCoordinate(), 0.0);
+
 	}
 }
