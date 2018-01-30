@@ -6,6 +6,7 @@
 
 package org.sil.lingtree.view;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -15,6 +16,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.TreeMap;
+
+import javax.imageio.ImageIO;
 
 import org.controlsfx.dialog.FontSelectorDialogWithColor;
 import org.sil.lingtree.MainApp;
@@ -33,6 +36,7 @@ import org.sil.lingtree.ApplicationPreferences;
 import org.sil.utility.StringUtilities;
 
 import javafx.application.Platform;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -49,6 +53,7 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -396,6 +401,35 @@ public class RootLayoutController implements Initializable {
 		} else {
 			handleSaveTreeAs();
 		}
+
+		try {
+			saveTreeAsPng();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+	private void saveTreeAsPng() throws IOException {
+		File file = mainApp.getTreeDataFile();
+		if (file == null) {
+			return;
+		}
+		String sFilePath = file.getCanonicalPath();
+		if (sFilePath.endsWith("." + Constants.LINGTREE_DATA_FILE_EXTENSION)) {
+			int len = sFilePath.length();
+			sFilePath = sFilePath.substring(0, len - 4);
+		}
+		WritableImage wim = new WritableImage((int) ltTree.getXSize(),
+				(int) (ltTree.getYSize() + 10));
+		drawingArea.snapshot(null, wim);
+		File filePng = new File(sFilePath + ".png");
+		try {
+			BufferedImage bi = SwingFXUtils.fromFXImage(wim, null);
+			ImageIO.write(bi, "png", filePng);
+		} catch (Exception s) {
+		}
 	}
 
 	/**
@@ -404,11 +438,12 @@ public class RootLayoutController implements Initializable {
 	@FXML
 	private void handleSaveTreeAs() {
 		ControllerUtilities.doFileSaveAs(mainApp, currentLocale, false, lingTreeFilterDescription);
+		// TODO: make sure we know what the new file path is
 	}
 
-
 	/**
-	 * Change interface language.
+	 * Save tree parameters.
+	 *
 	 * @throws Exception
 	 */
 	@FXML
@@ -601,9 +636,11 @@ public class RootLayoutController implements Initializable {
 	}
 
 	public FontInfo showFontInfo(Stage stage, FontInfo fontInfo) {
-		// TODO: improve the font selector dialog so that one can type the font family name
+		// TODO: improve the font selector dialog so that one can type the font
+		// family name
 		// Can we improve the color picker to use color names, too?
-		FontSelectorDialogWithColor dlg = new FontSelectorDialogWithColor(fontInfo.getFont(), fontInfo.getColor(), bundle);
+		FontSelectorDialogWithColor dlg = new FontSelectorDialogWithColor(fontInfo.getFont(),
+				fontInfo.getColor(), bundle);
 		dlg.initOwner(stage);
 		dlg.showAndWait();
 		Font chosenFont = dlg.getResult();
