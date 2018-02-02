@@ -18,3 +18,7 @@
     -fx-base: white;
    /* -fx-effect:dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0); */
 }
+.tooltip {
+   -fx-text-fill: black;
+   -fx-background-color: #f5deb3;
+}
