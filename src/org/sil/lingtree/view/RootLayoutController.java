@@ -7,8 +7,12 @@
 package org.sil.lingtree.view;
 
 import java.awt.image.BufferedImage;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.net.URL;
 import java.text.MessageFormat;
 import java.util.Locale;
@@ -392,9 +396,10 @@ public class RootLayoutController implements Initializable {
 	/**
 	 * Saves the file to the language project file that is currently open. If
 	 * there is no open file, the "save as" dialog is shown.
+	 * @throws IOException
 	 */
 	@FXML
-	public void handleSaveTree() {
+	public void handleSaveTree() throws IOException {
 		File file = mainApp.getTreeDataFile();
 		if (file != null) {
 			mainApp.saveTreeData(file);
@@ -402,13 +407,9 @@ public class RootLayoutController implements Initializable {
 			handleSaveTreeAs();
 		}
 
-		try {
-			saveTreeAsPng();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		saveTreeAsPng();
 
+		saveTreeAsSVG();
 	}
 
 	private void saveTreeAsPng() throws IOException {
@@ -430,6 +431,32 @@ public class RootLayoutController implements Initializable {
 			ImageIO.write(bi, "png", filePng);
 		} catch (Exception s) {
 		}
+	}
+
+	private void saveTreeAsSVG() throws IOException {
+		File file = mainApp.getTreeDataFile();
+		if (file == null) {
+			return;
+		}
+		String sFilePath = file.getCanonicalPath();
+		if (sFilePath.endsWith("." + Constants.LINGTREE_DATA_FILE_EXTENSION)) {
+			int len = sFilePath.length();
+			sFilePath = sFilePath.substring(0, len - 4);
+		}
+		sDescription = treeDescription.getText();
+		ltTree = TreeBuilder.parseAString(sDescription, ltTree);
+		mainApp.getBackEndProvider().setLingTree(ltTree);
+		ltTree.setShowFlatView(menuItemUseFlatTree.isSelected());
+		ltTree.setDescription(sDescription);
+		TreeDrawer drawer = new TreeDrawer(ltTree);
+		StringBuilder sb = drawer.drawAsSVG();
+		Writer out = new BufferedWriter(new OutputStreamWriter(
+			    new FileOutputStream(sFilePath + ".svg"), "UTF-8"));
+			try {
+			    out.write(sb.toString());
+			} finally {
+			    out.close();
+			}
 	}
 
 	/**

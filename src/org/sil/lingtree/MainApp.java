@@ -80,7 +80,7 @@ public class MainApp extends Application {
 	}
 	
 	@Override
-	public void stop() {
+	public void stop() throws IOException {
 		applicationPreferences.setLastWindowParameters(ApplicationPreferences.LAST_WINDOW,
 				primaryStage);
 		applicationPreferences.setLastLocaleLanguage(locale.getLanguage());

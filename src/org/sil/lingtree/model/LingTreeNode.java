@@ -212,7 +212,7 @@ public class LingTreeNode {
 		contentTextBox.setFill(fontInfo.getColor());
 	}
 
-	private FontInfo getFontInfoFromNodeType() {
+	public FontInfo getFontInfoFromNodeType() {
 		FontInfo fontInfo;
 		switch (nodeType) {
 

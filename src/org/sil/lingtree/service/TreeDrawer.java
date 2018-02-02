@@ -6,15 +6,22 @@
 
 package org.sil.lingtree.service;
 
+import java.awt.Toolkit;
 import java.util.HashMap;
 
 import javafx.scene.Parent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
+import javafx.scene.text.Text;
+import javafx.stage.Screen;
 
+import org.sil.lingtree.Constants;
+import org.sil.lingtree.model.FontInfo;
 import org.sil.lingtree.model.LingTreeNode;
 import org.sil.lingtree.model.LingTreeTree;
 import org.sil.lingtree.model.NodeType;
+import org.sil.lingtree.model.SubscriptFontInfo;
+import org.sil.lingtree.model.SuperscriptFontInfo;
 import org.sil.utility.StringUtilities;
 
 /**
@@ -166,12 +173,13 @@ public class TreeDrawer {
 		if (dEnd > ltTree.getXSize()) {
 			ltTree.setXSize(dEnd); // Keep track of total width for scrolling
 		}
-//		System.out.printf(
-//				"%1$s\tXSize = %2$s,\tWidth = %3$s,\tXCoord = %4$s,\tYCoord = %5$s, \tXMid = %5$s"
-//						+ "\r\n", node.getContent(), ltTree.getXSize(), node.getWidth(),
-//				node.getXCoordinate(), node.getYCoordinate(), node.getXMid());
-//		System.out.printf("\tYUpperMid = %1$s, \tYLowerMid = %2$s\r\n", node.getYUpperMid(),
-//				node.getYLowerMid());
+		// System.out.printf(
+		// "%1$s\tXSize = %2$s,\tWidth = %3$s,\tXCoord = %4$s,\tYCoord = %5$s, \tXMid = %5$s"
+		// + "\r\n", node.getContent(), ltTree.getXSize(), node.getWidth(),
+		// node.getXCoordinate(), node.getYCoordinate(), node.getXMid());
+		// System.out.printf("\tYUpperMid = %1$s, \tYLowerMid = %2$s\r\n",
+		// node.getYUpperMid(),
+		// node.getYLowerMid());
 		return node.getXMid();
 	}
 
@@ -211,12 +219,11 @@ public class TreeDrawer {
 	}
 
 	public void draw(Pane pane) {
-		calculateMaxHeightPerLevel();
-		calculateYCoordinateOfEveryNode();
-		calculateXCoordinateOfEveryNode();
+		recalculateValues();
 		LingTreeNode node = ltTree.getRootNode();
 		drawNodes(node, pane);
-		pane.setStyle("-fx-background-color:" + StringUtilities.toRGBCode(ltTree.getBackgroundColor()) + ";");
+		pane.setStyle("-fx-background-color:"
+				+ StringUtilities.toRGBCode(ltTree.getBackgroundColor()) + ";");
 	}
 
 	private void drawNodes(LingTreeNode node, Pane pane) {
@@ -264,4 +271,142 @@ public class TreeDrawer {
 		bottomPart.setStrokeWidth(ltTree.getLineWidth());
 		pane.getChildren().add(bottomPart);
 	}
+
+	public StringBuilder drawAsSVG() {
+		recalculateValues();
+		LingTreeNode node = ltTree.getRootNode();
+		StringBuilder sb = new StringBuilder();
+		// Trying to convert from pixels to mm does not come out right.
+		// Neither Screen.getPrimary().getDpi() nor Toolkit.getDefaultToolkit().getScreenResolution()
+		// seem to be correct.
+		// So we're going with pixels
+//		final String sMM = "mm";
+//		sb.append(Constants.SVG_HEADER.replace("{0}", pixelsToMM(ltTree.getXSize()) + sMM).replace(
+//				"{1}", pixelsToMM(ltTree.getYSize()) + sMM));
+		sb.append(Constants.SVG_HEADER.replace("{0}", String.valueOf(ltTree.getXSize())).replace(
+				"{1}", String.valueOf(ltTree.getYSize())));
+		drawNodesAsSVG(node, sb);
+		// TODO: set background color: pane.setStyle("-fx-background-color:" +
+		// StringUtilities.toRGBCode(ltTree.getBackgroundColor()) + ";");
+		sb.append(Constants.SVG_END_ELEMENT);
+		return sb;
+	}
+
+	private void recalculateValues() {
+		calculateMaxHeightPerLevel();
+		calculateYCoordinateOfEveryNode();
+		calculateXCoordinateOfEveryNode();
+	}
+
+	private void drawNodesAsSVG(LingTreeNode node, StringBuilder sb) {
+		createTextAsSVG(node.getContentTextBox(), node.getFontInfoFromNodeType(), sb);
+		if (node.hasSubscript()) {
+			createTextAsSVG(node.getSubscriptTextBox(), SubscriptFontInfo.getInstance(), sb);
+		}
+		if (node.hasSuperscript()) {
+			createTextAsSVG(node.getSuperscriptTextBox(), SuperscriptFontInfo.getInstance(), sb);
+		}
+		if (node.hasMother() && !node.isOmitLine() && node.getNodeType() != NodeType.Gloss) {
+			LingTreeNode mother = node.getMother();
+			if (!node.isTriangle()) {
+				// need to draw a line between mother and this node
+				createLineAsSVG(mother.getXMid(), mother.getYLowerMid(), node.getXMid(),
+						node.getYUpperMid(), sb);
+			} else if (node.isTriangle()) {
+				drawTriangleAsSVG(mother, node, sb);
+			}
+		}
+		for (LingTreeNode daughterNode : node.getDaughters()) {
+			drawNodesAsSVG(daughterNode, sb);
+		}
+	}
+
+	private void createLineAsSVG(double x1, double y1, double x2, double y2, StringBuilder sb) {
+		sb.append("<line x1=\"");
+		sb.append(x1);
+		sb.append("\" y1=\"");
+		sb.append(y1);
+		sb.append("\" x2=\"");
+		sb.append(x2);
+		sb.append("\" y2=\"");
+		sb.append(y2);
+		sb.append("\" stroke=\"");
+		sb.append(StringUtilities.toRGBCode(ltTree.getLineColor()));
+		sb.append("\" stroke-width=\"");
+		sb.append(ltTree.getLineWidth());
+		sb.append("\"/>\n");
+		// Using mm does not work right
+//		sb.append(pixelsToMM(x1));
+//		sb.append("mm\" y1=\"");
+//		sb.append(pixelsToMM(y1));
+//		sb.append("mm\" x2=\"");
+//		sb.append(pixelsToMM(x2));
+//		sb.append("mm\" y2=\"");
+//		sb.append(pixelsToMM(y2));
+//		sb.append("mm\" stroke=\"");
+//		sb.append(StringUtilities.toRGBCode(ltTree.getLineColor()));
+//		sb.append("\" stroke-width=\"");
+//		sb.append(pixelsToMM(ltTree.getLineWidth()));
+//		sb.append("mm\"/>\n");
+	}
+
+	private void createTextAsSVG(Text tb, FontInfo fontInfo, StringBuilder sb) {
+		sb.append("<text x=\"");
+		// Using mm does not work right
+//		sb.append(pixelsToMM(tb.getX()));
+//		sb.append("mm\" y=\"");
+//		sb.append(pixelsToMM(tb.getY()));
+//		sb.append("mm\" font-family=\"");
+		sb.append(tb.getX());
+		sb.append("\" y=\"");
+		sb.append(tb.getY());
+		sb.append("\" font-family=\"");
+		sb.append(fontInfo.getFontFamily());
+		sb.append("\" font-size=\"");
+		sb.append(fontInfo.getFontSize());
+		String sFontType = fontInfo.getFontType();
+		if (sFontType.contains("Italic")) {
+			sb.append("\" font-style=\"italic");
+		}
+		if (sFontType.contains("Bold")) {
+			sb.append("\" font-weight=\"bold");
+		}
+		sb.append("\" fill=\"");
+		sb.append(StringUtilities.toRGBCode(fontInfo.getColor()));
+		sb.append("\">");
+		sb.append(tb.getText());
+		sb.append("</text>\n");
+	}
+
+	private void drawTriangleAsSVG(LingTreeNode mother, LingTreeNode node, StringBuilder sb) {
+		double dLeftmostX = node.getXCoordinate() + dTriangleOffset;
+		double dRightmostX = node.getXCoordinate() + node.getWidth() - dTriangleOffset;
+		double dTopX = mother.getXMid();
+		double dBottomY = node.getYUpperMid();
+		double dTopY = mother.getYLowerMid();
+		// right part of line
+		createLineAsSVG(dLeftmostX, dBottomY, dTopX, dTopY, sb);
+		// left part of line
+		createLineAsSVG(dTopX, dTopY, dRightmostX, dBottomY, sb);
+		// bottom part of line
+		createLineAsSVG(dLeftmostX, dBottomY, dRightmostX, dBottomY, sb);
+	}
+
+	private double pixelsToInches(double pixels) {
+		double dpi = Screen.getPrimary().getDpi();
+		return pixels * dpi;
+	}
+
+	private double pixelsToMM(double pixels) {
+		double dpi = Screen.getPrimary().getDpi();
+		int res = Toolkit.getDefaultToolkit().getScreenResolution();
+		// Why are these two values different?
+		// dpi is 156.0 and res is 144, but neither looks right.
+		// double inches = pixels / dpi;
+		double inches = pixels / res;
+		return pixels;
+		// return inches * 25.4; // there are 2.54 cm per inch so 25.4 mm per
+		// inch
+	}
+
 }
