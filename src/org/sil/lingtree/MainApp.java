@@ -84,7 +84,7 @@ public class MainApp extends Application {
 		applicationPreferences.setLastWindowParameters(ApplicationPreferences.LAST_WINDOW,
 				primaryStage);
 		applicationPreferences.setLastLocaleLanguage(locale.getLanguage());
-		controller.handleSaveTree();
+		//controller.handleSaveTree();
 	}
 
 

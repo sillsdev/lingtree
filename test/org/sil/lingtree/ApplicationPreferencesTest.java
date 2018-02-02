@@ -131,6 +131,8 @@ public class ApplicationPreferencesTest {
 		double lexGlossGapAdjustment = 7;
 		double lineWidth = 10;
 		double verticalGap = 25;
+		boolean saveAsPng = true;
+		boolean saveAsSVG = true;
 		boolean showFlatView = true;
 		Color backgroundColor = Color.ALICEBLUE;
 		Color lineColor = Color.NAVY;
@@ -174,6 +176,8 @@ public class ApplicationPreferencesTest {
 		ltTree.setLexGlossGapAdjustment(lexGlossGapAdjustment);
 		ltTree.setLineWidth(lineWidth);
 		ltTree.setVerticalGap(verticalGap);
+		ltTree.setSaveAsPng(saveAsPng);
+		ltTree.setSaveAsSVG(saveAsSVG);
 		ltTree.setShowFlatView(showFlatView);
 		ltTree.setBackgroundColor(backgroundColor);
 		ltTree.setLineColor(lineColor);
@@ -198,6 +202,8 @@ public class ApplicationPreferencesTest {
 		assertEquals(lexGlossGapAdjustment, ltRetrieved.getLexGlossGapAdjustment(), 0.0);
 		assertEquals(lineWidth, ltRetrieved.getLineWidth(), 0.0);
 		assertEquals(verticalGap, ltRetrieved.getVerticalGap(), 0.0);
+		assertEquals(saveAsPng, ltRetrieved.isSaveAsPng());
+		assertEquals(saveAsSVG, ltRetrieved.isSaveAsSVG());
 		assertEquals(showFlatView, ltRetrieved.isShowFlatView());
 		assertEquals(backgroundColor, ltRetrieved.getBackgroundColor());
 		assertEquals(lineColor, ltRetrieved.getLineColor());

@@ -10,9 +10,11 @@
     -fx-background-color: transparent, transparent, transparent, transparent;
 }
 
-.useflattreepressed {
+.buttonpressed {
     -fx-base: #F3F3F3;
+    -fx-effect:innershadow(three-pass-box, rgba(10,20,30,0.8), 10, 0, 4, 4);
 }
-.useflattreeunpressed {
+.buttonunpressed {
     -fx-base: white;
+   /* -fx-effect:dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0); */
 }

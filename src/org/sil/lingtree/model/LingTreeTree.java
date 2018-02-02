@@ -44,6 +44,8 @@ public class LingTreeTree {
 	Color lineColor;
 	double lineWidth;
 
+	boolean fSaveAsPng;
+	boolean fSaveAsSVG;
 	boolean fShowFlatView;
 
 	/**
@@ -174,6 +176,24 @@ public class LingTreeTree {
 
 	public void setHorizontalOffset(double dHorizontalOffset) {
 		this.dHorizontalOffset = dHorizontalOffset;
+	}
+
+	@XmlElement(name = "saveAsPng")
+	public boolean isSaveAsPng() {
+		return fSaveAsPng;
+	}
+
+	public void setSaveAsPng(boolean fSaveAsPng) {
+		this.fSaveAsPng = fSaveAsPng;
+	}
+
+	@XmlElement(name = "saveAsSVG")
+	public boolean isSaveAsSVG() {
+		return fSaveAsSVG;
+	}
+
+	public void setSaveAsSVG(boolean fSaveAsSVG) {
+		this.fSaveAsSVG = fSaveAsSVG;
 	}
 
 	@XmlElement(name = "showFlatView")

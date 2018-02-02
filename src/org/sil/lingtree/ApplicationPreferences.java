@@ -52,6 +52,8 @@ public class ApplicationPreferences {
 	static final String NON_TERMINAL_FONT_FAMILY = "nonTerminalFontFamily";
 	static final String NON_TERMINAL_FONT_SIZE = "nonTerminalFontSize";
 	static final String NON_TERMINAL_FONT_TYPE = "nonTerminalFontType";
+	static final String SAVE_AS_PNG = "saveAsPng";
+	static final String SAVE_AS_SVG = "saveAsSVG";
 	static final String SHOW_FLAT_VIEW = "showFlatView";
 	static final String SUBSCRIPT_FONT_COLOR = "subscriptFontColor";
 	static final String SUBSCRIPT_FONT_FAMILY = "subscriptFontFamily";
@@ -146,6 +148,8 @@ public class ApplicationPreferences {
 		ltTree.setInitialYCoordinate(prefs.getDouble(INITIAL_Y_COORDINATE, 10));
 		ltTree.setLexGlossGapAdjustment(prefs.getDouble(LEX_GLOSS_GAP_ADJUSTMENT, 0));
 		ltTree.setLineWidth(prefs.getDouble(LINE_WIDTH, 10));
+		ltTree.setSaveAsPng(prefs.getBoolean(SAVE_AS_PNG, false));
+		ltTree.setSaveAsSVG(prefs.getBoolean(SAVE_AS_SVG, false));
 		ltTree.setShowFlatView(prefs.getBoolean(SHOW_FLAT_VIEW, false));
 		ltTree.setVerticalGap(prefs.getDouble(VERTICAL_GAP, 20));
 
@@ -188,6 +192,8 @@ public class ApplicationPreferences {
 		setPreferencesKey(INITIAL_Y_COORDINATE, ltTree.getInitialYCoordinate());
 		setPreferencesKey(LEX_GLOSS_GAP_ADJUSTMENT, ltTree.getLexGlossGapAdjustment());
 		setPreferencesKey(LINE_WIDTH, ltTree.getLineWidth());
+		setPreferencesKey(SAVE_AS_PNG, ltTree.isSaveAsPng());
+		setPreferencesKey(SAVE_AS_SVG, ltTree.isSaveAsSVG());
 		setPreferencesKey(SHOW_FLAT_VIEW, ltTree.isShowFlatView());
 		setPreferencesKey(VERTICAL_GAP, ltTree.getVerticalGap());
 

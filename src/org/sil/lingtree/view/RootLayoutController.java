@@ -84,8 +84,8 @@ public class RootLayoutController implements Initializable {
 	private String sFileFilterDescription;
 	private String lingTreeFilterDescription;
 
-	private final String kFlatPressedStyle = "useflattreepressed";
-	private final String kFlatUnPressedStyle = "useflattreeunpressed";
+	private final String kPressedStyle = "buttonpressed";
+	private final String kUnPressedStyle = "buttonunpressed";
 
 	@FXML
 	private Button buttonToolbarFileOpen;
@@ -105,6 +105,10 @@ public class RootLayoutController implements Initializable {
 	private Button buttonToolbarUseFlatTree;
 	@FXML
 	private ToggleButton toggleButtonUseFlatTree;
+	@FXML
+	private ToggleButton toggleButtonSaveAsPng;
+	@FXML
+	private ToggleButton toggleButtonSaveAsSVG;
 
 	@FXML
 	private Tooltip tooltipToolbarFileOpen;
@@ -122,6 +126,10 @@ public class RootLayoutController implements Initializable {
 	private Tooltip tooltipToolbarDrawTree;
 	@FXML
 	private Tooltip tooltipToolbarUseFlatTree;
+	@FXML
+	private Tooltip tooltipToolbarSaveAsPng;
+	@FXML
+	private Tooltip tooltipToolbarSaveAsSVG;
 
 	@FXML
 	private MenuItem menuItemEditCopy;
@@ -133,6 +141,10 @@ public class RootLayoutController implements Initializable {
 	private MenuItem menuItemDrawTree;
 	@FXML
 	private CheckMenuItem menuItemUseFlatTree;
+	@FXML
+	private CheckMenuItem menuItemSaveAsPng;
+	@FXML
+	private CheckMenuItem menuItemSaveAsSVG;
 
 	@FXML
 	private TextArea treeDescription;
@@ -145,9 +157,17 @@ public class RootLayoutController implements Initializable {
 
 		createToolbarButtons(bundle);
 
-		toggleButtonUseFlatTree.getStyleClass().add(kFlatUnPressedStyle);
+		toggleButtonUseFlatTree.getStyleClass().add(kUnPressedStyle);
 		tooltipToolbarUseFlatTree = new Tooltip(bundle.getString("tooltip.useflattree"));
 		toggleButtonUseFlatTree.setTooltip(tooltipToolbarUseFlatTree);
+
+		toggleButtonSaveAsPng.getStyleClass().add(kUnPressedStyle);
+		tooltipToolbarSaveAsPng = new Tooltip(bundle.getString("tooltip.saveaspng"));
+		toggleButtonSaveAsPng.setTooltip(tooltipToolbarSaveAsPng);
+
+		toggleButtonSaveAsSVG.getStyleClass().add(kUnPressedStyle);
+		tooltipToolbarSaveAsSVG = new Tooltip(bundle.getString("tooltip.saveassvg"));
+		toggleButtonSaveAsSVG.setTooltip(tooltipToolbarSaveAsSVG);
 
 		treeDescription.setOnKeyReleased(new EventHandler<KeyEvent>() {
 			@Override
@@ -204,7 +224,14 @@ public class RootLayoutController implements Initializable {
 		this.ltTree = ltTree;
 		treeDescription.setText(ltTree.getDescription());
 		menuItemUseFlatTree.setSelected(ltTree.isShowFlatView());
-		setToggleButtonStyle();
+		setToggleButtonStyle(menuItemUseFlatTree, toggleButtonUseFlatTree);
+		ltTree.setShowFlatView(menuItemUseFlatTree.isSelected());
+		menuItemSaveAsPng.setSelected(ltTree.isSaveAsPng());
+		setToggleButtonStyle(menuItemSaveAsPng, toggleButtonSaveAsPng);
+		ltTree.setSaveAsPng(menuItemSaveAsPng.isSelected());
+		menuItemSaveAsSVG.setSelected(ltTree.isSaveAsSVG());
+		setToggleButtonStyle(menuItemSaveAsSVG, toggleButtonSaveAsSVG);
+		ltTree.setSaveAsSVG(menuItemSaveAsSVG.isSelected());
 	}
 
 	protected void createToolbarButtons(ResourceBundle bundle) {
@@ -291,32 +318,59 @@ public class RootLayoutController implements Initializable {
 
 	@FXML
 	private void handleMenuUseFlatTree() {
-		setToggleButtonStyle();
+		setToggleButtonStyle(menuItemUseFlatTree, toggleButtonUseFlatTree);
+		ltTree.setShowFlatView(menuItemUseFlatTree.isSelected());
 		handleDrawTree();
 	}
 
 	@FXML
 	private void handleUseFlatTree() {
 		menuItemUseFlatTree.setSelected(!menuItemUseFlatTree.isSelected());
-		setToggleButtonStyle();
+		setToggleButtonStyle(menuItemUseFlatTree, toggleButtonUseFlatTree);
+		ltTree.setShowFlatView(menuItemUseFlatTree.isSelected());
 		handleDrawTree();
 	}
 
-	private void setToggleButtonStyle() {
-		if (menuItemUseFlatTree.isSelected()) {
-			int i = toggleButtonUseFlatTree.getStyleClass().indexOf(kFlatUnPressedStyle);
+	private void setToggleButtonStyle(CheckMenuItem menuItem, ToggleButton toggleButton) {
+		if (menuItem.isSelected()) {
+			int i = toggleButton.getStyleClass().indexOf(kUnPressedStyle);
 			if (i >= 0) {
-				toggleButtonUseFlatTree.getStyleClass().remove(i);
+				toggleButton.getStyleClass().remove(i);
 			}
-			toggleButtonUseFlatTree.getStyleClass().add(kFlatPressedStyle);
+			toggleButton.getStyleClass().add(kPressedStyle);
 		} else {
-			int i = toggleButtonUseFlatTree.getStyleClass().indexOf(kFlatPressedStyle);
+			int i = toggleButton.getStyleClass().indexOf(kPressedStyle);
 			if (i >= 0) {
-				toggleButtonUseFlatTree.getStyleClass().remove(i);
+				toggleButton.getStyleClass().remove(i);
 			}
-			toggleButtonUseFlatTree.getStyleClass().add(kFlatUnPressedStyle);
+			toggleButton.getStyleClass().add(kUnPressedStyle);
 		}
-		ltTree.setShowFlatView(menuItemUseFlatTree.isSelected());
+	}
+
+	@FXML
+	private void handleMenuSaveAsPng() {
+		setToggleButtonStyle(menuItemSaveAsPng, toggleButtonSaveAsPng);
+		ltTree.setSaveAsPng(menuItemSaveAsPng.isSelected());
+	}
+
+	@FXML
+	private void handleSaveAsPng() {
+		menuItemSaveAsPng.setSelected(!menuItemSaveAsPng.isSelected());
+		setToggleButtonStyle(menuItemSaveAsPng, toggleButtonSaveAsPng);
+		ltTree.setSaveAsPng(menuItemSaveAsPng.isSelected());
+	}
+
+	@FXML
+	private void handleMenuSaveAsSVG() {
+		setToggleButtonStyle(menuItemSaveAsSVG, toggleButtonSaveAsSVG);
+		ltTree.setSaveAsSVG(menuItemSaveAsSVG.isSelected());
+	}
+
+	@FXML
+	private void handleSaveAsSVG() {
+		menuItemSaveAsSVG.setSelected(!menuItemSaveAsSVG.isSelected());
+		setToggleButtonStyle(menuItemSaveAsSVG, toggleButtonSaveAsSVG);
+		ltTree.setSaveAsSVG(menuItemSaveAsSVG.isSelected());
 	}
 
 	/**
@@ -351,6 +405,8 @@ public class RootLayoutController implements Initializable {
 			updateAllFontInfos();
 			this.treeDescription.setText(initialDescription);
 			this.menuItemUseFlatTree.setSelected(ltTree.isShowFlatView());
+			this.menuItemSaveAsPng.setSelected(ltTree.isSaveAsPng());
+			this.menuItemSaveAsSVG.setSelected(ltTree.isSaveAsSVG());
 			mainApp.updateStageTitle(fileCreated);
 		}
 	}
@@ -407,9 +463,15 @@ public class RootLayoutController implements Initializable {
 			handleSaveTreeAs();
 		}
 
-		saveTreeAsPng();
+		if (menuItemSaveAsPng.isSelected()) {
+			// make sure the tree has been drawn
+			handleDrawTree();
+			saveTreeAsPng();
+		}
 
-		saveTreeAsSVG();
+		if (menuItemSaveAsSVG.isSelected()) {
+			saveTreeAsSVG();
+		}
 	}
 
 	private void saveTreeAsPng() throws IOException {
