@@ -307,13 +307,20 @@ public class RootLayoutController implements Initializable {
 	@FXML
 	private void handleDrawTree() {
 		drawingArea.getChildren().clear();
+		TreeDrawer drawer = drawTreePrep();
+		drawer.draw(drawingArea);
+	}
+
+	private TreeDrawer drawTreePrep() {
 		sDescription = treeDescription.getText();
 		ltTree = TreeBuilder.parseAString(sDescription, ltTree);
 		mainApp.getBackEndProvider().setLingTree(ltTree);
+		ltTree.setSaveAsPng(menuItemSaveAsPng.isSelected());
+		ltTree.setSaveAsSVG(menuItemSaveAsSVG.isSelected());
 		ltTree.setShowFlatView(menuItemUseFlatTree.isSelected());
 		ltTree.setDescription(sDescription);
 		TreeDrawer drawer = new TreeDrawer(ltTree);
-		drawer.draw(drawingArea);
+		return drawer;
 	}
 
 	@FXML
@@ -379,7 +386,7 @@ public class RootLayoutController implements Initializable {
 	@FXML
 	private void handleExit() {
 		// handleSaveProject();
-		System.out.println("exiting");
+		//System.out.println("exiting");
 		System.exit(0);
 	}
 
@@ -505,12 +512,7 @@ public class RootLayoutController implements Initializable {
 			int len = sFilePath.length();
 			sFilePath = sFilePath.substring(0, len - 4);
 		}
-		sDescription = treeDescription.getText();
-		ltTree = TreeBuilder.parseAString(sDescription, ltTree);
-		mainApp.getBackEndProvider().setLingTree(ltTree);
-		ltTree.setShowFlatView(menuItemUseFlatTree.isSelected());
-		ltTree.setDescription(sDescription);
-		TreeDrawer drawer = new TreeDrawer(ltTree);
+		TreeDrawer drawer = drawTreePrep();
 		StringBuilder sb = drawer.drawAsSVG();
 		Writer out = new BufferedWriter(new OutputStreamWriter(
 			    new FileOutputStream(sFilePath + ".svg"), "UTF-8"));
