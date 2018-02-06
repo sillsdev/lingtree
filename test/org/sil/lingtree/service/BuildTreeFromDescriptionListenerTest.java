@@ -22,6 +22,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.sil.lingtree.descriptionparser.DescriptionConstants;
 import org.sil.lingtree.descriptionparser.DescriptionLexer;
 import org.sil.lingtree.descriptionparser.DescriptionParser;
 import org.sil.lingtree.model.LingTreeNode;
@@ -43,7 +44,8 @@ public class BuildTreeFromDescriptionListenerTest extends ServiceBaseTest {
 		LingTreeTree origTree = new LingTreeTree();
 		LingTreeTree ltTree = TreeBuilder.parseAString("(NP (\\L Juan (\\G John)))", origTree);
 		LingTreeNode node = ltTree.getRootNode();
-		checkFontInfo(node, node.getContentTextBox(), "Times New Roman", 12.0, "Regular", Color.BLACK);
+		checkFontInfo(node, node.getContentTextBox(), "Times New Roman", 12.0, "Regular",
+				Color.BLACK);
 		List<LingTreeNode> daughters = node.getDaughters();
 		node = daughters.get(0);
 		checkFontInfo(node, node.getContentTextBox(), "Charis SIL", 12.0, "Regular", Color.BLUE);
@@ -54,23 +56,78 @@ public class BuildTreeFromDescriptionListenerTest extends ServiceBaseTest {
 		// subscript and superscript
 		ltTree = TreeBuilder.parseAString("(NP/si (N/S'))", ltTree);
 		node = ltTree.getRootNode();
-		checkFontInfo(node, node.getContentTextBox(), "Times New Roman", 12.0, "Regular", Color.BLACK);
-		checkFontInfo(node, node.getSubscriptTextBox(), "Times New Roman", 9.0, "Italic", Color.BROWN);
+		checkFontInfo(node, node.getContentTextBox(), "Times New Roman", 12.0, "Regular",
+				Color.BLACK);
+		checkFontInfo(node, node.getSubscriptTextBox(), "Times New Roman", 9.0, "Italic",
+				Color.BROWN);
 		daughters = node.getDaughters();
 		node = daughters.get(0);
-		checkFontInfo(node, node.getContentTextBox(), "Times New Roman", 12.0, "Regular", Color.BLACK);
+		checkFontInfo(node, node.getContentTextBox(), "Times New Roman", 12.0, "Regular",
+				Color.BLACK);
 		checkFontInfo(node, node.getSuperscriptTextBox(), "Times New Roman", 9.0, "Bold", Color.RED);
 	}
 
-	private void checkFontInfo(LingTreeNode node, Text textBox, String fontFamily,
-			double fontSize, String fontType, Color color) {
+	private void checkFontInfo(LingTreeNode node, Text textBox, String fontFamily, double fontSize,
+			String fontType, Color color) {
 		Font font = textBox.getFont();
 		assertEquals(fontFamily, font.getFamily());
 		assertEquals(fontSize, font.getSize(), 0.0);
 		assertEquals(fontType, font.getStyle());
 		assertEquals(color, textBox.getFill());
 	}
-	
+
+	@Test
+	public void buildTreeFailuresTest() {
+		LingTreeTree origTree = new LingTreeTree();
+		LingTreeTree ltTree = TreeBuilder.parseAString("(S (NP) ((VP))", origTree);
+		checkErrorValues(origTree, ltTree, 1, 1, 12, DescriptionConstants.MISSING_CLOSING_PAREN);
+
+		ltTree = TreeBuilder.parseAString("(S (NP (VP))", origTree);
+		checkErrorValues(origTree, ltTree, 1, 1, 10, DescriptionConstants.MISSING_CLOSING_PAREN);
+
+		ltTree = TreeBuilder.parseAString("(S (NP ((VP))", origTree);
+		checkErrorValues(origTree, ltTree, 2, 1, 11, DescriptionConstants.MISSING_CLOSING_PAREN);
+
+		ltTree = TreeBuilder.parseAString("S (NP (VP))", origTree);
+		checkErrorValues(origTree, ltTree, 1, 1, 11, DescriptionConstants.MISSING_OPENING_PAREN);
+
+		ltTree = TreeBuilder.parseAString("(S (NP) VP))", origTree);
+		checkErrorValues(origTree, ltTree, 1, 1, 7, "no viable alternative at input '(S (NP) VP'");
+
+		ltTree = TreeBuilder.parseAString("(S NP) (V) (VP))", origTree);
+		checkErrorValues(origTree, ltTree, 1, 1, 8, DescriptionConstants.MISSING_OPENING_PAREN);
+
+		String sBad = "(S) (NP (N-bar/S sup' (N(\\L Juan (\\G John)))))\n" +
+				"(VP (V/ssub (\\T\\L duerme (\\G sleeps)))))";
+		ltTree = TreeBuilder.parseAString(sBad, origTree);
+		checkErrorValues(origTree, ltTree, 1, 1, 5, DescriptionConstants.MISSING_OPENING_PAREN);
+		String sDescriptionWithErrorLocationMarked = "(S) ( << HERE >> NP (N-bar/S sup' (N(\\L Juan (\\G John)))))\n" +
+				"(VP (V/ssub (\\T\\L duerme (\\G sleeps)))))";
+		assertEquals(sDescriptionWithErrorLocationMarked, TreeBuilder.getMarkedDescription(" << HERE >> "));
+
+		sBad = "(S (NP) (N-bar/S sup' (N(\\L Juan (\\G John)))))\n" +
+				"(VP (V/ssub (\\T\\L duerme (\\G sleeps)))))";
+		ltTree = TreeBuilder.parseAString(sBad, origTree);
+		checkErrorValues(origTree, ltTree, 1, 2, 1, DescriptionConstants.MISSING_OPENING_PAREN);
+		sDescriptionWithErrorLocationMarked = "(S (NP) (N-bar/S sup' (N(\\L Juan (\\G John)))))\n" +
+				" << HERE >> (VP (V/ssub (\\T\\L duerme (\\G sleeps)))))";
+		assertEquals(sDescriptionWithErrorLocationMarked, TreeBuilder.getMarkedDescription(" << HERE >> "));
+	}
+
+	private void checkErrorValues(LingTreeTree origTree, LingTreeTree ltTree,
+			int expectedNumErrors, int expectedLineNumber, int expectedCharPos,
+			String sExpectedErrorMessage) {
+		int numErrors = TreeBuilder.getNumberOfErrors();
+		int iLineNum = TreeBuilder.getLineNumberOfError();
+		int iCharPos = TreeBuilder.getCharacterPositionInLineOfError();
+		String sErrorMessage = TreeBuilder.getErrorMessage();
+		assertEquals(expectedNumErrors, numErrors);
+		assertEquals(expectedLineNumber, iLineNum);
+		assertEquals(expectedCharPos, iCharPos);
+		assertEquals(sExpectedErrorMessage, sErrorMessage);
+		assertEquals(ltTree, origTree);
+	}
+
 	@Test
 	public void buildTreesTest() {
 		// Basic example
@@ -84,14 +141,16 @@ public class BuildTreeFromDescriptionListenerTest extends ServiceBaseTest {
 		LingTreeNode node1 = daughters.get(0);
 		checkNodeResult(node1, "NP", "", "", false, false, NodeType.NonTerminal, 2, 0);
 		checkNodeResult(node1.getMother(), "S", "", "", false, false, NodeType.NonTerminal, 1, 2);
-		checkNodeResult(node1.getRightSister(), "VP", "", "", false, false, NodeType.NonTerminal, 2, 0);
+		checkNodeResult(node1.getRightSister(), "VP", "", "", false, false, NodeType.NonTerminal,
+				2, 0);
 		LingTreeNode node2 = daughters.get(1);
 		checkNodeResult(node2, "VP", "", "", false, false, NodeType.NonTerminal, 2, 0);
 		checkNodeResult(node2.getMother(), "S", "", "", false, false, NodeType.NonTerminal, 1, 2);
 		assertNull(node2.getRightSister());
-		
+
 		// lex/gloss example
-		ltTree = TreeBuilder.parseAString("(S (NP (\\L Juan (\\G John))) (VP (V (\\L duerme (\\G sleeps)))))", origTree);
+		ltTree = TreeBuilder.parseAString(
+				"(S (NP (\\L Juan (\\G John))) (VP (V (\\L duerme (\\G sleeps)))))", origTree);
 		// root node
 		rootNode = ltTree.getRootNode();
 		checkNodeResult(rootNode, "S", "", "", false, false, NodeType.NonTerminal, 1, 2);
@@ -101,7 +160,8 @@ public class BuildTreeFromDescriptionListenerTest extends ServiceBaseTest {
 		node1 = daughters.get(0);
 		checkNodeResult(node1, "NP", "", "", false, false, NodeType.NonTerminal, 2, 1);
 		checkNodeResult(node1.getMother(), "S", "", "", false, false, NodeType.NonTerminal, 1, 2);
-		checkNodeResult(node1.getRightSister(), "VP", "", "", false, false, NodeType.NonTerminal, 2, 1);
+		checkNodeResult(node1.getRightSister(), "VP", "", "", false, false, NodeType.NonTerminal,
+				2, 1);
 		node2 = daughters.get(1);
 		checkNodeResult(node2, "VP", "", "", false, false, NodeType.NonTerminal, 2, 1);
 		checkNodeResult(node1.getMother(), "S", "", "", false, false, NodeType.NonTerminal, 1, 2);
@@ -132,7 +192,7 @@ public class BuildTreeFromDescriptionListenerTest extends ServiceBaseTest {
 		checkNodeResult(node1, "sleeps", "", "", false, false, NodeType.Gloss, 5, 0);
 		checkNodeResult(node1.getMother(), "duerme", "", "", false, false, NodeType.Lex, 4, 1);
 		assertNull(node1.getRightSister());
-		
+
 		// triangle example
 		ltTree = TreeBuilder.parseAString("(NP (\\T all the King’s men))", origTree);
 		rootNode = ltTree.getRootNode();
@@ -141,12 +201,16 @@ public class BuildTreeFromDescriptionListenerTest extends ServiceBaseTest {
 		assertNull(rootNode.getRightSister());
 		daughters = rootNode.getDaughters();
 		node1 = daughters.get(0);
-		checkNodeResult(node1, "all the King’s men", "", "", false, true, NodeType.NonTerminal, 2, 0);
+		checkNodeResult(node1, "all the King’s men", "", "", false, true, NodeType.NonTerminal, 2,
+				0);
 		checkNodeResult(node1.getMother(), "NP", "", "", false, false, NodeType.NonTerminal, 1, 1);
 		assertNull(node1.getRightSister());
-		
+
 		// omit lines example
-		ltTree = TreeBuilder.parseAString("((\\O σ (O (\\L t)) (N (R (\\L e)))) (\\O σ (O (\\L p)) (N (R (\\L i)) (C (\\L k)))))", origTree);
+		ltTree = TreeBuilder
+				.parseAString(
+						"((\\O σ (O (\\L t)) (N (R (\\L e)))) (\\O σ (O (\\L p)) (N (R (\\L i)) (C (\\L k)))))",
+						origTree);
 		// root node
 		rootNode = ltTree.getRootNode();
 		checkNodeResult(rootNode, "", "", "", false, false, NodeType.NonTerminal, 1, 2);
@@ -156,7 +220,8 @@ public class BuildTreeFromDescriptionListenerTest extends ServiceBaseTest {
 		node1 = daughters.get(0);
 		checkNodeResult(node1, "σ", "", "", true, false, NodeType.NonTerminal, 2, 2);
 		checkNodeResult(node1.getMother(), "", "", "", false, false, NodeType.NonTerminal, 1, 2);
-		checkNodeResult(node1.getRightSister(), "σ", "", "", true, false, NodeType.NonTerminal, 2, 2);
+		checkNodeResult(node1.getRightSister(), "σ", "", "", true, false, NodeType.NonTerminal, 2,
+				2);
 		node2 = daughters.get(1);
 		checkNodeResult(node2, "σ", "", "", true, false, NodeType.NonTerminal, 2, 2);
 		checkNodeResult(node2.getMother(), "", "", "", false, false, NodeType.NonTerminal, 1, 2);
@@ -193,9 +258,10 @@ public class BuildTreeFromDescriptionListenerTest extends ServiceBaseTest {
 		checkNodeResult(node3, "C", "", "", false, false, NodeType.NonTerminal, 4, 1);
 		node3 = node3.getDaughters().get(0);
 		checkNodeResult(node3, "k", "", "", false, false, NodeType.Lex, 5, 0);
-		
+
 		// subscript and superscript example
-		ltTree = TreeBuilder.parseAString("(S (NP/s1/S' (N (dogs))) (VP (V (chase)) (NP/S'/s2 (N (cats)))))", origTree);
+		ltTree = TreeBuilder.parseAString(
+				"(S (NP/s1/S' (N (dogs))) (VP (V (chase)) (NP/S'/s2 (N (cats)))))", origTree);
 		// root node
 		rootNode = ltTree.getRootNode();
 		checkNodeResult(rootNode, "S", "", "", false, false, NodeType.NonTerminal, 1, 2);
@@ -227,9 +293,10 @@ public class BuildTreeFromDescriptionListenerTest extends ServiceBaseTest {
 		daughters = node3.getDaughters();
 		node3 = daughters.get(0);
 		checkNodeResult(node3, "cats", "", "", false, false, NodeType.NonTerminal, 5, 0);
-		
+
 		// backslash and forward slash as text node content
-		ltTree = TreeBuilder.parseAString("(S (/S'/Comp (N (do\\gs))) (VP (V (chase)) (/s2 (N (cats)))))", origTree);
+		ltTree = TreeBuilder.parseAString(
+				"(S (/S'/Comp (N (do\\gs))) (VP (V (chase)) (/s2 (N (cats)))))", origTree);
 		// root node
 		rootNode = ltTree.getRootNode();
 		checkNodeResult(rootNode, "S", "", "", false, false, NodeType.NonTerminal, 1, 2);
@@ -261,11 +328,12 @@ public class BuildTreeFromDescriptionListenerTest extends ServiceBaseTest {
 		daughters = node3.getDaughters();
 		node3 = daughters.get(0);
 		checkNodeResult(node3, "cats", "", "", false, false, NodeType.NonTerminal, 5, 0);
-		
+
 	}
 
 	private void checkNodeResult(LingTreeNode node, String sContent, String sSubscript,
-			String sSuperscript, boolean fOmitLine, boolean fTriangle, NodeType nodeType, int iLevel, int iNumDaughters) {
+			String sSuperscript, boolean fOmitLine, boolean fTriangle, NodeType nodeType,
+			int iLevel, int iNumDaughters) {
 		assertNotNull(node);
 		assertEquals(sContent, node.getContent());
 		assertEquals(sSubscript, node.getSubscript());

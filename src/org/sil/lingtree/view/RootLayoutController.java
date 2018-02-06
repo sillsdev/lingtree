@@ -25,6 +25,7 @@ import javax.imageio.ImageIO;
 
 import org.controlsfx.dialog.FontSelectorDialogWithColor;
 import org.sil.lingtree.MainApp;
+import org.sil.lingtree.descriptionparser.DescriptionConstants;
 import org.sil.lingtree.model.FontInfo;
 import org.sil.lingtree.model.GlossFontInfo;
 import org.sil.lingtree.model.LexFontInfo;
@@ -50,6 +51,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.ChoiceDialog;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.ToggleButton;
@@ -308,12 +310,21 @@ public class RootLayoutController implements Initializable {
 	private void handleDrawTree() {
 		drawingArea.getChildren().clear();
 		TreeDrawer drawer = drawTreePrep();
-		drawer.draw(drawingArea);
+		if (drawer == null) {
+			// there was an error in the description; show it
+			reportErrorInDescriptionMessage();
+
+		} else {
+			drawer.draw(drawingArea);
+		}
 	}
 
 	private TreeDrawer drawTreePrep() {
 		sDescription = treeDescription.getText();
 		ltTree = TreeBuilder.parseAString(sDescription, ltTree);
+		if (TreeBuilder.getNumberOfErrors() > 0) {
+			return null;
+		}
 		mainApp.getBackEndProvider().setLingTree(ltTree);
 		ltTree.setSaveAsPng(menuItemSaveAsPng.isSelected());
 		ltTree.setSaveAsSVG(menuItemSaveAsSVG.isSelected());
@@ -321,6 +332,56 @@ public class RootLayoutController implements Initializable {
 		ltTree.setDescription(sDescription);
 		TreeDrawer drawer = new TreeDrawer(ltTree);
 		return drawer;
+	}
+
+	private void reportErrorInDescriptionMessage() {
+		String sSyntaxErrorMessage = bundle.getString("descriptionsyntaxerror.unknown");
+
+		switch (TreeBuilder.getErrorMessage()) {
+		case DescriptionConstants.MISSING_CLOSING_PAREN:
+			sSyntaxErrorMessage = bundle.getString("descriptionsyntaxerror.missing_closing_paren");
+			break;
+
+		case DescriptionConstants.MISSING_OPENING_PAREN:
+			sSyntaxErrorMessage = bundle.getString("descriptionsyntaxerror.missing_opening_paren");
+			break;
+
+		case DescriptionConstants.TOO_MANY_lINE_TYPES:
+			sSyntaxErrorMessage = bundle.getString("descriptionsyntaxerror.too_many_line_types");
+			break;
+
+		case DescriptionConstants.TOO_MANY_NODE_TYPES:
+			sSyntaxErrorMessage = bundle.getString("descriptionsyntaxerror.too_many_node_types");
+			break;
+
+		default:
+			System.out.println("error was: " + TreeBuilder.getErrorMessage());
+			System.out.println("number of errors was: " + TreeBuilder.getNumberOfErrors());
+			System.out.println("line number was: " + TreeBuilder.getLineNumberOfError());
+			System.out.println("character position was: "
+					+ TreeBuilder.getCharacterPositionInLineOfError());
+			break;
+		}
+		Label message = new Label(buildErrorMessage(sSyntaxErrorMessage));
+		message.setTextFill(new Color(1, 0, 0, 1));
+		drawingArea.getChildren().clear();
+		drawingArea.getChildren().add(message);
+	}
+
+	private String buildErrorMessage(String sSyntaxErrorMessage) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(bundle.getString("descriptionsyntaxerror.errorindescription"));
+		sb.append(sSyntaxErrorMessage);
+		String sMsgDetectedAt = bundle.getString("descriptionsyntaxerror.detectedat");
+		int iLine = TreeBuilder.getLineNumberOfError();
+		int iPos = TreeBuilder.getCharacterPositionInLineOfError();
+		String sMessage = sMsgDetectedAt.replace("{0}", String.valueOf(iLine)).replace("{1}",
+				String.valueOf(iPos));
+		sb.append(sMessage);
+		sb.append("\n\n");
+		String sHere = " " + bundle.getString("descriptionsyntaxerror.here");
+		sb.append(TreeBuilder.getMarkedDescription(sHere));
+		return sb.toString();
 	}
 
 	@FXML
@@ -386,7 +447,7 @@ public class RootLayoutController implements Initializable {
 	@FXML
 	private void handleExit() {
 		// handleSaveProject();
-		//System.out.println("exiting");
+		// System.out.println("exiting");
 		System.exit(0);
 	}
 
@@ -459,6 +520,7 @@ public class RootLayoutController implements Initializable {
 	/**
 	 * Saves the file to the language project file that is currently open. If
 	 * there is no open file, the "save as" dialog is shown.
+	 *
 	 * @throws IOException
 	 */
 	@FXML
@@ -473,7 +535,9 @@ public class RootLayoutController implements Initializable {
 		if (menuItemSaveAsPng.isSelected()) {
 			// make sure the tree has been drawn
 			handleDrawTree();
-			saveTreeAsPng();
+			if (TreeBuilder.getNumberOfErrors() == 0) {
+				saveTreeAsPng();
+			}
 		}
 
 		if (menuItemSaveAsSVG.isSelected()) {
@@ -513,14 +577,16 @@ public class RootLayoutController implements Initializable {
 			sFilePath = sFilePath.substring(0, len - 4);
 		}
 		TreeDrawer drawer = drawTreePrep();
-		StringBuilder sb = drawer.drawAsSVG();
-		Writer out = new BufferedWriter(new OutputStreamWriter(
-			    new FileOutputStream(sFilePath + ".svg"), "UTF-8"));
+		if (drawer != null) {
+			StringBuilder sb = drawer.drawAsSVG();
+			Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(sFilePath
+					+ ".svg"), "UTF-8"));
 			try {
-			    out.write(sb.toString());
+				out.write(sb.toString());
 			} finally {
-			    out.close();
+				out.close();
 			}
+		}
 	}
 
 	/**
