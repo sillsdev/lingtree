@@ -61,6 +61,8 @@
                 </Menu>
 					<Menu mnemonicParsing="true" text="%menu.settings">
 						<items>
+							<CheckMenuItem fx:id="menuItemDrawAsType" mnemonicParsing="true" onAction="#handleMenuDrawAsType" text="%menu.drawastype" />
+							<SeparatorMenuItem />
 							<MenuItem mnemonicParsing="true" onAction="#handleSaveTreeParameters" text="%menu.savetreeparameters" />
 							<SeparatorMenuItem />
 							<MenuItem mnemonicParsing="true" onAction="#handleChangeInterfaceLanguage" text="%menu.changeinterfacelanguage" />

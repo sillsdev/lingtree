@@ -147,6 +147,8 @@ public class RootLayoutController implements Initializable {
 	private CheckMenuItem menuItemSaveAsPng;
 	@FXML
 	private CheckMenuItem menuItemSaveAsSVG;
+	@FXML
+	private CheckMenuItem menuItemDrawAsType;
 
 	@FXML
 	private TextArea treeDescription;
@@ -174,22 +176,43 @@ public class RootLayoutController implements Initializable {
 		treeDescription.setOnKeyReleased(new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent event) {
+
 				if (event.isShiftDown()) {
 					switch (event.getCode()) {
 					case DIGIT0:
 						processRightParenthesis();
+						break;
+					case DIGIT9:
+						insertMatchingClosingParenthesis();
 						break;
 					default:
 						break;
 					}
 				} else {
 					switch (event.getCode()) {
+					case LEFT_PARENTHESIS:
+						insertMatchingClosingParenthesis();
+						break;
 					case RIGHT_PARENTHESIS:
 						processRightParenthesis();
 						break;
 					default:
 						break;
 					}
+				}
+
+				if (menuItemDrawAsType.isSelected()) {
+					handleDrawTree();
+				}
+			}
+
+			private void insertMatchingClosingParenthesis() {
+				if (menuItemDrawAsType.isSelected()) {
+					int i = treeDescription.getCaretPosition();
+					String contents = treeDescription.getText();
+					contents = contents.substring(0, i) + ")" + contents.substring(i);
+					treeDescription.setText(contents);
+					treeDescription.positionCaret(i);
 				}
 			}
 		});
@@ -209,6 +232,7 @@ public class RootLayoutController implements Initializable {
 	public void setMainApp(MainApp mainApp) {
 		this.mainApp = mainApp;
 		this.applicationPreferences = mainApp.getApplicationPreferences();
+		menuItemDrawAsType.setSelected(applicationPreferences.getDrawAsType());
 	}
 
 	public Locale getCurrentLocale() {
@@ -439,6 +463,11 @@ public class RootLayoutController implements Initializable {
 		menuItemSaveAsSVG.setSelected(!menuItemSaveAsSVG.isSelected());
 		setToggleButtonStyle(menuItemSaveAsSVG, toggleButtonSaveAsSVG);
 		ltTree.setSaveAsSVG(menuItemSaveAsSVG.isSelected());
+	}
+
+	@FXML
+	private void handleMenuDrawAsType() {
+		applicationPreferences.setDrawAsType(menuItemDrawAsType.isSelected());
 	}
 
 	/**

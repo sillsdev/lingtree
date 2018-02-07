@@ -39,6 +39,7 @@ public class ApplicationPreferencesTest {
 	File fileLastUsed;
 	String languageLastUsed;
 	Stage windowStageLastUsed;
+	boolean drawAsTypeLastUsed;
 
 	LingTreeTree ltTreeLastUsed;
 	ColorXmlAdaptor adaptor;
@@ -49,6 +50,7 @@ public class ApplicationPreferencesTest {
 		applicationPreferences = new ApplicationPreferences(this);
 		fileLastUsed = applicationPreferences.getLastOpenedFile();
 		languageLastUsed = applicationPreferences.getLastLocaleLanguage();
+		drawAsTypeLastUsed = applicationPreferences.getDrawAsType();
 		applicationPreferences.setLastOpenedFilePath("last opened file");
 		applicationPreferences.setLastLocaleLanguage("en");
 		windowStageLastUsed = new Stage();
@@ -62,6 +64,7 @@ public class ApplicationPreferencesTest {
 	public void tearDown() throws Exception {
 		applicationPreferences.setLastOpenedFilePath(fileLastUsed);
 		applicationPreferences.setLastLocaleLanguage(languageLastUsed);
+		applicationPreferences.setDrawAsType(drawAsTypeLastUsed);
 		applicationPreferences.setLastWindowParameters(ApplicationPreferences.LAST_WINDOW, windowStageLastUsed);
 		applicationPreferences.setSavedTreeParameters(ltTreeLastUsed);
 	}
@@ -90,6 +93,13 @@ public class ApplicationPreferencesTest {
 		assertEquals("locale language", "es", applicationPreferences.getLastLocaleLanguage());
 	}
 	
+	@Test
+	public void drawAsType() {
+		assertEquals("draw as type", false, applicationPreferences.getDrawAsType());
+		applicationPreferences.setDrawAsType(true);
+		assertEquals("draw as type", true, applicationPreferences.getDrawAsType());
+	}
+
 	@Test
 	public void lastMainWindow() {
 		checkWindowParameters(560., 860., 20., 21., ApplicationPreferences.LAST_WINDOW);

@@ -19,6 +19,7 @@ public class ApplicationPreferences {
 	static final String LAST_OPENED_FILE_PATH = "lastOpenedFilePath";
 	static final String LAST_OPENED_DIRECTORY_PATH = "lastOpenedDirectoryPath";
 	static final String LAST_LOCALE_LANGUAGE = "lastLocaleLanguage";
+	static final String DRAW_AS_TYPE = "drawastype";
 	// Not trying to be anglo-centric, but we have to start with something...
 	static final String DEFAULT_LOCALE_LANGUAGE = "en";
 
@@ -31,7 +32,7 @@ public class ApplicationPreferences {
 	// Window parameters for main window and various dialogs
 	public static final String LAST_WINDOW = "lastWindow";
 
-	// Tree paramters to remember
+	// Tree parameters to remember
 	static final String BACKGROUND_COLOR = "backgroundColor";
 	static final String GLOSS_FONT_COLOR = "glossFontColor";
 	static final String GLOSS_FONT_FAMILY = "glossFontFamily";
@@ -113,6 +114,14 @@ public class ApplicationPreferences {
 
 	public void setLastOpenedDirectoryPath(String directoryPath) {
 		setPreferencesKey(LAST_OPENED_DIRECTORY_PATH, directoryPath);
+	}
+
+	public boolean getDrawAsType() {
+		return prefs.getBoolean(DRAW_AS_TYPE, false);
+	}
+
+	public void setDrawAsType(boolean fDrawAsType) {
+		setPreferencesKey(DRAW_AS_TYPE, fDrawAsType);
 	}
 
 	public Stage getLastWindowParameters(String sWindow, Stage stage, Double defaultHeight,
