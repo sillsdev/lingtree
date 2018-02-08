@@ -210,7 +210,7 @@ public class RootLayoutController implements Initializable {
 				if (menuItemDrawAsType.isSelected()) {
 					int i = treeDescription.getCaretPosition();
 					String contents = treeDescription.getText();
-					contents = contents.substring(0, i) + ")" + contents.substring(i);
+					contents = contents.substring(0, i) + " )" + contents.substring(i);
 					treeDescription.setText(contents);
 					treeDescription.positionCaret(i);
 				}
