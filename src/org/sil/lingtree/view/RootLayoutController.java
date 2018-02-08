@@ -181,11 +181,11 @@ public class RootLayoutController implements Initializable {
 				if (event.isShiftDown()) {
 					switch (event.getCode()) {
 					case DIGIT0:
-						processRightParenthesis();
+						TreeDescriptionUIService.processRightParenthesis(treeDescription, bundle, mainApp.getNewMainIconImage());
 						break;
 					case DIGIT9:
 						insertMatchingClosingParenthesis();
-						processLeftParenthesis();
+						TreeDescriptionUIService.processLeftParenthesis(treeDescription, bundle, mainApp.getNewMainIconImage());
 						break;
 					default:
 						break;
@@ -194,10 +194,10 @@ public class RootLayoutController implements Initializable {
 					switch (event.getCode()) {
 					case LEFT_PARENTHESIS:
 						insertMatchingClosingParenthesis();
-						processLeftParenthesis();
+						TreeDescriptionUIService.processLeftParenthesis(treeDescription, bundle, mainApp.getNewMainIconImage());
 						break;
 					case RIGHT_PARENTHESIS:
-						processRightParenthesis();
+						TreeDescriptionUIService.processRightParenthesis(treeDescription, bundle, mainApp.getNewMainIconImage());
 						break;
 					default:
 						break;
@@ -664,78 +664,6 @@ public class RootLayoutController implements Initializable {
 		}
 	}
 
-	private void processRightParenthesis() {
-		int iRightParenthesis = treeDescription.getCaretPosition();
-		int iLeftParenthesis = findMatchingLeftParenthesisAndHighlightIt(iRightParenthesis);
-		//treeDescription.positionCaret(iRightParenthesis+7);
-		if (iLeftParenthesis > -1) {
-			// sleep for 750 milliseconds and then reset the caret
-			Task<Void> timer = new Task<Void>() {
-				@Override
-				protected Void call() throws Exception {
-					try {
-						Thread.sleep(750);
-					} catch (InterruptedException e) {
-					}
-					return null;
-				}
-			};
-			timer.setOnSucceeded(event -> removeMatchingLeftParenthesisHighlightAndRestoreCaret(
-					iLeftParenthesis, iRightParenthesis));
-			new Thread(timer).start();
-		}
-	}
-
-	private Object removeMatchingLeftParenthesisHighlightAndRestoreCaret(int iLeftParenthesis,
-			int iRightParenthesis) {
-		//treeDescription.replaceText(iLeftParenthesis, iLeftParenthesis+7, "(");
-		treeDescription.positionCaret(iRightParenthesis);
-
-		return null;
-	}
-
-	// TODO: when we get rtf working, highlight some other way and we may not need to
-	// return an integer here...
-	private int findMatchingLeftParenthesisAndHighlightIt(int iRightParenthesis) {
-		int iIndex;
-		String sDescription = treeDescription.getText().substring(0, iRightParenthesis - 1);
-		int iCloseParen = 0;
-		iIndex = iRightParenthesis - 2;
-		while (iIndex >= 0) {
-			if (sDescription.charAt(iIndex) == ')') {
-				iCloseParen++;
-			} else if (sDescription.charAt(iIndex) == '(') {
-				if (iCloseParen == 0) {
-					break;
-				} else {
-					iCloseParen--;
-				}
-			}
-			iIndex--;
-		}
-		if (iIndex >= 0) {
-			treeDescription.positionCaret(iIndex);
-			treeDescription.selectForward();
-			//treeDescription.replaceSelection("-->(<--");
-			return iIndex;
-		} else {
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.setTitle(MainApp.kApplicationTitle);
-			alert.setHeaderText(bundle.getString("error.nomatchingopeningparenthesis"));
-			alert.setContentText(bundle.getString("error.missingopenparenthesis"));
-
-			Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-			stage.getIcons().add(mainApp.getNewMainIconImage());
-
-			alert.showAndWait();
-		}
-		// rtbTreeDescription.Select(Math.max(0, iCurrent - 1), 1);
-		// rtbTreeDescription.SelectionFont = m_fntSynTagmeme;
-		// rtbTreeDescription.SelectionColor = m_clrSynTagmeme;
-		// rtbTreeDescription.Select(iCurrent, 0);
-		return -1;
-	}
-
 	private void insertMatchingClosingParenthesis() {
 		if (menuItemDrawAsType.isSelected()) {
 			int i = treeDescription.getCaretPosition();
@@ -744,79 +672,6 @@ public class RootLayoutController implements Initializable {
 			treeDescription.setText(contents);
 			treeDescription.positionCaret(i);
 		}
-	}
-
-	private void processLeftParenthesis() {
-		int iLeftParenthesis = treeDescription.getCaretPosition();
-		int iRightParenthesis = findMatchingRightParenthesisAndHighlightIt(iLeftParenthesis);
-		//treeDescription.positionCaret(iRightParenthesis+7);
-		if (iRightParenthesis > -1) {
-			// sleep for 750 milliseconds and then reset the caret
-			Task<Void> timer = new Task<Void>() {
-				@Override
-				protected Void call() throws Exception {
-					try {
-						Thread.sleep(750);
-					} catch (InterruptedException e) {
-					}
-					return null;
-				}
-			};
-			timer.setOnSucceeded(event -> removeMatchingRightParenthesisHighlightAndRestoreCaret(
-					iLeftParenthesis, iRightParenthesis));
-			new Thread(timer).start();
-		}
-	}
-
-	private Object removeMatchingRightParenthesisHighlightAndRestoreCaret(int iLeftParenthesis,
-			int iRightParenthesis) {
-		//treeDescription.replaceText(iLeftParenthesis, iLeftParenthesis+7, "(");
-		treeDescription.positionCaret(iLeftParenthesis);
-
-		return null;
-	}
-
-	// TODO: when we get rtf working, highlight some other way and we may not need to
-	// return an integer here...
-	private int findMatchingRightParenthesisAndHighlightIt(int iLeftParenthesis) {
-		int iIndex;
-		String sDescription = treeDescription.getText();
-		int iEnd = sDescription.length();
-		int iOpenParen = 0;
-		iIndex = iLeftParenthesis;
-		while (iIndex <= iEnd) {
-			if (sDescription.charAt(iIndex) == '(') {
-				iOpenParen++;
-			} else if (sDescription.charAt(iIndex) == ')') {
-				if (iOpenParen == 0) {
-					break;
-				} else {
-					iOpenParen--;
-				}
-			}
-			iIndex++;
-		}
-		if (iIndex >= 0) {
-			treeDescription.positionCaret(iIndex);
-			treeDescription.selectForward();
-			//treeDescription.replaceSelection("-->(<--");
-			return iIndex;
-		} else {
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.setTitle(MainApp.kApplicationTitle);
-			alert.setHeaderText(bundle.getString("error.nomatchingopeningparenthesis"));
-			alert.setContentText(bundle.getString("error.missingopenparenthesis"));
-
-			Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-			stage.getIcons().add(mainApp.getNewMainIconImage());
-
-			alert.showAndWait();
-		}
-		// rtbTreeDescription.Select(Math.max(0, iCurrent - 1), 1);
-		// rtbTreeDescription.SelectionFont = m_fntSynTagmeme;
-		// rtbTreeDescription.SelectionColor = m_clrSynTagmeme;
-		// rtbTreeDescription.Select(iCurrent, 0);
-		return -1;
 	}
 
 	protected String tryToGetDefaultDirectoryPath() {
