@@ -285,9 +285,8 @@ public class TreeDrawer {
 //				"{1}", pixelsToMM(ltTree.getYSize()) + sMM));
 		sb.append(Constants.SVG_HEADER.replace("{0}", String.valueOf(ltTree.getXSize())).replace(
 				"{1}", String.valueOf(ltTree.getYSize())));
+		sb.append(Constants.SVG_BACKGROUND_COLOR.replace("{0}", StringUtilities.toRGBCode(ltTree.getBackgroundColor())));
 		drawNodesAsSVG(node, sb);
-		// TODO: set background color: pane.setStyle("-fx-background-color:" +
-		// StringUtilities.toRGBCode(ltTree.getBackgroundColor()) + ";");
 		sb.append(Constants.SVG_END_ELEMENT);
 		return sb;
 	}
