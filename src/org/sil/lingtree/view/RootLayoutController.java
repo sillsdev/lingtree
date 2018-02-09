@@ -50,6 +50,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Label;
@@ -81,6 +82,7 @@ public class RootLayoutController implements Initializable {
 	LingTreeTree ltTree;
 	String sDescription;
 	ApplicationPreferences applicationPreferences;
+	boolean fIsDirty;
 
 	private String sAboutHeader;
 	private String sAboutContent;
@@ -191,6 +193,7 @@ public class RootLayoutController implements Initializable {
 			public void handle(KeyEvent event) {
 				int index;
 				Image mainIcon = mainApp.getNewMainIconImage();
+				markAsDirty();
 
 				if (event.isShiftDown()) {
 					switch (event.getCode()) {
@@ -251,7 +254,6 @@ public class RootLayoutController implements Initializable {
 					handleDrawTree();
 				}
 			}
-
 		});
 		Platform.runLater(new Runnable() {
 			@Override
@@ -301,6 +303,27 @@ public class RootLayoutController implements Initializable {
 		ltTree.setSaveAsSVG(menuItemSaveAsSVG.isSelected());
 	}
 
+	public boolean isDirty() {
+		return fIsDirty;
+	}
+
+	private void markAsClean() {
+		fIsDirty = false;
+		Stage primaryStage = mainApp.getPrimaryStage();
+		String sStageTitle = primaryStage.getTitle();
+		sStageTitle = sStageTitle.replaceAll("\\*", "");
+		primaryStage.setTitle(sStageTitle);
+	}
+
+	private void markAsDirty() {
+		fIsDirty = true;
+		Stage primaryStage = mainApp.getPrimaryStage();
+		String sStageTitle = primaryStage.getTitle();
+		if (!sStageTitle.endsWith("*")) {
+			primaryStage.setTitle(sStageTitle + "*");
+		}
+	}
+
 	protected void createToolbarButtons(ResourceBundle bundle) {
 		ControllerUtilities.createToolbarButtonWithImage("newAction.png", buttonToolbarFileNew,
 				tooltipToolbarFileNew, bundle.getString("tooltip.new"));
@@ -316,6 +339,27 @@ public class RootLayoutController implements Initializable {
 				tooltipToolbarEditPaste, bundle.getString("tooltip.paste"));
 		ControllerUtilities.createToolbarButtonWithImage("drawTree.png", buttonToolbarDrawTree,
 				tooltipToolbarDrawTree, bundle.getString("tooltip.drawtree"));
+	}
+
+	public void askAboutSaving() {
+		Alert alert = new Alert(AlertType.CONFIRMATION, "", ButtonType.YES, ButtonType.NO);
+		alert.setTitle(MainApp.kApplicationTitle);
+		alert.setHeaderText(bundle.getString("file.asktosaveheader"));
+		alert.setContentText(bundle.getString("file.asktosavecontent"));
+
+		Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+		stage.getIcons().add(mainApp.getNewMainIconImage());
+
+		Optional<ButtonType> result = alert.showAndWait();
+		if (result.get() == ButtonType.YES) {
+			try {
+				handleDrawTree();
+				handleSaveTree();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 
 	/**
@@ -454,6 +498,7 @@ public class RootLayoutController implements Initializable {
 		setToggleButtonStyle(menuItemUseFlatTree, toggleButtonUseFlatTree);
 		ltTree.setShowFlatView(menuItemUseFlatTree.isSelected());
 		handleDrawTree();
+		markAsDirty();
 	}
 
 	@FXML
@@ -462,6 +507,7 @@ public class RootLayoutController implements Initializable {
 		setToggleButtonStyle(menuItemUseFlatTree, toggleButtonUseFlatTree);
 		ltTree.setShowFlatView(menuItemUseFlatTree.isSelected());
 		handleDrawTree();
+		markAsDirty();
 	}
 
 	private void setToggleButtonStyle(CheckMenuItem menuItem, ToggleButton toggleButton) {
@@ -484,6 +530,7 @@ public class RootLayoutController implements Initializable {
 	private void handleMenuSaveAsPng() {
 		setToggleButtonStyle(menuItemSaveAsPng, toggleButtonSaveAsPng);
 		ltTree.setSaveAsPng(menuItemSaveAsPng.isSelected());
+		markAsDirty();
 	}
 
 	@FXML
@@ -491,12 +538,14 @@ public class RootLayoutController implements Initializable {
 		menuItemSaveAsPng.setSelected(!menuItemSaveAsPng.isSelected());
 		setToggleButtonStyle(menuItemSaveAsPng, toggleButtonSaveAsPng);
 		ltTree.setSaveAsPng(menuItemSaveAsPng.isSelected());
+		markAsDirty();
 	}
 
 	@FXML
 	private void handleMenuSaveAsSVG() {
 		setToggleButtonStyle(menuItemSaveAsSVG, toggleButtonSaveAsSVG);
 		ltTree.setSaveAsSVG(menuItemSaveAsSVG.isSelected());
+		markAsDirty();
 	}
 
 	@FXML
@@ -504,6 +553,7 @@ public class RootLayoutController implements Initializable {
 		menuItemSaveAsSVG.setSelected(!menuItemSaveAsSVG.isSelected());
 		setToggleButtonStyle(menuItemSaveAsSVG, toggleButtonSaveAsSVG);
 		ltTree.setSaveAsSVG(menuItemSaveAsSVG.isSelected());
+		markAsDirty();
 	}
 
 	@FXML
@@ -536,8 +586,9 @@ public class RootLayoutController implements Initializable {
 	 */
 	@FXML
 	private void handleExit() {
-		// handleSaveProject();
-		// System.out.println("exiting");
+		if (fIsDirty) {
+			askAboutSaving();
+		}
 		System.exit(0);
 	}
 
@@ -618,6 +669,7 @@ public class RootLayoutController implements Initializable {
 		File file = mainApp.getTreeDataFile();
 		if (file != null) {
 			mainApp.saveTreeData(file);
+			markAsClean();
 		} else {
 			handleSaveTreeAs();
 		}
@@ -686,6 +738,7 @@ public class RootLayoutController implements Initializable {
 	private void handleSaveTreeAs() {
 		ControllerUtilities.doFileSaveAs(mainApp, currentLocale, false, lingTreeFilterDescription);
 		// TODO: make sure we know what the new file path is
+		markAsClean();
 	}
 
 	/**
@@ -779,6 +832,7 @@ public class RootLayoutController implements Initializable {
 		GlossFontInfo.getInstance().setFont(fontInfo.getFont());
 		GlossFontInfo.getInstance().setColor(fontInfo.getColor());
 		handleDrawTree();
+		markAsDirty();
 	}
 
 	@FXML
@@ -830,6 +884,7 @@ public class RootLayoutController implements Initializable {
 			fontInfo.setFont(chosenFont);
 			Color color = dlg.getColor();
 			fontInfo.setColor(color);
+			markAsDirty();
 		}
 		return fontInfo;
 	}
@@ -849,7 +904,10 @@ public class RootLayoutController implements Initializable {
 			controller.setData(ltTree);
 			dialogStage.setResizable(false);
 			dialogStage.showAndWait();
-			handleDrawTree();
+			if (controller.isOkClicked()) {
+				handleDrawTree();
+				markAsDirty();
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -870,7 +928,10 @@ public class RootLayoutController implements Initializable {
 			controller.setData(ltTree);
 			dialogStage.setResizable(false);
 			dialogStage.showAndWait();
-			handleDrawTree();
+			if (controller.isOkClicked()) {
+				handleDrawTree();
+				markAsDirty();
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

@@ -84,7 +84,9 @@ public class MainApp extends Application {
 		applicationPreferences.setLastWindowParameters(ApplicationPreferences.LAST_WINDOW,
 				primaryStage);
 		applicationPreferences.setLastLocaleLanguage(locale.getLanguage());
-		//controller.handleSaveTree();
+		if (controller.isDirty()) {
+			controller.askAboutSaving();
+		}
 	}
 
 
@@ -190,6 +192,9 @@ public class MainApp extends Application {
 		if (file != null) {
 			String sFileNameToUse = file.getName().replace(
 					"." + Constants.LINGTREE_DATA_FILE_EXTENSION, "");
+			if (controller.isDirty()) {
+				sFileNameToUse += "*";
+			}
 			primaryStage.setTitle(kApplicationTitle + " - " + sFileNameToUse);
 		} else {
 			primaryStage.setTitle(kApplicationTitle);
