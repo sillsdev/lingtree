@@ -109,6 +109,8 @@ public class RootLayoutController implements Initializable {
 	@FXML
 	private ToggleButton toggleButtonUseFlatTree;
 	@FXML
+	private ToggleButton toggleButtonShowMatchingParenWithArrowKeys;
+	@FXML
 	private ToggleButton toggleButtonSaveAsPng;
 	@FXML
 	private ToggleButton toggleButtonSaveAsSVG;
@@ -129,6 +131,8 @@ public class RootLayoutController implements Initializable {
 	private Tooltip tooltipToolbarDrawTree;
 	@FXML
 	private Tooltip tooltipToolbarUseFlatTree;
+	@FXML
+	private Tooltip tooltipToolbarShowMatchingParenWithArrowKeys;
 	@FXML
 	private Tooltip tooltipToolbarSaveAsPng;
 	@FXML
@@ -167,6 +171,12 @@ public class RootLayoutController implements Initializable {
 		toggleButtonUseFlatTree.getStyleClass().add(kUnPressedStyle);
 		tooltipToolbarUseFlatTree = new Tooltip(bundle.getString("tooltip.useflattree"));
 		toggleButtonUseFlatTree.setTooltip(tooltipToolbarUseFlatTree);
+
+		toggleButtonShowMatchingParenWithArrowKeys.getStyleClass().add(kUnPressedStyle);
+		tooltipToolbarShowMatchingParenWithArrowKeys = new Tooltip(
+				bundle.getString("tooltip.showmatchingparenwitharrowkeys"));
+		toggleButtonShowMatchingParenWithArrowKeys
+				.setTooltip(tooltipToolbarShowMatchingParenWithArrowKeys);
 
 		toggleButtonSaveAsPng.getStyleClass().add(kUnPressedStyle);
 		tooltipToolbarSaveAsPng = new Tooltip(bundle.getString("tooltip.saveaspng"));
@@ -262,6 +272,8 @@ public class RootLayoutController implements Initializable {
 		menuItemDrawAsType.setSelected(applicationPreferences.getDrawAsType());
 		menuItemShowMatchingParenWithArrowKeys.setSelected(applicationPreferences
 				.getShowMatchingParenWithArrowKeys());
+		setToggleButtonStyle(menuItemShowMatchingParenWithArrowKeys,
+				toggleButtonShowMatchingParenWithArrowKeys);
 	}
 
 	public Locale getCurrentLocale() {
@@ -501,6 +513,19 @@ public class RootLayoutController implements Initializable {
 
 	@FXML
 	private void handleMenuShowMatchingParenWithArrowKeys() {
+		setToggleButtonStyle(menuItemShowMatchingParenWithArrowKeys,
+				toggleButtonShowMatchingParenWithArrowKeys);
+		applicationPreferences
+				.setShowMatchingParenWithArrowKeys(menuItemShowMatchingParenWithArrowKeys
+						.isSelected());
+	}
+
+	@FXML
+	private void handleShowMatchingParenWithArrowKeys() {
+		menuItemShowMatchingParenWithArrowKeys.setSelected(!menuItemShowMatchingParenWithArrowKeys
+				.isSelected());
+		setToggleButtonStyle(menuItemShowMatchingParenWithArrowKeys,
+				toggleButtonShowMatchingParenWithArrowKeys);
 		applicationPreferences
 				.setShowMatchingParenWithArrowKeys(menuItemShowMatchingParenWithArrowKeys
 						.isSelected());

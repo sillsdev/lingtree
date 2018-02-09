@@ -94,6 +94,8 @@
 					<Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="3.0" />
 	                <ToggleButton fx:id="toggleButtonUseFlatTree" onAction="#handleUseFlatTree" text="%label.useflattree" />
 					<Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="3.0" />
+	                <ToggleButton fx:id="toggleButtonShowMatchingParenWithArrowKeys" onAction="#handleShowMatchingParenWithArrowKeys" text="→(  )←" />
+					<Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="3.0" />
 	                <ToggleButton fx:id="toggleButtonSaveAsPng" onAction="#handleSaveAsPng" text="PNG" />
 	                <ToggleButton fx:id="toggleButtonSaveAsSVG" onAction="#handleSaveAsSVG" text="SVG" />
               </items>
