@@ -150,6 +150,8 @@ public class RootLayoutController implements Initializable {
 	private CheckMenuItem menuItemSaveAsSVG;
 	@FXML
 	private CheckMenuItem menuItemDrawAsType;
+	@FXML
+	private CheckMenuItem menuItemShowMatchingParenWithArrowKeys;
 
 	@FXML
 	private TextArea treeDescription;
@@ -177,27 +179,58 @@ public class RootLayoutController implements Initializable {
 		treeDescription.setOnKeyReleased(new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent event) {
+				int index;
+				Image mainIcon = mainApp.getNewMainIconImage();
 
 				if (event.isShiftDown()) {
 					switch (event.getCode()) {
 					case DIGIT0:
-						TreeDescriptionUIService.processRightParenthesis(treeDescription, bundle, mainApp.getNewMainIconImage());
+						// we use caret position - 1 because the caret is after
+						// the inserted ')'
+						TreeDescriptionUIService.processRightParenthesis(treeDescription,
+								treeDescription.getCaretPosition() - 1, bundle, mainIcon);
 						break;
 					case DIGIT9:
 						insertMatchingClosingParenthesis();
-						TreeDescriptionUIService.processLeftParenthesis(treeDescription, bundle, mainApp.getNewMainIconImage());
+						TreeDescriptionUIService.processLeftParenthesis(treeDescription, bundle,
+								mainIcon);
 						break;
 					default:
 						break;
 					}
 				} else {
 					switch (event.getCode()) {
+					case LEFT:
+					case KP_LEFT:
+						if (menuItemShowMatchingParenWithArrowKeys.isSelected()) {
+							index = treeDescription.getCaretPosition();
+							if (treeDescription.getText(index, index + 1).equals(")")) {
+								// we use caret position because the caret is
+								// before
+								// the ')' we are checking
+								TreeDescriptionUIService.processRightParenthesis(treeDescription,
+										index, bundle, mainIcon);
+							}
+						}
+						break;
 					case LEFT_PARENTHESIS:
 						insertMatchingClosingParenthesis();
-						TreeDescriptionUIService.processLeftParenthesis(treeDescription, bundle, mainApp.getNewMainIconImage());
+						TreeDescriptionUIService.processLeftParenthesis(treeDescription, bundle,
+								mainIcon);
+						break;
+					case KP_RIGHT:
+					case RIGHT:
+						if (menuItemShowMatchingParenWithArrowKeys.isSelected()) {
+							index = treeDescription.getCaretPosition();
+							if (treeDescription.getText(Math.max(0, index - 1), index).equals("(")) {
+								TreeDescriptionUIService.processLeftParenthesis(treeDescription,
+										bundle, mainIcon);
+							}
+						}
 						break;
 					case RIGHT_PARENTHESIS:
-						TreeDescriptionUIService.processRightParenthesis(treeDescription, bundle, mainApp.getNewMainIconImage());
+						TreeDescriptionUIService.processRightParenthesis(treeDescription,
+								treeDescription.getCaretPosition() - 1, bundle, mainIcon);
 						break;
 					default:
 						break;
@@ -227,6 +260,8 @@ public class RootLayoutController implements Initializable {
 		this.mainApp = mainApp;
 		this.applicationPreferences = mainApp.getApplicationPreferences();
 		menuItemDrawAsType.setSelected(applicationPreferences.getDrawAsType());
+		menuItemShowMatchingParenWithArrowKeys.setSelected(applicationPreferences
+				.getShowMatchingParenWithArrowKeys());
 	}
 
 	public Locale getCurrentLocale() {
@@ -462,6 +497,13 @@ public class RootLayoutController implements Initializable {
 	@FXML
 	private void handleMenuDrawAsType() {
 		applicationPreferences.setDrawAsType(menuItemDrawAsType.isSelected());
+	}
+
+	@FXML
+	private void handleMenuShowMatchingParenWithArrowKeys() {
+		applicationPreferences
+				.setShowMatchingParenWithArrowKeys(menuItemShowMatchingParenWithArrowKeys
+						.isSelected());
 	}
 
 	/**

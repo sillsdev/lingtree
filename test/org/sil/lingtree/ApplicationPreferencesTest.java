@@ -40,6 +40,7 @@ public class ApplicationPreferencesTest {
 	String languageLastUsed;
 	Stage windowStageLastUsed;
 	boolean drawAsTypeLastUsed;
+	boolean showMatchingParenWithArrowKeysLastUsed;
 
 	LingTreeTree ltTreeLastUsed;
 	ColorXmlAdaptor adaptor;
@@ -51,6 +52,7 @@ public class ApplicationPreferencesTest {
 		fileLastUsed = applicationPreferences.getLastOpenedFile();
 		languageLastUsed = applicationPreferences.getLastLocaleLanguage();
 		drawAsTypeLastUsed = applicationPreferences.getDrawAsType();
+		showMatchingParenWithArrowKeysLastUsed = applicationPreferences.getShowMatchingParenWithArrowKeys();
 		applicationPreferences.setLastOpenedFilePath("last opened file");
 		applicationPreferences.setLastLocaleLanguage("en");
 		windowStageLastUsed = new Stage();
@@ -65,6 +67,7 @@ public class ApplicationPreferencesTest {
 		applicationPreferences.setLastOpenedFilePath(fileLastUsed);
 		applicationPreferences.setLastLocaleLanguage(languageLastUsed);
 		applicationPreferences.setDrawAsType(drawAsTypeLastUsed);
+		applicationPreferences.setShowMatchingParenWithArrowKeys(showMatchingParenWithArrowKeysLastUsed);
 		applicationPreferences.setLastWindowParameters(ApplicationPreferences.LAST_WINDOW, windowStageLastUsed);
 		applicationPreferences.setSavedTreeParameters(ltTreeLastUsed);
 	}
@@ -98,6 +101,13 @@ public class ApplicationPreferencesTest {
 		assertEquals("draw as type", false, applicationPreferences.getDrawAsType());
 		applicationPreferences.setDrawAsType(true);
 		assertEquals("draw as type", true, applicationPreferences.getDrawAsType());
+	}
+
+	@Test
+	public void showMatchingParenWithArrowKeys() {
+		assertEquals("show matching paren with arrow keys", false, applicationPreferences.getShowMatchingParenWithArrowKeys());
+		applicationPreferences.setShowMatchingParenWithArrowKeys(true);
+		assertEquals("show matching paren with arrow keys", true, applicationPreferences.getShowMatchingParenWithArrowKeys());
 	}
 
 	@Test

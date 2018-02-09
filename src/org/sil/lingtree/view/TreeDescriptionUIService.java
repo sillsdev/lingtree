@@ -29,12 +29,11 @@ public class TreeDescriptionUIService {
 
 	// TODO: is treating these as static the best way to go?
 	// should we use a singleton pattern instead?
-	public static void processRightParenthesis(TextArea description, ResourceBundle resource,
-			Image image) {
+	public static void processRightParenthesis(TextArea description, int iRightParenthesis,
+			ResourceBundle resource, Image image) {
 		treeDescription = description;
 		bundle = resource;
 		mainIcon = image;
-		int iRightParenthesis = treeDescription.getCaretPosition();
 		int iLeftParenthesis = findMatchingLeftParenthesisAndHighlightIt(iRightParenthesis);
 		// treeDescription.positionCaret(iRightParenthesis+7);
 		if (iLeftParenthesis > -1) {
@@ -69,11 +68,13 @@ public class TreeDescriptionUIService {
 	// return an integer here...
 	// is public for unit testing
 	public static int findMatchingLeftParenthesisAndHighlightIt(int iRightParenthesis) {
-		int iIndex;
-		String sDescription = treeDescription.getText().substring(0,
-				Math.max(0, iRightParenthesis - 1));
+		String sDescription = treeDescription.getText();
+		int iMax = sDescription.length() - 1;
+		int iIndex = iRightParenthesis - 1;
+		if (iIndex > iMax) {
+			return -1;
+		}
 		int iCloseParen = 0;
-		iIndex = iRightParenthesis - 2;
 		while (iIndex >= 0) {
 			if (sDescription.charAt(iIndex) == ')') {
 				iCloseParen++;

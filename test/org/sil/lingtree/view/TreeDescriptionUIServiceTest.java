@@ -37,22 +37,17 @@ public class TreeDescriptionUIServiceTest {
 		checkMatchingLeft(9, 7);
 		checkMatchingLeft(12, 10);
 		checkMatchingLeft(16, 10);
-		checkMatchingLeft(18, 7);
-		checkMatchingLeft(19, 3);
-		checkMatchingLeft(20, 0);
-		checkMatchingLeft(23, 20);
-		checkMatchingLeft(25, 20);
-		checkMatchingLeft(26, 24);
-		checkMatchingLeft(29, 27);
-		checkMatchingLeft(34, 24);
-		checkMatchingLeft(35, 20);
-		checkMatchingLeft(36, 0);
-		checkMatchingLeft(37, -1);
+		checkMatchingLeft(17, 7);
+		checkMatchingLeft(18, 3);
+		checkMatchingLeft(32, 27);
+		checkMatchingLeft(33, 24);
+		checkMatchingLeft(35, 0);
+		checkMatchingLeft(36, -1);
 	}
 
 	private void checkMatchingLeft(int iRightPos, int iLeftExpected) {
 		treeDescription.positionCaret(iRightPos);
-		TreeDescriptionUIService.processRightParenthesis(treeDescription, null, null);
+		TreeDescriptionUIService.processRightParenthesis(treeDescription, iRightPos, null, null);
 		int iLeftPos = TreeDescriptionUIService.findMatchingLeftParenthesisAndHighlightIt(iRightPos);
 		assertEquals(iLeftExpected, iLeftPos);
 	}

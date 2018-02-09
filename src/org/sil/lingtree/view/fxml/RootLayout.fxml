@@ -66,6 +66,7 @@
 				<Menu mnemonicParsing="true" text="%menu.settings">
 					<items>
 						<CheckMenuItem fx:id="menuItemDrawAsType" mnemonicParsing="true" onAction="#handleMenuDrawAsType" text="%menu.drawastype" />
+						<CheckMenuItem fx:id="menuItemShowMatchingParenWithArrowKeys" mnemonicParsing="true" onAction="#handleMenuShowMatchingParenWithArrowKeys" text="%menu.showmatchingparenwitharrowkeys" />
 						<SeparatorMenuItem />
 						<MenuItem mnemonicParsing="true" onAction="#handleSaveTreeParameters" text="%menu.savetreeparameters" />
 						<SeparatorMenuItem />

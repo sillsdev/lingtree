@@ -20,6 +20,7 @@ public class ApplicationPreferences {
 	static final String LAST_OPENED_DIRECTORY_PATH = "lastOpenedDirectoryPath";
 	static final String LAST_LOCALE_LANGUAGE = "lastLocaleLanguage";
 	static final String DRAW_AS_TYPE = "drawastype";
+	static final String SHOW_MATCHING_PAREN_WITH_ARROW_KEYS = "showmatchingparenwitharrowkeys";
 	// Not trying to be anglo-centric, but we have to start with something...
 	static final String DEFAULT_LOCALE_LANGUAGE = "en";
 
@@ -124,6 +125,14 @@ public class ApplicationPreferences {
 		setPreferencesKey(DRAW_AS_TYPE, fDrawAsType);
 	}
 
+	public boolean getShowMatchingParenWithArrowKeys() {
+		return prefs.getBoolean(SHOW_MATCHING_PAREN_WITH_ARROW_KEYS, false);
+	}
+
+	public void setShowMatchingParenWithArrowKeys(boolean fShowMatchingParenWithArrowKeys) {
+		setPreferencesKey(SHOW_MATCHING_PAREN_WITH_ARROW_KEYS, fShowMatchingParenWithArrowKeys);
+	}
+
 	public Stage getLastWindowParameters(String sWindow, Stage stage, Double defaultHeight,
 			Double defaultWidth) {
 		Double value = prefs.getDouble(sWindow + HEIGHT, defaultHeight);
@@ -173,23 +182,25 @@ public class ApplicationPreferences {
 		fontInfo.setColor(Color.web(prefs.get(GLOSS_FONT_COLOR, sDefaultColor)));
 
 		ltTree.setGlossFontInfo(fontInfo);
-		fontInfo = new FontInfo(prefs.get(LEXICAL_FONT_FAMILY, sDefaultFamily),
-				prefs.getDouble(LEXICAL_FONT_SIZE, 12), prefs.get(LEXICAL_FONT_TYPE, sDefaultType));
+		fontInfo = new FontInfo(prefs.get(LEXICAL_FONT_FAMILY, sDefaultFamily), prefs.getDouble(
+				LEXICAL_FONT_SIZE, 12), prefs.get(LEXICAL_FONT_TYPE, sDefaultType));
 		fontInfo.setColor(Color.web(prefs.get(LEXICAL_FONT_COLOR, sDefaultColor)));
 		ltTree.setLexicalFontInfo(fontInfo);
 
 		fontInfo = new FontInfo(prefs.get(NON_TERMINAL_FONT_FAMILY, sDefaultFamily),
-				prefs.getDouble(NON_TERMINAL_FONT_SIZE, 12), prefs.get(NON_TERMINAL_FONT_TYPE, sDefaultType));
+				prefs.getDouble(NON_TERMINAL_FONT_SIZE, 12), prefs.get(NON_TERMINAL_FONT_TYPE,
+						sDefaultType));
 		fontInfo.setColor(Color.web(prefs.get(NON_TERMINAL_FONT_COLOR, sDefaultColor)));
 		ltTree.setNonTerminalFontInfo(fontInfo);
 
-		fontInfo = new FontInfo(prefs.get(SUBSCRIPT_FONT_FAMILY, sDefaultFamily),
-				prefs.getDouble(SUBSCRIPT_FONT_SIZE, 9), prefs.get(SUBSCRIPT_FONT_TYPE, sDefaultType));
+		fontInfo = new FontInfo(prefs.get(SUBSCRIPT_FONT_FAMILY, sDefaultFamily), prefs.getDouble(
+				SUBSCRIPT_FONT_SIZE, 9), prefs.get(SUBSCRIPT_FONT_TYPE, sDefaultType));
 		fontInfo.setColor(Color.web(prefs.get(SUBSCRIPT_FONT_COLOR, sDefaultColor)));
 		ltTree.setSubscriptFontInfo(fontInfo);
 
 		fontInfo = new FontInfo(prefs.get(SUPERSCRIPT_FONT_FAMILY, sDefaultFamily),
-				prefs.getDouble(SUPERSCRIPT_FONT_SIZE, 9), prefs.get(SUPERSCRIPT_FONT_TYPE, sDefaultType));
+				prefs.getDouble(SUPERSCRIPT_FONT_SIZE, 9), prefs.get(SUPERSCRIPT_FONT_TYPE,
+						sDefaultType));
 		fontInfo.setColor(Color.web(prefs.get(SUPERSCRIPT_FONT_COLOR, sDefaultColor)));
 		ltTree.setSuperscriptFontInfo(fontInfo);
 	}
