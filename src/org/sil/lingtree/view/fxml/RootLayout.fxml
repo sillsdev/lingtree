@@ -120,7 +120,7 @@
                               <TextArea fx:id="treeDescription" prefHeight="200.0" prefWidth="1000.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                         <ScrollPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                            <content>
-                                    <Pane fx:id="drawingArea" prefHeight="349.0" prefWidth="1000.0" style="-fx-background-color: #FFFFFF;" />
+                                    <Pane fx:id="drawingArea" prefHeight="1000.0" prefWidth="10000.0" style="-fx-background-color: #FFFFFF;"  AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                            </content>
                         </ScrollPane>
                      </items>
