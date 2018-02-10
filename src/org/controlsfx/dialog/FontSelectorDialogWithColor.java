@@ -250,6 +250,7 @@ public class FontSelectorDialogWithColor extends Dialog<Font> {
 		private Color color = Color.BLACK;
 
 		public FontPanel(ResourceBundle bundle, Color defaultColor) {
+			color = defaultColor;
 			sample.setText(bundle.getString("fontselector.sample"));
 			setHgap(HGAP);
 			setVgap(VGAP);
