@@ -705,7 +705,7 @@ public class RootLayoutController implements Initializable {
 			int len = sFilePath.length();
 			sFilePath = sFilePath.substring(0, len - 4);
 		}
-		WritableImage wim = new WritableImage((int) ltTree.getXSize(),
+		WritableImage wim = new WritableImage((int) ltTree.getXSize() + 10,
 				(int) (ltTree.getYSize() + 10));
 		drawingArea.snapshot(null, wim);
 		File filePng = new File(sFilePath + ".png");

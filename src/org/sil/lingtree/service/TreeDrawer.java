@@ -287,7 +287,7 @@ public class TreeDrawer {
 		// sb.append(Constants.SVG_HEADER.replace("{0}",
 		// pixelsToMM(ltTree.getXSize()) + sMM).replace(
 		// "{1}", pixelsToMM(ltTree.getYSize()) + sMM));
-		sb.append(Constants.SVG_HEADER.replace("{0}", String.valueOf(ltTree.getXSize())).replace(
+		sb.append(Constants.SVG_HEADER.replace("{0}", String.valueOf(ltTree.getXSize() + 10)).replace(
 				"{1}", String.valueOf(ltTree.getYSize())));
 		sb.append(Constants.SVG_BACKGROUND_COLOR.replace("{0}",
 				StringUtilities.toRGBCode(ltTree.getBackgroundColor())));
