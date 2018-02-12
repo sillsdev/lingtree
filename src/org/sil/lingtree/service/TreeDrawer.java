@@ -81,7 +81,6 @@ public class TreeDrawer {
 			// keep track of lowest for "flat" view
 			if (node.getYCoordinate() > ltTree.getLexBottomYCoordinate()) {
 				ltTree.setLexBottomYCoordinate(node.getYCoordinate());
-				System.out.println("lex bottom Y =" + node.getYCoordinate());
 			}
 			if (node.getYUpperMid() > ltTree.getLexBottomYUpperMid()) {
 				ltTree.setLexBottomYUpperMid(node.getYUpperMid());
@@ -91,7 +90,6 @@ public class TreeDrawer {
 			// keep track of lowest for "flat" view
 			if (node.getYCoordinate() > ltTree.getGlossBottomYCoordinate()) {
 				ltTree.setGlossBottomYCoordinate(node.getYCoordinate());
-				System.out.println("gloss bottom Y =" + node.getYCoordinate());
 			}
 		}
 		// Determine Y-axis coordinate for any daughters
