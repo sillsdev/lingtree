@@ -81,6 +81,7 @@ public class TreeDrawer {
 			// keep track of lowest for "flat" view
 			if (node.getYCoordinate() > ltTree.getLexBottomYCoordinate()) {
 				ltTree.setLexBottomYCoordinate(node.getYCoordinate());
+				System.out.println("lex bottom Y =" + node.getYCoordinate());
 			}
 			if (node.getYUpperMid() > ltTree.getLexBottomYUpperMid()) {
 				ltTree.setLexBottomYUpperMid(node.getYUpperMid());
@@ -90,6 +91,7 @@ public class TreeDrawer {
 			// keep track of lowest for "flat" view
 			if (node.getYCoordinate() > ltTree.getGlossBottomYCoordinate()) {
 				ltTree.setGlossBottomYCoordinate(node.getYCoordinate());
+				System.out.println("gloss bottom Y =" + node.getYCoordinate());
 			}
 		}
 		// Determine Y-axis coordinate for any daughters
@@ -277,15 +279,18 @@ public class TreeDrawer {
 		LingTreeNode node = ltTree.getRootNode();
 		StringBuilder sb = new StringBuilder();
 		// Trying to convert from pixels to mm does not come out right.
-		// Neither Screen.getPrimary().getDpi() nor Toolkit.getDefaultToolkit().getScreenResolution()
+		// Neither Screen.getPrimary().getDpi() nor
+		// Toolkit.getDefaultToolkit().getScreenResolution()
 		// seem to be correct.
 		// So we're going with pixels
-//		final String sMM = "mm";
-//		sb.append(Constants.SVG_HEADER.replace("{0}", pixelsToMM(ltTree.getXSize()) + sMM).replace(
-//				"{1}", pixelsToMM(ltTree.getYSize()) + sMM));
+		// final String sMM = "mm";
+		// sb.append(Constants.SVG_HEADER.replace("{0}",
+		// pixelsToMM(ltTree.getXSize()) + sMM).replace(
+		// "{1}", pixelsToMM(ltTree.getYSize()) + sMM));
 		sb.append(Constants.SVG_HEADER.replace("{0}", String.valueOf(ltTree.getXSize())).replace(
 				"{1}", String.valueOf(ltTree.getYSize())));
-		sb.append(Constants.SVG_BACKGROUND_COLOR.replace("{0}", StringUtilities.toRGBCode(ltTree.getBackgroundColor())));
+		sb.append(Constants.SVG_BACKGROUND_COLOR.replace("{0}",
+				StringUtilities.toRGBCode(ltTree.getBackgroundColor())));
 		drawNodesAsSVG(node, sb);
 		sb.append(Constants.SVG_END_ELEMENT);
 		return sb;
@@ -294,6 +299,17 @@ public class TreeDrawer {
 	private void recalculateValues() {
 		calculateMaxHeightPerLevel();
 		calculateYCoordinateOfEveryNode();
+		if (ltTree.isShowFlatView()
+				&& ltTree.getGlossBottomYCoordinate() < ltTree.getLexBottomYCoordinate()) {
+			double dNewGlossBottom = ltTree.getLexBottomYCoordinate()
+					+ ltTree.getLexGlossGapAdjustment() + ltTree.getVerticalGap();
+			ltTree.setGlossBottomYCoordinate(dNewGlossBottom);
+			// now calculate the Y coordinate again
+			calculateYCoordinateOfEveryNode();
+			if (ltTree.getYSize() < dNewGlossBottom) {
+				ltTree.setYSize(dNewGlossBottom);
+			}
+		}
 		calculateXCoordinateOfEveryNode();
 	}
 
@@ -335,27 +351,27 @@ public class TreeDrawer {
 		sb.append(ltTree.getLineWidth());
 		sb.append("\"/>\n");
 		// Using mm does not work right
-//		sb.append(pixelsToMM(x1));
-//		sb.append("mm\" y1=\"");
-//		sb.append(pixelsToMM(y1));
-//		sb.append("mm\" x2=\"");
-//		sb.append(pixelsToMM(x2));
-//		sb.append("mm\" y2=\"");
-//		sb.append(pixelsToMM(y2));
-//		sb.append("mm\" stroke=\"");
-//		sb.append(StringUtilities.toRGBCode(ltTree.getLineColor()));
-//		sb.append("\" stroke-width=\"");
-//		sb.append(pixelsToMM(ltTree.getLineWidth()));
-//		sb.append("mm\"/>\n");
+		// sb.append(pixelsToMM(x1));
+		// sb.append("mm\" y1=\"");
+		// sb.append(pixelsToMM(y1));
+		// sb.append("mm\" x2=\"");
+		// sb.append(pixelsToMM(x2));
+		// sb.append("mm\" y2=\"");
+		// sb.append(pixelsToMM(y2));
+		// sb.append("mm\" stroke=\"");
+		// sb.append(StringUtilities.toRGBCode(ltTree.getLineColor()));
+		// sb.append("\" stroke-width=\"");
+		// sb.append(pixelsToMM(ltTree.getLineWidth()));
+		// sb.append("mm\"/>\n");
 	}
 
 	private void createTextAsSVG(Text tb, FontInfo fontInfo, StringBuilder sb) {
 		sb.append("<text x=\"");
 		// Using mm does not work right
-//		sb.append(pixelsToMM(tb.getX()));
-//		sb.append("mm\" y=\"");
-//		sb.append(pixelsToMM(tb.getY()));
-//		sb.append("mm\" font-family=\"");
+		// sb.append(pixelsToMM(tb.getX()));
+		// sb.append("mm\" y=\"");
+		// sb.append(pixelsToMM(tb.getY()));
+		// sb.append("mm\" font-family=\"");
 		sb.append(tb.getX());
 		sb.append("\" y=\"");
 		sb.append(tb.getY());
