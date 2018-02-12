@@ -417,7 +417,7 @@ public class RootLayoutController implements Initializable {
 
 	@FXML
 	private void handleDrawTree() {
-		drawingArea.getChildren().clear();
+		cleanDrawingArea();
 		TreeDrawer drawer = drawTreePrep();
 		if (drawer == null) {
 			// there was an error in the description; show it
@@ -426,6 +426,10 @@ public class RootLayoutController implements Initializable {
 		} else {
 			drawer.draw(drawingArea);
 		}
+	}
+
+	private void cleanDrawingArea() {
+		drawingArea.getChildren().clear();
 	}
 
 	private TreeDrawer drawTreePrep() {
@@ -473,7 +477,7 @@ public class RootLayoutController implements Initializable {
 		}
 		Label message = new Label(buildErrorMessage(sSyntaxErrorMessage));
 		message.setTextFill(new Color(1, 0, 0, 1));
-		drawingArea.getChildren().clear();
+		cleanDrawingArea();
 		drawingArea.getChildren().add(message);
 	}
 
@@ -607,16 +611,19 @@ public class RootLayoutController implements Initializable {
 		File fileCreated = ControllerUtilities.doFileSaveAs(mainApp, currentLocale, false,
 				lingTreeFilterDescription);
 		if (fileCreated != null) {
-			final String initialDescription = "()";
+			final String initialDescription = "( )";
 			ltTree = new LingTreeTree();
 			applicationPreferences.getSavedTreeParameters(ltTree);
 			ltTree.setDescription(initialDescription);
 			updateAllFontInfos();
 			this.treeDescription.setText(initialDescription);
+			this.treeDescription.positionCaret(1);
+			this.treeDescription.requestFocus();
 			this.menuItemUseFlatTree.setSelected(ltTree.isShowFlatView());
 			this.menuItemSaveAsPng.setSelected(ltTree.isSaveAsPng());
 			this.menuItemSaveAsSVG.setSelected(ltTree.isSaveAsSVG());
 			mainApp.updateStageTitle(fileCreated);
+			cleanDrawingArea();
 		}
 	}
 
@@ -642,6 +649,7 @@ public class RootLayoutController implements Initializable {
 	public void handleOpenTree() {
 		doFileOpen(false);
 		setTree(mainApp.getTree());
+		cleanDrawingArea();
 	}
 
 	public void doFileOpen(Boolean fCloseIfCanceled) {
