@@ -641,6 +641,7 @@ public class RootLayoutController implements Initializable {
 	@FXML
 	public void handleOpenTree() {
 		doFileOpen(false);
+		setTree(mainApp.getTree());
 	}
 
 	public void doFileOpen(Boolean fCloseIfCanceled) {
@@ -650,7 +651,6 @@ public class RootLayoutController implements Initializable {
 			mainApp.loadTreeData(file);
 			String sDirectoryPath = file.getParent();
 			applicationPreferences.setLastOpenedDirectoryPath(sDirectoryPath);
-			mainApp.updateStageTitle(file);
 		} else if (fCloseIfCanceled) {
 			// probably first time running and user chose to open a file
 			// but then canceled. We quit.

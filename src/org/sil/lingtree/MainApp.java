@@ -226,4 +226,8 @@ public class MainApp extends Application {
 		initRootLayout();
 	}
 
+	public LingTreeTree getTree() {
+		return ltTree;
+	}
+
 }
