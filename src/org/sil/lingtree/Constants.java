@@ -11,7 +11,8 @@ package org.sil.lingtree;
  */
 public class Constants {
 	public static final String VERSION_NUMBER = "1.0.0.0";
-	
+	public static final int CURRENT_DATABASE_VERSION = 2;
+
 	public static final String SUBSCRIPT = "/s";
 	public static final String SUPERSCRIPT = "/S";
 	public static final String RESOURCE_LOCATION = "org.sil.lingtree.resources.LingTree";
@@ -30,7 +31,14 @@ public class Constants {
 	public static final String SVG_BACKGROUND_COLOR="<rect width=\"100%\" height=\"100%\" fill=\"{0}\"/>\n";
 	public static final String SVG_END_ELEMENT="</svg>\n";
 
+	public static final String UTF8_ENCODING = "UTF8";
+	public static final String MIGRATION_XSLT_FILE_NAME = "resources/DataMigration";
+
 	// Unit Testing constants
 	public static final String UNIT_TEST_DATA_FILE_NAME = "test/org/sil/lingtree/testData/TestData.";
 	public static final String UNIT_TEST_DATA_FILE = "test/org/sil/lingtree/testData/TestData.tre";
+	public static final String UNIT_TEST_DATA_FILE_VERSION_000 = "test/org/sil/lingtree/testData/TestDataVersion000.tre";
+	public static final String UNIT_TEST_DATA_FILE_VERSION_001 = "test/org/sil/lingtree/testData/TestDataVersion001.tre";
+	public static final String UNIT_TEST_DATA_FILE_VERSION_002 = "test/org/sil/lingtree/testData/TestDataVersion002.tre";
+	public static final String UNIT_TEST_DATA_FILE_VERSION_2 = "test/org/sil/lingtree/testData/TestDataVersion2.tre";
 }

@@ -416,7 +416,7 @@ public class RootLayoutController implements Initializable {
 	}
 
 	@FXML
-	private void handleDrawTree() {
+	public void handleDrawTree() {
 		cleanDrawingArea();
 		TreeDrawer drawer = drawTreePrep();
 		if (drawer == null) {
@@ -649,7 +649,7 @@ public class RootLayoutController implements Initializable {
 	public void handleOpenTree() {
 		doFileOpen(false);
 		setTree(mainApp.getTree());
-		cleanDrawingArea();
+		handleDrawTree();
 	}
 
 	public void doFileOpen(Boolean fCloseIfCanceled) {

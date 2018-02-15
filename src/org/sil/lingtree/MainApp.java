@@ -16,6 +16,7 @@ import org.sil.lingtree.model.LingTreeTree;
 import org.sil.lingtree.model.NonTerminalFontInfo;
 import org.sil.lingtree.model.SubscriptFontInfo;
 import org.sil.lingtree.model.SuperscriptFontInfo;
+import org.sil.lingtree.service.DatabaseMigrator;
 import org.sil.lingtree.view.RootLayoutController;
 import org.sil.lingtree.Constants;
 import org.sil.lingtree.MainApp;
@@ -25,6 +26,7 @@ import org.sil.lingtree.backendprovider.XMLBackEndProvider;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuBar;
@@ -72,7 +74,6 @@ public class MainApp extends Application {
 			restoreWindowSettings();
 
 			initRootLayout();
-
 //			saveDataPeriodically(Constants.SAVE_DATA_PERIODICITY);
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -124,6 +125,7 @@ public class MainApp extends Application {
 			if (file != null && file.exists()) {
 				loadTreeData(file);
 				controller.setTree(ltTree);
+				controller.handleDrawTree();
 			} else {
 				boolean fSucceeded = false; // askUserForNewOrToOpenExistingFile(bundle, controller);
 				if (!fSucceeded) {
@@ -143,21 +145,33 @@ public class MainApp extends Application {
 	}
 
 	public void loadTreeData(File file) {
-//		DatabaseMigrator migrator = new DatabaseMigrator(file);
-//		int version = migrator.getVersion();
-//		if (version < Constants.CURRENT_DATABASE_VERSION) {
-//			migrator.doMigration();
-//		}
+		DatabaseMigrator migrator = new DatabaseMigrator(file);
+		int version = migrator.getVersion();
+		if (version < Constants.CURRENT_DATABASE_VERSION) {
+			if (version == 1) {
+				migrator.setDpi(Screen.getPrimary().getDpi());
+			}
+			migrator.doMigration();
+		}
 		xmlBackEndProvider.loadTreeDataFromFile(file);
 		ltTree = xmlBackEndProvider.getLingTree();
-		GlossFontInfo.getInstance().setFont(ltTree.getGlossFontInfo().getFont());
-		LexFontInfo.getInstance().setFont(ltTree.getLexicalFontInfo().getFont());
-		NonTerminalFontInfo.getInstance().setFont(ltTree.getNonTerminalFontInfo().getFont());
-		SubscriptFontInfo.getInstance().setFont(ltTree.getSubscriptFontInfo().getFont());
-		SuperscriptFontInfo.getInstance().setFont(ltTree.getSuperscriptFontInfo().getFont());
+		setFontsAndColors();
 		applicationPreferences.setLastOpenedFilePath(file);
 		applicationPreferences.setLastOpenedDirectoryPath(file.getParent());
 		updateStageTitle(file);
+	}
+
+	private void setFontsAndColors() {
+		GlossFontInfo.getInstance().setFont(ltTree.getGlossFontInfo().getFont());
+		GlossFontInfo.getInstance().setColor(ltTree.getGlossFontInfo().getColor());
+		LexFontInfo.getInstance().setFont(ltTree.getLexicalFontInfo().getFont());
+		LexFontInfo.getInstance().setColor(ltTree.getLexicalFontInfo().getColor());
+		NonTerminalFontInfo.getInstance().setFont(ltTree.getNonTerminalFontInfo().getFont());
+		NonTerminalFontInfo.getInstance().setColor(ltTree.getNonTerminalFontInfo().getColor());
+		SubscriptFontInfo.getInstance().setFont(ltTree.getSubscriptFontInfo().getFont());
+		SubscriptFontInfo.getInstance().setColor(ltTree.getSubscriptFontInfo().getColor());
+		SuperscriptFontInfo.getInstance().setFont(ltTree.getSuperscriptFontInfo().getFont());
+		SuperscriptFontInfo.getInstance().setColor(ltTree.getSuperscriptFontInfo().getColor());
 	}
 
 

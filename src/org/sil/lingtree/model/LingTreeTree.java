@@ -14,10 +14,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import org.sil.lingtree.Constants;
+
 @XmlRootElement(name = "lingTreeTree")
 public class LingTreeTree {
 	LingTreeNode rootNode;
-	private String version;
+	private int version;
 	private String description;
 
 	double dInitialXCoordinate; // initial, leftmost X coordinate
@@ -67,7 +69,7 @@ public class LingTreeTree {
 		lineWidth = 10;
 		lineColor = Color.BLACK;
 		backgroundColor = Color.WHITE;
-		version="1.0.0";
+		version=Constants.CURRENT_DATABASE_VERSION;
 	}
 
 	@XmlTransient
@@ -277,12 +279,12 @@ public class LingTreeTree {
 		this.backgroundColor = backgroundColor;
 	}
 
-	public String getVersion() {
+	public int getVersion() {
 		return version;
 	}
 
-	@XmlAttribute(name="version")
-	public void setVersion(String version) {
+	@XmlAttribute(name="dbversion")
+	public void setVersion(int version) {
 		this.version = version;
 	}
 

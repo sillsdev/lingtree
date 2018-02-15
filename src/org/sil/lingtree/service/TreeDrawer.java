@@ -6,7 +6,6 @@
 
 package org.sil.lingtree.service;
 
-import java.awt.Toolkit;
 import java.util.HashMap;
 
 import javafx.scene.Parent;
@@ -277,9 +276,6 @@ public class TreeDrawer {
 		LingTreeNode node = ltTree.getRootNode();
 		StringBuilder sb = new StringBuilder();
 		// Trying to convert from pixels to mm does not come out right.
-		// Neither Screen.getPrimary().getDpi() nor
-		// Toolkit.getDefaultToolkit().getScreenResolution()
-		// seem to be correct.
 		// So we're going with pixels
 		// final String sMM = "mm";
 		// sb.append(Constants.SVG_HEADER.replace("{0}",
@@ -412,14 +408,10 @@ public class TreeDrawer {
 
 	private double pixelsToMM(double pixels) {
 		double dpi = Screen.getPrimary().getDpi();
-		int res = Toolkit.getDefaultToolkit().getScreenResolution();
-		// Why are these two values different?
-		// dpi is 156.0 and res is 144, but neither looks right.
-		// double inches = pixels / dpi;
-		double inches = pixels / res;
-		return pixels;
-		// return inches * 25.4; // there are 2.54 cm per inch so 25.4 mm per
-		// inch
+		// int res = Toolkit.getDefaultToolkit().getScreenResolution();
+		// NB: Toolkit is awt. We want FX
+		double inches = pixels / dpi;
+		return inches * 25.4; // there are 2.54 cm per inch so 25.4 mm per inch
 	}
 
 }

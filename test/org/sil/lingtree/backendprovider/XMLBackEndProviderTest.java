@@ -65,7 +65,7 @@ public class XMLBackEndProviderTest {
 	public void checkLoadedData() {
 		ltTree = xmlBackEndProvider.getLingTree();
 		assertNotNull(ltTree);
-		assertEquals("1.0.0", ltTree.getVersion());
+		assertEquals(2, ltTree.getVersion());
 		assertEquals("(S (NP (\\L Juan (\\G John))) (VP (V (\\L duerme (\\G sleeps)))))", ltTree.getDescription());
 		assertEquals(20, ltTree.getVerticalGap(), 0.0);
 		assertEquals(30, ltTree.getHorizontalGap(), 0.0);

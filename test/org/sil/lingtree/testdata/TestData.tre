@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<lingTreeTree version="1.0.0">
+<lingTreeTree dbversion="2">
     <backgroundColor>#ffffff</backgroundColor>
     <description>(S (NP (\L Juan (\G John))) (VP (V (\L duerme (\G sleeps)))))</description>
     <glossFontInfo>
@@ -27,6 +27,8 @@
         <fontSize>12.0</fontSize>
         <fontType>Regular</fontType>
     </nonTerminalFontInfo>
+    <saveAsPng>true</saveAsPng>
+    <saveAsSVG>true</saveAsSVG>
     <showFlatView>true</showFlatView>
     <subscriptFontInfo>
         <color>#800080</color>
