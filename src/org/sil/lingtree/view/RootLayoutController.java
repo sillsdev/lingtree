@@ -56,6 +56,7 @@ import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.Alert.AlertType;
@@ -67,6 +68,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -475,10 +478,41 @@ public class RootLayoutController implements Initializable {
 					+ TreeBuilder.getCharacterPositionInLineOfError());
 			break;
 		}
-		Label message = new Label(buildErrorMessage(sSyntaxErrorMessage));
-		message.setTextFill(new Color(1, 0, 0, 1));
+//		Label message = new Label(buildErrorMessage(sSyntaxErrorMessage));
+//		Color errorColor = new Color(1, 0, 0, 1);
+//		message.setTextFill(errorColor);
 		cleanDrawingArea();
-		drawingArea.getChildren().add(message);
+		//drawingArea.getChildren().add(message);
+		TextFlow textFlow = buildErrorMessageAsTextFlow(sSyntaxErrorMessage);
+		drawingArea.getChildren().add(textFlow);
+	}
+
+	private TextFlow buildErrorMessageAsTextFlow(String sSyntaxErrorMessage) {
+		Text tPart1 = new Text(buildErrorMessagePart1(sSyntaxErrorMessage));
+		tPart1.setFill(Color.RED);
+		Text tPart2 = new Text(TreeBuilder.getDescriptionBeforeMark());
+		tPart2.setFill(Color.RED);
+		Text tPart3 = new Text(" " + bundle.getString("descriptionsyntaxerror.here"));
+		tPart3.setFill(Color.BLACK);
+		tPart3.setStyle("-fx-font-weight:bold;");
+		Text tPart4 = new Text(TreeBuilder.getDescriptionAfterMark());
+		tPart4.setFill(Color.RED);
+		TextFlow textFlow = new TextFlow(tPart1, tPart2, tPart3, tPart4);
+		return textFlow;
+	}
+
+	private String buildErrorMessagePart1(String sSyntaxErrorMessage) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(bundle.getString("descriptionsyntaxerror.errorindescription"));
+		sb.append(sSyntaxErrorMessage);
+		String sMsgDetectedAt = bundle.getString("descriptionsyntaxerror.detectedat");
+		int iLine = TreeBuilder.getLineNumberOfError();
+		int iPos = TreeBuilder.getCharacterPositionInLineOfError();
+		String sMessage = sMsgDetectedAt.replace("{0}", String.valueOf(iLine)).replace("{1}",
+				String.valueOf(iPos));
+		sb.append(sMessage);
+		sb.append("\n\n");
+		return sb.toString();
 	}
 
 	private String buildErrorMessage(String sSyntaxErrorMessage) {

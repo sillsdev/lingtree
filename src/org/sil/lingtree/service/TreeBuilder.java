@@ -51,20 +51,41 @@ public class TreeBuilder {
 
 	public static String getMarkedDescription(String sMark) {
 		StringBuilder sb = new StringBuilder();
-		int iLineNum = lineNumberOfError - 1;
-		int iLineBeg = sDescription.indexOf("\n");
-		if (iLineNum == 0) {
-			iLineBeg = 0;
-		} else {
-			while (iLineBeg < iLineNum) {
-				String sRest = sDescription.substring(iLineBeg + 1);
-				iLineBeg += sRest.indexOf("\n");
-			}
-		}
-		sb.append(sDescription.substring(0, iLineBeg + characterPositionInLineOfError));
+		int iCharPosOfMark = getPositionOfMark();
+		sb.append(sDescription.substring(0, iCharPosOfMark));
 		sb.append(sMark);
-		sb.append(sDescription.substring(iLineBeg + characterPositionInLineOfError));
+		sb.append(sDescription.substring(iCharPosOfMark));
 		return sb.toString();
+	}
+
+	public static String getDescriptionBeforeMark() {
+		int iCharPosOfMark = getPositionOfMark();
+		System.out.println("Before: iCharPosOfMark=" + iCharPosOfMark);
+		return sDescription.substring(0, iCharPosOfMark);
+	}
+
+	public static String getDescriptionAfterMark() {
+		int iCharPosOfMark = getPositionOfMark();
+		System.out.println("After:  iCharPosOfMark=" + iCharPosOfMark);
+		return sDescription.substring(iCharPosOfMark);
+	}
+
+	private static int getPositionOfMark() {
+		int iCharPosOfMark = 0;
+		if (lineNumberOfError == 1) {
+			iCharPosOfMark = characterPositionInLineOfError;
+		} else {
+			int iCurrentLineNum = 2;
+			int iCharPosOfNL = sDescription.indexOf("\n");
+			while (iCharPosOfNL > -1 && iCurrentLineNum <= lineNumberOfError) {
+				iCharPosOfMark += (iCharPosOfNL + 1);
+				String sRest = sDescription.substring(iCharPosOfNL + 1);
+				iCharPosOfNL = sRest.indexOf("\n");
+				iCurrentLineNum++;
+			}
+			iCharPosOfMark = iCharPosOfMark + characterPositionInLineOfError - 1;
+		}
+		return iCharPosOfMark;
 	}
 
 	public static LingTreeTree parseAString(String sInput, LingTreeTree origTree) {

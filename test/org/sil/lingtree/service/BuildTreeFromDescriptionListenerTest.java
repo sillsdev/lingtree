@@ -112,7 +112,20 @@ public class BuildTreeFromDescriptionListenerTest extends ServiceBaseTest {
 		sDescriptionWithErrorLocationMarked = "(S (NP) (N-bar/S sup' (N(\\L Juan (\\G John)))))\n" +
 				" << HERE >> (VP (V/ssub (\\T\\L duerme (\\G sleeps)))))";
 		assertEquals(sDescriptionWithErrorLocationMarked, TreeBuilder.getMarkedDescription(" << HERE >> "));
-	}
+		sBad = "(S (PP (P' (P (\\L de (\\G from))))(NP (N' (N (\\L aqui (\\G here))))))\n" +
+				"(NP (N'/Ssup' (N(\\L Juanita (\\G Juanita)))))\n" +
+				"(VP (NP (N' (N (\\LSusana (\\G Susana))))) (V' (V/ssub (\\T\\L duerme (\\G sleeps)))))))";
+		ltTree = TreeBuilder.parseAString(sBad, origTree);
+		String sErrorMessage = "no viable alternative at input " +
+		"'(S (PP (P' (P (\\L de (\\G from))))(NP (N' (N (\\L aqui (\\G here))))))(NP (N'/Ssup' " +
+				"(N(\\L Juanita (\\G Juanita)))))(VP (NP (N' (N (\\LSusana (\\G Susana))))) " +
+		"(V' (V/ssub (\\T\\L duerme (\\G sleeps)))))))'";
+		checkErrorValues(origTree, ltTree, 1, 3, 82, sErrorMessage);
+		sDescriptionWithErrorLocationMarked = "(S (PP (P' (P (\\L de (\\G from))))(NP (N' (N (\\L aqui (\\G here))))))\n" +
+				"(NP (N'/Ssup' (N(\\L Juanita (\\G Juanita)))))\n" +
+				"(VP (NP (N' (N (\\LSusana (\\G Susana))))) (V' (V/ssub (\\T\\L duerme (\\G sleeps))))) << HERE >> ))";
+		assertEquals(sDescriptionWithErrorLocationMarked, TreeBuilder.getMarkedDescription(" << HERE >> "));
+		}
 
 	private void checkErrorValues(LingTreeTree origTree, LingTreeTree ltTree,
 			int expectedNumErrors, int expectedLineNumber, int expectedCharPos,

@@ -147,7 +147,7 @@ public class MainApp extends Application {
 	public void loadTreeData(File file) {
 		DatabaseMigrator migrator = new DatabaseMigrator(file);
 		int version = migrator.getVersion();
-		if (version < Constants.CURRENT_DATABASE_VERSION) {
+		if (version <= Constants.CURRENT_DATABASE_VERSION) {
 			if (version == 1) {
 				migrator.setDpi(Screen.getPrimary().getDpi());
 			}
