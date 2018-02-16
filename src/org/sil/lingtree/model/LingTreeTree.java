@@ -39,8 +39,6 @@ public class LingTreeTree {
 	FontInfo nonTerminalFontInfo;
 	FontInfo lexicalFontInfo;
 	FontInfo glossFontInfo;
-	FontInfo subscriptFontInfo;
-	FontInfo superscriptFontInfo;
 
 	Color backgroundColor;
 	Color lineColor;
@@ -64,8 +62,6 @@ public class LingTreeTree {
 		nonTerminalFontInfo = NonTerminalFontInfo.getInstance();
 		lexicalFontInfo = LexFontInfo.getInstance();
 		glossFontInfo = GlossFontInfo.getInstance();
-		subscriptFontInfo = SubscriptFontInfo.getInstance();
-		superscriptFontInfo = SuperscriptFontInfo.getInstance();
 		lineWidth = 10;
 		lineColor = Color.BLACK;
 		backgroundColor = Color.WHITE;
@@ -232,24 +228,6 @@ public class LingTreeTree {
 
 	public void setGlossFontInfo(FontInfo glossFontInfo) {
 		this.glossFontInfo = glossFontInfo;
-	}
-
-	@XmlElement(name = "subscriptFontInfo")
-	public FontInfo getSubscriptFontInfo() {
-		return subscriptFontInfo;
-	}
-
-	public void setSubscriptFontInfo(FontInfo subscriptFontInfo) {
-		this.subscriptFontInfo = subscriptFontInfo;
-	}
-
-	@XmlElement(name = "superscriptFontInfo")
-	public FontInfo getSuperscriptFontInfo() {
-		return superscriptFontInfo;
-	}
-
-	public void setSuperscriptFontInfo(FontInfo superscriptFontInfo) {
-		this.superscriptFontInfo = superscriptFontInfo;
 	}
 
 	@XmlJavaTypeAdapter(ColorXmlAdaptor.class)

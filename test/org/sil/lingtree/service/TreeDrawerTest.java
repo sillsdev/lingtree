@@ -205,21 +205,21 @@ public class TreeDrawerTest extends ServiceBaseTest {
 		drawer.calculateYCoordinateOfEveryNode();
 		drawer.calculateXCoordinateOfEveryNode();
 		node = ltTree.getRootNode();
-		assertEquals(149.4769287109375, node.getXCoordinate(), 0.0);
+		assertEquals(147.03598546981812, node.getXCoordinate(), 0.0);
 		node1 = node.getDaughters().get(0);
 		assertEquals(100.0, node1.getXCoordinate(), 0.0);
 		node2 = node.getDaughters().get(1);
-		assertEquals(179.45751953125, node2.getXCoordinate(), 0.0);
+		assertEquals(176.20292854309082, node2.getXCoordinate(), 0.0);
 		node1 = node1.getDaughters().get(0);
-		assertEquals(105.723876953125, node1.getXCoordinate(), 0.0);
+		assertEquals(104.09658145904541, node1.getXCoordinate(), 0.0);
 		node1 = node1.getDaughters().get(0);
-		assertEquals(105.489501953125, node1.getXCoordinate(), 0.0);
+		assertEquals(103.86220645904541, node1.getXCoordinate(), 0.0);
 		node2 = node2.getDaughters().get(0);
-		assertEquals(176.50146484375, node2.getXCoordinate(), 0.0);
+		assertEquals(173.70536994934082, node2.getXCoordinate(), 0.0);
 		node2 = node2.getDaughters().get(0);
-		assertEquals(167.00048828125, node2.getXCoordinate(), 0.0);
+		assertEquals(163.74589729309082, node2.getXCoordinate(), 0.0);
 		node2 = node2.getDaughters().get(0);
-		assertEquals(169.78369140625, node2.getXCoordinate(), 0.0);
+		assertEquals(166.52910041809082, node2.getXCoordinate(), 0.0);
 
 	}
 }

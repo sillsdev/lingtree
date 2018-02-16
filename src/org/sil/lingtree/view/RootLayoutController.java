@@ -31,8 +31,6 @@ import org.sil.lingtree.model.GlossFontInfo;
 import org.sil.lingtree.model.LexFontInfo;
 import org.sil.lingtree.model.LingTreeTree;
 import org.sil.lingtree.model.NonTerminalFontInfo;
-import org.sil.lingtree.model.SubscriptFontInfo;
-import org.sil.lingtree.model.SuperscriptFontInfo;
 import org.sil.lingtree.service.TreeBuilder;
 import org.sil.lingtree.service.TreeDrawer;
 import org.sil.lingtree.view.ControllerUtilities;
@@ -665,8 +663,6 @@ public class RootLayoutController implements Initializable {
 		updateFontInfoValues(GlossFontInfo.getInstance(), ltTree.getGlossFontInfo());
 		updateFontInfoValues(LexFontInfo.getInstance(), ltTree.getLexicalFontInfo());
 		updateFontInfoValues(NonTerminalFontInfo.getInstance(), ltTree.getNonTerminalFontInfo());
-		updateFontInfoValues(SubscriptFontInfo.getInstance(), ltTree.getSubscriptFontInfo());
-		updateFontInfoValues(SuperscriptFontInfo.getInstance(), ltTree.getSuperscriptFontInfo());
 	}
 
 	private void updateFontInfoValues(FontInfo fiUsedWhenDrawing, FontInfo fiFromTree) {
@@ -892,24 +888,6 @@ public class RootLayoutController implements Initializable {
 		ltTree.setNonTerminalFontInfo(fontInfo);
 		NonTerminalFontInfo.getInstance().setFont(fontInfo.getFont());
 		NonTerminalFontInfo.getInstance().setColor(fontInfo.getColor());
-		handleDrawTree();
-	}
-
-	@FXML
-	public void handleSubscriptFontInfo() {
-		FontInfo fontInfo = showFontInfo(mainApp.getPrimaryStage(), ltTree.getSubscriptFontInfo());
-		ltTree.setSubscriptFontInfo(fontInfo);
-		SubscriptFontInfo.getInstance().setFont(fontInfo.getFont());
-		SubscriptFontInfo.getInstance().setColor(fontInfo.getColor());
-		handleDrawTree();
-	}
-
-	@FXML
-	public void handleSuperscriptFontInfo() {
-		FontInfo fontInfo = showFontInfo(mainApp.getPrimaryStage(), ltTree.getSuperscriptFontInfo());
-		ltTree.setSuperscriptFontInfo(fontInfo);
-		SuperscriptFontInfo.getInstance().setFont(fontInfo.getFont());
-		SuperscriptFontInfo.getInstance().setColor(fontInfo.getColor());
 		handleDrawTree();
 	}
 

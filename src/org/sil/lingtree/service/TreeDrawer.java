@@ -19,8 +19,6 @@ import org.sil.lingtree.model.FontInfo;
 import org.sil.lingtree.model.LingTreeNode;
 import org.sil.lingtree.model.LingTreeTree;
 import org.sil.lingtree.model.NodeType;
-import org.sil.lingtree.model.SubscriptFontInfo;
-import org.sil.lingtree.model.SuperscriptFontInfo;
 import org.sil.utility.StringUtilities;
 
 /**
@@ -310,10 +308,12 @@ public class TreeDrawer {
 	private void drawNodesAsSVG(LingTreeNode node, StringBuilder sb) {
 		createTextAsSVG(node.getContentTextBox(), node.getFontInfoFromNodeType(), sb);
 		if (node.hasSubscript()) {
-			createTextAsSVG(node.getSubscriptTextBox(), SubscriptFontInfo.getInstance(), sb);
+			FontInfo fontInfo = node.getFontInfoForSubOrSuperscript();
+			createTextAsSVG(node.getSubscriptTextBox(), fontInfo, sb);
 		}
 		if (node.hasSuperscript()) {
-			createTextAsSVG(node.getSuperscriptTextBox(), SuperscriptFontInfo.getInstance(), sb);
+			FontInfo fontInfo = node.getFontInfoForSubOrSuperscript();
+			createTextAsSVG(node.getSuperscriptTextBox(), fontInfo, sb);
 		}
 		if (node.hasMother() && !node.isOmitLine() && node.getNodeType() != NodeType.Gloss) {
 			LingTreeNode mother = node.getMother();

@@ -57,14 +57,6 @@ public class ApplicationPreferences {
 	static final String SAVE_AS_PNG = "saveAsPng";
 	static final String SAVE_AS_SVG = "saveAsSVG";
 	static final String SHOW_FLAT_VIEW = "showFlatView";
-	static final String SUBSCRIPT_FONT_COLOR = "subscriptFontColor";
-	static final String SUBSCRIPT_FONT_FAMILY = "subscriptFontFamily";
-	static final String SUBSCRIPT_FONT_SIZE = "subscriptFontSize";
-	static final String SUBSCRIPT_FONT_TYPE = "subscriptFontType";
-	static final String SUPERSCRIPT_FONT_COLOR = "superscriptFontColor";
-	static final String SUPERSCRIPT_FONT_FAMILY = "superscriptFontFamily";
-	static final String SUPERSCRIPT_FONT_SIZE = "superscriptFontSize";
-	static final String SUPERSCRIPT_FONT_TYPE = "superscriptFontType";
 	static final String VERTICAL_GAP = "verticalGap";
 
 	Preferences prefs;
@@ -193,16 +185,6 @@ public class ApplicationPreferences {
 		fontInfo.setColor(Color.web(prefs.get(NON_TERMINAL_FONT_COLOR, sDefaultColor)));
 		ltTree.setNonTerminalFontInfo(fontInfo);
 
-		fontInfo = new FontInfo(prefs.get(SUBSCRIPT_FONT_FAMILY, sDefaultFamily), prefs.getDouble(
-				SUBSCRIPT_FONT_SIZE, 9), prefs.get(SUBSCRIPT_FONT_TYPE, sDefaultType));
-		fontInfo.setColor(Color.web(prefs.get(SUBSCRIPT_FONT_COLOR, sDefaultColor)));
-		ltTree.setSubscriptFontInfo(fontInfo);
-
-		fontInfo = new FontInfo(prefs.get(SUPERSCRIPT_FONT_FAMILY, sDefaultFamily),
-				prefs.getDouble(SUPERSCRIPT_FONT_SIZE, 9), prefs.get(SUPERSCRIPT_FONT_TYPE,
-						sDefaultType));
-		fontInfo.setColor(Color.web(prefs.get(SUPERSCRIPT_FONT_COLOR, sDefaultColor)));
-		ltTree.setSuperscriptFontInfo(fontInfo);
 	}
 
 	public void setSavedTreeParameters(LingTreeTree ltTree) throws Exception {
@@ -234,16 +216,6 @@ public class ApplicationPreferences {
 		setPreferencesKey(NON_TERMINAL_FONT_FAMILY, fontInfo.getFontFamily());
 		setPreferencesKey(NON_TERMINAL_FONT_SIZE, fontInfo.getFontSize());
 		setPreferencesKey(NON_TERMINAL_FONT_TYPE, fontInfo.getFontType());
-		fontInfo = ltTree.getSubscriptFontInfo();
-		setPreferencesKey(SUBSCRIPT_FONT_COLOR, fontInfo.getColor());
-		setPreferencesKey(SUBSCRIPT_FONT_FAMILY, fontInfo.getFontFamily());
-		setPreferencesKey(SUBSCRIPT_FONT_SIZE, fontInfo.getFontSize());
-		setPreferencesKey(SUBSCRIPT_FONT_TYPE, fontInfo.getFontType());
-		fontInfo = ltTree.getSuperscriptFontInfo();
-		setPreferencesKey(SUPERSCRIPT_FONT_COLOR, fontInfo.getColor());
-		setPreferencesKey(SUPERSCRIPT_FONT_FAMILY, fontInfo.getFontFamily());
-		setPreferencesKey(SUPERSCRIPT_FONT_SIZE, fontInfo.getFontSize());
-		setPreferencesKey(SUPERSCRIPT_FONT_TYPE, fontInfo.getFontType());
 	}
 
 	private void setPreferencesKey(String key, boolean value) {

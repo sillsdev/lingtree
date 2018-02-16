@@ -80,10 +80,6 @@ public class XMLBackEndProviderTest {
 		checkFontInfo(fontInfo, "Charis SIL", 12.0, "Regular", Color.BLUE);
 		fontInfo = ltTree.getGlossFontInfo();
 		checkFontInfo(fontInfo, "Arial", 12.0, "Regular", Color.GREEN);
-		fontInfo = ltTree.getSubscriptFontInfo();
-		checkFontInfo(fontInfo, "Times New Roman", 9.0, "Italic", Color.PURPLE);
-		fontInfo = ltTree.getSuperscriptFontInfo();
-		checkFontInfo(fontInfo, "Times New Roman", 9.0, "Bold", Color.RED);
 		assertEquals(Color.BLACK, ltTree.getLineColor());
 		assertEquals(10, ltTree.getLineWidth(), 0.0);
 		assertEquals(Color.WHITE, ltTree.getBackgroundColor());

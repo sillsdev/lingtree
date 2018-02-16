@@ -206,8 +206,6 @@ public class ApplicationPreferencesTest {
 		ltTree.setGlossFontInfo(glossFontInfo);
 		ltTree.setLexicalFontInfo(lexicalFontInfo);
 		ltTree.setNonTerminalFontInfo(nonTerminalFontInfo);
-		ltTree.setSubscriptFontInfo(subscriptFontInfo);
-		ltTree.setSuperscriptFontInfo(superscriptFontInfo);
 
 		// save them as preferences
 		applicationPreferences.setSavedTreeParameters(ltTree);
@@ -244,15 +242,5 @@ public class ApplicationPreferencesTest {
 		assertEquals(nonTerminalFontFamily, fontInfo.getFontFamily());
 		assertEquals(nonTerminalFontSize, fontInfo.getFontSize(), 0.0);
 		assertEquals(nonTerminalFontType, fontInfo.getFontType());
-		fontInfo = ltRetrieved.getSubscriptFontInfo();
-		assertEquals(subscriptFontColor, fontInfo.getColor());
-		assertEquals(subscriptFontFamily, fontInfo.getFontFamily());
-		assertEquals(subscriptFontSize, fontInfo.getFontSize(), 0.0);
-		assertEquals(subscriptFontType, fontInfo.getFontType());
-		fontInfo = ltRetrieved.getSuperscriptFontInfo();
-		assertEquals(superscriptFontColor, fontInfo.getColor());
-		assertEquals(superscriptFontFamily, fontInfo.getFontFamily());
-		assertEquals(superscriptFontSize, fontInfo.getFontSize(), 0.0);
-		assertEquals(superscriptFontType, fontInfo.getFontType());
 	}
 }

@@ -52,13 +52,13 @@ public class LingTreeNodeTest {
 
 		node.setSubscript("subscript");
 		node.setNodeType(NodeType.NonTerminal);
-		assertEquals(56.59716796875, node.getWidth(), 0.0);
+		assertEquals(56.9384765625, node.getWidth(), 0.0);
 		assertEquals(17.2890585, node.getHeight(), 0.0);
 		node.setNodeType(NodeType.Lex);
-		assertEquals(59.25146484375, node.getWidth(), 0.0);
+		assertEquals(59.5927734375, node.getWidth(), 0.0);
 		assertEquals(23.62890225, node.getHeight(), 0.0);
 		node.setNodeType(NodeType.Gloss);
-		assertEquals(59.96630859375, node.getWidth(), 0.0);
+		assertEquals(60.3076171875, node.getWidth(), 0.0);
 		assertEquals(17.406246, node.getHeight(), 0.0);
 		
 		node.setSubscript("");
@@ -74,13 +74,13 @@ public class LingTreeNodeTest {
 
 		node.setSuperscript("superscript");
 		node.setNodeType(NodeType.NonTerminal);
-		assertEquals(66.8232421875, node.getWidth(), 0.0);
+		assertEquals(64.40742111206055, node.getWidth(), 0.0);
 		assertEquals(17.2890585, node.getHeight(), 0.0);
 		node.setNodeType(NodeType.Lex);
-		assertEquals(69.4775390625, node.getWidth(), 0.0);
+		assertEquals(67.06171798706055, node.getWidth(), 0.0);
 		assertEquals(23.62890225, node.getHeight(), 0.0);
 		node.setNodeType(NodeType.Gloss);
-		assertEquals(70.1923828125, node.getWidth(), 0.0);
+		assertEquals(67.77656173706055, node.getWidth(), 0.0);
 		assertEquals(17.406246, node.getHeight(), 0.0);
 		
 		node.setSuperscript("");
@@ -97,13 +97,13 @@ public class LingTreeNodeTest {
 		node.setSubscript("subscript");
 		node.setSuperscript("superscript");
 		node.setNodeType(NodeType.NonTerminal);
-		assertEquals(66.8232421875, node.getWidth(), 0.0);
+		assertEquals(64.40742111206055, node.getWidth(), 0.0);
 		assertEquals(21.2890545, node.getHeight(), 0.0);
 		node.setNodeType(NodeType.Lex);
-		assertEquals(69.4775390625, node.getWidth(), 0.0);
+		assertEquals(67.06171798706055, node.getWidth(), 0.0);
 		assertEquals(27.62889825, node.getHeight(), 0.0);
 		node.setNodeType(NodeType.Gloss);
-		assertEquals(70.1923828125, node.getWidth(), 0.0);
+		assertEquals(67.77656173706055, node.getWidth(), 0.0);
 		assertEquals(21.406242, node.getHeight(), 0.0);
 	}
 

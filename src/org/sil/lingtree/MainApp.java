@@ -14,8 +14,6 @@ import org.sil.lingtree.model.GlossFontInfo;
 import org.sil.lingtree.model.LexFontInfo;
 import org.sil.lingtree.model.LingTreeTree;
 import org.sil.lingtree.model.NonTerminalFontInfo;
-import org.sil.lingtree.model.SubscriptFontInfo;
-import org.sil.lingtree.model.SuperscriptFontInfo;
 import org.sil.lingtree.service.DatabaseMigrator;
 import org.sil.lingtree.view.RootLayoutController;
 import org.sil.lingtree.Constants;
@@ -147,7 +145,7 @@ public class MainApp extends Application {
 	public void loadTreeData(File file) {
 		DatabaseMigrator migrator = new DatabaseMigrator(file);
 		int version = migrator.getVersion();
-		if (version <= Constants.CURRENT_DATABASE_VERSION) {
+		if (version < Constants.CURRENT_DATABASE_VERSION) {
 			if (version == 1) {
 				migrator.setDpi(Screen.getPrimary().getDpi());
 			}
@@ -168,10 +166,6 @@ public class MainApp extends Application {
 		LexFontInfo.getInstance().setColor(ltTree.getLexicalFontInfo().getColor());
 		NonTerminalFontInfo.getInstance().setFont(ltTree.getNonTerminalFontInfo().getFont());
 		NonTerminalFontInfo.getInstance().setColor(ltTree.getNonTerminalFontInfo().getColor());
-		SubscriptFontInfo.getInstance().setFont(ltTree.getSubscriptFontInfo().getFont());
-		SubscriptFontInfo.getInstance().setColor(ltTree.getSubscriptFontInfo().getColor());
-		SuperscriptFontInfo.getInstance().setFont(ltTree.getSuperscriptFontInfo().getFont());
-		SuperscriptFontInfo.getInstance().setColor(ltTree.getSuperscriptFontInfo().getColor());
 	}
 
 

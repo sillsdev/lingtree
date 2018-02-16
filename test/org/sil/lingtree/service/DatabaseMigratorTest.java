@@ -135,10 +135,6 @@ public class DatabaseMigratorTest {
 		assertEquals(true, ltTree.isSaveAsPng());
 		assertEquals(true, ltTree.isSaveAsSVG());
 		assertEquals(false, ltTree.isShowFlatView());
-		fontInfo = ltTree.getSubscriptFontInfo();
-		checkFontInfo(fontInfo, "Times New Roman", 9.0, "Italic", Color.web("#008000"));
-		fontInfo = ltTree.getSuperscriptFontInfo();
-		checkFontInfo(fontInfo, "Times New Roman", 9.0, "Italic", Color.web("#008000"));
 		value = ltTree.getVerticalGap();
 		assertEquals(11.34, value, 0.0);
 	}

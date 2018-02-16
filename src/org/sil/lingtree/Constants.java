@@ -15,6 +15,10 @@ public class Constants {
 
 	public static final String SUBSCRIPT = "/s";
 	public static final String SUPERSCRIPT = "/S";
+	// LaTeX uses 70%; OpenOffice & LibreOffice use 58%; Word uses 50%
+	//    (See https://en.wikipedia.org/wiki/Subscript_and_superscript#Desktop_publishing)
+	// I liked 70% best on my laptop, but the jury is still out
+	public static final double SUB_SUPER_SCRIPT_FONT_SIZE_FACTOR = .70;
 	public static final String RESOURCE_LOCATION = "org.sil.lingtree.resources.LingTree";
 
 	public static final String LINGTREE_DATA_FILE_EXTENSION = "tre";

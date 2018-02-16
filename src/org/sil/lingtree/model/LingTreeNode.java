@@ -6,6 +6,7 @@
 
 package org.sil.lingtree.model;
 
+import org.sil.lingtree.Constants;
 import org.sil.lingtree.model.LingTreeNode;
 import org.sil.lingtree.model.NodeType;
 
@@ -77,7 +78,7 @@ public class LingTreeNode {
 
 	public void setSubscript(String subscript) {
 		subscriptTextBox.setText(subscript);
-		FontInfo fontInfo = SubscriptFontInfo.getInstance();
+		FontInfo fontInfo = getFontInfoForSubOrSuperscript();
 		subscriptTextBox.setFont(fontInfo.getFont());
 		subscriptTextBox.setFill(fontInfo.getColor());
 	}
@@ -88,7 +89,7 @@ public class LingTreeNode {
 
 	public void setSuperscript(String superscript) {
 		superscriptTextBox.setText(superscript);
-		FontInfo fontInfo = SuperscriptFontInfo.getInstance();
+		FontInfo fontInfo = getFontInfoForSubOrSuperscript();
 		superscriptTextBox.setFont(fontInfo.getFont());
 		superscriptTextBox.setFill(fontInfo.getColor());
 	}
@@ -172,6 +173,15 @@ public class LingTreeNode {
 
 	public boolean hasSuperscript() {
 		return (superscriptTextBox.getText().length() == 0) ? false : true;
+	}
+
+	public FontInfo getFontInfoForSubOrSuperscript() {
+		FontInfo fontInfo = getFontInfoFromNodeType();
+		double newSize = fontInfo.getFontSize()
+				* Constants.SUB_SUPER_SCRIPT_FONT_SIZE_FACTOR;
+		FontInfo newFontInfo = new FontInfo(fontInfo.getFontFamily(), newSize, "Regular");
+		newFontInfo.setColor(fontInfo.getColor());
+		return newFontInfo;
 	}
 
 	public double getHeight() {
@@ -296,14 +306,17 @@ public class LingTreeNode {
 		FontInfo fontInfo = getFontInfoFromNodeType();
 		double dContentFontSize = fontInfo.getFontSize();
 		double dHeightAdjust = .14 * dContentFontSize;
-		//dHeight = contentTextBox.getBoundsInLocal().getHeight() + dHeightAdjust;
+		// dHeight = contentTextBox.getBoundsInLocal().getHeight() +
+		// dHeightAdjust;
 		return dHeightAdjust;
 	}
+
 	private double adjustHeightForSuperscript() {
 		FontInfo fontInfo = getFontInfoFromNodeType();
 		double dContentFontSize = fontInfo.getFontSize();
 		double dHeightAdjust = .33333 * dContentFontSize;
-		//dHeight = contentTextBox.getBoundsInLocal().getHeight() - dHeightAdjust;
+		// dHeight = contentTextBox.getBoundsInLocal().getHeight() -
+		// dHeightAdjust;
 		return dHeightAdjust;
 	}
 }

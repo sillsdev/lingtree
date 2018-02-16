@@ -136,8 +136,6 @@ public class TreeBuilder {
 		ltTree.setSaveAsPng(origTree.isSaveAsPng());
 		ltTree.setSaveAsSVG(origTree.isSaveAsSVG());
 		ltTree.setShowFlatView(origTree.isShowFlatView());
-		ltTree.setSubscriptFontInfo(origTree.getSubscriptFontInfo());
-		ltTree.setSuperscriptFontInfo(origTree.getSuperscriptFontInfo());
 		ltTree.setVerticalGap(origTree.getVerticalGap());
 	}
 }

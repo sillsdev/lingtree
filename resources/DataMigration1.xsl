@@ -26,7 +26,6 @@
                     <xsl:value-of select="GlossFontSize"/>
                 </fontSize>
                 <fontType>
-                    <!-- DO THESE MATCH UP OK? -->
                     <xsl:value-of select="translate(GlossFontStyle, ',','')"/>
                 </fontType>
             </glossFontInfo>
@@ -41,7 +40,6 @@
                     <xsl:value-of select="LexFontSize"/>
                 </fontSize>
                 <fontType>
-                    <!-- DO THESE MATCH UP OK? -->
                     <xsl:value-of select="translate(LexFontStyle, ',','')"/>
                 </fontType>
             </lexicalFontInfo>
@@ -56,30 +54,9 @@
                     <xsl:value-of select="NTFontSize"/>
                 </fontSize>
                 <fontType>
-                    <!-- DO THESE MATCH UP OK? -->
                     <xsl:value-of select="translate(NTFontStyle, ',','')"/>
                 </fontType>
             </nonTerminalFontInfo>
-            <subscriptFontInfo>
-                <color>
-                    <xsl:value-of select="NTColorArgb"/>
-                </color>
-                <fontFamily>
-                    <xsl:value-of select="NTFontFace"/>
-                </fontFamily>
-                <fontSize>9.0</fontSize>
-                <fontType>Italic</fontType>
-            </subscriptFontInfo>
-            <superscriptFontInfo>
-                <color>
-                    <xsl:value-of select="NTColorArgb"/>
-                </color>
-                <fontFamily>
-                    <xsl:value-of select="NTFontFace"/>
-                </fontFamily>
-                <fontSize>9.0</fontSize>
-                <fontType>Italic</fontType>
-            </superscriptFontInfo>
         </lingTreeTree>
     </xsl:template>
 

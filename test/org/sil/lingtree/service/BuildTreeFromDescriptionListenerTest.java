@@ -58,20 +58,20 @@ public class BuildTreeFromDescriptionListenerTest extends ServiceBaseTest {
 		node = ltTree.getRootNode();
 		checkFontInfo(node, node.getContentTextBox(), "Times New Roman", 12.0, "Regular",
 				Color.BLACK);
-		checkFontInfo(node, node.getSubscriptTextBox(), "Times New Roman", 9.0, "Italic",
-				Color.BROWN);
+		checkFontInfo(node, node.getSubscriptTextBox(), "Times New Roman", 8.3999996, "Regular",
+				Color.BLACK);
 		daughters = node.getDaughters();
 		node = daughters.get(0);
 		checkFontInfo(node, node.getContentTextBox(), "Times New Roman", 12.0, "Regular",
 				Color.BLACK);
-		checkFontInfo(node, node.getSuperscriptTextBox(), "Times New Roman", 9.0, "Bold", Color.RED);
+		checkFontInfo(node, node.getSuperscriptTextBox(), "Times New Roman", 8.3999996, "Regular", Color.BLACK);
 	}
 
 	private void checkFontInfo(LingTreeNode node, Text textBox, String fontFamily, double fontSize,
 			String fontType, Color color) {
 		Font font = textBox.getFont();
 		assertEquals(fontFamily, font.getFamily());
-		assertEquals(fontSize, font.getSize(), 0.0);
+		assertEquals(fontSize, font.getSize(), 0.000001);
 		assertEquals(fontType, font.getStyle());
 		assertEquals(color, textBox.getFill());
 	}
