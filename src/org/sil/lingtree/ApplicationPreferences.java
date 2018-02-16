@@ -35,6 +35,10 @@ public class ApplicationPreferences {
 
 	// Tree parameters to remember
 	static final String BACKGROUND_COLOR = "backgroundColor";
+	static final String EMPTY_ELEMENT_FONT_COLOR = "emptyElementFontColor";
+	static final String EMPTY_ELEMENT_FONT_FAMILY = "emptyElementFontFamily";
+	static final String EMPTY_ELEMENT_FONT_SIZE = "emptyElementFontSize";
+	static final String EMPTY_ELEMENT_FONT_TYPE = "emptyElementFontType";
 	static final String GLOSS_FONT_COLOR = "glossFontColor";
 	static final String GLOSS_FONT_FAMILY = "glossFontFamily";
 	static final String GLOSS_FONT_SIZE = "glossFontSize";
@@ -169,7 +173,12 @@ public class ApplicationPreferences {
 		final String sDefaultFamily = "Arial";
 		final String sDefaultType = "Regular";
 		final String sDefaultColor = "#000000";
-		FontInfo fontInfo = new FontInfo(prefs.get(GLOSS_FONT_FAMILY, sDefaultFamily),
+		FontInfo fontInfo = new FontInfo(prefs.get(EMPTY_ELEMENT_FONT_FAMILY, sDefaultFamily), prefs.getDouble(
+				EMPTY_ELEMENT_FONT_SIZE, 12), prefs.get(EMPTY_ELEMENT_FONT_TYPE, sDefaultType));
+		fontInfo.setColor(Color.web(prefs.get(EMPTY_ELEMENT_FONT_COLOR, sDefaultColor)));
+		ltTree.setEmptyElementFontInfo(fontInfo);
+
+		fontInfo = new FontInfo(prefs.get(GLOSS_FONT_FAMILY, sDefaultFamily),
 				prefs.getDouble(GLOSS_FONT_SIZE, 12), prefs.get(GLOSS_FONT_TYPE, sDefaultType));
 		fontInfo.setColor(Color.web(prefs.get(GLOSS_FONT_COLOR, sDefaultColor)));
 
@@ -201,7 +210,12 @@ public class ApplicationPreferences {
 
 		setPreferencesKey(BACKGROUND_COLOR, ltTree.getBackgroundColor());
 		setPreferencesKey(LINE_COLOR, ltTree.getLineColor());
-		FontInfo fontInfo = ltTree.getGlossFontInfo();
+		FontInfo fontInfo = ltTree.getEmptyElementFontInfo();
+		setPreferencesKey(EMPTY_ELEMENT_FONT_COLOR, fontInfo.getColor());
+		setPreferencesKey(EMPTY_ELEMENT_FONT_FAMILY, fontInfo.getFontFamily());
+		setPreferencesKey(EMPTY_ELEMENT_FONT_SIZE, fontInfo.getFontSize());
+		setPreferencesKey(EMPTY_ELEMENT_FONT_TYPE, fontInfo.getFontType());
+		fontInfo = ltTree.getGlossFontInfo();
 		setPreferencesKey(GLOSS_FONT_COLOR, fontInfo.getColor());
 		setPreferencesKey(GLOSS_FONT_FAMILY, fontInfo.getFontFamily());
 		setPreferencesKey(GLOSS_FONT_SIZE, fontInfo.getFontSize());

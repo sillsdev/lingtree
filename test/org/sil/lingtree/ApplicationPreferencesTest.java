@@ -158,6 +158,12 @@ public class ApplicationPreferencesTest {
 		boolean showFlatView = true;
 		Color backgroundColor = Color.ALICEBLUE;
 		Color lineColor = Color.NAVY;
+		Color emptyElementFontColor = Color.CHARTREUSE;
+		String emptyElementFontFamily = "Verdana";
+		double emptyElementFontSize = 13.0;
+		String emptyElementFontType = "Italic";
+		FontInfo emptyElementFontInfo = new FontInfo(emptyElementFontFamily, emptyElementFontSize, emptyElementFontType);
+		emptyElementFontInfo.setColor(emptyElementFontColor);
 		Color glossFontColor = Color.BURLYWOOD;
 		String glossFontFamily = "Verdana";
 		double glossFontSize = 10.5;
@@ -176,18 +182,6 @@ public class ApplicationPreferencesTest {
 		String nonTerminalFontType = "Bold";
 		FontInfo nonTerminalFontInfo = new FontInfo(nonTerminalFontFamily, nonTerminalFontSize, nonTerminalFontType);
 		nonTerminalFontInfo.setColor(nonTerminalFontColor);
-		Color subscriptFontColor = Color.CYAN;
-		String subscriptFontFamily = "Courier";
-		double subscriptFontSize = 6.5;
-		String subscriptFontType = "Bold Italic";
-		FontInfo subscriptFontInfo = new FontInfo(subscriptFontFamily, subscriptFontSize, subscriptFontType);
-		subscriptFontInfo.setColor(subscriptFontColor);
-		Color superscriptFontColor = Color.TAN;
-		String superscriptFontFamily = "Brookdale";
-		double superscriptFontSize = 9;
-		String superscriptFontType = "Italic Bold";
-		FontInfo superscriptFontInfo = new FontInfo(superscriptFontFamily, superscriptFontSize, superscriptFontType);
-		superscriptFontInfo.setColor(superscriptFontColor);
 
 		// store the values in a LingTreeTree object
 		LingTreeTree ltTree = new LingTreeTree();
@@ -203,6 +197,7 @@ public class ApplicationPreferencesTest {
 		ltTree.setShowFlatView(showFlatView);
 		ltTree.setBackgroundColor(backgroundColor);
 		ltTree.setLineColor(lineColor);
+		ltTree.setEmptyElementFontInfo(emptyElementFontInfo);
 		ltTree.setGlossFontInfo(glossFontInfo);
 		ltTree.setLexicalFontInfo(lexicalFontInfo);
 		ltTree.setNonTerminalFontInfo(nonTerminalFontInfo);
@@ -227,7 +222,12 @@ public class ApplicationPreferencesTest {
 		assertEquals(showFlatView, ltRetrieved.isShowFlatView());
 		assertEquals(backgroundColor, ltRetrieved.getBackgroundColor());
 		assertEquals(lineColor, ltRetrieved.getLineColor());
-		FontInfo fontInfo = ltRetrieved.getGlossFontInfo();
+		FontInfo fontInfo = ltRetrieved.getEmptyElementFontInfo();
+		assertEquals(emptyElementFontColor, fontInfo.getColor());
+		assertEquals(emptyElementFontFamily, fontInfo.getFontFamily());
+		assertEquals(emptyElementFontSize, fontInfo.getFontSize(), 0.0);
+		assertEquals(emptyElementFontType, fontInfo.getFontType());
+		fontInfo = ltRetrieved.getGlossFontInfo();
 		assertEquals(glossFontColor, fontInfo.getColor());
 		assertEquals(glossFontFamily, fontInfo.getFontFamily());
 		assertEquals(glossFontSize, fontInfo.getFontSize(), 0.0);

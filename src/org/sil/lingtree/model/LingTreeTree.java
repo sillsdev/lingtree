@@ -39,6 +39,7 @@ public class LingTreeTree {
 	FontInfo nonTerminalFontInfo;
 	FontInfo lexicalFontInfo;
 	FontInfo glossFontInfo;
+	FontInfo emptyElementFontInfo;
 
 	Color backgroundColor;
 	Color lineColor;
@@ -62,6 +63,7 @@ public class LingTreeTree {
 		nonTerminalFontInfo = NonTerminalFontInfo.getInstance();
 		lexicalFontInfo = LexFontInfo.getInstance();
 		glossFontInfo = GlossFontInfo.getInstance();
+		emptyElementFontInfo = EmptyElementFontInfo.getInstance();
 		lineWidth = 10;
 		lineColor = Color.BLACK;
 		backgroundColor = Color.WHITE;
@@ -228,6 +230,15 @@ public class LingTreeTree {
 
 	public void setGlossFontInfo(FontInfo glossFontInfo) {
 		this.glossFontInfo = glossFontInfo;
+	}
+
+	@XmlElement(name = "emptyElementFontInfo")
+	public FontInfo getEmptyElementFontInfo() {
+		return emptyElementFontInfo;
+	}
+
+	public void setEmptyElementFontInfo(FontInfo emptyElementFontInfo) {
+		this.emptyElementFontInfo = emptyElementFontInfo;
 	}
 
 	@XmlJavaTypeAdapter(ColorXmlAdaptor.class)

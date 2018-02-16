@@ -80,6 +80,8 @@ public class XMLBackEndProviderTest {
 		checkFontInfo(fontInfo, "Charis SIL", 12.0, "Regular", Color.BLUE);
 		fontInfo = ltTree.getGlossFontInfo();
 		checkFontInfo(fontInfo, "Arial", 12.0, "Regular", Color.GREEN);
+		fontInfo = ltTree.getEmptyElementFontInfo();
+		checkFontInfo(fontInfo, "Verdana", 13.5, "Italic", Color.RED);
 		assertEquals(Color.BLACK, ltTree.getLineColor());
 		assertEquals(10, ltTree.getLineWidth(), 0.0);
 		assertEquals(Color.WHITE, ltTree.getBackgroundColor());

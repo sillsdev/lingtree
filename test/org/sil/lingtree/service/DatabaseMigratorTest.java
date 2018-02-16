@@ -113,7 +113,9 @@ public class DatabaseMigratorTest {
 				+ "(QP (DP/s1 (\\T \\L pro)) (Q' (Q (\\L t/_k))\n"
 				+ "(DP/s2 (\\T \\L mee bzaan noo (\\G my brothers)))))))))))",
 				ltTree.getDescription());
-		FontInfo fontInfo = ltTree.getGlossFontInfo();
+		FontInfo fontInfo = ltTree.getEmptyElementFontInfo();
+		checkFontInfo(fontInfo, "Charis SIL", 13.0, "Bold", Color.BLACK);
+		fontInfo = ltTree.getGlossFontInfo();
 		checkFontInfo(fontInfo, "Arial", 11.0, "Regular", Color.web("#6666ff"));
 		double value = ltTree.getHorizontalGap();
 		assertEquals(3.78, value, 0.0);

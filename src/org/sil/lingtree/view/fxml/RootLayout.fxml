@@ -56,6 +56,7 @@
 					<MenuItem mnemonicParsing="true" onAction="#handleGlossFontInfo" text="%menu.glossfont" />
 					<MenuItem mnemonicParsing="true" onAction="#handleLexicalFontInfo" text="%menu.lexicalfont" />
 					<MenuItem mnemonicParsing="true" onAction="#handleNonTerminalFontInfo" text="%menu.nonterminalfont" />
+					<MenuItem mnemonicParsing="true" onAction="#handleEmptyElementFontInfo" text="%menu.emptyelementfont" />
 					<SeparatorMenuItem />
 					<MenuItem mnemonicParsing="true" onAction="#handleTreeSpacingParameters" text="%menu.treespacingparameters" />
 					<MenuItem mnemonicParsing="true" onAction="#handleBackgroundAndLineParameters" text="%menu.backgroundandlineparameters" />

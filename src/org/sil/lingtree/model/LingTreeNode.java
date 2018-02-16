@@ -226,6 +226,10 @@ public class LingTreeNode {
 		FontInfo fontInfo;
 		switch (nodeType) {
 
+		case EmptyElement:
+			fontInfo = EmptyElementFontInfo.getInstance();
+			break;
+
 		case Gloss:
 			fontInfo = GlossFontInfo.getInstance();
 			break;
@@ -238,7 +242,6 @@ public class LingTreeNode {
 			fontInfo = NonTerminalFontInfo.getInstance();
 			break;
 		}
-		;
 		return fontInfo;
 	}
 

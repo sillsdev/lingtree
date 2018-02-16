@@ -2,6 +2,12 @@
 <lingTreeTree dbversion="2">
     <backgroundColor>#ffffff</backgroundColor>
     <description>(S (NP (\L Juan (\G John))) (VP (V (\L duerme (\G sleeps)))))</description>
+    <emptyElementFontInfo>
+        <color>#ff0000</color>
+        <fontFamily>Verdana</fontFamily>
+        <fontSize>13.5</fontSize>
+        <fontType>Italic</fontType>
+    </emptyElementFontInfo>
     <glossFontInfo>
         <color>#008000</color>
         <fontFamily>Arial</fontFamily>

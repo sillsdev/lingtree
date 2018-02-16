@@ -124,6 +124,7 @@ public class TreeBuilder {
 
 	private static void restoreTreeParameters(LingTreeTree origTree, LingTreeTree ltTree) {
 		ltTree.setBackgroundColor(origTree.getBackgroundColor());
+		ltTree.setEmptyElementFontInfo(origTree.getEmptyElementFontInfo());
 		ltTree.setGlossFontInfo(origTree.getGlossFontInfo());
 		ltTree.setHorizontalGap(origTree.getHorizontalGap());
 		ltTree.setInitialXCoordinate(origTree.getInitialXCoordinate());

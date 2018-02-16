@@ -26,6 +26,7 @@ import javax.imageio.ImageIO;
 import org.controlsfx.dialog.FontSelectorDialogWithColor;
 import org.sil.lingtree.MainApp;
 import org.sil.lingtree.descriptionparser.DescriptionConstants;
+import org.sil.lingtree.model.EmptyElementFontInfo;
 import org.sil.lingtree.model.FontInfo;
 import org.sil.lingtree.model.GlossFontInfo;
 import org.sil.lingtree.model.LexFontInfo;
@@ -660,6 +661,7 @@ public class RootLayoutController implements Initializable {
 	}
 
 	private void updateAllFontInfos() {
+		updateFontInfoValues(EmptyElementFontInfo.getInstance(), ltTree.getEmptyElementFontInfo());
 		updateFontInfoValues(GlossFontInfo.getInstance(), ltTree.getGlossFontInfo());
 		updateFontInfoValues(LexFontInfo.getInstance(), ltTree.getLexicalFontInfo());
 		updateFontInfoValues(NonTerminalFontInfo.getInstance(), ltTree.getNonTerminalFontInfo());
@@ -864,6 +866,16 @@ public class RootLayoutController implements Initializable {
 	}
 
 	@FXML
+	public void handleEmptyElementFontInfo() {
+		FontInfo fontInfo = showFontInfo(mainApp.getPrimaryStage(), ltTree.getEmptyElementFontInfo());
+		ltTree.setEmptyElementFontInfo(fontInfo);
+		EmptyElementFontInfo.getInstance().setFont(fontInfo.getFont());
+		EmptyElementFontInfo.getInstance().setColor(fontInfo.getColor());
+		handleDrawTree();
+		markAsDirty();
+	}
+
+	@FXML
 	public void handleGlossFontInfo() {
 		FontInfo fontInfo = showFontInfo(mainApp.getPrimaryStage(), ltTree.getGlossFontInfo());
 		ltTree.setGlossFontInfo(fontInfo);
@@ -880,6 +892,7 @@ public class RootLayoutController implements Initializable {
 		LexFontInfo.getInstance().setFont(fontInfo.getFont());
 		LexFontInfo.getInstance().setColor(fontInfo.getColor());
 		handleDrawTree();
+		markAsDirty();
 	}
 
 	@FXML
@@ -889,6 +902,7 @@ public class RootLayoutController implements Initializable {
 		NonTerminalFontInfo.getInstance().setFont(fontInfo.getFont());
 		NonTerminalFontInfo.getInstance().setColor(fontInfo.getColor());
 		handleDrawTree();
+		markAsDirty();
 	}
 
 	public FontInfo showFontInfo(Stage stage, FontInfo fontInfo) {

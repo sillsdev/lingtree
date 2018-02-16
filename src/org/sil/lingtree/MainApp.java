@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import org.sil.lingtree.backendprovider.XMLBackEndProviderTest;
+import org.sil.lingtree.model.EmptyElementFontInfo;
 import org.sil.lingtree.model.GlossFontInfo;
 import org.sil.lingtree.model.LexFontInfo;
 import org.sil.lingtree.model.LingTreeTree;
@@ -160,6 +160,8 @@ public class MainApp extends Application {
 	}
 
 	private void setFontsAndColors() {
+		EmptyElementFontInfo.getInstance().setFont(ltTree.getEmptyElementFontInfo().getFont());
+		EmptyElementFontInfo.getInstance().setColor(ltTree.getEmptyElementFontInfo().getColor());
 		GlossFontInfo.getInstance().setFont(ltTree.getGlossFontInfo().getFont());
 		GlossFontInfo.getInstance().setColor(ltTree.getGlossFontInfo().getColor());
 		LexFontInfo.getInstance().setFont(ltTree.getLexicalFontInfo().getFont());

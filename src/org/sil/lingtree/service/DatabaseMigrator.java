@@ -177,7 +177,7 @@ public class DatabaseMigrator {
 			lastIndex = convertColorToHex(sConverted.substring(lastIndex), "color", lastIndex, sb);
 			lastIndex = convertColorToHex(sConverted.substring(lastIndex), "color", lastIndex, sb);
 			lastIndex = convertColorToHex(sConverted.substring(lastIndex), "color", lastIndex, sb);
-//will need for \E			lastIndex = convertColorToHex(sConverted.substring(lastIndex), "color", lastIndex, sb);
+			lastIndex = convertColorToHex(sConverted.substring(lastIndex), "color", lastIndex, sb);
 			sb.append(sConverted.substring(lastIndex));
 			
 			fileWithHexColors = saveFileWithHexColors(version2File, sb.toString());

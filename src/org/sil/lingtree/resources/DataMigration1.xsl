@@ -15,6 +15,20 @@
     <xsl:template match="LingTreeTree">
         <lingTreeTree dbversion="2">
             <xsl:apply-templates/>
+            <emptyElementFontInfo>
+                <color>
+                    <xsl:value-of select="LexColorArgb"/>
+                </color>
+                <fontFamily>
+                    <xsl:value-of select="LexFontFace"/>
+                </fontFamily>
+                <fontSize>
+                    <xsl:value-of select="LexFontSize"/>
+                </fontSize>
+                <fontType>
+                    <xsl:value-of select="translate(LexFontStyle, ',','')"/>
+                </fontType>
+            </emptyElementFontInfo>
             <glossFontInfo>
                 <color>
                     <xsl:value-of select="GlossColorArgb"/>

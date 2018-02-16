@@ -8,5 +8,6 @@ package org.sil.lingtree.model;
 public enum NodeType {
 	NonTerminal,
 	Lex,
-	Gloss
+	Gloss,
+	EmptyElement
 }
