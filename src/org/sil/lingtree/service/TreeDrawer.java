@@ -74,7 +74,7 @@ public class TreeDrawer {
 			// Keep track of total height for scrolling
 			ltTree.setYSize(node.getYLowerMid());
 		}
-		if (node.getNodeType() == NodeType.Lex) {
+		if (node.getNodeType() == NodeType.Lex || node.getNodeType() == NodeType.EmptyElement) {
 			// keep track of lowest for "flat" view
 			if (node.getYCoordinate() > ltTree.getLexBottomYCoordinate()) {
 				ltTree.setLexBottomYCoordinate(node.getYCoordinate());
@@ -200,6 +200,8 @@ public class TreeDrawer {
 
 	private void adjustLexOrGlossNodeForFlatView(LingTreeNode node) {
 		switch (node.getNodeType()) {
+		case EmptyElement:
+			// fall through
 		case Lex:
 			node.setYCoordinate(ltTree.getLexBottomYCoordinate());
 			node.setYUpperMid(ltTree.getLexBottomYUpperMid());
