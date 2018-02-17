@@ -16,9 +16,9 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.sil.lingtree.descriptionparser.DescriptionErrorInfo;
 import org.sil.lingtree.descriptionparser.DescriptionErrorListener;
-import org.sil.lingtree.descriptionparser.DescriptionLexer;
-import org.sil.lingtree.descriptionparser.DescriptionParser;
 import org.sil.lingtree.descriptionparser.DescriptionErrorListener.VerboseListener;
+import org.sil.lingtree.descriptionparser.antlr4generated.DescriptionLexer;
+import org.sil.lingtree.descriptionparser.antlr4generated.DescriptionParser;
 import org.sil.lingtree.model.LingTreeTree;
 
 /**

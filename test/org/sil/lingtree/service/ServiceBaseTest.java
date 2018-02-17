@@ -8,18 +8,9 @@ package org.sil.lingtree.service;
 
 import static org.junit.Assert.*;
 
-import org.antlr.v4.runtime.CharStream;
-import org.antlr.v4.runtime.CharStreams;
-import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.tree.ParseTree;
-import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
-import org.junit.Test;
-import org.sil.lingtree.descriptionparser.DescriptionLexer;
-import org.sil.lingtree.descriptionparser.DescriptionParser;
-import org.sil.lingtree.model.LingTreeTree;
 import org.sil.lingtree.view.JavaFXThreadingRule;
 
 /**

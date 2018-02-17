@@ -10,25 +10,18 @@ package org.sil.lingtree.descriptionparser;
 
 import static org.junit.Assert.*;
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.antlr.v4.runtime.*;
-import org.antlr.v4.runtime.tree.*;
 import org.sil.lingtree.descriptionparser.DescriptionConstants;
 import org.sil.lingtree.descriptionparser.DescriptionErrorInfo;
 import org.sil.lingtree.descriptionparser.DescriptionErrorListener;
-import org.sil.lingtree.descriptionparser.DescriptionLexer;
-import org.sil.lingtree.descriptionparser.DescriptionParser;
 import org.sil.lingtree.descriptionparser.DescriptionErrorListener.VerboseListener;
+import org.sil.lingtree.descriptionparser.antlr4generated.DescriptionLexer;
+import org.sil.lingtree.descriptionparser.antlr4generated.DescriptionParser;
 
 public class DescriptionRecognizerTest {
 
@@ -140,6 +133,55 @@ public class DescriptionRecognizerTest {
 		checkValidDescription(
 				"(S (/S'/Comp (N (do\\gs))) (VP (V (chase)) (/s2 (N (cats)))))",
 				"(description (node (openParen () (content S ) (node (openParen () (content (superscript /S ' /C omp )) (node (openParen () (content N ) (node (openParen () (content do \\g s) (closeParen ))) (closeParen ))) (closeParen )  )) (node (openParen () (content VP ) (node (openParen () (content V ) (node (openParen () (content chase) (closeParen ))) (closeParen )  )) (node (openParen () (content (subscript /s 2 )) (node (openParen () (content N ) (node (openParen () (content cats) (closeParen ))) (closeParen ))) (closeParen ))) (closeParen ))) (closeParen ))) <EOF>)");
+
+		// empty elements
+		checkValidDescription("(IP (DP/_m (D' (D'/s1 (D (\\L le (\\G FM)))\n" +
+				"(NP (\\T \\L xuz noo (\\G my father))))\n" +
+				"(IP (\\E t/_j))))\n" +
+				"(IP (I' (I/_i (\\T \\L w-guu (\\G C-sow)))\n" +
+				"(VP (VP (DP (\\E t/_m))\n" +
+				"(V' (V (\\E t/_i)) (DP (\\T \\L bni (\\G seed)))))\n" +
+				"(IP/_j (I' (I/_k (\\L y-ra (\\G P-all)))\n" +
+				"(QP (DP/s1 (\\T \\E pro)) (Q' (Q (\\E t/_k))\n" +
+				"(DP/s2 (\\T \\L mee bzaan noo (\\G my brothers)))))))))))",
+				"(description (node (openParen () (content IP ) (node (openParen () " +
+						"(content DP /_ m ) (node (openParen () (content D' ) (node (openParen () " +
+						"(content D' (subscript /s 1 )) (node (openParen () (content D ) (node " +
+						"(openParen () (type (nodeType \\L)) (content  le ) (node (openParen () (type " +
+						"(nodeType \\G)) (content  FM) (closeParen ))) (closeParen ))) (closeParen ))) " +
+						"(node (openParen () (content NP ) (node (openParen () (type (lineType \\T ) " +
+						"(nodeType \\L)) (content  xuz noo ) (node (openParen () (type (nodeType \\G)) " +
+						"(content  my father) (closeParen ))) (closeParen ))) (closeParen ))) " +
+						"(closeParen ))) (node (openParen () (content IP ) (node (openParen () (type " +
+						"(nodeType \\E)) (content  t /_ j) (closeParen ))) (closeParen ))) " +
+						"(closeParen ))) (closeParen ))) (node (openParen () (content IP ) " +
+						"(node (openParen () (content I' ) (node (openParen () (content I /_ i ) " +
+						"(node (openParen () (type (lineType \\T ) (nodeType \\L)) (content  w-guu ) " +
+						"(node (openParen () (type (nodeType \\G)) (content  C-sow) (closeParen ))) " +
+						"(closeParen ))) (closeParen ))) (node (openParen () (content VP ) " +
+						"(node (openParen () (content VP ) (node (openParen () (content DP ) " +
+						"(node (openParen () (type (nodeType \\E)) (content  t /_ m) (closeParen ))) " +
+						"(closeParen ))) (node (openParen () (content V' ) (node (openParen () " +
+						"(content V ) (node (openParen () (type (nodeType \\E)) (content  t /_ i) " +
+						"(closeParen ))) (closeParen )  )) (node (openParen () (content DP ) " +
+						"(node (openParen () (type (lineType \\T ) (nodeType \\L)) (content  bni ) " +
+						"(node (openParen () (type (nodeType \\G)) (content  seed) (closeParen ))) " +
+						"(closeParen ))) (closeParen ))) (closeParen ))) (closeParen ))) " +
+						"(node (openParen () (content IP /_ j ) (node (openParen () (content I' ) " +
+						"(node (openParen () (content I /_ k ) (node (openParen () " +
+						"(type (nodeType \\L)) (content  y-ra ) (node (openParen () (type (nodeType \\G)) " +
+						"(content  P-all) (closeParen ))) (closeParen ))) (closeParen ))) " +
+						"(node (openParen () (content QP ) (node (openParen () (content DP " +
+						"(subscript /s 1 )) (node (openParen () (type (lineType \\T ) (nodeType \\E)) " +
+						"(content  pro) (closeParen ))) (closeParen )  )) (node (openParen () " +
+						"(content Q' ) (node (openParen () (content Q ) (node (openParen () " +
+						"(type (nodeType \\E)) (content  t /_ k) (closeParen ))) (closeParen ))) " +
+						"(node (openParen () (content DP (subscript /s 2 )) (node (openParen () " +
+						"(type (lineType \\T ) (nodeType \\L)) (content  mee bzaan noo ) " +
+						"(node (openParen () (type (nodeType \\G)) (content  my brothers) " +
+						"(closeParen ))) (closeParen ))) (closeParen ))) (closeParen ))) " +
+						"(closeParen ))) (closeParen ))) (closeParen ))) (closeParen ))) " +
+						"(closeParen ))) (closeParen ))) (closeParen ))) <EOF>)");
 	}
 
 	private void checkValidDescription(String sDescription, String sANTLRTree) {
@@ -190,6 +232,8 @@ public class DescriptionRecognizerTest {
 		checkInvalidDescription("(\\T\\OS (NP) (VP))", DescriptionConstants.TOO_MANY_lINE_TYPES, 5,
 				1);
 		checkInvalidDescription("(NP (\\L\\Gnoun))", DescriptionConstants.TOO_MANY_NODE_TYPES, 9, 1);
+		checkInvalidDescription("(NP (\\E\\Gnoun))", DescriptionConstants.TOO_MANY_NODE_TYPES, 9, 1);
+		checkInvalidDescription("(NP (\\L\\Enoun))", DescriptionConstants.TOO_MANY_NODE_TYPES, 9, 1);
 	}
 
 	private void checkInvalidDescription(String sDescription, String sFailedPortion, int iPos,

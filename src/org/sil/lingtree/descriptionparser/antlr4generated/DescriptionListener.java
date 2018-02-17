@@ -1,6 +1,6 @@
 // Generated from Description.g4 by ANTLR 4.7
 
-	package org.sil.lingtree.descriptionparser;
+	package org.sil.lingtree.descriptionparser.antlr4generated;
 
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 

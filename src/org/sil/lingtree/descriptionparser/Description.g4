@@ -14,7 +14,7 @@
 grammar Description;
 
 @header {
-	package org.sil.lingtree.descriptionparser;
+	package org.sil.lingtree.descriptionparser.antlr4generated;
 }
 description  : node EOF
              | content node EOF {notifyErrorListeners("missingOpeningParen");}
@@ -51,6 +51,7 @@ lineType : OMIT
 
 nodeType : LEX
          | GLOSS
+         | EMPTY
          ;
         
 content : (TEXT | BACKSLASH | SLASH)+ ' '* subscript superscript
@@ -71,8 +72,9 @@ superscript : SUPERSCRIPT (TEXT | BACKSLASH | SLASH)+ ;
 OMIT : '\\O'  ' '* ;
 TRIANGLE : '\\T'  ' '*;
 
-LEX : '\\L';// ' '* ;
-GLOSS : '\\G';// ' '* ;
+LEX : '\\L';
+GLOSS : '\\G';
+EMPTY : '\\E';  // empty element (like a trace or non-overt pronoun)
 
 SUBSCRIPT : '/s' ;
 SUPERSCRIPT : '/S' ;

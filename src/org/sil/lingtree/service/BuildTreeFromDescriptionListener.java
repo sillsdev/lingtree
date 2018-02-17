@@ -8,11 +8,11 @@ package org.sil.lingtree.service;
 import java.util.HashMap;
 
 import org.sil.lingtree.Constants;
-import org.sil.lingtree.descriptionparser.DescriptionBaseListener;
-import org.sil.lingtree.descriptionparser.DescriptionParser;
-import org.sil.lingtree.descriptionparser.DescriptionParser.ContentContext;
-import org.sil.lingtree.descriptionparser.DescriptionParser.NodeContext;
-import org.sil.lingtree.descriptionparser.DescriptionParser.TypeContext;
+import org.sil.lingtree.descriptionparser.antlr4generated.DescriptionBaseListener;
+import org.sil.lingtree.descriptionparser.antlr4generated.DescriptionParser;
+import org.sil.lingtree.descriptionparser.antlr4generated.DescriptionParser.ContentContext;
+import org.sil.lingtree.descriptionparser.antlr4generated.DescriptionParser.NodeContext;
+import org.sil.lingtree.descriptionparser.antlr4generated.DescriptionParser.TypeContext;
 import org.sil.lingtree.model.LingTreeNode;
 import org.sil.lingtree.model.LingTreeTree;
 import org.sil.lingtree.model.NodeType;
@@ -87,6 +87,10 @@ public class BuildTreeFromDescriptionListener extends DescriptionBaseListener {
 		LingTreeNode node = nodeMap.get(parentCtx.hashCode());
 		NodeType nodeType = NodeType.NonTerminal;
 		switch (ctx.getText()) {
+		case "\\E":
+			nodeType = NodeType.EmptyElement;
+			break;
+
 		case "\\G":
 			nodeType = NodeType.Gloss;
 			break;

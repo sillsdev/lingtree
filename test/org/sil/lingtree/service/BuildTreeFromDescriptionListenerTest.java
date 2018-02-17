@@ -23,8 +23,8 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.sil.lingtree.descriptionparser.DescriptionConstants;
-import org.sil.lingtree.descriptionparser.DescriptionLexer;
-import org.sil.lingtree.descriptionparser.DescriptionParser;
+import org.sil.lingtree.descriptionparser.antlr4generated.DescriptionLexer;
+import org.sil.lingtree.descriptionparser.antlr4generated.DescriptionParser;
 import org.sil.lingtree.model.LingTreeNode;
 import org.sil.lingtree.model.LingTreeTree;
 import org.sil.lingtree.model.NodeType;
@@ -40,15 +40,17 @@ public class BuildTreeFromDescriptionListenerTest extends ServiceBaseTest {
 
 	@Test
 	public void fontInfoTextTest() {
-		// Non-terminal, lex, and gloss nodes
+		// Non-terminal, lex, and gloss and empty element nodes
 		LingTreeTree origTree = new LingTreeTree();
-		LingTreeTree ltTree = TreeBuilder.parseAString("(NP (\\L Juan (\\G John)))", origTree);
+		LingTreeTree ltTree = TreeBuilder.parseAString("(NP (\\L Juan (\\G John)) (\\E t))", origTree);
 		LingTreeNode node = ltTree.getRootNode();
 		checkFontInfo(node, node.getContentTextBox(), "Times New Roman", 12.0, "Regular",
 				Color.BLACK);
 		List<LingTreeNode> daughters = node.getDaughters();
 		node = daughters.get(0);
 		checkFontInfo(node, node.getContentTextBox(), "Charis SIL", 12.0, "Regular", Color.BLUE);
+		LingTreeNode node2 = daughters.get(1);
+		checkFontInfo(node2, node2.getContentTextBox(), "Charis SIL", 12.0, "Regular", Color.BLUE);
 		daughters = node.getDaughters();
 		node = daughters.get(0);
 		checkFontInfo(node, node.getContentTextBox(), "Arial", 12.0, "Regular", Color.GREEN);
@@ -190,6 +192,48 @@ public class BuildTreeFromDescriptionListenerTest extends ServiceBaseTest {
 		checkNodeResult(node1, "John", "", "", false, false, NodeType.Gloss, 4, 0);
 		checkNodeResult(node1.getMother(), "Juan", "", "", false, false, NodeType.Lex, 3, 1);
 		assertNull(node1.getRightSister());
+		// VP
+		daughters = node2.getDaughters();
+		node1 = daughters.get(0);
+		checkNodeResult(node1, "V", "", "", false, false, NodeType.NonTerminal, 3, 1);
+		checkNodeResult(node1.getMother(), "VP", "", "", false, false, NodeType.NonTerminal, 2, 1);
+		assertNull(node1.getRightSister());
+		daughters = node1.getDaughters();
+		node1 = daughters.get(0);
+		checkNodeResult(node1, "duerme", "", "", false, false, NodeType.Lex, 4, 1);
+		checkNodeResult(node1.getMother(), "V", "", "", false, false, NodeType.NonTerminal, 3, 1);
+		assertNull(node1.getRightSister());
+		node1 = node1.getDaughters().get(0);
+		checkNodeResult(node1, "sleeps", "", "", false, false, NodeType.Gloss, 5, 0);
+		checkNodeResult(node1.getMother(), "duerme", "", "", false, false, NodeType.Lex, 4, 1);
+		assertNull(node1.getRightSister());
+
+		// empty example
+		ltTree = TreeBuilder.parseAString(
+				"(S (NP (\\E pro)) (VP (V (\\L duerme (\\G sleeps)))))", origTree);
+		// root node
+		rootNode = ltTree.getRootNode();
+		checkNodeResult(rootNode, "S", "", "", false, false, NodeType.NonTerminal, 1, 2);
+		assertNull(rootNode.getMother());
+		assertNull(rootNode.getRightSister());
+		daughters = rootNode.getDaughters();
+		node1 = daughters.get(0);
+		checkNodeResult(node1, "NP", "", "", false, false, NodeType.NonTerminal, 2, 1);
+		checkNodeResult(node1.getMother(), "S", "", "", false, false, NodeType.NonTerminal, 1, 2);
+		checkNodeResult(node1.getRightSister(), "VP", "", "", false, false, NodeType.NonTerminal,
+				2, 1);
+		node2 = daughters.get(1);
+		checkNodeResult(node2, "VP", "", "", false, false, NodeType.NonTerminal, 2, 1);
+		checkNodeResult(node1.getMother(), "S", "", "", false, false, NodeType.NonTerminal, 1, 2);
+		assertNull(node2.getRightSister());
+		// NP
+		daughters = node1.getDaughters();
+		node1 = daughters.get(0);
+		checkNodeResult(node1, "pro", "", "", false, false, NodeType.EmptyElement, 3, 0);
+		checkNodeResult(node1.getMother(), "NP", "", "", false, false, NodeType.NonTerminal, 2, 1);
+		assertNull(node1.getRightSister());
+		daughters = node1.getDaughters();
+		assertEquals(0,daughters.size());
 		// VP
 		daughters = node2.getDaughters();
 		node1 = daughters.get(0);

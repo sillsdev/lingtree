@@ -1,6 +1,6 @@
 // Generated from Description.g4 by ANTLR 4.7
 
-	package org.sil.lingtree.descriptionparser;
+	package org.sil.lingtree.descriptionparser.antlr4generated;
 
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
@@ -19,8 +19,8 @@ public class DescriptionParser extends Parser {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		T__0=1, T__1=2, T__2=3, OMIT=4, TRIANGLE=5, LEX=6, GLOSS=7, SUBSCRIPT=8, 
-		SUPERSCRIPT=9, TEXT=10, BACKSLASH=11, SLASH=12, WS=13;
+		T__0=1, T__1=2, T__2=3, OMIT=4, TRIANGLE=5, LEX=6, GLOSS=7, EMPTY=8, SUBSCRIPT=9, 
+		SUPERSCRIPT=10, TEXT=11, BACKSLASH=12, SLASH=13, WS=14;
 	public static final int
 		RULE_description = 0, RULE_node = 1, RULE_openParen = 2, RULE_closeParen = 3, 
 		RULE_type = 4, RULE_lineType = 5, RULE_nodeType = 6, RULE_content = 7, 
@@ -31,10 +31,11 @@ public class DescriptionParser extends Parser {
 	};
 
 	private static final String[] _LITERAL_NAMES = {
-		null, "'('", "' '", "')'", null, null, "'\\L'", "'\\G'", "'/s'", "'/S'"
+		null, "'('", "' '", "')'", null, null, "'\\L'", "'\\G'", "'\\E'", "'/s'", 
+		"'/S'"
 	};
 	private static final String[] _SYMBOLIC_NAMES = {
-		null, null, null, null, "OMIT", "TRIANGLE", "LEX", "GLOSS", "SUBSCRIPT", 
+		null, null, null, null, "OMIT", "TRIANGLE", "LEX", "GLOSS", "EMPTY", "SUBSCRIPT", 
 		"SUPERSCRIPT", "TEXT", "BACKSLASH", "SLASH", "WS"
 	};
 	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
@@ -645,6 +646,7 @@ public class DescriptionParser extends Parser {
 	public static class NodeTypeContext extends ParserRuleContext {
 		public TerminalNode LEX() { return getToken(DescriptionParser.LEX, 0); }
 		public TerminalNode GLOSS() { return getToken(DescriptionParser.GLOSS, 0); }
+		public TerminalNode EMPTY() { return getToken(DescriptionParser.EMPTY, 0); }
 		public NodeTypeContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -668,7 +670,7 @@ public class DescriptionParser extends Parser {
 			{
 			setState(133);
 			_la = _input.LA(1);
-			if ( !(_la==LEX || _la==GLOSS) ) {
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << LEX) | (1L << GLOSS) | (1L << EMPTY))) != 0)) ) {
 			_errHandler.recoverInline(this);
 			}
 			else {
@@ -1123,7 +1125,7 @@ public class DescriptionParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\17\u00d9\4\2\t\2"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\20\u00d9\4\2\t\2"+
 		"\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13"+
 		"\t\13\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2"+
 		"\3\2\5\2(\n\2\3\3\3\3\5\3,\n\3\3\3\5\3/\n\3\3\3\7\3\62\n\3\f\3\16\3\65"+
@@ -1139,7 +1141,7 @@ public class DescriptionParser extends Parser {
 		"\t\16\t\u00b4\3\t\7\t\u00b8\n\t\f\t\16\t\u00bb\13\t\3\t\3\t\6\t\u00bf"+
 		"\n\t\r\t\16\t\u00c0\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\5\t\u00cb\n\t\3\n"+
 		"\3\n\6\n\u00cf\n\n\r\n\16\n\u00d0\3\13\3\13\6\13\u00d5\n\13\r\13\16\13"+
-		"\u00d6\3\13\2\2\f\2\4\6\b\n\f\16\20\22\24\2\5\3\2\6\7\3\2\b\t\3\2\f\16"+
+		"\u00d6\3\13\2\2\f\2\4\6\b\n\f\16\20\22\24\2\5\3\2\6\7\3\2\b\n\3\2\r\17"+
 		"\2\u00f8\2\'\3\2\2\2\4M\3\2\2\2\6R\3\2\2\2\b_\3\2\2\2\n\u0083\3\2\2\2"+
 		"\f\u0085\3\2\2\2\16\u0087\3\2\2\2\20\u00ca\3\2\2\2\22\u00cc\3\2\2\2\24"+
 		"\u00d2\3\2\2\2\26\27\5\4\3\2\27\30\7\2\2\3\30(\3\2\2\2\31\32\5\20\t\2"+
@@ -1189,9 +1191,9 @@ public class DescriptionParser extends Parser {
 		"\2\u00c7\u00cb\3\2\2\2\u00c8\u00cb\5\22\n\2\u00c9\u00cb\5\24\13\2\u00ca"+
 		"\u008a\3\2\2\2\u00ca\u0098\3\2\2\2\u00ca\u00a6\3\2\2\2\u00ca\u00b2\3\2"+
 		"\2\2\u00ca\u00be\3\2\2\2\u00ca\u00c2\3\2\2\2\u00ca\u00c5\3\2\2\2\u00ca"+
-		"\u00c8\3\2\2\2\u00ca\u00c9\3\2\2\2\u00cb\21\3\2\2\2\u00cc\u00ce\7\n\2"+
+		"\u00c8\3\2\2\2\u00ca\u00c9\3\2\2\2\u00cb\21\3\2\2\2\u00cc\u00ce\7\13\2"+
 		"\2\u00cd\u00cf\t\4\2\2\u00ce\u00cd\3\2\2\2\u00cf\u00d0\3\2\2\2\u00d0\u00ce"+
-		"\3\2\2\2\u00d0\u00d1\3\2\2\2\u00d1\23\3\2\2\2\u00d2\u00d4\7\13\2\2\u00d3"+
+		"\3\2\2\2\u00d0\u00d1\3\2\2\2\u00d1\23\3\2\2\2\u00d2\u00d4\7\f\2\2\u00d3"+
 		"\u00d5\t\4\2\2\u00d4\u00d3\3\2\2\2\u00d5\u00d6\3\2\2\2\u00d6\u00d4\3\2"+
 		"\2\2\u00d6\u00d7\3\2\2\2\u00d7\25\3\2\2\2\34\'+.\63:=BIMRY_f\u0083\u008c"+
 		"\u0091\u009a\u009f\u00a8\u00ad\u00b4\u00b9\u00c0\u00ca\u00d0\u00d6";
