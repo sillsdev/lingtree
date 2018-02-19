@@ -157,6 +157,8 @@ public class RootLayoutController implements Initializable {
 	@FXML
 	private CheckMenuItem menuItemSaveAsSVG;
 	@FXML
+	private MenuItem menuItemDescriptionFontSize;
+	@FXML
 	private CheckMenuItem menuItemDrawAsType;
 	@FXML
 	private CheckMenuItem menuItemShowMatchingParenWithArrowKeys;
@@ -278,6 +280,7 @@ public class RootLayoutController implements Initializable {
 				.getShowMatchingParenWithArrowKeys());
 		setToggleButtonStyle(menuItemShowMatchingParenWithArrowKeys,
 				toggleButtonShowMatchingParenWithArrowKeys);
+		treeDescription.setFont(new Font(applicationPreferences.getTreeDescriptionFontSize()));
 	}
 
 	public Locale getCurrentLocale() {
@@ -528,6 +531,27 @@ public class RootLayoutController implements Initializable {
 		String sHere = " " + bundle.getString("descriptionsyntaxerror.here");
 		sb.append(TreeBuilder.getMarkedDescription(sHere));
 		return sb.toString();
+	}
+
+	@FXML
+	private void handleMenuDescriptionFontSize() {
+		final Double[] fontSizes = new Double[] { 3d, 4d, 5d, 6d, 7d, 8d, 9d, 10d,
+			11d, 12d, 13d, 14d, 15d, 16d, 17d, 18d, 19d, 20d, 21d, 22d, 23d, 24d, 25d, 26d,
+			27d, 28d, 29d, 30d, 31d, 32d, 33d, 34d, 35d, 36d, 37d, 38d, 39d, 40d, 41d, 42d,
+			43d, 44d, 45d, 46d, 47d, 48d, 49d, 50d, 51d, 52d, 53d, 54d, 55d, 56d, 57d, 58d,
+			59d, 60d, 61d, 62d, 63d, 64d, 65d, 66d, 67d, 68d, 69d, 70d, 71d, 72d };
+		ChoiceDialog<Double> dialog = new ChoiceDialog<>(12d, fontSizes);
+		dialog.setTitle(bundle.getString("descriptionfontsize.header"));
+		dialog.setHeaderText(bundle.getString("descriptionfontsize.content"));
+		dialog.setContentText(bundle.getString("descriptionfontsize.choose"));
+		dialog.setSelectedItem(applicationPreferences.getTreeDescriptionFontSize());
+		Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
+		stage.getIcons().add(mainApp.getNewMainIconImage());
+		Optional<Double> result = dialog.showAndWait();
+		if (result.isPresent()) {
+			treeDescription.setFont(new Font(result.get()));
+			applicationPreferences.setTreeDescriptionFontSize(result.get());
+		}
 	}
 
 	@FXML

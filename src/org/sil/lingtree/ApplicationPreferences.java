@@ -21,6 +21,7 @@ public class ApplicationPreferences {
 	static final String LAST_LOCALE_LANGUAGE = "lastLocaleLanguage";
 	static final String DRAW_AS_TYPE = "drawastype";
 	static final String SHOW_MATCHING_PAREN_WITH_ARROW_KEYS = "showmatchingparenwitharrowkeys";
+	static final String TREE_DESCRIPTION_FONT_SIZE = "treedescriptionfontsize";
 	// Not trying to be anglo-centric, but we have to start with something...
 	static final String DEFAULT_LOCALE_LANGUAGE = "en";
 
@@ -127,6 +128,14 @@ public class ApplicationPreferences {
 
 	public void setShowMatchingParenWithArrowKeys(boolean fShowMatchingParenWithArrowKeys) {
 		setPreferencesKey(SHOW_MATCHING_PAREN_WITH_ARROW_KEYS, fShowMatchingParenWithArrowKeys);
+	}
+
+	public double getTreeDescriptionFontSize() {
+		return prefs.getDouble(TREE_DESCRIPTION_FONT_SIZE, 12.0);
+	}
+
+	public void setTreeDescriptionFontSize(double dSize) {
+		setPreferencesKey(TREE_DESCRIPTION_FONT_SIZE, dSize);
 	}
 
 	public Stage getLastWindowParameters(String sWindow, Stage stage, Double defaultHeight,

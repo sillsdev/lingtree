@@ -41,6 +41,7 @@ public class ApplicationPreferencesTest {
 	Stage windowStageLastUsed;
 	boolean drawAsTypeLastUsed;
 	boolean showMatchingParenWithArrowKeysLastUsed;
+	double treeDescriptionFontSizeLastUsed;
 
 	LingTreeTree ltTreeLastUsed;
 	ColorXmlAdaptor adaptor;
@@ -53,6 +54,7 @@ public class ApplicationPreferencesTest {
 		languageLastUsed = applicationPreferences.getLastLocaleLanguage();
 		drawAsTypeLastUsed = applicationPreferences.getDrawAsType();
 		showMatchingParenWithArrowKeysLastUsed = applicationPreferences.getShowMatchingParenWithArrowKeys();
+		treeDescriptionFontSizeLastUsed = applicationPreferences.getTreeDescriptionFontSize();
 		applicationPreferences.setLastOpenedFilePath("last opened file");
 		applicationPreferences.setLastLocaleLanguage("en");
 		windowStageLastUsed = new Stage();
@@ -70,6 +72,7 @@ public class ApplicationPreferencesTest {
 		applicationPreferences.setLastLocaleLanguage(languageLastUsed);
 		applicationPreferences.setDrawAsType(drawAsTypeLastUsed);
 		applicationPreferences.setShowMatchingParenWithArrowKeys(showMatchingParenWithArrowKeysLastUsed);
+		applicationPreferences.setTreeDescriptionFontSize(treeDescriptionFontSizeLastUsed);
 		applicationPreferences.setLastWindowParameters(ApplicationPreferences.LAST_WINDOW, windowStageLastUsed);
 		applicationPreferences.setSavedTreeParameters(ltTreeLastUsed);
 	}
@@ -110,6 +113,13 @@ public class ApplicationPreferencesTest {
 		assertEquals("show matching paren with arrow keys", false, applicationPreferences.getShowMatchingParenWithArrowKeys());
 		applicationPreferences.setShowMatchingParenWithArrowKeys(true);
 		assertEquals("show matching paren with arrow keys", true, applicationPreferences.getShowMatchingParenWithArrowKeys());
+	}
+
+	@Test
+	public void treeDescriptionFontSize() {
+		assertEquals("tree description font size", 12.0, applicationPreferences.getTreeDescriptionFontSize(), 0.0);
+		applicationPreferences.setTreeDescriptionFontSize(16.0);;
+		assertEquals("tree description font size", 16.0, applicationPreferences.getTreeDescriptionFontSize(), 0.0);
 	}
 
 	@Test
