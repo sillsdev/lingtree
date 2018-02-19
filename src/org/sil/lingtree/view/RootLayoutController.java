@@ -62,6 +62,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -197,9 +198,37 @@ public class RootLayoutController implements Initializable {
 			public void handle(KeyEvent event) {
 				int index;
 				Image mainIcon = mainApp.getNewMainIconImage();
-				markAsDirty();
+
+				if (event.isControlDown()) {
+					switch (event.getCode()) {
+					case C:
+						handleCopy();
+						break;
+					case D:
+						handleDrawTree();
+						break;
+					case N:
+						handleNewTree();
+						break;
+					case O:
+						handleOpenTree();
+						break;
+					case S:
+						try {
+							handleSaveTree();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						break;
+					default:
+						markAsDirty();
+						break;
+					}
+				}
 
 				if (event.isShiftDown()) {
+					markAsDirty();
 					switch (event.getCode()) {
 					case DIGIT0:
 						// we use caret position - 1 because the caret is after
@@ -234,6 +263,7 @@ public class RootLayoutController implements Initializable {
 						insertMatchingClosingParenthesis();
 						TreeDescriptionUIService.processLeftParenthesis(treeDescription, bundle,
 								mainIcon);
+						markAsDirty();
 						break;
 					case KP_RIGHT:
 					case RIGHT:
@@ -248,8 +278,10 @@ public class RootLayoutController implements Initializable {
 					case RIGHT_PARENTHESIS:
 						TreeDescriptionUIService.processRightParenthesis(treeDescription,
 								treeDescription.getCaretPosition() - 1, bundle, mainIcon);
+						markAsDirty();
 						break;
 					default:
+						markAsDirty();
 						break;
 					}
 				}
