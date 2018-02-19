@@ -32,6 +32,8 @@ public class LingTreeNode {
 	Text subscriptTextBox = new Text(0, 0, "");
 	// superscript at the end of the node content
 	Text superscriptTextBox = new Text(0, 0, "");
+	boolean fSubscriptRegular = true;
+	boolean fSuperscriptRegular = true;
 
 	private int iLevel; // level (or depth) of the node within the tree
 
@@ -78,7 +80,7 @@ public class LingTreeNode {
 
 	public void setSubscript(String subscript) {
 		subscriptTextBox.setText(subscript);
-		FontInfo fontInfo = getFontInfoForSubOrSuperscript();
+		FontInfo fontInfo = getFontInfoForSubscript();
 		subscriptTextBox.setFont(fontInfo.getFont());
 		subscriptTextBox.setFill(fontInfo.getColor());
 	}
@@ -89,9 +91,25 @@ public class LingTreeNode {
 
 	public void setSuperscript(String superscript) {
 		superscriptTextBox.setText(superscript);
-		FontInfo fontInfo = getFontInfoForSubOrSuperscript();
+		FontInfo fontInfo = getFontInfoForSuperscript();
 		superscriptTextBox.setFont(fontInfo.getFont());
 		superscriptTextBox.setFill(fontInfo.getColor());
+	}
+
+	public boolean isSubscriptRegular() {
+		return fSubscriptRegular;
+	}
+
+	public void setSubscriptRegular(boolean subscriptRegular) {
+		this.fSubscriptRegular = subscriptRegular;
+	}
+
+	public boolean isSuperscriptRegular() {
+		return fSuperscriptRegular;
+	}
+
+	public void setSuperscriptRegular(boolean superscriptRegular) {
+		this.fSuperscriptRegular = superscriptRegular;
 	}
 
 	public Text getContentTextBox() {
@@ -175,13 +193,22 @@ public class LingTreeNode {
 		return (superscriptTextBox.getText().length() == 0) ? false : true;
 	}
 
-	public FontInfo getFontInfoForSubOrSuperscript() {
+	public FontInfo getFontInfoForSubscript() {
+		return getFontInfoForSubOrSuperscript(isSubscriptRegular());
+	}
+
+	private FontInfo getFontInfoForSubOrSuperscript(boolean fIsRegular) {
 		FontInfo fontInfo = getFontInfoFromNodeType();
 		double newSize = fontInfo.getFontSize()
 				* Constants.SUB_SUPER_SCRIPT_FONT_SIZE_FACTOR;
-		FontInfo newFontInfo = new FontInfo(fontInfo.getFontFamily(), newSize, "Regular");
+		FontInfo newFontInfo = new FontInfo(fontInfo.getFontFamily(), newSize,
+				fIsRegular ? "Regular" : "Italic");
 		newFontInfo.setColor(fontInfo.getColor());
 		return newFontInfo;
+	}
+
+	public FontInfo getFontInfoForSuperscript() {
+		return getFontInfoForSubOrSuperscript(isSuperscriptRegular());
 	}
 
 	public double getHeight() {

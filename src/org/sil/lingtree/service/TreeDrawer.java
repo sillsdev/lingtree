@@ -310,11 +310,11 @@ public class TreeDrawer {
 	private void drawNodesAsSVG(LingTreeNode node, StringBuilder sb) {
 		createTextAsSVG(node.getContentTextBox(), node.getFontInfoFromNodeType(), sb);
 		if (node.hasSubscript()) {
-			FontInfo fontInfo = node.getFontInfoForSubOrSuperscript();
+			FontInfo fontInfo = node.getFontInfoForSubscript();
 			createTextAsSVG(node.getSubscriptTextBox(), fontInfo, sb);
 		}
 		if (node.hasSuperscript()) {
-			FontInfo fontInfo = node.getFontInfoForSubOrSuperscript();
+			FontInfo fontInfo = node.getFontInfoForSuperscript();
 			createTextAsSVG(node.getSuperscriptTextBox(), fontInfo, sb);
 		}
 		if (node.hasMother() && !node.isOmitLine() && node.getNodeType() != NodeType.Gloss) {

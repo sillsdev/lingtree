@@ -127,22 +127,55 @@ public class BuildTreeFromDescriptionListener extends DescriptionBaseListener {
 		} else if (iSuper > -1) {
 			iEndOfText = iSuper;
 		}
+		iSub = sContent.indexOf(Constants.SUBSCRIPTITALIC);
+		iSuper = sContent.indexOf(Constants.SUPERSCRIPTITALIC);
+		if (iSub > -1) {
+			if (iSuper > -1) {
+				iEndOfText = Math.min(iSub, iSuper);
+			} else {
+				iEndOfText = Math.min(iEndOfText, iSub);
+			}
+		} else if (iSuper > -1) {
+			iEndOfText = Math.min(iEndOfText, iSuper);
+		}
 		return iEndOfText;
 	}
 	
 	@Override
 	public void exitSubscript(DescriptionParser.SubscriptContext ctx) {
+		String sRegularToken = Constants.SUBSCRIPT;
+		String sItalicToken = Constants.SUBSCRIPTITALIC;
 		DescriptionParser.ContentContext parentCtx = (ContentContext) ctx.getParent();
 		DescriptionParser.NodeContext parentsParentCtx = (NodeContext) parentCtx.getParent();
 		LingTreeNode node = nodeMap.get(parentsParentCtx.hashCode());
-		node.setSubscript(ctx.getText().trim().substring(Constants.SUBSCRIPT.length()));
+		String sText = ctx.getText().trim();
+		int iRegular = sText.indexOf(sRegularToken);
+		int iItalic = sText.indexOf(sItalicToken);
+		if (iItalic > -1) {
+			node.setSubscriptRegular(false);
+			node.setSubscript(sText.substring(sItalicToken.length()));
+		} else if (iRegular > -1) {
+			node.setSubscriptRegular(true);
+			node.setSubscript(sText.substring(sRegularToken.length()));
+		}
 	}
 
 	@Override
 	public void exitSuperscript(DescriptionParser.SuperscriptContext ctx) {
+		String sRegularToken = Constants.SUPERSCRIPT;
+		String sItalicToken = Constants.SUPERSCRIPTITALIC;
 		DescriptionParser.ContentContext parentCtx = (ContentContext) ctx.getParent();
 		DescriptionParser.NodeContext parentsParentCtx = (NodeContext) parentCtx.getParent();
 		LingTreeNode node = nodeMap.get(parentsParentCtx.hashCode());
-		node.setSuperscript(ctx.getText().trim().substring(Constants.SUPERSCRIPT.length()));
+		String sText = ctx.getText().trim();
+		int iRegular = sText.indexOf(sRegularToken);
+		int iItalic = sText.indexOf(sItalicToken);
+		if (iItalic > -1) {
+			node.setSuperscriptRegular(false);
+			node.setSuperscript(sText.substring(sItalicToken.length()));
+		} else if (iRegular > -1) {
+			node.setSuperscriptRegular(true);
+			node.setSuperscript(sText.substring(sRegularToken.length()));
+		}
 	}
 }

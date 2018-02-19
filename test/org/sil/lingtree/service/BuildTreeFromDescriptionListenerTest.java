@@ -351,6 +351,111 @@ public class BuildTreeFromDescriptionListenerTest extends ServiceBaseTest {
 		node3 = daughters.get(0);
 		checkNodeResult(node3, "cats", "", "", false, false, NodeType.NonTerminal, 5, 0);
 
+		// subscript italic and superscript italic example
+		ltTree = TreeBuilder.parseAString(
+				"(S (NP/_1/^' (N (dogs))) (VP (V (chase)) (NP/^'/_2 (N (cats)))))", origTree);
+		// root node
+		rootNode = ltTree.getRootNode();
+		checkNodeResult(rootNode, "S", "", "", false, false, NodeType.NonTerminal, 1, 2);
+		assertNull(rootNode.getMother());
+		assertNull(rootNode.getRightSister());
+		daughters = rootNode.getDaughters();
+		node1 = daughters.get(0);
+		checkNodeResult(node1, "NP", "1", "'", false, false, NodeType.NonTerminal, 2, 1);
+		node2 = daughters.get(1);
+		checkNodeResult(node2, "VP", "", "", false, false, NodeType.NonTerminal, 2, 2);
+		// NP N dogs
+		node1 = node1.getDaughters().get(0);
+		checkNodeResult(node1, "N", "", "", false, false, NodeType.NonTerminal, 3, 1);
+		daughters = node1.getDaughters();
+		node1 = daughters.get(0);
+		checkNodeResult(node1, "dogs", "", "", false, false, NodeType.NonTerminal, 4, 0);
+		// VP V chase
+		node3 = node2.getDaughters().get(0);
+		checkNodeResult(node3, "V", "", "", false, false, NodeType.NonTerminal, 3, 1);
+		daughters = node3.getDaughters();
+		node3 = daughters.get(0);
+		checkNodeResult(node3, "chase", "", "", false, false, NodeType.NonTerminal, 4, 0);
+		// VP NP N cats
+		node3 = node2.getDaughters().get(1);
+		checkNodeResult(node3, "NP", "2", "'", false, false, NodeType.NonTerminal, 3, 1);
+		daughters = node3.getDaughters();
+		node3 = daughters.get(0);
+		checkNodeResult(node3, "N", "", "", false, false, NodeType.NonTerminal, 4, 1);
+		daughters = node3.getDaughters();
+		node3 = daughters.get(0);
+		checkNodeResult(node3, "cats", "", "", false, false, NodeType.NonTerminal, 5, 0);
+
+		// subscript italic and superscript example
+		ltTree = TreeBuilder.parseAString(
+				"(S (NP/_1/S' (N (dogs))) (VP (V (chase)) (NP/S'/_2 (N (cats)))))", origTree);
+		// root node
+		rootNode = ltTree.getRootNode();
+		checkNodeResult(rootNode, "S", "", "", false, false, NodeType.NonTerminal, 1, 2);
+		assertNull(rootNode.getMother());
+		assertNull(rootNode.getRightSister());
+		daughters = rootNode.getDaughters();
+		node1 = daughters.get(0);
+		checkNodeResult(node1, "NP", "1", "'", false, false, NodeType.NonTerminal, 2, 1);
+		node2 = daughters.get(1);
+		checkNodeResult(node2, "VP", "", "", false, false, NodeType.NonTerminal, 2, 2);
+		// NP N dogs
+		node1 = node1.getDaughters().get(0);
+		checkNodeResult(node1, "N", "", "", false, false, NodeType.NonTerminal, 3, 1);
+		daughters = node1.getDaughters();
+		node1 = daughters.get(0);
+		checkNodeResult(node1, "dogs", "", "", false, false, NodeType.NonTerminal, 4, 0);
+		// VP V chase
+		node3 = node2.getDaughters().get(0);
+		checkNodeResult(node3, "V", "", "", false, false, NodeType.NonTerminal, 3, 1);
+		daughters = node3.getDaughters();
+		node3 = daughters.get(0);
+		checkNodeResult(node3, "chase", "", "", false, false, NodeType.NonTerminal, 4, 0);
+		// VP NP N cats
+		node3 = node2.getDaughters().get(1);
+		checkNodeResult(node3, "NP", "2", "'", false, false, NodeType.NonTerminal, 3, 1);
+		daughters = node3.getDaughters();
+		node3 = daughters.get(0);
+		checkNodeResult(node3, "N", "", "", false, false, NodeType.NonTerminal, 4, 1);
+		daughters = node3.getDaughters();
+		node3 = daughters.get(0);
+		checkNodeResult(node3, "cats", "", "", false, false, NodeType.NonTerminal, 5, 0);
+
+		// subscript and superscript italic example
+		ltTree = TreeBuilder.parseAString(
+				"(S (NP/s1/^' (N (dogs))) (VP (V (chase)) (NP/^'/s2 (N (cats)))))", origTree);
+		// root node
+		rootNode = ltTree.getRootNode();
+		checkNodeResult(rootNode, "S", "", "", false, false, NodeType.NonTerminal, 1, 2);
+		assertNull(rootNode.getMother());
+		assertNull(rootNode.getRightSister());
+		daughters = rootNode.getDaughters();
+		node1 = daughters.get(0);
+		checkNodeResult(node1, "NP", "1", "'", false, false, NodeType.NonTerminal, 2, 1);
+		node2 = daughters.get(1);
+		checkNodeResult(node2, "VP", "", "", false, false, NodeType.NonTerminal, 2, 2);
+		// NP N dogs
+		node1 = node1.getDaughters().get(0);
+		checkNodeResult(node1, "N", "", "", false, false, NodeType.NonTerminal, 3, 1);
+		daughters = node1.getDaughters();
+		node1 = daughters.get(0);
+		checkNodeResult(node1, "dogs", "", "", false, false, NodeType.NonTerminal, 4, 0);
+		// VP V chase
+		node3 = node2.getDaughters().get(0);
+		checkNodeResult(node3, "V", "", "", false, false, NodeType.NonTerminal, 3, 1);
+		daughters = node3.getDaughters();
+		node3 = daughters.get(0);
+		checkNodeResult(node3, "chase", "", "", false, false, NodeType.NonTerminal, 4, 0);
+		// VP NP N cats
+		node3 = node2.getDaughters().get(1);
+		checkNodeResult(node3, "NP", "2", "'", false, false, NodeType.NonTerminal, 3, 1);
+		daughters = node3.getDaughters();
+		node3 = daughters.get(0);
+		checkNodeResult(node3, "N", "", "", false, false, NodeType.NonTerminal, 4, 1);
+		daughters = node3.getDaughters();
+		node3 = daughters.get(0);
+		checkNodeResult(node3, "cats", "", "", false, false, NodeType.NonTerminal, 5, 0);
+
 		// backslash and forward slash as text node content
 		ltTree = TreeBuilder.parseAString(
 				"(S (/S'/Comp (N (do\\gs))) (VP (V (chase)) (/s2 (N (cats)))))", origTree);

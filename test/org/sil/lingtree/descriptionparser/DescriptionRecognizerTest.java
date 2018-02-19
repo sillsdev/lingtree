@@ -145,7 +145,7 @@ public class DescriptionRecognizerTest {
 				"(QP (DP/s1 (\\T \\E pro)) (Q' (Q (\\E t/_k))\n" +
 				"(DP/s2 (\\T \\L mee bzaan noo (\\G my brothers)))))))))))",
 				"(description (node (openParen () (content IP ) (node (openParen () " +
-						"(content DP /_ m ) (node (openParen () (content D' ) (node (openParen () " +
+						"(content DP (subscript /_ m )) (node (openParen () (content D' ) (node (openParen () " +
 						"(content D' (subscript /s 1 )) (node (openParen () (content D ) (node " +
 						"(openParen () (type (nodeType \\L)) (content  le ) (node (openParen () (type " +
 						"(nodeType \\G)) (content  FM) (closeParen ))) (closeParen ))) (closeParen ))) " +
@@ -153,29 +153,29 @@ public class DescriptionRecognizerTest {
 						"(nodeType \\L)) (content  xuz noo ) (node (openParen () (type (nodeType \\G)) " +
 						"(content  my father) (closeParen ))) (closeParen ))) (closeParen ))) " +
 						"(closeParen ))) (node (openParen () (content IP ) (node (openParen () (type " +
-						"(nodeType \\E)) (content  t /_ j) (closeParen ))) (closeParen ))) " +
+						"(nodeType \\E)) (content  t (subscript /_ j)) (closeParen ))) (closeParen ))) " +
 						"(closeParen ))) (closeParen ))) (node (openParen () (content IP ) " +
-						"(node (openParen () (content I' ) (node (openParen () (content I /_ i ) " +
+						"(node (openParen () (content I' ) (node (openParen () (content I (subscript /_ i )) " +
 						"(node (openParen () (type (lineType \\T ) (nodeType \\L)) (content  w-guu ) " +
 						"(node (openParen () (type (nodeType \\G)) (content  C-sow) (closeParen ))) " +
 						"(closeParen ))) (closeParen ))) (node (openParen () (content VP ) " +
 						"(node (openParen () (content VP ) (node (openParen () (content DP ) " +
-						"(node (openParen () (type (nodeType \\E)) (content  t /_ m) (closeParen ))) " +
+						"(node (openParen () (type (nodeType \\E)) (content  t (subscript /_ m)) (closeParen ))) " +
 						"(closeParen ))) (node (openParen () (content V' ) (node (openParen () " +
-						"(content V ) (node (openParen () (type (nodeType \\E)) (content  t /_ i) " +
+						"(content V ) (node (openParen () (type (nodeType \\E)) (content  t (subscript /_ i)) " +
 						"(closeParen ))) (closeParen )  )) (node (openParen () (content DP ) " +
 						"(node (openParen () (type (lineType \\T ) (nodeType \\L)) (content  bni ) " +
 						"(node (openParen () (type (nodeType \\G)) (content  seed) (closeParen ))) " +
 						"(closeParen ))) (closeParen ))) (closeParen ))) (closeParen ))) " +
-						"(node (openParen () (content IP /_ j ) (node (openParen () (content I' ) " +
-						"(node (openParen () (content I /_ k ) (node (openParen () " +
+						"(node (openParen () (content IP (subscript /_ j )) (node (openParen () (content I' ) " +
+						"(node (openParen () (content I (subscript /_ k )) (node (openParen () " +
 						"(type (nodeType \\L)) (content  y-ra ) (node (openParen () (type (nodeType \\G)) " +
 						"(content  P-all) (closeParen ))) (closeParen ))) (closeParen ))) " +
 						"(node (openParen () (content QP ) (node (openParen () (content DP " +
 						"(subscript /s 1 )) (node (openParen () (type (lineType \\T ) (nodeType \\E)) " +
 						"(content  pro) (closeParen ))) (closeParen )  )) (node (openParen () " +
 						"(content Q' ) (node (openParen () (content Q ) (node (openParen () " +
-						"(type (nodeType \\E)) (content  t /_ k) (closeParen ))) (closeParen ))) " +
+						"(type (nodeType \\E)) (content  t (subscript /_ k)) (closeParen ))) (closeParen ))) " +
 						"(node (openParen () (content DP (subscript /s 2 )) (node (openParen () " +
 						"(type (lineType \\T ) (nodeType \\L)) (content  mee bzaan noo ) " +
 						"(node (openParen () (type (nodeType \\G)) (content  my brothers) " +

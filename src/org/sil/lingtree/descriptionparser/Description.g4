@@ -65,9 +65,13 @@ content : (TEXT | BACKSLASH | SLASH)+ ' '* subscript superscript
         | superscript
         ;
 
-subscript : SUBSCRIPT (TEXT | BACKSLASH | SLASH)+ ;
+subscript : SUBSCRIPT (TEXT | BACKSLASH | SLASH)+
+		  | SUBSCRIPTITALIC (TEXT | BACKSLASH | SLASH)+
+		  ;
 
-superscript : SUPERSCRIPT (TEXT | BACKSLASH | SLASH)+ ;
+superscript : SUPERSCRIPT (TEXT | BACKSLASH | SLASH)+
+		    | SUPERSCRIPTITALIC (TEXT | BACKSLASH | SLASH)+
+		    ;
 
 OMIT : '\\O'  ' '* ;
 TRIANGLE : '\\T'  ' '*;
@@ -77,7 +81,9 @@ GLOSS : '\\G';
 EMPTY : '\\E';  // empty element (like a trace or non-overt pronoun)
 
 SUBSCRIPT : '/s' ;
+SUBSCRIPTITALIC : '/_' ;
 SUPERSCRIPT : '/S' ;
+SUPERSCRIPTITALIC : '/^' ;
 
 // Node text content, with exception of backslash or forward slash sequences.
 // Those are handled via BACKSLASH and SLASH

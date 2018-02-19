@@ -14,7 +14,9 @@ public class Constants {
 	public static final int CURRENT_DATABASE_VERSION = 2;
 
 	public static final String SUBSCRIPT = "/s";
+	public static final String SUBSCRIPTITALIC = "/_";
 	public static final String SUPERSCRIPT = "/S";
+	public static final String SUPERSCRIPTITALIC = "/^";
 	// LaTeX uses 70%; OpenOffice & LibreOffice use 58%; Word uses 50%
 	//    (See https://en.wikipedia.org/wiki/Subscript_and_superscript#Desktop_publishing)
 	// I liked 70% best on my laptop, but the jury is still out
