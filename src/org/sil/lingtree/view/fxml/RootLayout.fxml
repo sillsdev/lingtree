@@ -39,9 +39,11 @@
                     <MenuItem mnemonicParsing="true" onAction="#handleExit" text="%menu.exit" />
                   </items>
                 </Menu>
-                <Menu mnemonicParsing="true" text="%menu.edit">
+                <Menu mnemonicParsing="true" text="%menu.edit" onShown="#handleShowingEditMenu">
                   <items>
-                    <MenuItem mnemonicParsing="true" onAction="#handleCopy" text="%menu.copy" />
+					<MenuItem mnemonicParsing="true" onAction="#handleCut" text="%menu.cut" fx:id="menuItemEditCut" accelerator="ctrl+x" />
+					<MenuItem mnemonicParsing="true" onAction="#handleCopy" text="%menu.copy" fx:id="menuItemEditCopy" accelerator="ctrl+c" />
+					<MenuItem mnemonicParsing="true" onAction="#handlePaste" text="%menu.paste" fx:id="menuItemEditPaste" accelerator="ctrl+v" />
                   </items>
                 </Menu>
                 <Menu mnemonicParsing="true" text="%menu.tree">
@@ -86,9 +88,9 @@
 					<Button fx:id="buttonToolbarFileOpen" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" minWidth="17.0" mnemonicParsing="true" onAction="#handleOpenTree" prefHeight="23.0" prefWidth="17.0" text="" />
 					<Button fx:id="buttonToolbarFileSave" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" minWidth="17.0" mnemonicParsing="true" onAction="#handleSaveTree" prefHeight="23.0" prefWidth="17.0" text="" />
 					<Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="3.0" />
-					<Button fx:id="buttonToolbarEditCut" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" minWidth="17.0" mnemonicParsing="true" onAction="#handleToolBarCut" prefHeight="23.0" prefWidth="17.0" text="" />
-					<Button fx:id="buttonToolbarEditCopy" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" minWidth="17.0" mnemonicParsing="true" onAction="#handleToolBarCopy" prefHeight="23.0" prefWidth="17.0" text="" />
-					<Button fx:id="buttonToolbarEditPaste" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" minWidth="17.0" mnemonicParsing="true" onAction="#handleToolBarPaste" prefHeight="23.0" prefWidth="17.0" text="" />
+					<Button fx:id="buttonToolbarEditCut" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" minWidth="17.0" mnemonicParsing="true" onAction="#handleCut" prefHeight="23.0" prefWidth="17.0" text="" />
+					<Button fx:id="buttonToolbarEditCopy" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" minWidth="17.0" mnemonicParsing="true" onAction="#handleCopy" prefHeight="23.0" prefWidth="17.0" text="" />
+					<Button fx:id="buttonToolbarEditPaste" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" minWidth="17.0" mnemonicParsing="true" onAction="#handlePaste" prefHeight="23.0" prefWidth="17.0" text="" />
 					<Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="3.0" />
 					<Button fx:id="buttonToolbarDrawTree" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" minWidth="17.0" mnemonicParsing="true" onAction="#handleDrawTree" prefHeight="23.0" prefWidth="17.0" text="" />
 					<Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="3.0" />

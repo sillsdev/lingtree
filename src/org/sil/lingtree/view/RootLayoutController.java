@@ -52,6 +52,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.ChoiceDialog;
+import javafx.scene.control.IndexRange;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
@@ -62,6 +63,9 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.DataFormat;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
@@ -168,6 +172,8 @@ public class RootLayoutController implements Initializable {
 	private TextArea treeDescription;
 	@FXML
 	private Pane drawingArea;
+
+	protected Clipboard systemClipboard = Clipboard.getSystemClipboard();
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -423,36 +429,6 @@ public class RootLayoutController implements Initializable {
 	}
 
 	@FXML
-	private void handleCut() {
-		// currentApproachController.handleCut();
-	}
-
-	@FXML
-	private void handleToolBarCut() {
-		// currentApproachController.handleToolBarCut();
-	}
-
-	@FXML
-	private void handleCopy() {
-		// currentApproachController.handleCopy();
-	}
-
-	@FXML
-	private void handleToolBarCopy() {
-		// currentApproachController.handleToolBarCopy();
-	}
-
-	@FXML
-	private void handlePaste() {
-		// currentApproachController.handlePaste();
-	}
-
-	@FXML
-	private void handleToolBarPaste() {
-		// currentApproachController.handleToolBarPaste();
-	}
-
-	@FXML
 	public void handleDrawTree() {
 		cleanDrawingArea();
 		TreeDrawer drawer = drawTreePrep();
@@ -463,6 +439,7 @@ public class RootLayoutController implements Initializable {
 		} else {
 			drawer.draw(drawingArea);
 		}
+		treeDescription.requestFocus();
 	}
 
 	private void cleanDrawingArea() {
@@ -601,7 +578,8 @@ public class RootLayoutController implements Initializable {
 		ltTree.setShowFlatView(menuItemUseFlatTree.isSelected());
 		handleDrawTree();
 		markAsDirty();
-	}
+		treeDescription.requestFocus();
+}
 
 	private void setToggleButtonStyle(CheckMenuItem menuItem, ToggleButton toggleButton) {
 		if (menuItem.isSelected()) {
@@ -632,6 +610,7 @@ public class RootLayoutController implements Initializable {
 		setToggleButtonStyle(menuItemSaveAsPng, toggleButtonSaveAsPng);
 		ltTree.setSaveAsPng(menuItemSaveAsPng.isSelected());
 		markAsDirty();
+		treeDescription.requestFocus();
 	}
 
 	@FXML
@@ -647,6 +626,7 @@ public class RootLayoutController implements Initializable {
 		setToggleButtonStyle(menuItemSaveAsSVG, toggleButtonSaveAsSVG);
 		ltTree.setSaveAsSVG(menuItemSaveAsSVG.isSelected());
 		markAsDirty();
+		treeDescription.requestFocus();
 	}
 
 	@FXML
@@ -672,6 +652,7 @@ public class RootLayoutController implements Initializable {
 		applicationPreferences
 				.setShowMatchingParenWithArrowKeys(menuItemShowMatchingParenWithArrowKeys
 						.isSelected());
+		treeDescription.requestFocus();
 	}
 
 	/**
@@ -781,7 +762,8 @@ public class RootLayoutController implements Initializable {
 		if (menuItemSaveAsSVG.isSelected()) {
 			saveTreeAsSVG();
 		}
-	}
+		treeDescription.requestFocus();
+}
 
 	private void saveTreeAsPng() throws IOException {
 		File file = mainApp.getTreeDataFile();
@@ -1025,5 +1007,135 @@ public class RootLayoutController implements Initializable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	// code taken from
+	// http://bekwam.blogspot.com/2014/10/cut-copy-and-paste-from-javafx-menubar.html
+	@FXML
+	public void handleShowingEditMenu() {
+		if (systemClipboard == null) {
+			systemClipboard = Clipboard.getSystemClipboard();
+		}
+
+		if (systemClipboard.hasString()) {
+			adjustForClipboardContents();
+		} else {
+			adjustForEmptyClipboard();
+		}
+
+		if (anythingSelected()) {
+			adjustForSelection();
+
+		} else {
+			adjustForDeselection();
+		}
+	}
+
+	// **************************************************
+	// code taken from
+	// http://bekwam.blogspot.com/2014/10/cut-copy-and-paste-from-javafx-menubar.html
+	public void adjustForEmptyClipboard() {
+		menuItemEditPaste.setDisable(true); // nothing to paste
+	}
+
+	// code taken from
+	// http://bekwam.blogspot.com/2014/10/cut-copy-and-paste-from-javafx-menubar.html
+	private void adjustForClipboardContents() {
+		menuItemEditPaste.setDisable(false); // something to paste
+	}
+
+	// code taken from
+	// http://bekwam.blogspot.com/2014/10/cut-copy-and-paste-from-javafx-menubar.html
+	private void adjustForSelection() {
+		menuItemEditCut.setDisable(false);
+		menuItemEditCopy.setDisable(false);
+	}
+
+	// code taken from
+	// http://bekwam.blogspot.com/2014/10/cut-copy-and-paste-from-javafx-menubar.html
+	private void adjustForDeselection() {
+		menuItemEditCut.setDisable(true);
+		menuItemEditCopy.setDisable(true);
+	}
+
+	public void setViewItemUsed(int value) {
+		// default is to do nothing
+	}
+
+	@FXML
+	protected void handleCopy() {
+		String text = treeDescription.getSelectedText();
+		ClipboardContent content = new ClipboardContent();
+		content.putString(text);
+		systemClipboard.setContent(content);
+		treeDescription.requestFocus();
+	}
+
+	@FXML
+	protected void handleCut() {
+		String text;
+		IndexRange range;
+
+		text = treeDescription.getSelectedText();
+		range = treeDescription.getSelection();
+		ClipboardContent content = new ClipboardContent();
+		content.putString(text);
+		systemClipboard.setContent(content);
+		String origText = treeDescription.getText();
+		String firstPart = origText.substring(0, range.getStart());
+		String lastPart = origText.substring(range.getEnd(), origText.length());
+		treeDescription.setText(firstPart + lastPart);
+
+		treeDescription.positionCaret(range.getStart());
+	}
+
+	@FXML
+	protected void handlePaste() {
+		if (!systemClipboard.hasContent(DataFormat.PLAIN_TEXT)) {
+			adjustForEmptyClipboard();
+			return;
+		}
+
+		String clipboardText = systemClipboard.getString();
+		if (clipboardText == null || clipboardText.length() == 0) {
+			return;
+		}
+
+		if (treeDescription == null) {
+			return;
+		}
+		IndexRange range = treeDescription.getSelection();
+
+		String origText = treeDescription.getText();
+		processPaste(clipboardText, treeDescription, range, origText);
+		treeDescription.requestFocus();
+	}
+
+	protected void processPaste(String clipboardText, TextArea focusedTA, IndexRange range,
+			String origText) {
+		if (origText != null) {
+			int endPos = 0;
+			String updatedText = "";
+			String firstPart = origText.substring(0, range.getStart());
+			String lastPart = origText.substring(range.getEnd(), origText.length());
+
+			updatedText = firstPart + clipboardText + lastPart;
+
+			if (range.getStart() == range.getEnd()) {
+				endPos = range.getEnd() + clipboardText.length();
+			} else {
+				endPos = range.getStart() + clipboardText.length();
+			}
+
+			focusedTA.setText(updatedText);
+			focusedTA.positionCaret(endPos);
+		}
+	}
+
+	boolean anythingSelected() {
+		String sSelected = treeDescription.getSelectedText();
+		if (!StringUtilities.isNullOrEmpty(sSelected)) {
+			return true;
+		}
+		return false;
 	}
 }
