@@ -175,6 +175,8 @@ public class RootLayoutController implements Initializable {
 
 	protected Clipboard systemClipboard = Clipboard.getSystemClipboard();
 
+	private Font defaultFont;
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		bundle = resources;
@@ -319,6 +321,7 @@ public class RootLayoutController implements Initializable {
 		setToggleButtonStyle(menuItemShowMatchingParenWithArrowKeys,
 				toggleButtonShowMatchingParenWithArrowKeys);
 		treeDescription.setFont(new Font(applicationPreferences.getTreeDescriptionFontSize()));
+		defaultFont = treeDescription.getFont();
 	}
 
 	public Locale getCurrentLocale() {
@@ -489,11 +492,7 @@ public class RootLayoutController implements Initializable {
 					+ TreeBuilder.getCharacterPositionInLineOfError());
 			break;
 		}
-//		Label message = new Label(buildErrorMessage(sSyntaxErrorMessage));
-//		Color errorColor = new Color(1, 0, 0, 1);
-//		message.setTextFill(errorColor);
 		cleanDrawingArea();
-		//drawingArea.getChildren().add(message);
 		TextFlow textFlow = buildErrorMessageAsTextFlow(sSyntaxErrorMessage);
 		drawingArea.getChildren().add(textFlow);
 	}
@@ -501,13 +500,17 @@ public class RootLayoutController implements Initializable {
 	private TextFlow buildErrorMessageAsTextFlow(String sSyntaxErrorMessage) {
 		Text tPart1 = new Text(buildErrorMessagePart1(sSyntaxErrorMessage));
 		tPart1.setFill(Color.RED);
+		tPart1.setFont(defaultFont);
 		Text tPart2 = new Text(TreeBuilder.getDescriptionBeforeMark());
 		tPart2.setFill(Color.RED);
+		tPart2.setFont(defaultFont);
 		Text tPart3 = new Text(" " + bundle.getString("descriptionsyntaxerror.here"));
 		tPart3.setFill(Color.BLACK);
 		tPart3.setStyle("-fx-font-weight:bold;");
+		tPart3.setFont(defaultFont);
 		Text tPart4 = new Text(TreeBuilder.getDescriptionAfterMark());
 		tPart4.setFill(Color.RED);
+		tPart4.setFont(defaultFont);
 		TextFlow textFlow = new TextFlow(tPart1, tPart2, tPart3, tPart4);
 		return textFlow;
 	}
@@ -558,7 +561,8 @@ public class RootLayoutController implements Initializable {
 		stage.getIcons().add(mainApp.getNewMainIconImage());
 		Optional<Double> result = dialog.showAndWait();
 		if (result.isPresent()) {
-			treeDescription.setFont(new Font(result.get()));
+			defaultFont = new Font(result.get());
+			treeDescription.setFont(defaultFont);
 			applicationPreferences.setTreeDescriptionFontSize(result.get());
 		}
 	}
