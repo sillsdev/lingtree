@@ -90,6 +90,8 @@ public class RootLayoutController implements Initializable {
 	String sDescription;
 	ApplicationPreferences applicationPreferences;
 	boolean fIsDirty;
+	boolean fOpenParenJustTyped = false;
+	boolean fCloseParenJustTyped = false;
 
 	private String sAboutHeader;
 	private String sAboutContent;
@@ -201,97 +203,98 @@ public class RootLayoutController implements Initializable {
 		tooltipToolbarSaveAsSVG = new Tooltip(bundle.getString("tooltip.saveassvg"));
 		toggleButtonSaveAsSVG.setTooltip(tooltipToolbarSaveAsSVG);
 
+		// we use OnKeyTyped because it tells us the character keyed
+		// regardless of the keyboard used
+		treeDescription.setOnKeyTyped(new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent event) {
+				String sCharacter = event.getCharacter();
+				switch (sCharacter) {
+				case "(":
+					// the ( is not in the tree description yet. It is after the
+					// key is released.
+					// we handle this in onKeyReleased
+					// TODO: is there a better way to do this?
+					fOpenParenJustTyped = true;
+					markAsDirty();
+					break;
+
+				case ")":
+					// the ) is not in the tree description yet. It is after the
+					// key is released.
+					// we handle this in onKeyReleased
+					// TODO: is there a better way to do this?
+					fCloseParenJustTyped = true;
+					markAsDirty();
+					break;
+				default:
+					if (event.isControlDown()) {
+						switch (sCharacter.codePointAt(0)) {
+						// do not mark as dirty for the following
+						case 3: // Ctrl-C (copy)
+						case 4: // Ctrl-D (draw tree)
+						case 14: // Ctrl-N (new tree file)
+						case 15: // Ctrl-O (open tree file)
+						case 19: // Ctrl-S (save)
+							break;
+						default:
+							// mark as dirty for other control codes
+							markAsDirty();
+							break;
+						}
+					} else {
+						// mark as dirty for all other characters
+						markAsDirty();
+					}
+					break;
+				}
+			}
+		});
+
+		// We use OnKeyReleased for arrow keys and to process open and
+		// closed parentheses.  See above.
 		treeDescription.setOnKeyReleased(new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent event) {
 				int index;
 				Image mainIcon = mainApp.getNewMainIconImage();
-
-				if (event.isControlDown()) {
-					switch (event.getCode()) {
-					case C:
-						handleCopy();
-						break;
-					case D:
-						handleDrawTree();
-						break;
-					case N:
-						handleNewTree();
-						break;
-					case O:
-						handleOpenTree();
-						break;
-					case S:
-						try {
-							handleSaveTree();
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						break;
-					default:
-						markAsDirty();
-						break;
-					}
+				if (fCloseParenJustTyped) {
+					// we use caret position - 1 because the caret is after
+					// the inserted ')'
+					TreeDescriptionUIService.processRightParenthesis(treeDescription,
+							treeDescription.getCaretPosition() - 1, bundle, mainIcon);
+					fCloseParenJustTyped = false;
+				} else if (fOpenParenJustTyped) {
+					insertMatchingClosingParenthesis();
+					TreeDescriptionUIService.processLeftParenthesis(treeDescription, false, bundle,
+							mainIcon);
+					fOpenParenJustTyped = false;
 				}
-
-				if (event.isShiftDown()) {
-					markAsDirty();
-					switch (event.getCode()) {
-					case DIGIT0:
-						// we use caret position - 1 because the caret is after
-						// the inserted ')'
-						TreeDescriptionUIService.processRightParenthesis(treeDescription,
-								treeDescription.getCaretPosition() - 1, bundle, mainIcon);
-						break;
-					case DIGIT9:
-						insertMatchingClosingParenthesis();
-						TreeDescriptionUIService.processLeftParenthesis(treeDescription, false,
-								bundle, mainIcon);
-						break;
-					default:
-						break;
-					}
-				} else {
-					switch (event.getCode()) {
-					case LEFT:
-					case KP_LEFT:
-						if (menuItemShowMatchingParenWithArrowKeys.isSelected()) {
-							index = treeDescription.getCaretPosition();
-							if (treeDescription.getText(index, index + 1).equals(")")) {
-								// we use caret position because the caret is
-								// before
-								// the ')' we are checking
-								TreeDescriptionUIService.processRightParenthesis(treeDescription,
-										index, bundle, mainIcon);
-							}
+				switch (event.getCode()) {
+				case LEFT:
+				case KP_LEFT:
+					if (menuItemShowMatchingParenWithArrowKeys.isSelected()) {
+						index = treeDescription.getCaretPosition();
+						if (treeDescription.getText(index, index + 1).equals(")")) {
+							// we use caret position because the caret is
+							// before the ')' we are checking
+							TreeDescriptionUIService.processRightParenthesis(treeDescription,
+									index, bundle, mainIcon);
 						}
-						break;
-					case LEFT_PARENTHESIS:
-						insertMatchingClosingParenthesis();
-						TreeDescriptionUIService.processLeftParenthesis(treeDescription, false,
-								bundle, mainIcon);
-						markAsDirty();
-						break;
-					case KP_RIGHT:
-					case RIGHT:
-						if (menuItemShowMatchingParenWithArrowKeys.isSelected()) {
-							index = treeDescription.getCaretPosition();
-							if (treeDescription.getText(Math.max(0, index - 1), index).equals("(")) {
-								TreeDescriptionUIService.processLeftParenthesis(treeDescription,
-										true, bundle, mainIcon);
-							}
-						}
-						break;
-					case RIGHT_PARENTHESIS:
-						TreeDescriptionUIService.processRightParenthesis(treeDescription,
-								treeDescription.getCaretPosition() - 1, bundle, mainIcon);
-						markAsDirty();
-						break;
-					default:
-						markAsDirty();
-						break;
 					}
+					break;
+				case KP_RIGHT:
+				case RIGHT:
+					if (menuItemShowMatchingParenWithArrowKeys.isSelected()) {
+						index = treeDescription.getCaretPosition();
+						if (treeDescription.getText(Math.max(0, index - 1), index).equals("(")) {
+							TreeDescriptionUIService.processLeftParenthesis(treeDescription, true,
+									bundle, mainIcon);
+						}
+					}
+					break;
+				default:
+					break;
 				}
 
 				if (menuItemDrawAsType.isSelected()) {
@@ -469,7 +472,8 @@ public class RootLayoutController implements Initializable {
 
 		switch (TreeBuilder.getErrorMessage()) {
 		case DescriptionConstants.CONTENT_AFTER_COMPLETED_TREE:
-			sSyntaxErrorMessage = bundle.getString("descriptionsyntaxerror.content_after_completed_tree");
+			sSyntaxErrorMessage = bundle
+					.getString("descriptionsyntaxerror.content_after_completed_tree");
 			break;
 
 		case DescriptionConstants.MISSING_CLOSING_PAREN:
@@ -539,11 +543,11 @@ public class RootLayoutController implements Initializable {
 
 	@FXML
 	private void handleMenuDescriptionFontSize() {
-		final Double[] fontSizes = new Double[] { 3d, 4d, 5d, 6d, 7d, 8d, 9d, 10d,
-			11d, 12d, 13d, 14d, 15d, 16d, 17d, 18d, 19d, 20d, 21d, 22d, 23d, 24d, 25d, 26d,
-			27d, 28d, 29d, 30d, 31d, 32d, 33d, 34d, 35d, 36d, 37d, 38d, 39d, 40d, 41d, 42d,
-			43d, 44d, 45d, 46d, 47d, 48d, 49d, 50d, 51d, 52d, 53d, 54d, 55d, 56d, 57d, 58d,
-			59d, 60d, 61d, 62d, 63d, 64d, 65d, 66d, 67d, 68d, 69d, 70d, 71d, 72d };
+		final Double[] fontSizes = new Double[] { 3d, 4d, 5d, 6d, 7d, 8d, 9d, 10d, 11d, 12d, 13d,
+				14d, 15d, 16d, 17d, 18d, 19d, 20d, 21d, 22d, 23d, 24d, 25d, 26d, 27d, 28d, 29d,
+				30d, 31d, 32d, 33d, 34d, 35d, 36d, 37d, 38d, 39d, 40d, 41d, 42d, 43d, 44d, 45d,
+				46d, 47d, 48d, 49d, 50d, 51d, 52d, 53d, 54d, 55d, 56d, 57d, 58d, 59d, 60d, 61d,
+				62d, 63d, 64d, 65d, 66d, 67d, 68d, 69d, 70d, 71d, 72d };
 		ChoiceDialog<Double> dialog = new ChoiceDialog<>(12d, fontSizes);
 		dialog.setTitle(bundle.getString("descriptionfontsize.header"));
 		dialog.setHeaderText(bundle.getString("descriptionfontsize.content"));
@@ -575,7 +579,7 @@ public class RootLayoutController implements Initializable {
 		handleDrawTree();
 		markAsDirty();
 		treeDescription.requestFocus();
-}
+	}
 
 	private void setToggleButtonStyle(CheckMenuItem menuItem, ToggleButton toggleButton) {
 		if (menuItem.isSelected()) {
@@ -759,7 +763,7 @@ public class RootLayoutController implements Initializable {
 			saveTreeAsSVG();
 		}
 		treeDescription.requestFocus();
-}
+	}
 
 	private void saveTreeAsPng() throws IOException {
 		File file = mainApp.getTreeDataFile();
@@ -901,7 +905,8 @@ public class RootLayoutController implements Initializable {
 
 	@FXML
 	public void handleEmptyElementFontInfo() {
-		FontInfo fontInfo = showFontInfo(mainApp.getPrimaryStage(), ltTree.getEmptyElementFontInfo());
+		FontInfo fontInfo = showFontInfo(mainApp.getPrimaryStage(),
+				ltTree.getEmptyElementFontInfo());
 		ltTree.setEmptyElementFontInfo(fontInfo);
 		EmptyElementFontInfo.getInstance().setFont(fontInfo.getFont());
 		EmptyElementFontInfo.getInstance().setColor(fontInfo.getColor());
@@ -1004,6 +1009,7 @@ public class RootLayoutController implements Initializable {
 			e.printStackTrace();
 		}
 	}
+
 	// code taken from
 	// http://bekwam.blogspot.com/2014/10/cut-copy-and-paste-from-javafx-menubar.html
 	@FXML
