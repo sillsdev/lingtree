@@ -62,6 +62,7 @@ public class ApplicationPreferencesTest {
 
 		ltTreeLastUsed = new LingTreeTree();
 		applicationPreferences.getSavedTreeParameters(ltTreeLastUsed);
+		applicationPreferences.setTreeDescriptionFontSize(12.0);
 		applicationPreferences.setDrawAsType(false);
 		applicationPreferences.setShowMatchingParenWithArrowKeys(false);
 	}
