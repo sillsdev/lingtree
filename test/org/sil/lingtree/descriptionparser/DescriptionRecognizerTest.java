@@ -219,10 +219,10 @@ public class DescriptionRecognizerTest {
 
 	@Test
 	public void invalidDescriptionsTest() {
-		checkInvalidDescription("(S NP) (VP))", DescriptionConstants.MISSING_OPENING_PAREN, 8, 1);
-		checkInvalidDescription("S (NP (VP))", DescriptionConstants.MISSING_OPENING_PAREN, 11, 1);
-		checkInvalidDescription("\\O (NP (VP))", DescriptionConstants.MISSING_OPENING_PAREN, 12, 1);
-		checkInvalidDescription("\\L (NP (VP))", DescriptionConstants.MISSING_OPENING_PAREN, 12, 1);
+		checkInvalidDescription("(S NP) (VP))", DescriptionConstants.CONTENT_AFTER_COMPLETED_TREE, 7, 1);
+		checkInvalidDescription("S (NP (VP))", DescriptionConstants.MISSING_OPENING_PAREN, 0, 1);
+		checkInvalidDescription("\\O (NP (VP))", DescriptionConstants.MISSING_OPENING_PAREN, 0, 1);
+		checkInvalidDescription("\\L (NP (VP))", DescriptionConstants.MISSING_OPENING_PAREN, 0, 1);
 		checkInvalidDescription("(S \\O (NP (VP))", DescriptionConstants.MISSING_OPENING_PAREN, 6, 2);
 		checkInvalidDescription("(S \\L (NP (VP))", DescriptionConstants.MISSING_OPENING_PAREN, 5, 2);
 		checkInvalidDescription("(S (NP (VP))", DescriptionConstants.MISSING_CLOSING_PAREN, 10, 1);

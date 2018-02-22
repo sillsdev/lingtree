@@ -91,26 +91,26 @@ public class BuildTreeFromDescriptionListenerTest extends ServiceBaseTest {
 		checkErrorValues(origTree, ltTree, 2, 1, 11, DescriptionConstants.MISSING_CLOSING_PAREN);
 
 		ltTree = TreeBuilder.parseAString("S (NP (VP))", origTree);
-		checkErrorValues(origTree, ltTree, 1, 1, 11, DescriptionConstants.MISSING_OPENING_PAREN);
+		checkErrorValues(origTree, ltTree, 1, 1, 0, DescriptionConstants.MISSING_OPENING_PAREN);
 
 		ltTree = TreeBuilder.parseAString("(S (NP) VP))", origTree);
-		checkErrorValues(origTree, ltTree, 1, 1, 7, "no viable alternative at input '(S (NP) VP'");
+		checkErrorValues(origTree, ltTree, 2, 1, 7, DescriptionConstants.MISSING_OPENING_PAREN);
 
 		ltTree = TreeBuilder.parseAString("(S NP) (V) (VP))", origTree);
-		checkErrorValues(origTree, ltTree, 1, 1, 8, DescriptionConstants.MISSING_OPENING_PAREN);
+		checkErrorValues(origTree, ltTree, 1, 1, 7, DescriptionConstants.CONTENT_AFTER_COMPLETED_TREE);
 
 		String sBad = "(S) (NP (N-bar/S sup' (N(\\L Juan (\\G John)))))\n" +
 				"(VP (V/ssub (\\T\\L duerme (\\G sleeps)))))";
 		ltTree = TreeBuilder.parseAString(sBad, origTree);
-		checkErrorValues(origTree, ltTree, 1, 1, 5, DescriptionConstants.MISSING_OPENING_PAREN);
-		String sDescriptionWithErrorLocationMarked = "(S) ( << HERE >> NP (N-bar/S sup' (N(\\L Juan (\\G John)))))\n" +
+		checkErrorValues(origTree, ltTree, 1, 1, 4, DescriptionConstants.CONTENT_AFTER_COMPLETED_TREE);
+		String sDescriptionWithErrorLocationMarked = "(S)  << HERE >> (NP (N-bar/S sup' (N(\\L Juan (\\G John)))))\n" +
 				"(VP (V/ssub (\\T\\L duerme (\\G sleeps)))))";
 		assertEquals(sDescriptionWithErrorLocationMarked, TreeBuilder.getMarkedDescription(" << HERE >> "));
 
 		sBad = "(S (NP) (N-bar/S sup' (N(\\L Juan (\\G John)))))\n" +
 				"(VP (V/ssub (\\T\\L duerme (\\G sleeps)))))";
 		ltTree = TreeBuilder.parseAString(sBad, origTree);
-		checkErrorValues(origTree, ltTree, 1, 2, 1, DescriptionConstants.MISSING_OPENING_PAREN);
+		checkErrorValues(origTree, ltTree, 1, 2, 0, DescriptionConstants.CONTENT_AFTER_COMPLETED_TREE);
 		sDescriptionWithErrorLocationMarked = "(S (NP) (N-bar/S sup' (N(\\L Juan (\\G John)))))\n" +
 				" << HERE >> (VP (V/ssub (\\T\\L duerme (\\G sleeps)))))";
 		assertEquals(sDescriptionWithErrorLocationMarked, TreeBuilder.getMarkedDescription(" << HERE >> "));
@@ -118,14 +118,11 @@ public class BuildTreeFromDescriptionListenerTest extends ServiceBaseTest {
 				"(NP (N'/Ssup' (N(\\L Juanita (\\G Juanita)))))\n" +
 				"(VP (NP (N' (N (\\LSusana (\\G Susana))))) (V' (V/ssub (\\T\\L duerme (\\G sleeps)))))))";
 		ltTree = TreeBuilder.parseAString(sBad, origTree);
-		String sErrorMessage = "no viable alternative at input " +
-		"'(S (PP (P' (P (\\L de (\\G from))))(NP (N' (N (\\L aqui (\\G here))))))(NP (N'/Ssup' " +
-				"(N(\\L Juanita (\\G Juanita)))))(VP (NP (N' (N (\\LSusana (\\G Susana))))) " +
-		"(V' (V/ssub (\\T\\L duerme (\\G sleeps)))))))'";
-		checkErrorValues(origTree, ltTree, 1, 3, 82, sErrorMessage);
+		String sErrorMessage = DescriptionConstants.TOO_MANY_CLOSING_PARENS;
+		checkErrorValues(origTree, ltTree, 1, 3, 83, sErrorMessage);
 		sDescriptionWithErrorLocationMarked = "(S (PP (P' (P (\\L de (\\G from))))(NP (N' (N (\\L aqui (\\G here))))))\n" +
 				"(NP (N'/Ssup' (N(\\L Juanita (\\G Juanita)))))\n" +
-				"(VP (NP (N' (N (\\LSusana (\\G Susana))))) (V' (V/ssub (\\T\\L duerme (\\G sleeps))))) << HERE >> ))";
+				"(VP (NP (N' (N (\\LSusana (\\G Susana))))) (V' (V/ssub (\\T\\L duerme (\\G sleeps))))))) << HERE >> ";
 		assertEquals(sDescriptionWithErrorLocationMarked, TreeBuilder.getMarkedDescription(" << HERE >> "));
 		}
 

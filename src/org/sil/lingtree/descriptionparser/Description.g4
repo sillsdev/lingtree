@@ -17,16 +17,20 @@ grammar Description;
 	package org.sil.lingtree.descriptionparser.antlr4generated;
 }
 description  : node EOF
-             | content node EOF {notifyErrorListeners("missingOpeningParen");}
-             | type    node EOF {notifyErrorListeners("missingOpeningParen");}
-             |         node '(' {notifyErrorListeners("missingOpeningParen");}
+             | EOF {notifyErrorListeners("missingOpeningParen");}
+             | {notifyErrorListeners("missingOpeningParen");} content
+             | node {notifyErrorListeners("contentAfterCompletedTree");} content
+             | node {notifyErrorListeners("contentAfterCompletedTree");} node
+             | {notifyErrorListeners("missingOpeningParen");} content node EOF
+             | {notifyErrorListeners("missingOpeningParen");} type    node EOF
+             | node closeParen {notifyErrorListeners("tooManyCloseParens");}
              ;
 
 // we allow empty nodes that just have parens (hence, both type and content are optional)
 node : openParen type? content? node* closeParen
+	 | openParen type? content? node* closeParen {notifyErrorListeners("missingOpeningParen");} content
      | openParen type? content? node*             {notifyErrorListeners("missingClosingParen");}
      |           type  content?                   {notifyErrorListeners("missingOpeningParen");}
-//     |           type? content  node*             {notifyErrorListeners("missingOpeningParen");}
      ;
 
 openParen : ' '* '(' ' '*

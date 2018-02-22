@@ -60,13 +60,13 @@ public class TreeBuilder {
 
 	public static String getDescriptionBeforeMark() {
 		int iCharPosOfMark = getPositionOfMark();
-		System.out.println("Before: iCharPosOfMark=" + iCharPosOfMark);
+		//System.out.println("Before: iCharPosOfMark=" + iCharPosOfMark);
 		return sDescription.substring(0, iCharPosOfMark);
 	}
 
 	public static String getDescriptionAfterMark() {
 		int iCharPosOfMark = getPositionOfMark();
-		System.out.println("After:  iCharPosOfMark=" + iCharPosOfMark);
+		//System.out.println("After:  iCharPosOfMark=" + iCharPosOfMark);
 		return sDescription.substring(iCharPosOfMark);
 	}
 
@@ -78,12 +78,14 @@ public class TreeBuilder {
 			int iCurrentLineNum = 2;
 			int iCharPosOfNL = sDescription.indexOf("\n");
 			while (iCharPosOfNL > -1 && iCurrentLineNum <= lineNumberOfError) {
+				//System.out.println("iCharPosOfMark=" + iCharPosOfMark + " iCharPosOfNL=" + iCharPosOfNL);
 				iCharPosOfMark += (iCharPosOfNL + 1);
-				String sRest = sDescription.substring(iCharPosOfNL + 1);
+				String sRest = sDescription.substring(iCharPosOfMark);
+				//System.out.println("\tiCharPosOfMark=" + iCharPosOfMark + " sRest='" + sRest + "'");
 				iCharPosOfNL = sRest.indexOf("\n");
 				iCurrentLineNum++;
 			}
-			iCharPosOfMark = iCharPosOfMark + characterPositionInLineOfError - 1;
+			iCharPosOfMark = iCharPosOfMark + characterPositionInLineOfError;
 		}
 		return iCharPosOfMark;
 	}

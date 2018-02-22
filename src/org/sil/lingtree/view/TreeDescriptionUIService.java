@@ -64,8 +64,7 @@ public class TreeDescriptionUIService {
 	}
 
 	// TODO: when we get rtf working, highlight some other way and we may not
-	// need to
-	// return an integer here...
+	// need to return an integer here...
 	// is public for unit testing
 	public static int findMatchingLeftParenthesisAndHighlightIt(int iRightParenthesis) {
 		String sDescription = treeDescription.getText();
@@ -112,13 +111,19 @@ public class TreeDescriptionUIService {
 		return -1;
 	}
 
-	public static void processLeftParenthesis(TextArea description, ResourceBundle resource,
-			Image image) {
+	/**
+	 * @param description = tree description text area
+	 * @param fShowMsg = whether to show message about missing matching right parenthesis
+	 * @param resource = resources used in message
+	 * @param image = image used in message
+	 */
+	public static void processLeftParenthesis(TextArea description, boolean fShowMsg,
+			ResourceBundle resource, Image image) {
 		treeDescription = description;
 		bundle = resource;
 		mainIcon = image;
 		int iLeftParenthesis = treeDescription.getCaretPosition();
-		int iRightParenthesis = findMatchingRightParenthesisAndHighlightIt(iLeftParenthesis);
+		int iRightParenthesis = findMatchingRightParenthesisAndHighlightIt(iLeftParenthesis, fShowMsg);
 		// treeDescription.positionCaret(iRightParenthesis+7);
 		if (iRightParenthesis > -1) {
 			// sleep for 750 milliseconds and then reset the caret
@@ -148,10 +153,14 @@ public class TreeDescriptionUIService {
 	}
 
 	// TODO: when we get rtf working, highlight some other way and we may not
-	// need to
-	// return an integer here...
+	// need to return an integer here...
 	// is public for unit testing
-	public static int findMatchingRightParenthesisAndHighlightIt(int iLeftParenthesis) {
+	/**
+	 * @param iLeftParenthesis = position of left parenthesis to match
+	 * @param fShowMsg = whether to show message about missing matching right parenthesis
+	 * @return
+	 */
+	public static int findMatchingRightParenthesisAndHighlightIt(int iLeftParenthesis, boolean fShowMsg) {
 		int iIndex;
 		String sDescription = treeDescription.getText();
 		int iEnd = sDescription.length();
@@ -175,7 +184,7 @@ public class TreeDescriptionUIService {
 			// treeDescription.replaceSelection("-->(<--");
 			return iIndex;
 		} else {
-			if (bundle != null) {
+			if (fShowMsg && bundle != null) {
 				Alert alert = new Alert(AlertType.ERROR);
 				alert.setTitle(MainApp.kApplicationTitle);
 				alert.setHeaderText(bundle.getString("error.nomatchingclosingparenthesis"));

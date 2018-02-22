@@ -10,8 +10,10 @@ package org.sil.lingtree.descriptionparser;
  *
  */
 public class DescriptionConstants {
+	public static final String CONTENT_AFTER_COMPLETED_TREE = "contentAfterCompletedTree";
 	public static final String MISSING_OPENING_PAREN = "missingOpeningParen";
 	public static final String MISSING_CLOSING_PAREN = "missingClosingParen";
+	public static final String TOO_MANY_CLOSING_PARENS = "tooManyCloseParens";
 	public static final String TOO_MANY_NODE_TYPES = "tooManyNodeTypes";
 	public static final String TOO_MANY_lINE_TYPES = "tooManyLineTypes";
 }

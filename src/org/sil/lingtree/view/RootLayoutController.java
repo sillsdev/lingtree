@@ -246,8 +246,8 @@ public class RootLayoutController implements Initializable {
 						break;
 					case DIGIT9:
 						insertMatchingClosingParenthesis();
-						TreeDescriptionUIService.processLeftParenthesis(treeDescription, bundle,
-								mainIcon);
+						TreeDescriptionUIService.processLeftParenthesis(treeDescription, false,
+								bundle, mainIcon);
 						break;
 					default:
 						break;
@@ -269,8 +269,8 @@ public class RootLayoutController implements Initializable {
 						break;
 					case LEFT_PARENTHESIS:
 						insertMatchingClosingParenthesis();
-						TreeDescriptionUIService.processLeftParenthesis(treeDescription, bundle,
-								mainIcon);
+						TreeDescriptionUIService.processLeftParenthesis(treeDescription, false,
+								bundle, mainIcon);
 						markAsDirty();
 						break;
 					case KP_RIGHT:
@@ -279,7 +279,7 @@ public class RootLayoutController implements Initializable {
 							index = treeDescription.getCaretPosition();
 							if (treeDescription.getText(Math.max(0, index - 1), index).equals("(")) {
 								TreeDescriptionUIService.processLeftParenthesis(treeDescription,
-										bundle, mainIcon);
+										true, bundle, mainIcon);
 							}
 						}
 						break;
@@ -468,12 +468,20 @@ public class RootLayoutController implements Initializable {
 		String sSyntaxErrorMessage = bundle.getString("descriptionsyntaxerror.unknown");
 
 		switch (TreeBuilder.getErrorMessage()) {
+		case DescriptionConstants.CONTENT_AFTER_COMPLETED_TREE:
+			sSyntaxErrorMessage = bundle.getString("descriptionsyntaxerror.content_after_completed_tree");
+			break;
+
 		case DescriptionConstants.MISSING_CLOSING_PAREN:
 			sSyntaxErrorMessage = bundle.getString("descriptionsyntaxerror.missing_closing_paren");
 			break;
 
 		case DescriptionConstants.MISSING_OPENING_PAREN:
 			sSyntaxErrorMessage = bundle.getString("descriptionsyntaxerror.missing_opening_paren");
+			break;
+
+		case DescriptionConstants.TOO_MANY_CLOSING_PARENS:
+			sSyntaxErrorMessage = bundle.getString("descriptionsyntaxerror.too_many_close_parens");
 			break;
 
 		case DescriptionConstants.TOO_MANY_lINE_TYPES:
@@ -526,22 +534,6 @@ public class RootLayoutController implements Initializable {
 				String.valueOf(iPos));
 		sb.append(sMessage);
 		sb.append("\n\n");
-		return sb.toString();
-	}
-
-	private String buildErrorMessage(String sSyntaxErrorMessage) {
-		StringBuilder sb = new StringBuilder();
-		sb.append(bundle.getString("descriptionsyntaxerror.errorindescription"));
-		sb.append(sSyntaxErrorMessage);
-		String sMsgDetectedAt = bundle.getString("descriptionsyntaxerror.detectedat");
-		int iLine = TreeBuilder.getLineNumberOfError();
-		int iPos = TreeBuilder.getCharacterPositionInLineOfError();
-		String sMessage = sMsgDetectedAt.replace("{0}", String.valueOf(iLine)).replace("{1}",
-				String.valueOf(iPos));
-		sb.append(sMessage);
-		sb.append("\n\n");
-		String sHere = " " + bundle.getString("descriptionsyntaxerror.here");
-		sb.append(TreeBuilder.getMarkedDescription(sHere));
 		return sb.toString();
 	}
 
