@@ -10,12 +10,15 @@ import java.util.ResourceBundle;
 
 import org.sil.lingtree.MainApp;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.concurrent.Task;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 /**
  * @author Andy Black
@@ -26,6 +29,7 @@ public class TreeDescriptionUIService {
 	private static TextArea treeDescription;
 	private static ResourceBundle bundle;
 	private static Image mainIcon;
+	private final static long pause = 750;
 
 	// TODO: is treating these as static the best way to go?
 	// should we use a singleton pattern instead?
@@ -34,32 +38,26 @@ public class TreeDescriptionUIService {
 		treeDescription = description;
 		bundle = resource;
 		mainIcon = image;
+		System.out.println("B4 =" + treeDescription.isEditable());
+		treeDescription.setEditable(false);
+		System.out.println("\tafter=" + treeDescription.isEditable());
 		int iLeftParenthesis = findMatchingLeftParenthesisAndHighlightIt(iRightParenthesis);
-		// treeDescription.positionCaret(iRightParenthesis+7);
 		if (iLeftParenthesis > -1) {
 			// sleep for 750 milliseconds and then reset the caret
-			Task<Void> timer = new Task<Void>() {
-				@Override
-				protected Void call() throws Exception {
-					try {
-						Thread.sleep(750);
-					} catch (InterruptedException e) {
-					}
-					return null;
-				}
-			};
-			timer.setOnSucceeded(event -> removeMatchingLeftParenthesisHighlightAndRestoreCaret(
-					iLeftParenthesis, iRightParenthesis));
-			new Thread(timer).start();
+			Timeline timeline = new Timeline(new KeyFrame(Duration.millis(pause), event -> {
+				removeMatchingLeftParenthesisHighlightAndRestoreCaret(iLeftParenthesis,
+						iRightParenthesis);
+				System.out.println("\tshould be false =" + treeDescription.isEditable());
+				treeDescription.setEditable(true);
+				System.out.println("\tshould be true=" + treeDescription.isEditable());
+			}));
+			timeline.play();
 		}
 	}
 
 	private static Object removeMatchingLeftParenthesisHighlightAndRestoreCaret(
 			int iLeftParenthesis, int iRightParenthesis) {
-		// treeDescription.replaceText(iLeftParenthesis, iLeftParenthesis+7,
-		// "(");
 		treeDescription.positionCaret(iRightParenthesis);
-
 		return null;
 	}
 
@@ -112,10 +110,16 @@ public class TreeDescriptionUIService {
 	}
 
 	/**
-	 * @param description = tree description text area
-	 * @param fShowMsg = whether to show message about missing matching right parenthesis
-	 * @param resource = resources used in message
-	 * @param image = image used in message
+	 * @param description
+	 *            = tree description text area
+	 * @param fShowMsg
+	 *            = whether to show message about missing matching right
+	 *            parenthesis
+	 * @param resource
+	 *            = resources used in message
+	 * @param image
+	 *            = image used in message
+	 * @throws InterruptedException
 	 */
 	public static void processLeftParenthesis(TextArea description, boolean fShowMsg,
 			ResourceBundle resource, Image image) {
@@ -123,32 +127,27 @@ public class TreeDescriptionUIService {
 		bundle = resource;
 		mainIcon = image;
 		int iLeftParenthesis = treeDescription.getCaretPosition();
-		int iRightParenthesis = findMatchingRightParenthesisAndHighlightIt(iLeftParenthesis, fShowMsg);
-		// treeDescription.positionCaret(iRightParenthesis+7);
+		System.out.println("B4 =" + treeDescription.isEditable());
+		treeDescription.setEditable(false);
+		System.out.println("\tafter=" + treeDescription.isEditable());
+		int iRightParenthesis = findMatchingRightParenthesisAndHighlightIt(iLeftParenthesis,
+				fShowMsg);
 		if (iRightParenthesis > -1) {
 			// sleep for 750 milliseconds and then reset the caret
-			Task<Void> timer = new Task<Void>() {
-				@Override
-				protected Void call() throws Exception {
-					try {
-						Thread.sleep(750);
-					} catch (InterruptedException e) {
-					}
-					return null;
-				}
-			};
-			timer.setOnSucceeded(event -> removeMatchingRightParenthesisHighlightAndRestoreCaret(
-					iLeftParenthesis, iRightParenthesis));
-			new Thread(timer).start();
+			Timeline timeline = new Timeline(new KeyFrame(Duration.millis(pause), event -> {
+				removeMatchingRightParenthesisHighlightAndRestoreCaret(iLeftParenthesis,
+						iRightParenthesis);
+				System.out.println("\tshould be false =" + treeDescription.isEditable());
+				treeDescription.setEditable(true);
+				System.out.println("\tshould be true=" + treeDescription.isEditable());
+			}));
+			timeline.play();
 		}
 	}
 
 	private static Object removeMatchingRightParenthesisHighlightAndRestoreCaret(
 			int iLeftParenthesis, int iRightParenthesis) {
-		// treeDescription.replaceText(iLeftParenthesis, iLeftParenthesis+7,
-		// "(");
 		treeDescription.positionCaret(iLeftParenthesis);
-
 		return null;
 	}
 
@@ -156,11 +155,15 @@ public class TreeDescriptionUIService {
 	// need to return an integer here...
 	// is public for unit testing
 	/**
-	 * @param iLeftParenthesis = position of left parenthesis to match
-	 * @param fShowMsg = whether to show message about missing matching right parenthesis
+	 * @param iLeftParenthesis
+	 *            = position of left parenthesis to match
+	 * @param fShowMsg
+	 *            = whether to show message about missing matching right
+	 *            parenthesis
 	 * @return
 	 */
-	public static int findMatchingRightParenthesisAndHighlightIt(int iLeftParenthesis, boolean fShowMsg) {
+	public static int findMatchingRightParenthesisAndHighlightIt(int iLeftParenthesis,
+			boolean fShowMsg) {
 		int iIndex;
 		String sDescription = treeDescription.getText();
 		int iEnd = sDescription.length();
