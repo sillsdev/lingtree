@@ -150,9 +150,13 @@ public class RootLayoutController implements Initializable {
 	private Tooltip tooltipToolbarSaveAsSVG;
 
 	@FXML
-	private MenuItem menuItemEditCopy;
+	private MenuItem menuItemEditUndo;
+	@FXML
+	private MenuItem menuItemEditRedo;
 	@FXML
 	private MenuItem menuItemEditCut;
+	@FXML
+	private MenuItem menuItemEditCopy;
 	@FXML
 	private MenuItem menuItemEditPaste;
 	@FXML
@@ -432,6 +436,37 @@ public class RootLayoutController implements Initializable {
 		Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
 		stage.getIcons().add(mainApp.getNewMainIconImage());
 		alert.showAndWait();
+	}
+
+	@FXML
+	protected void handleCopy() {
+		treeDescription.copy();
+		treeDescription.requestFocus();
+	}
+
+	@FXML
+	protected void handleCut() {
+		treeDescription.cut();
+	}
+
+	@FXML
+	protected void handlePaste() {
+//		if (!systemClipboard.hasContent(DataFormat.PLAIN_TEXT)) {
+//			adjustForEmptyClipboard();
+//			return;
+//		}
+		treeDescription.paste();
+		treeDescription.requestFocus();
+	}
+
+	@FXML
+	protected void handleUndo() {
+		treeDescription.undo();
+	}
+
+	@FXML
+	protected void handleRedo() {
+		treeDescription.redo();
 	}
 
 	@FXML
@@ -1030,6 +1065,16 @@ public class RootLayoutController implements Initializable {
 		} else {
 			adjustForDeselection();
 		}
+		if (treeDescription.isUndoable()) {
+			menuItemEditUndo.setDisable(false);
+		} else {
+			menuItemEditUndo.setDisable(true);
+		}
+		if (treeDescription.isRedoable()) {
+			menuItemEditRedo.setDisable(false);
+		} else {
+			menuItemEditRedo.setDisable(true);
+		}
 	}
 
 	// **************************************************
@@ -1061,76 +1106,6 @@ public class RootLayoutController implements Initializable {
 
 	public void setViewItemUsed(int value) {
 		// default is to do nothing
-	}
-
-	@FXML
-	protected void handleCopy() {
-		String text = treeDescription.getSelectedText();
-		ClipboardContent content = new ClipboardContent();
-		content.putString(text);
-		systemClipboard.setContent(content);
-		treeDescription.requestFocus();
-	}
-
-	@FXML
-	protected void handleCut() {
-		String text;
-		IndexRange range;
-
-		text = treeDescription.getSelectedText();
-		range = treeDescription.getSelection();
-		ClipboardContent content = new ClipboardContent();
-		content.putString(text);
-		systemClipboard.setContent(content);
-		String origText = treeDescription.getText();
-		String firstPart = origText.substring(0, range.getStart());
-		String lastPart = origText.substring(range.getEnd(), origText.length());
-		treeDescription.setText(firstPart + lastPart);
-
-		treeDescription.positionCaret(range.getStart());
-	}
-
-	@FXML
-	protected void handlePaste() {
-		if (!systemClipboard.hasContent(DataFormat.PLAIN_TEXT)) {
-			adjustForEmptyClipboard();
-			return;
-		}
-
-		String clipboardText = systemClipboard.getString();
-		if (clipboardText == null || clipboardText.length() == 0) {
-			return;
-		}
-
-		if (treeDescription == null) {
-			return;
-		}
-		IndexRange range = treeDescription.getSelection();
-
-		String origText = treeDescription.getText();
-		processPaste(clipboardText, treeDescription, range, origText);
-		treeDescription.requestFocus();
-	}
-
-	protected void processPaste(String clipboardText, TextArea focusedTA, IndexRange range,
-			String origText) {
-		if (origText != null) {
-			int endPos = 0;
-			String updatedText = "";
-			String firstPart = origText.substring(0, range.getStart());
-			String lastPart = origText.substring(range.getEnd(), origText.length());
-
-			updatedText = firstPart + clipboardText + lastPart;
-
-			if (range.getStart() == range.getEnd()) {
-				endPos = range.getEnd() + clipboardText.length();
-			} else {
-				endPos = range.getStart() + clipboardText.length();
-			}
-
-			focusedTA.setText(updatedText);
-			focusedTA.positionCaret(endPos);
-		}
 	}
 
 	boolean anythingSelected() {

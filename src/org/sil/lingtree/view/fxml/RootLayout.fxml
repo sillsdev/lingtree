@@ -41,6 +41,9 @@
                 </Menu>
                 <Menu mnemonicParsing="true" text="%menu.edit" onShown="#handleShowingEditMenu">
                   <items>
+					<MenuItem mnemonicParsing="true" onAction="#handleUndo" text="%menu.undo" fx:id="menuItemEditUndo" accelerator="Ctrl+z" />
+					<MenuItem mnemonicParsing="true" onAction="#handleRedo" text="%menu.redo" fx:id="menuItemEditRedo" accelerator="Ctrl+y" />
+					<SeparatorMenuItem />
 					<MenuItem mnemonicParsing="true" onAction="#handleCut" text="%menu.cut" fx:id="menuItemEditCut" accelerator="ctrl+x" />
 					<MenuItem mnemonicParsing="true" onAction="#handleCopy" text="%menu.copy" fx:id="menuItemEditCopy" accelerator="ctrl+c" />
 					<MenuItem mnemonicParsing="true" onAction="#handlePaste" text="%menu.paste" fx:id="menuItemEditPaste" accelerator="ctrl+v" />
