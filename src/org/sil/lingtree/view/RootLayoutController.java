@@ -6,6 +6,7 @@
 
 package org.sil.lingtree.view;
 
+import java.awt.Event;
 import java.awt.image.BufferedImage;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -15,6 +16,8 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.net.URL;
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
@@ -92,6 +95,8 @@ public class RootLayoutController implements Initializable {
 	boolean fIsDirty;
 	boolean fOpenParenJustTyped = false;
 	boolean fCloseParenJustTyped = false;
+
+	private List<KeyEvent> itemsKeyedDuringPause = new ArrayList<KeyEvent>();
 
 	private String sAboutHeader;
 	private String sAboutContent;
@@ -213,13 +218,21 @@ public class RootLayoutController implements Initializable {
 			@Override
 			public void handle(KeyEvent event) {
 				String sCharacter = event.getCharacter();
+				if (!treeDescription.isEditable()) {
+					itemsKeyedDuringPause.add(event);
+					System.out.println("key typed='" + sCharacter
+							+ "' added to list: size now is =" + itemsKeyedDuringPause.size());
+				}
 				switch (sCharacter) {
 				case "(":
 					// the ( is not in the tree description yet. It is after the
 					// key is released.
 					// we handle this in onKeyReleased
 					// TODO: is there a better way to do this?
+					System.out.println("( keyed: editable =" + treeDescription.isEditable());
+					if (treeDescription.isEditable()) {
 					fOpenParenJustTyped = true;
+					}
 					markAsDirty();
 					break;
 
@@ -228,6 +241,7 @@ public class RootLayoutController implements Initializable {
 					// key is released.
 					// we handle this in onKeyReleased
 					// TODO: is there a better way to do this?
+					System.out.println(") keyed: editable =" + treeDescription.isEditable());
 					fCloseParenJustTyped = true;
 					markAsDirty();
 					break;
@@ -256,23 +270,30 @@ public class RootLayoutController implements Initializable {
 		});
 
 		// We use OnKeyReleased for arrow keys and to process open and
-		// closed parentheses.  See above.
+		// closed parentheses. See above.
 		treeDescription.setOnKeyReleased(new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent event) {
+				if (!treeDescription.isEditable()) {
+					itemsKeyedDuringPause.add(event);
+					System.out.println("key released; code=" + event.getCode()
+							+ " added to list: size now is =" + itemsKeyedDuringPause.size());
+				}
 				int index;
 				Image mainIcon = mainApp.getNewMainIconImage();
 				if (fCloseParenJustTyped) {
+					fCloseParenJustTyped = false;
+					TreeDescriptionUIService.setItemsKeyedDuringPause(itemsKeyedDuringPause);
 					// we use caret position - 1 because the caret is after
 					// the inserted ')'
 					TreeDescriptionUIService.processRightParenthesis(treeDescription,
-							treeDescription.getCaretPosition() - 1, bundle, mainIcon);
-					fCloseParenJustTyped = false;
+							treeDescription.getCaretPosition(), bundle, mainIcon);
 				} else if (fOpenParenJustTyped) {
+					fOpenParenJustTyped = false;
 					insertMatchingClosingParenthesis();
+					TreeDescriptionUIService.setItemsKeyedDuringPause(itemsKeyedDuringPause);
 					TreeDescriptionUIService.processLeftParenthesis(treeDescription, false, bundle,
 							mainIcon);
-					fOpenParenJustTyped = false;
 				}
 				switch (event.getCode()) {
 				case LEFT:
@@ -280,6 +301,8 @@ public class RootLayoutController implements Initializable {
 					if (menuItemShowMatchingParenWithArrowKeys.isSelected()) {
 						index = treeDescription.getCaretPosition();
 						if (treeDescription.getText(index, index + 1).equals(")")) {
+							TreeDescriptionUIService
+									.setItemsKeyedDuringPause(itemsKeyedDuringPause);
 							// we use caret position because the caret is
 							// before the ')' we are checking
 							TreeDescriptionUIService.processRightParenthesis(treeDescription,
@@ -292,6 +315,8 @@ public class RootLayoutController implements Initializable {
 					if (menuItemShowMatchingParenWithArrowKeys.isSelected()) {
 						index = treeDescription.getCaretPosition();
 						if (treeDescription.getText(Math.max(0, index - 1), index).equals("(")) {
+							TreeDescriptionUIService
+									.setItemsKeyedDuringPause(itemsKeyedDuringPause);
 							TreeDescriptionUIService.processLeftParenthesis(treeDescription, true,
 									bundle, mainIcon);
 						}
@@ -354,6 +379,10 @@ public class RootLayoutController implements Initializable {
 		menuItemSaveAsSVG.setSelected(ltTree.isSaveAsSVG());
 		setToggleButtonStyle(menuItemSaveAsSVG, toggleButtonSaveAsSVG);
 		ltTree.setSaveAsSVG(menuItemSaveAsSVG.isSelected());
+	}
+
+	public List<KeyEvent> getItemsKeyedDuringPause() {
+		return itemsKeyedDuringPause;
 	}
 
 	public boolean isDirty() {
@@ -451,10 +480,10 @@ public class RootLayoutController implements Initializable {
 
 	@FXML
 	protected void handlePaste() {
-//		if (!systemClipboard.hasContent(DataFormat.PLAIN_TEXT)) {
-//			adjustForEmptyClipboard();
-//			return;
-//		}
+		// if (!systemClipboard.hasContent(DataFormat.PLAIN_TEXT)) {
+		// adjustForEmptyClipboard();
+		// return;
+		// }
 		treeDescription.paste();
 		treeDescription.requestFocus();
 	}
