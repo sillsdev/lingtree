@@ -69,9 +69,10 @@
                 </Menu>
 				<Menu mnemonicParsing="true" text="%menu.settings">
 					<items>
-						<MenuItem fx:id="menuItemDescriptionFontSize" mnemonicParsing="true" onAction="#handleMenuDescriptionFontSize" text="%menu.descriptionfontsize" />
+						<MenuItem mnemonicParsing="true" onAction="#handleMenuDescriptionFontSize" text="%menu.descriptionfontsize" />
 						<CheckMenuItem fx:id="menuItemDrawAsType" mnemonicParsing="true" onAction="#handleMenuDrawAsType" text="%menu.drawastype" />
 						<CheckMenuItem fx:id="menuItemShowMatchingParenWithArrowKeys" mnemonicParsing="true" onAction="#handleMenuShowMatchingParenWithArrowKeys" text="%menu.showmatchingparenwitharrowkeys" />
+						<MenuItem mnemonicParsing="true" onAction="#handleMenuShowMatchingParenDelay" text="%menu.showmatchingparendelay" />
 						<SeparatorMenuItem />
 						<MenuItem mnemonicParsing="true" onAction="#handleSaveTreeParameters" text="%menu.savetreeparameters" />
 						<SeparatorMenuItem />

@@ -173,8 +173,6 @@ public class RootLayoutController implements Initializable {
 	@FXML
 	private CheckMenuItem menuItemSaveAsSVG;
 	@FXML
-	private MenuItem menuItemDescriptionFontSize;
-	@FXML
 	private CheckMenuItem menuItemDrawAsType;
 	@FXML
 	private CheckMenuItem menuItemShowMatchingParenWithArrowKeys;
@@ -283,13 +281,14 @@ public class RootLayoutController implements Initializable {
 					// we use caret position - 1 because the caret is after
 					// the inserted ')'
 					TreeDescriptionUIService.processRightParenthesis(treeDescription,
-							treeDescription.getCaretPosition() - 1, true, bundle, mainIcon);
+							treeDescription.getCaretPosition() - 1, true,
+							applicationPreferences.getShowMatchingParenDelay(), bundle, mainIcon);
 				} else if (fOpenParenJustTyped) {
 					fOpenParenJustTyped = false;
 					insertMatchingClosingParenthesis();
 					TreeDescriptionUIService.setItemsKeyedDuringPause(itemsKeyedDuringPause);
-					TreeDescriptionUIService.processLeftParenthesis(treeDescription, false, bundle,
-							mainIcon);
+					TreeDescriptionUIService.processLeftParenthesis(treeDescription, false,
+							applicationPreferences.getShowMatchingParenDelay(), bundle, mainIcon);
 				}
 				switch (event.getCode()) {
 				case LEFT:
@@ -302,7 +301,9 @@ public class RootLayoutController implements Initializable {
 							// we use caret position because the caret is
 							// before the ')' we are checking
 							TreeDescriptionUIService.processRightParenthesis(treeDescription,
-									index, false, bundle, mainIcon);
+									index, false,
+									applicationPreferences.getShowMatchingParenDelay(), bundle,
+									mainIcon);
 						}
 					}
 					break;
@@ -314,7 +315,8 @@ public class RootLayoutController implements Initializable {
 							TreeDescriptionUIService
 									.setItemsKeyedDuringPause(itemsKeyedDuringPause);
 							TreeDescriptionUIService.processLeftParenthesis(treeDescription, true,
-									bundle, mainIcon);
+									applicationPreferences.getShowMatchingParenDelay(), bundle,
+									mainIcon);
 						}
 					}
 					break;
@@ -620,6 +622,24 @@ public class RootLayoutController implements Initializable {
 			defaultFont = new Font(result.get());
 			treeDescription.setFont(defaultFont);
 			applicationPreferences.setTreeDescriptionFontSize(result.get());
+		}
+	}
+
+	@FXML
+	private void handleMenuShowMatchingParenDelay() {
+		final Double[] fontSizes = new Double[] { 125d, 250d, 375d, 500d, 625d, 750d, 875d, 1000d,
+				1125d, 1250d, 1375d, 1500d, 1625d, 1750d, 1875d, 2000d, 2125d, 2250d, 2375d, 2500d,
+				2625d, 2750d, 2875d, 3000d, 3125d, 3250d, 3375d, 3500d, 3625d, 3750d, 3875d, 4000d };
+		ChoiceDialog<Double> dialog = new ChoiceDialog<>(750d, fontSizes);
+		dialog.setTitle(bundle.getString("showmatchingparendelay.header"));
+		dialog.setHeaderText(bundle.getString("showmatchingparendelay.content"));
+		dialog.setContentText(bundle.getString("showmatchingparendelay.choose"));
+		dialog.setSelectedItem(applicationPreferences.getShowMatchingParenDelay());
+		Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
+		stage.getIcons().add(mainApp.getNewMainIconImage());
+		Optional<Double> result = dialog.showAndWait();
+		if (result.isPresent()) {
+			applicationPreferences.setShowMatchingParenDelay(result.get());
 		}
 	}
 

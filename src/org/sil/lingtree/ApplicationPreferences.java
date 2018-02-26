@@ -20,6 +20,7 @@ public class ApplicationPreferences {
 	static final String LAST_OPENED_DIRECTORY_PATH = "lastOpenedDirectoryPath";
 	static final String LAST_LOCALE_LANGUAGE = "lastLocaleLanguage";
 	static final String DRAW_AS_TYPE = "drawastype";
+	static final String SHOW_MATCHING_PAREN_DELAY = "showmatchingparendelay";
 	static final String SHOW_MATCHING_PAREN_WITH_ARROW_KEYS = "showmatchingparenwitharrowkeys";
 	static final String TREE_DESCRIPTION_FONT_SIZE = "treedescriptionfontsize";
 	// Not trying to be anglo-centric, but we have to start with something...
@@ -120,6 +121,14 @@ public class ApplicationPreferences {
 
 	public void setDrawAsType(boolean fDrawAsType) {
 		setPreferencesKey(DRAW_AS_TYPE, fDrawAsType);
+	}
+
+	public double getShowMatchingParenDelay() {
+		return prefs.getDouble(SHOW_MATCHING_PAREN_DELAY, 750.0);
+	}
+
+	public void setShowMatchingParenDelay(double dSize) {
+		setPreferencesKey(SHOW_MATCHING_PAREN_DELAY, dSize);
 	}
 
 	public boolean getShowMatchingParenWithArrowKeys() {

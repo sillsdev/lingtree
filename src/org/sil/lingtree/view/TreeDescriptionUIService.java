@@ -34,7 +34,6 @@ public class TreeDescriptionUIService {
 	private static ResourceBundle bundle;
 	private static Image mainIcon;
 	private static List<KeyEvent> itemsKeyedDuringPause;
-	private final static long pause = 750;
 
 	public static void setItemsKeyedDuringPause(List<KeyEvent> itemsKeyedDuringPause) {
 		TreeDescriptionUIService.itemsKeyedDuringPause = itemsKeyedDuringPause;
@@ -51,23 +50,22 @@ public class TreeDescriptionUIService {
 	 * @param fCaretAfterParen
 	 *            = whether the current cart is before the paren (left-arrow was
 	 *            keyed) or after the paren (a ')' was keyed)
-	 * @param fShowMsg
-	 *            = whether to show message about missing matching right
-	 *            parenthesis or not
+	 * @param pause
+	 *            = number of milliseconds to sleep while showing matching paren
 	 * @param resource
 	 *            = resources used in message
 	 * @param image
 	 *            = image used in message
 	 */
 	public static void processRightParenthesis(TextArea description, int iRightParenthesis,
-			boolean fCaretAfterParen, ResourceBundle resource, Image image) {
+			boolean fCaretAfterParen, double pause, ResourceBundle resource, Image image) {
 		treeDescription = description;
 		bundle = resource;
 		mainIcon = image;
 		treeDescription.setEditable(false);
 		int iLeftParenthesis = findMatchingLeftParenthesisAndHighlightIt(iRightParenthesis);
 		if (iLeftParenthesis > -1) {
-			// sleep for 750 milliseconds and then reset the caret
+			// sleep and then reset the caret
 			Timeline timeline = new Timeline(new KeyFrame(Duration.millis(pause), event -> {
 				removeMatchingLeftParenthesisHighlightAndRestoreCaret(iLeftParenthesis,
 						iRightParenthesis + (fCaretAfterParen ? 1 : 0));
@@ -81,7 +79,7 @@ public class TreeDescriptionUIService {
 	}
 
 	private static void processAnyItemsKeyedDuringPause() {
-		if (itemsKeyedDuringPause.size() > 0) {
+		if (itemsKeyedDuringPause != null && itemsKeyedDuringPause.size() > 0) {
 			for (KeyEvent keyEvent : itemsKeyedDuringPause) {
 				if (keyEvent.getCharacter().equals("(")) {
 					int i = treeDescription.getCaretPosition();
@@ -161,13 +159,15 @@ public class TreeDescriptionUIService {
 	 * @param fShowMsg
 	 *            = whether to show message about missing matching right
 	 *            parenthesis or not
+	 * @param pause
+	 *            = number of milliseconds to sleep while showing matching paren
 	 * @param resource
 	 *            = resources used in message
 	 * @param image
 	 *            = image used in message
 	 */
 	public static void processLeftParenthesis(TextArea description, boolean fShowMsg,
-			ResourceBundle resource, Image image) {
+			double pause, ResourceBundle resource, Image image) {
 		treeDescription = description;
 		bundle = resource;
 		mainIcon = image;
@@ -176,7 +176,7 @@ public class TreeDescriptionUIService {
 		int iRightParenthesis = findMatchingRightParenthesisAndHighlightIt(iLeftParenthesis,
 				fShowMsg);
 		if (iRightParenthesis > -1) {
-			// sleep for 750 milliseconds and then reset the caret
+			// sleep and then reset the caret
 			Timeline timeline = new Timeline(new KeyFrame(Duration.millis(pause), event -> {
 				removeMatchingRightParenthesisHighlightAndRestoreCaret(iLeftParenthesis,
 						iRightParenthesis);

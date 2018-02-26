@@ -42,6 +42,7 @@ public class ApplicationPreferencesTest {
 	boolean drawAsTypeLastUsed;
 	boolean showMatchingParenWithArrowKeysLastUsed;
 	double treeDescriptionFontSizeLastUsed;
+	double showMatchingParenDelayLastUsed;
 
 	LingTreeTree ltTreeLastUsed;
 	ColorXmlAdaptor adaptor;
@@ -54,6 +55,7 @@ public class ApplicationPreferencesTest {
 		languageLastUsed = applicationPreferences.getLastLocaleLanguage();
 		drawAsTypeLastUsed = applicationPreferences.getDrawAsType();
 		showMatchingParenWithArrowKeysLastUsed = applicationPreferences.getShowMatchingParenWithArrowKeys();
+		showMatchingParenDelayLastUsed = applicationPreferences.getShowMatchingParenDelay();
 		treeDescriptionFontSizeLastUsed = applicationPreferences.getTreeDescriptionFontSize();
 		applicationPreferences.setLastOpenedFilePath("last opened file");
 		applicationPreferences.setLastLocaleLanguage("en");
@@ -65,6 +67,7 @@ public class ApplicationPreferencesTest {
 		applicationPreferences.setTreeDescriptionFontSize(12.0);
 		applicationPreferences.setDrawAsType(false);
 		applicationPreferences.setShowMatchingParenWithArrowKeys(false);
+		applicationPreferences.setShowMatchingParenDelay(750.0);
 	}
 
 	@After
@@ -73,6 +76,7 @@ public class ApplicationPreferencesTest {
 		applicationPreferences.setLastLocaleLanguage(languageLastUsed);
 		applicationPreferences.setDrawAsType(drawAsTypeLastUsed);
 		applicationPreferences.setShowMatchingParenWithArrowKeys(showMatchingParenWithArrowKeysLastUsed);
+		applicationPreferences.setShowMatchingParenDelay(showMatchingParenDelayLastUsed);
 		applicationPreferences.setTreeDescriptionFontSize(treeDescriptionFontSizeLastUsed);
 		applicationPreferences.setLastWindowParameters(ApplicationPreferences.LAST_WINDOW, windowStageLastUsed);
 		applicationPreferences.setSavedTreeParameters(ltTreeLastUsed);
@@ -114,6 +118,13 @@ public class ApplicationPreferencesTest {
 		assertEquals("show matching paren with arrow keys", false, applicationPreferences.getShowMatchingParenWithArrowKeys());
 		applicationPreferences.setShowMatchingParenWithArrowKeys(true);
 		assertEquals("show matching paren with arrow keys", true, applicationPreferences.getShowMatchingParenWithArrowKeys());
+	}
+
+	@Test
+	public void showMatchingParenDelay() {
+		assertEquals("show matching paren delay", 750.0, applicationPreferences.getShowMatchingParenDelay(), 0.0);
+		applicationPreferences.setShowMatchingParenDelay(1000.0);;
+		assertEquals("show matching paren delay", 1000.0, applicationPreferences.getShowMatchingParenDelay(), 0.0);
 	}
 
 	@Test
