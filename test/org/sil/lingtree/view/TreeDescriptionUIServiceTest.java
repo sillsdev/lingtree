@@ -47,7 +47,7 @@ public class TreeDescriptionUIServiceTest {
 
 	private void checkMatchingLeft(int iRightPos, int iLeftExpected) {
 		treeDescription.positionCaret(iRightPos);
-		TreeDescriptionUIService.processRightParenthesis(treeDescription, iRightPos, null, null);
+		TreeDescriptionUIService.processRightParenthesis(treeDescription, iRightPos, true, null, null);
 		int iLeftPos = TreeDescriptionUIService.findMatchingLeftParenthesisAndHighlightIt(iRightPos);
 		assertEquals(iLeftExpected, iLeftPos);
 	}

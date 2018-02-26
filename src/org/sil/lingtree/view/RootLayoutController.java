@@ -220,8 +220,6 @@ public class RootLayoutController implements Initializable {
 				String sCharacter = event.getCharacter();
 				if (!treeDescription.isEditable()) {
 					itemsKeyedDuringPause.add(event);
-					System.out.println("key typed='" + sCharacter
-							+ "' added to list: size now is =" + itemsKeyedDuringPause.size());
 				}
 				switch (sCharacter) {
 				case "(":
@@ -229,9 +227,8 @@ public class RootLayoutController implements Initializable {
 					// key is released.
 					// we handle this in onKeyReleased
 					// TODO: is there a better way to do this?
-					System.out.println("( keyed: editable =" + treeDescription.isEditable());
 					if (treeDescription.isEditable()) {
-					fOpenParenJustTyped = true;
+						fOpenParenJustTyped = true;
 					}
 					markAsDirty();
 					break;
@@ -241,8 +238,9 @@ public class RootLayoutController implements Initializable {
 					// key is released.
 					// we handle this in onKeyReleased
 					// TODO: is there a better way to do this?
-					System.out.println(") keyed: editable =" + treeDescription.isEditable());
-					fCloseParenJustTyped = true;
+					if (treeDescription.isEditable()) {
+						fCloseParenJustTyped = true;
+					}
 					markAsDirty();
 					break;
 				default:
@@ -276,8 +274,6 @@ public class RootLayoutController implements Initializable {
 			public void handle(KeyEvent event) {
 				if (!treeDescription.isEditable()) {
 					itemsKeyedDuringPause.add(event);
-					System.out.println("key released; code=" + event.getCode()
-							+ " added to list: size now is =" + itemsKeyedDuringPause.size());
 				}
 				int index;
 				Image mainIcon = mainApp.getNewMainIconImage();
@@ -287,7 +283,7 @@ public class RootLayoutController implements Initializable {
 					// we use caret position - 1 because the caret is after
 					// the inserted ')'
 					TreeDescriptionUIService.processRightParenthesis(treeDescription,
-							treeDescription.getCaretPosition(), bundle, mainIcon);
+							treeDescription.getCaretPosition() - 1, true, bundle, mainIcon);
 				} else if (fOpenParenJustTyped) {
 					fOpenParenJustTyped = false;
 					insertMatchingClosingParenthesis();
@@ -306,7 +302,7 @@ public class RootLayoutController implements Initializable {
 							// we use caret position because the caret is
 							// before the ')' we are checking
 							TreeDescriptionUIService.processRightParenthesis(treeDescription,
-									index, bundle, mainIcon);
+									index, false, bundle, mainIcon);
 						}
 					}
 					break;

@@ -42,33 +42,45 @@ public class TreeDescriptionUIService {
 
 	// TODO: is treating these as static the best way to go?
 	// should we use a singleton pattern instead?
+	/**
+	 * @param description
+	 *            = tree description text area
+	 * @param iRightParenthesis
+	 *            = position of right parenthesis to use when searching for
+	 *            matching left parenthesis
+	 * @param fCaretAfterParen
+	 *            = whether the current cart is before the paren (left-arrow was
+	 *            keyed) or after the paren (a ')' was keyed)
+	 * @param fShowMsg
+	 *            = whether to show message about missing matching right
+	 *            parenthesis or not
+	 * @param resource
+	 *            = resources used in message
+	 * @param image
+	 *            = image used in message
+	 */
 	public static void processRightParenthesis(TextArea description, int iRightParenthesis,
-			ResourceBundle resource, Image image) {
+			boolean fCaretAfterParen, ResourceBundle resource, Image image) {
 		treeDescription = description;
 		bundle = resource;
 		mainIcon = image;
-		System.out.println("Process ): editable B4 =" + treeDescription.isEditable());
 		treeDescription.setEditable(false);
-		System.out.println("\teditable after=" + treeDescription.isEditable());
 		int iLeftParenthesis = findMatchingLeftParenthesisAndHighlightIt(iRightParenthesis);
 		if (iLeftParenthesis > -1) {
 			// sleep for 750 milliseconds and then reset the caret
 			Timeline timeline = new Timeline(new KeyFrame(Duration.millis(pause), event -> {
 				removeMatchingLeftParenthesisHighlightAndRestoreCaret(iLeftParenthesis,
-						iRightParenthesis);
-				System.out.println("\tProcess ): editable should be false =" + treeDescription.isEditable());
-				treeDescription.setEditable(true);
-				processAnyItemsKeyedDuringPause();
-				System.out.println("\tProcess ): editable should be true=" + treeDescription.isEditable());
-			}));
+						iRightParenthesis + (fCaretAfterParen ? 1 : 0));
+					treeDescription.setEditable(true);
+					processAnyItemsKeyedDuringPause();
+				}));
 			timeline.play();
 		} else {
-			treeDescription.setEditable(true);			
+			treeDescription.setEditable(true);
 		}
 	}
 
 	private static void processAnyItemsKeyedDuringPause() {
-		System.out.println("processing any events: size = " + itemsKeyedDuringPause.size());
 		if (itemsKeyedDuringPause.size() > 0) {
 			for (KeyEvent keyEvent : itemsKeyedDuringPause) {
 				if (keyEvent.getCharacter().equals("(")) {
@@ -78,20 +90,16 @@ public class TreeDescriptionUIService {
 					int i = treeDescription.getCaretPosition();
 					treeDescription.insertText(i, ")");
 				} else {
-				KeyEvent newEvent = new KeyEvent(keyEvent.getSource(), keyEvent.getTarget(),
-						keyEvent.getEventType(), keyEvent.getCharacter(), keyEvent.getText(),
-						keyEvent.getCode(), keyEvent.isShiftDown(), keyEvent.isControlDown(),
-						keyEvent.isAltDown(), keyEvent.isMetaDown());
-				System.out.println("\tfiring old event = " + keyEvent + "\n\t       new event = " + newEvent);
-				treeDescription.fireEvent(newEvent);
-				//javafx.event.Event.fireEvent(treeDescription, keyEvent);
+					KeyEvent newEvent = new KeyEvent(keyEvent.getSource(), keyEvent.getTarget(),
+							keyEvent.getEventType(), keyEvent.getCharacter(), keyEvent.getText(),
+							keyEvent.getCode(), keyEvent.isShiftDown(), keyEvent.isControlDown(),
+							keyEvent.isAltDown(), keyEvent.isMetaDown());
+					treeDescription.fireEvent(newEvent);
 				}
 			}
 			itemsKeyedDuringPause.clear();
-			System.out.println("cleared event list: size = " + itemsKeyedDuringPause.size());
 		}
 	}
-	
 
 	private static Object removeMatchingLeftParenthesisHighlightAndRestoreCaret(
 			int iLeftParenthesis, int iRightParenthesis) {
@@ -152,12 +160,11 @@ public class TreeDescriptionUIService {
 	 *            = tree description text area
 	 * @param fShowMsg
 	 *            = whether to show message about missing matching right
-	 *            parenthesis
+	 *            parenthesis or not
 	 * @param resource
 	 *            = resources used in message
 	 * @param image
 	 *            = image used in message
-	 * @throws InterruptedException
 	 */
 	public static void processLeftParenthesis(TextArea description, boolean fShowMsg,
 			ResourceBundle resource, Image image) {
@@ -165,9 +172,7 @@ public class TreeDescriptionUIService {
 		bundle = resource;
 		mainIcon = image;
 		int iLeftParenthesis = treeDescription.getCaretPosition();
-		System.out.println("Process (: editable B4 =" + treeDescription.isEditable());
 		treeDescription.setEditable(false);
-		System.out.println("\tProcess (: editable after=" + treeDescription.isEditable());
 		int iRightParenthesis = findMatchingRightParenthesisAndHighlightIt(iLeftParenthesis,
 				fShowMsg);
 		if (iRightParenthesis > -1) {
@@ -175,11 +180,9 @@ public class TreeDescriptionUIService {
 			Timeline timeline = new Timeline(new KeyFrame(Duration.millis(pause), event -> {
 				removeMatchingRightParenthesisHighlightAndRestoreCaret(iLeftParenthesis,
 						iRightParenthesis);
-				System.out.println("\tProcess (: editable should be false =" + treeDescription.isEditable());
-				treeDescription.setEditable(true);
-				processAnyItemsKeyedDuringPause();
-				System.out.println("\tProcess (: editable should be true=" + treeDescription.isEditable());
-			}));
+					treeDescription.setEditable(true);
+					processAnyItemsKeyedDuringPause();
+				}));
 			timeline.play();
 		} else {
 			treeDescription.setEditable(true);
@@ -225,7 +228,6 @@ public class TreeDescriptionUIService {
 		if (iIndex < iEnd) {
 			treeDescription.positionCaret(iIndex);
 			treeDescription.selectForward();
-			// treeDescription.replaceSelection("-->(<--");
 			return iIndex;
 		} else {
 			if (fShowMsg && bundle != null) {
