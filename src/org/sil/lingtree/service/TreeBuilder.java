@@ -9,9 +9,14 @@ package org.sil.lingtree.service;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import org.antlr.v4.runtime.BailErrorStrategy;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.ConsoleErrorListener;
+import org.antlr.v4.runtime.DefaultErrorStrategy;
+import org.antlr.v4.runtime.atn.PredictionMode;
+import org.antlr.v4.runtime.misc.ParseCancellationException;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.sil.lingtree.descriptionparser.DescriptionErrorInfo;
@@ -97,14 +102,34 @@ public class TreeBuilder {
 		CommonTokenStream tokens = new CommonTokenStream(lexer);
 		DescriptionParser parser = new DescriptionParser(tokens);
 
+		// try with simpler/faster SLL(*)
+		parser.getInterpreter().setPredictionMode(PredictionMode.SLL);
 		// add error listener
 		parser.removeErrorListeners();
 		VerboseListener errListener = new DescriptionErrorListener.VerboseListener();
 		errListener.clearErrorMessageList();
 		parser.addErrorListener(errListener);
+		parser.setErrorHandler(new BailErrorStrategy());
 
+		ParseTree parseTree = null;
+		try {
 		// begin parsing at rule 'description'
-		ParseTree parseTree = parser.description();
+		parseTree = parser.description();
+		// if we get here, there was no syntax error and SLL(*) was enough;
+		// there is no need to try full LL(*)
+		}
+		catch (ParseCancellationException ex) {// thrown by BailErrorStrategy
+			System.out.println("exception found");
+			tokens.reset(); // rewind input stream
+			parser.reset();
+			parser.removeErrorListeners();
+			errListener = new DescriptionErrorListener.VerboseListener();
+			errListener.clearErrorMessageList();
+			parser.addErrorListener(errListener);
+			// full now with full LL(*)
+			parser.getInterpreter().setPredictionMode(PredictionMode.LL);
+			parser.description();
+		}
 		numberOfErrors = parser.getNumberOfSyntaxErrors();
 		if (numberOfErrors > 0) {
 			errListener = (VerboseListener) parser.getErrorListeners().get(0);

@@ -6,7 +6,6 @@
 
 package org.sil.lingtree.view;
 
-import java.awt.Event;
 import java.awt.image.BufferedImage;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -49,7 +48,6 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -95,6 +93,7 @@ public class RootLayoutController implements Initializable {
 	boolean fIsDirty;
 	boolean fOpenParenJustTyped = false;
 	boolean fCloseParenJustTyped = false;
+	boolean fContentJustChangedSoDrawTree = false;
 
 	private List<KeyEvent> itemsKeyedDuringPause = new ArrayList<KeyEvent>();
 
@@ -215,6 +214,7 @@ public class RootLayoutController implements Initializable {
 		treeDescription.setOnKeyTyped(new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent event) {
+				fContentJustChangedSoDrawTree = true;
 				String sCharacter = event.getCharacter();
 				if (!treeDescription.isEditable()) {
 					itemsKeyedDuringPause.add(event);
@@ -244,20 +244,20 @@ public class RootLayoutController implements Initializable {
 				default:
 					if (event.isControlDown()) {
 						switch (sCharacter.codePointAt(0)) {
-						// do not mark as dirty for the following
-						case 3: // Ctrl-C (copy)
-						case 4: // Ctrl-D (draw tree)
-						case 14: // Ctrl-N (new tree file)
-						case 15: // Ctrl-O (open tree file)
-						case 19: // Ctrl-S (save)
+						case 22: // Control-V (paste)
+						case 24: // Control-X (cut)
+						case 25: // Control-Y (redo)
+						case 26: // Control-Z (undo)
+							// mark as dirty since they change content
+							markAsDirty();
 							break;
 						default:
-							// mark as dirty for other control codes
-							markAsDirty();
+							// do not mark as dirty for other control codes
+							fContentJustChangedSoDrawTree = false;
 							break;
 						}
 					} else {
-						// mark as dirty for all other characters
+						// some other character was typed so consider it dirty
 						markAsDirty();
 					}
 					break;
@@ -291,8 +291,41 @@ public class RootLayoutController implements Initializable {
 							applicationPreferences.getShowMatchingParenDelay(), bundle, mainIcon);
 				}
 				switch (event.getCode()) {
+				// ignore these for redisplaying the tree
+				case ALT:
+				case ALT_GRAPH:
+				case CAPS:
+				case CONTROL:
+				case DOWN:
+				case END:
+				case ENTER:
+				case ESCAPE:
+				case F1:
+				case F2:
+				case F3:
+				case F4:
+				case F5:
+				case F6:
+				case F7:
+				case F8:
+				case F9:
+				case F10:
+				case F11:
+				case F12:
+				case HOME:
+				case INSERT:
+				case KP_DOWN:
+				case KP_UP:
+				case PAGE_DOWN:
+				case PAGE_UP:
+				case PRINTSCREEN:
+				case SHIFT:
+				case UP:
+					fContentJustChangedSoDrawTree = false;
+					break;
 				case LEFT:
 				case KP_LEFT:
+					fContentJustChangedSoDrawTree = false;
 					if (menuItemShowMatchingParenWithArrowKeys.isSelected()) {
 						index = treeDescription.getCaretPosition();
 						if (treeDescription.getText(index, index + 1).equals(")")) {
@@ -309,6 +342,7 @@ public class RootLayoutController implements Initializable {
 					break;
 				case KP_RIGHT:
 				case RIGHT:
+					fContentJustChangedSoDrawTree = false;
 					if (menuItemShowMatchingParenWithArrowKeys.isSelected()) {
 						index = treeDescription.getCaretPosition();
 						if (treeDescription.getText(Math.max(0, index - 1), index).equals("(")) {
@@ -324,7 +358,7 @@ public class RootLayoutController implements Initializable {
 					break;
 				}
 
-				if (menuItemDrawAsType.isSelected()) {
+				if (menuItemDrawAsType.isSelected() && fContentJustChangedSoDrawTree) {
 					handleDrawTree();
 				}
 			}
@@ -498,6 +532,19 @@ public class RootLayoutController implements Initializable {
 
 	@FXML
 	public void handleDrawTree() {
+
+		Task<Void> task = new Task<Void>() {
+			@Override
+			protected Void call() throws Exception {
+				processTreeDrawing();
+				done();
+				return null;
+			}
+		};
+		Platform.runLater(task);
+	}
+
+	private void processTreeDrawing() {
 		cleanDrawingArea();
 		TreeDrawer drawer = drawTreePrep();
 		if (drawer == null) {
