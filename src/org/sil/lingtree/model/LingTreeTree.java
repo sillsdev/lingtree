@@ -48,6 +48,7 @@ public class LingTreeTree {
 	boolean fSaveAsPng;
 	boolean fSaveAsSVG;
 	boolean fShowFlatView;
+	boolean fUseRightToLeftOrientation;
 
 	/**
 	 * 
@@ -60,6 +61,7 @@ public class LingTreeTree {
 		dHorizontalOffset = 100;
 		dLexGlossGapAdjustment = 0;
 		fShowFlatView = false;
+		fUseRightToLeftOrientation = false;
 		nonTerminalFontInfo = NonTerminalFontInfo.getInstance();
 		lexicalFontInfo = LexFontInfo.getInstance();
 		glossFontInfo = GlossFontInfo.getInstance();
@@ -203,6 +205,15 @@ public class LingTreeTree {
 
 	public void setShowFlatView(boolean showFlatView) {
 		this.fShowFlatView = showFlatView;
+	}
+
+	@XmlElement(name = "useRightToLeftOrientation")
+	public boolean isUseRightToLeftOrientation() {
+		return fUseRightToLeftOrientation;
+	}
+
+	public void setUseRightToLeftOrientation(boolean useRightToLeftOrientation) {
+		this.fUseRightToLeftOrientation = useRightToLeftOrientation;
 	}
 
 	@XmlElement(name = "nonTerminalFontInfo")

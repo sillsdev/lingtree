@@ -168,6 +168,8 @@ public class RootLayoutController implements Initializable {
 	@FXML
 	private CheckMenuItem menuItemUseFlatTree;
 	@FXML
+	private CheckMenuItem menuItemUseRightToLeftOrientation;
+	@FXML
 	private CheckMenuItem menuItemSaveAsPng;
 	@FXML
 	private CheckMenuItem menuItemSaveAsSVG;
@@ -411,6 +413,8 @@ public class RootLayoutController implements Initializable {
 		menuItemSaveAsSVG.setSelected(ltTree.isSaveAsSVG());
 		setToggleButtonStyle(menuItemSaveAsSVG, toggleButtonSaveAsSVG);
 		ltTree.setSaveAsSVG(menuItemSaveAsSVG.isSelected());
+		menuItemUseRightToLeftOrientation.setSelected(ltTree.isUseRightToLeftOrientation());
+		ltTree.setUseRightToLeftOrientation(menuItemUseRightToLeftOrientation.isSelected());
 	}
 
 	public List<KeyEvent> getItemsKeyedDuringPause() {
@@ -571,6 +575,7 @@ public class RootLayoutController implements Initializable {
 		ltTree.setSaveAsPng(menuItemSaveAsPng.isSelected());
 		ltTree.setSaveAsSVG(menuItemSaveAsSVG.isSelected());
 		ltTree.setShowFlatView(menuItemUseFlatTree.isSelected());
+		ltTree.setUseRightToLeftOrientation(menuItemUseRightToLeftOrientation.isSelected());
 		ltTree.setDescription(sDescription);
 		TreeDrawer drawer = new TreeDrawer(ltTree);
 		return drawer;
@@ -708,6 +713,13 @@ public class RootLayoutController implements Initializable {
 		treeDescription.requestFocus();
 	}
 
+	@FXML
+	private void handleMenuUseRightToLeftOrientation() {
+		ltTree.setUseRightToLeftOrientation(menuItemUseRightToLeftOrientation.isSelected());
+		handleDrawTree();
+		markAsDirty();
+	}
+
 	private void setToggleButtonStyle(CheckMenuItem menuItem, ToggleButton toggleButton) {
 		if (menuItem.isSelected()) {
 			int i = toggleButton.getStyleClass().indexOf(kUnPressedStyle);
@@ -817,6 +829,7 @@ public class RootLayoutController implements Initializable {
 			this.treeDescription.positionCaret(1);
 			this.treeDescription.requestFocus();
 			this.menuItemUseFlatTree.setSelected(ltTree.isShowFlatView());
+			this.menuItemUseRightToLeftOrientation.setSelected(ltTree.isUseRightToLeftOrientation());
 			this.menuItemSaveAsPng.setSelected(ltTree.isSaveAsPng());
 			this.menuItemSaveAsSVG.setSelected(ltTree.isSaveAsSVG());
 			mainApp.updateStageTitle(fileCreated);

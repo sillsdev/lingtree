@@ -57,6 +57,7 @@
                 <Menu mnemonicParsing="true" text="%menu.format">
                   <items>
                     <CheckMenuItem fx:id="menuItemUseFlatTree" mnemonicParsing="true" onAction="#handleMenuUseFlatTree" text="%menu.useflattree" />
+                    <CheckMenuItem fx:id="menuItemUseRightToLeftOrientation" mnemonicParsing="true" onAction="#handleMenuUseRightToLeftOrientation" text="%menu.userighttoleftorientation" />
 					<SeparatorMenuItem />
 					<MenuItem mnemonicParsing="true" onAction="#handleGlossFontInfo" text="%menu.glossfont" />
 					<MenuItem mnemonicParsing="true" onAction="#handleLexicalFontInfo" text="%menu.lexicalfont" />

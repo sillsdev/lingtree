@@ -305,6 +305,24 @@ public class TreeDrawer {
 			}
 		}
 		calculateXCoordinateOfEveryNode();
+		if (ltTree.isUseRightToLeftOrientation()) {
+			adjustForRightToLeftOrientation();
+		}
+	}
+
+	public void adjustForRightToLeftOrientation()
+	{
+		double adjust = ltTree.getXSize() + ltTree.getInitialXCoordinate();
+		LingTreeNode node = ltTree.getRootNode();
+		adjustForRightToLeftOrientation(node, adjust);
+	}
+
+	private void adjustForRightToLeftOrientation(LingTreeNode node, double adjust) {
+		node.setXCoordinate((adjust - node.getWidth()) - node.getXCoordinate());
+		node.setXMid(adjust - node.getXMid());
+		for (LingTreeNode daughterNode : node.getDaughters()) {
+			adjustForRightToLeftOrientation(daughterNode, adjust);
+		}
 	}
 
 	private void drawNodesAsSVG(LingTreeNode node, StringBuilder sb) {
