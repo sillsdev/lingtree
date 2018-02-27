@@ -537,16 +537,7 @@ public class RootLayoutController implements Initializable {
 	@FXML
 	public void handleDrawTree() {
 		cleanDrawingArea();
-
-		Task<Void> task = new Task<Void>() {
-			@Override
-			protected Void call() throws Exception {
-				processTreeDrawing();
-				done();
-				return null;
-			}
-		};
-		Platform.runLater(task);
+		processTreeDrawing();
 	}
 
 	private void processTreeDrawing() {
