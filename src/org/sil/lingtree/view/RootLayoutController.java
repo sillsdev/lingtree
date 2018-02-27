@@ -532,6 +532,7 @@ public class RootLayoutController implements Initializable {
 
 	@FXML
 	public void handleDrawTree() {
+		cleanDrawingArea();
 
 		Task<Void> task = new Task<Void>() {
 			@Override
@@ -545,7 +546,6 @@ public class RootLayoutController implements Initializable {
 	}
 
 	private void processTreeDrawing() {
-		cleanDrawingArea();
 		TreeDrawer drawer = drawTreePrep();
 		if (drawer == null) {
 			// there was an error in the description; show it
