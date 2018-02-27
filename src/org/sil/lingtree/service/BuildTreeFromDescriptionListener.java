@@ -18,15 +18,13 @@ import org.sil.lingtree.model.LingTreeTree;
 import org.sil.lingtree.model.NodeType;
 
 /**
- * @author Andy Black
- * build a tree from the parsed description
+ * @author Andy Black build a tree from the parsed description
  */
 public class BuildTreeFromDescriptionListener extends DescriptionBaseListener {
 	protected DescriptionParser parser;
-	
+
 	private LingTreeTree tree;
 	private HashMap<Integer, LingTreeNode> nodeMap = new HashMap<Integer, LingTreeNode>();
-	
 
 	public BuildTreeFromDescriptionListener(DescriptionParser parser) {
 		super();
@@ -44,9 +42,9 @@ public class BuildTreeFromDescriptionListener extends DescriptionBaseListener {
 	@Override
 	public void enterDescription(DescriptionParser.DescriptionContext ctx) {
 		tree = new LingTreeTree();
-		
+
 	}
-	
+
 	@Override
 	public void enterNode(DescriptionParser.NodeContext ctx) {
 		LingTreeNode node = new LingTreeNode();
@@ -59,16 +57,16 @@ public class BuildTreeFromDescriptionListener extends DescriptionBaseListener {
 			LingTreeNode mother = nodeMap.get(parentCtx.hashCode());
 			int i = mother.getDaughters().size();
 			if (i > 0) {
-				mother.getDaughters().get(i-1).setRightSister(node);
+				mother.getDaughters().get(i - 1).setRightSister(node);
 			}
-			node.setiLevel(mother.getLevel()+1);
+			node.setiLevel(mother.getLevel() + 1);
 			node.setMother(mother);
 			mother.getDaughters().add(node);
 		}
 	}
-	
+
 	@Override
-	public void exitLineType(DescriptionParser.LineTypeContext ctx) {	
+	public void exitLineType(DescriptionParser.LineTypeContext ctx) {
 		DescriptionParser.TypeContext typeCtx = (TypeContext) ctx.getParent();
 		DescriptionParser.NodeContext parentCtx = (NodeContext) typeCtx.getParent();
 		LingTreeNode node = nodeMap.get(parentCtx.hashCode());
@@ -76,12 +74,13 @@ public class BuildTreeFromDescriptionListener extends DescriptionBaseListener {
 			node.setOmitLine(true);
 		}
 		if (ctx.getText().trim().equals("\\T")) {
-			node.setTriangle(true);;
+			node.setTriangle(true);
+			;
 		}
 	}
-	
+
 	@Override
-	public void exitNodeType(DescriptionParser.NodeTypeContext ctx) {	
+	public void exitNodeType(DescriptionParser.NodeTypeContext ctx) {
 		DescriptionParser.TypeContext typeCtx = (TypeContext) ctx.getParent();
 		DescriptionParser.NodeContext parentCtx = (NodeContext) typeCtx.getParent();
 		LingTreeNode node = nodeMap.get(parentCtx.hashCode());
@@ -104,12 +103,15 @@ public class BuildTreeFromDescriptionListener extends DescriptionBaseListener {
 		}
 		node.setNodeType(nodeType);
 	}
-	
+
 	@Override
 	public void exitContent(DescriptionParser.ContentContext ctx) {
 		DescriptionParser.NodeContext parentCtx = (NodeContext) ctx.getParent();
 		LingTreeNode node = nodeMap.get(parentCtx.hashCode());
 		String sContent = ctx.getText().trim();
+		// Note: in regular expressions, to quote a single backslash we need
+		// \\\\ and to quote a paren we need \\(
+		sContent = sContent.replaceAll("\\\\\\(", "(").replaceAll("\\\\\\)", ")");
 		int iEndOfText = getEndOfTextIndex(sContent);
 		node.setContent(sContent.substring(0, iEndOfText).trim());
 	}
@@ -140,7 +142,7 @@ public class BuildTreeFromDescriptionListener extends DescriptionBaseListener {
 		}
 		return iEndOfText;
 	}
-	
+
 	@Override
 	public void exitSubscript(DescriptionParser.SubscriptContext ctx) {
 		String sRegularToken = Constants.SUBSCRIPT;

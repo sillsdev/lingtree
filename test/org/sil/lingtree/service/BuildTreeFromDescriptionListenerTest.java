@@ -260,6 +260,19 @@ public class BuildTreeFromDescriptionListenerTest extends ServiceBaseTest {
 		checkNodeResult(node1.getMother(), "NP", "", "", false, false, NodeType.NonTerminal, 1, 1);
 		assertNull(node1.getRightSister());
 
+		// quoted parentheses example
+		//(NP (Paul \(the bear\)))
+		ltTree = TreeBuilder
+				.parseAString("(NP (Paul \\(the bear\\)))", origTree);
+		// root node
+		rootNode = ltTree.getRootNode();
+		checkNodeResult(rootNode, "NP", "", "", false, false, NodeType.NonTerminal, 1, 1);
+		assertNull(rootNode.getMother());
+		assertNull(rootNode.getRightSister());
+		daughters = rootNode.getDaughters();
+		node1 = daughters.get(0);
+		checkNodeResult(node1, "Paul (the bear)", "", "", false, false, NodeType.NonTerminal, 2, 0);
+
 		// omit lines example
 		ltTree = TreeBuilder
 				.parseAString(
