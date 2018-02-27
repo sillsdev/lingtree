@@ -119,7 +119,6 @@ public class TreeBuilder {
 		// there is no need to try full LL(*)
 		}
 		catch (ParseCancellationException ex) {// thrown by BailErrorStrategy
-			System.out.println("exception found");
 			tokens.reset(); // rewind input stream
 			parser.reset();
 			parser.removeErrorListeners();
