@@ -97,13 +97,13 @@ public class BuildTreeFromDescriptionListenerTest extends ServiceBaseTest {
 		checkErrorValues(origTree, ltTree, 2, 1, 7, DescriptionConstants.MISSING_OPENING_PAREN);
 
 		ltTree = TreeBuilder.parseAString("(S NP) (V) (VP))", origTree);
-		checkErrorValues(origTree, ltTree, 1, 1, 7, DescriptionConstants.CONTENT_AFTER_COMPLETED_TREE);
+		checkErrorValues(origTree, ltTree, 1, 1, 6, DescriptionConstants.CONTENT_AFTER_COMPLETED_TREE);
 
 		String sBad = "(S) (NP (N-bar/S sup' (N(\\L Juan (\\G John)))))\n" +
 				"(VP (V/ssub (\\T\\L duerme (\\G sleeps)))))";
 		ltTree = TreeBuilder.parseAString(sBad, origTree);
-		checkErrorValues(origTree, ltTree, 1, 1, 4, DescriptionConstants.CONTENT_AFTER_COMPLETED_TREE);
-		String sDescriptionWithErrorLocationMarked = "(S)  << HERE >> (NP (N-bar/S sup' (N(\\L Juan (\\G John)))))\n" +
+		checkErrorValues(origTree, ltTree, 1, 1, 3, DescriptionConstants.CONTENT_AFTER_COMPLETED_TREE);
+		String sDescriptionWithErrorLocationMarked = "(S) << HERE >>  (NP (N-bar/S sup' (N(\\L Juan (\\G John)))))\n" +
 				"(VP (V/ssub (\\T\\L duerme (\\G sleeps)))))";
 		assertEquals(sDescriptionWithErrorLocationMarked, TreeBuilder.getMarkedDescription(" << HERE >> "));
 

@@ -16,7 +16,7 @@ grammar Description;
 @header {
 	package org.sil.lingtree.descriptionparser.antlr4generated;
 }
-description  : node EOF
+description  : SPACES? node EOF
              | EOF {notifyErrorListeners("missingOpeningParen");}
              | {notifyErrorListeners("missingOpeningParen");} content
              | node {notifyErrorListeners("contentAfterCompletedTree");} content
@@ -36,7 +36,8 @@ node : openParen type? content? node* closeParen
 openParen : ' '* '(' ' '*
           ;
           
-closeParen : ' '* ')' ' '*
+closeParen : ' '* ')' ' '* SPACES
+           | ' '* ')'
            ;
 
 type : nodeType lineType
@@ -76,6 +77,9 @@ subscript : SUBSCRIPT (TEXT | BACKSLASH | SLASH)+
 superscript : SUPERSCRIPT (TEXT | BACKSLASH | SLASH)+
 		    | SUPERSCRIPTITALIC (TEXT | BACKSLASH | SLASH)+
 		    ;
+
+// Try to capture just a sequence of whitespace
+SPACES: ' ' [ \t\n\r]+;
 
 OMIT : '\\O'  ' '* ;
 TRIANGLE : '\\T'  ' '*;
