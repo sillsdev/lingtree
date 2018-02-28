@@ -384,8 +384,8 @@ public class RootLayoutController implements Initializable {
 		menuItemDrawAsType.setSelected(applicationPreferences.getDrawAsType());
 		menuItemShowMatchingParenWithArrowKeys.setSelected(applicationPreferences
 				.getShowMatchingParenWithArrowKeys());
-		setToggleButtonStyle(menuItemShowMatchingParenWithArrowKeys,
-				toggleButtonShowMatchingParenWithArrowKeys);
+		toggleButtonShowMatchingParenWithArrowKeys = setToggleButtonStyle(
+				menuItemShowMatchingParenWithArrowKeys, toggleButtonShowMatchingParenWithArrowKeys);
 		treeDescription.setFont(new Font(applicationPreferences.getTreeDescriptionFontSize()));
 		defaultFont = treeDescription.getFont();
 	}
@@ -405,13 +405,13 @@ public class RootLayoutController implements Initializable {
 		this.ltTree = ltTree;
 		treeDescription.setText(ltTree.getDescription());
 		menuItemUseFlatTree.setSelected(ltTree.isShowFlatView());
-		setToggleButtonStyle(menuItemUseFlatTree, toggleButtonUseFlatTree);
+		toggleButtonUseFlatTree = setToggleButtonStyle(menuItemUseFlatTree, toggleButtonUseFlatTree);
 		ltTree.setShowFlatView(menuItemUseFlatTree.isSelected());
 		menuItemSaveAsPng.setSelected(ltTree.isSaveAsPng());
-		setToggleButtonStyle(menuItemSaveAsPng, toggleButtonSaveAsPng);
+		toggleButtonSaveAsPng = setToggleButtonStyle(menuItemSaveAsPng, toggleButtonSaveAsPng);
 		ltTree.setSaveAsPng(menuItemSaveAsPng.isSelected());
 		menuItemSaveAsSVG.setSelected(ltTree.isSaveAsSVG());
-		setToggleButtonStyle(menuItemSaveAsSVG, toggleButtonSaveAsSVG);
+		toggleButtonSaveAsSVG = setToggleButtonStyle(menuItemSaveAsSVG, toggleButtonSaveAsSVG);
 		ltTree.setSaveAsSVG(menuItemSaveAsSVG.isSelected());
 		menuItemUseRightToLeftOrientation.setSelected(ltTree.isUseRightToLeftOrientation());
 		ltTree.setUseRightToLeftOrientation(menuItemUseRightToLeftOrientation.isSelected());
@@ -688,7 +688,7 @@ public class RootLayoutController implements Initializable {
 
 	@FXML
 	private void handleMenuUseFlatTree() {
-		setToggleButtonStyle(menuItemUseFlatTree, toggleButtonUseFlatTree);
+		toggleButtonUseFlatTree = setToggleButtonStyle(menuItemUseFlatTree, toggleButtonUseFlatTree);
 		ltTree.setShowFlatView(menuItemUseFlatTree.isSelected());
 		handleDrawTree();
 		markAsDirty();
@@ -697,7 +697,7 @@ public class RootLayoutController implements Initializable {
 	@FXML
 	private void handleUseFlatTree() {
 		menuItemUseFlatTree.setSelected(!menuItemUseFlatTree.isSelected());
-		setToggleButtonStyle(menuItemUseFlatTree, toggleButtonUseFlatTree);
+		toggleButtonUseFlatTree = setToggleButtonStyle(menuItemUseFlatTree, toggleButtonUseFlatTree);
 		ltTree.setShowFlatView(menuItemUseFlatTree.isSelected());
 		handleDrawTree();
 		markAsDirty();
@@ -711,7 +711,7 @@ public class RootLayoutController implements Initializable {
 		markAsDirty();
 	}
 
-	private void setToggleButtonStyle(CheckMenuItem menuItem, ToggleButton toggleButton) {
+	private ToggleButton setToggleButtonStyle(CheckMenuItem menuItem, ToggleButton toggleButton) {
 		if (menuItem.isSelected()) {
 			int i = toggleButton.getStyleClass().indexOf(kUnPressedStyle);
 			if (i >= 0) {
@@ -725,11 +725,12 @@ public class RootLayoutController implements Initializable {
 			}
 			toggleButton.getStyleClass().add(kUnPressedStyle);
 		}
+		return toggleButton;
 	}
 
 	@FXML
 	private void handleMenuSaveAsPng() {
-		setToggleButtonStyle(menuItemSaveAsPng, toggleButtonSaveAsPng);
+		toggleButtonSaveAsPng = setToggleButtonStyle(menuItemSaveAsPng, toggleButtonSaveAsPng);
 		ltTree.setSaveAsPng(menuItemSaveAsPng.isSelected());
 		markAsDirty();
 	}
@@ -737,7 +738,7 @@ public class RootLayoutController implements Initializable {
 	@FXML
 	private void handleSaveAsPng() {
 		menuItemSaveAsPng.setSelected(!menuItemSaveAsPng.isSelected());
-		setToggleButtonStyle(menuItemSaveAsPng, toggleButtonSaveAsPng);
+		toggleButtonSaveAsPng = setToggleButtonStyle(menuItemSaveAsPng, toggleButtonSaveAsPng);
 		ltTree.setSaveAsPng(menuItemSaveAsPng.isSelected());
 		markAsDirty();
 		treeDescription.requestFocus();
@@ -745,7 +746,7 @@ public class RootLayoutController implements Initializable {
 
 	@FXML
 	private void handleMenuSaveAsSVG() {
-		setToggleButtonStyle(menuItemSaveAsSVG, toggleButtonSaveAsSVG);
+		toggleButtonSaveAsSVG = setToggleButtonStyle(menuItemSaveAsSVG, toggleButtonSaveAsSVG);
 		ltTree.setSaveAsSVG(menuItemSaveAsSVG.isSelected());
 		markAsDirty();
 	}
@@ -753,7 +754,7 @@ public class RootLayoutController implements Initializable {
 	@FXML
 	private void handleSaveAsSVG() {
 		menuItemSaveAsSVG.setSelected(!menuItemSaveAsSVG.isSelected());
-		setToggleButtonStyle(menuItemSaveAsSVG, toggleButtonSaveAsSVG);
+		toggleButtonSaveAsSVG = setToggleButtonStyle(menuItemSaveAsSVG, toggleButtonSaveAsSVG);
 		ltTree.setSaveAsSVG(menuItemSaveAsSVG.isSelected());
 		markAsDirty();
 		treeDescription.requestFocus();
@@ -766,8 +767,8 @@ public class RootLayoutController implements Initializable {
 
 	@FXML
 	private void handleMenuShowMatchingParenWithArrowKeys() {
-		setToggleButtonStyle(menuItemShowMatchingParenWithArrowKeys,
-				toggleButtonShowMatchingParenWithArrowKeys);
+		toggleButtonShowMatchingParenWithArrowKeys = setToggleButtonStyle(
+				menuItemShowMatchingParenWithArrowKeys, toggleButtonShowMatchingParenWithArrowKeys);
 		applicationPreferences
 				.setShowMatchingParenWithArrowKeys(menuItemShowMatchingParenWithArrowKeys
 						.isSelected());
@@ -777,8 +778,8 @@ public class RootLayoutController implements Initializable {
 	private void handleShowMatchingParenWithArrowKeys() {
 		menuItemShowMatchingParenWithArrowKeys.setSelected(!menuItemShowMatchingParenWithArrowKeys
 				.isSelected());
-		setToggleButtonStyle(menuItemShowMatchingParenWithArrowKeys,
-				toggleButtonShowMatchingParenWithArrowKeys);
+		toggleButtonShowMatchingParenWithArrowKeys = setToggleButtonStyle(
+				menuItemShowMatchingParenWithArrowKeys, toggleButtonShowMatchingParenWithArrowKeys);
 		applicationPreferences
 				.setShowMatchingParenWithArrowKeys(menuItemShowMatchingParenWithArrowKeys
 						.isSelected());
@@ -820,7 +821,8 @@ public class RootLayoutController implements Initializable {
 			this.treeDescription.positionCaret(1);
 			this.treeDescription.requestFocus();
 			this.menuItemUseFlatTree.setSelected(ltTree.isShowFlatView());
-			this.menuItemUseRightToLeftOrientation.setSelected(ltTree.isUseRightToLeftOrientation());
+			this.menuItemUseRightToLeftOrientation
+					.setSelected(ltTree.isUseRightToLeftOrientation());
 			this.menuItemSaveAsPng.setSelected(ltTree.isSaveAsPng());
 			this.menuItemSaveAsSVG.setSelected(ltTree.isSaveAsSVG());
 			mainApp.updateStageTitle(fileCreated);
