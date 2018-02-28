@@ -134,9 +134,16 @@
 
     <xsl:template match="LineWidth">
         <lineWidth>
-            <xsl:call-template name="ConvertToPixels">
-                <xsl:with-param name="hundredthsOfMM" select="."/>
-            </xsl:call-template>
+            <xsl:choose>
+                <xsl:when test=".=0">
+                    <xsl:text>1.0</xsl:text>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:call-template name="ConvertToPixels">
+                        <xsl:with-param name="hundredthsOfMM" select="."/>
+                    </xsl:call-template>
+                </xsl:otherwise>
+            </xsl:choose>
         </lineWidth>
         <saveAsPng>true</saveAsPng>
         <saveAsSVG>true</saveAsSVG>
