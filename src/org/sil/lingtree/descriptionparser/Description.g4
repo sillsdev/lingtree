@@ -84,9 +84,9 @@ SPACES: ' ' [ \t\n\r]+;
 OMIT : '\\O'  ' '* ;
 TRIANGLE : '\\T'  ' '*;
 
-LEX : '\\L';
-GLOSS : '\\G';
-EMPTY : '\\E';  // empty element (like a trace or non-overt pronoun)
+LEX   : '\\L' SPACES?;
+GLOSS : '\\G' SPACES?;
+EMPTY : '\\E' SPACES?;  // empty element (like a trace or non-overt pronoun)
 
 SUBSCRIPT : '/s' ;
 SUBSCRIPTITALIC : '/_' ;

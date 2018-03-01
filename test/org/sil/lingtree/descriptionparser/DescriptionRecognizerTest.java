@@ -186,7 +186,10 @@ public class DescriptionRecognizerTest {
 		checkValidDescription(
 				"(S (NP (Lee)) \n  (VP (V (gets))\n \t  (NP (Det (the)) (N (idea)))))",
 				"(description (node (openParen () (content S ) (node (openParen () (content NP ) (node (openParen () (content Lee) (closeParen ))) (closeParen )  \\n  )) (node (openParen () (content VP ) (node (openParen () (content V ) (node (openParen () (content gets) (closeParen ))) (closeParen )  \\t  )) (node (openParen () (content NP ) (node (openParen () (content Det ) (node (openParen () (content the) (closeParen ))) (closeParen ))) (node (openParen   () (content N ) (node (openParen () (content idea) (closeParen ))) (closeParen ))) (closeParen ))) (closeParen ))) (closeParen ))) <EOF>)");
-	}
+		checkValidDescription(
+				"(S (NP (\\L  Juan (\\G  John))) (VP (V (\\L  duerme (\\G  sleeps)))) (AdvP (\\E  t)))",
+				"(description (node (openParen () (content S ) (node (openParen () (content NP ) (node (openParen () (type (nodeType \\L  )) (content Juan ) (node (openParen () (type (nodeType \\G  )) (content John) (closeParen ))) (closeParen ))) (closeParen ))) (node (openParen   () (content VP ) (node (openParen () (content V ) (node (openParen () (type (nodeType \\L  )) (content duerme ) (node (openParen () (type (nodeType \\G  )) (content sleeps) (closeParen ))) (closeParen ))) (closeParen ))) (closeParen ))) (node (openParen   () (content AdvP ) (node (openParen () (type (nodeType \\E  )) (content t) (closeParen ))) (closeParen ))) (closeParen ))) <EOF>)");
+		}
 
 	private void checkValidDescription(String sDescription, String sANTLRTree) {
 		DescriptionParser parser = parseAString(sDescription);

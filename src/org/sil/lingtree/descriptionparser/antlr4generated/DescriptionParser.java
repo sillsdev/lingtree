@@ -32,8 +32,8 @@ public class DescriptionParser extends Parser {
 	};
 
 	private static final String[] _LITERAL_NAMES = {
-		null, "' '", "'('", "')'", null, null, null, "'\\L'", "'\\G'", "'\\E'", 
-		"'/s'", "'/_'", "'/S'", "'/^'"
+		null, "' '", "'('", "')'", null, null, null, null, null, null, "'/s'", 
+		"'/_'", "'/S'", "'/^'"
 	};
 	private static final String[] _SYMBOLIC_NAMES = {
 		null, null, null, null, "SPACES", "OMIT", "TRIANGLE", "LEX", "GLOSS", 
