@@ -401,6 +401,10 @@ public class RootLayoutController implements Initializable {
 
 	}
 
+	public LingTreeTree getTree() {
+		return ltTree;
+	}
+
 	public void setTree(LingTreeTree ltTree) {
 		this.ltTree = ltTree;
 		treeDescription.setText(ltTree.getDescription());
@@ -830,6 +834,15 @@ public class RootLayoutController implements Initializable {
 			toggleButtonSaveAsSVG.setSelected(ltTree.isSaveAsSVG());
 			mainApp.updateStageTitle(fileCreated);
 			cleanDrawingArea();
+			mainApp.getXmlBackEndProvider().setLingTree(ltTree);
+			try {
+				handleSaveTree();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} else {
+			ltTree = null;
 		}
 	}
 

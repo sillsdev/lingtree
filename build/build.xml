@@ -47,11 +47,6 @@
 				<include name="src/**" />
 			</fileset>
 		</copy>
-		<copy todir="project">
-			<fileset dir="C:\Users\Andy Black\Documents\Eclipse4.4Workspace\LingTree">
-				<include name="test/**" />
-			</fileset>
-		</copy>
 	
 		<mkdir dir="projectRefs" />
 	</target>
@@ -75,11 +70,6 @@
 	
 		<!-- Copy project sources itself -->
 		<copy todir="build/src">
-			<fileset dir="project/test">
-				<include name="**/*"/>
-			</fileset>
-		</copy>
-		<copy todir="build/src">
 			<fileset dir="project/src">
 				<include name="**/*"/>
 			</fileset>
@@ -95,9 +85,6 @@
 	
 		<!-- Copy over none Java-Files -->
 		<copy todir="build/classes">
-		<fileset dir="project/test">
-			<exclude name="**/*.java"/>
-		</fileset>
 		<fileset dir="project/src">
 			<exclude name="**/*.java"/>
 		</fileset>

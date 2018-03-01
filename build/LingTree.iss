@@ -50,7 +50,7 @@ Name: "{commondesktop}\LingTree"; Filename: "{app}\LingTree.exe";  IconFilename:
 [Run]
 Filename: "{app}\LingTree.exe"; Parameters: "-Xappcds:generatecache"; Check: returnFalse()
 Filename: "{app}\LingTree.exe"; Description: "{cm:LaunchProgram,LingTree}"; Flags: nowait postinstall skipifsilent; Check: returnTrue()
-Filename: "{app}\LingTree.exe"; Parameters: "-install -svcName ""LingTree"" -svcDesc ""A tool for exploring syllabification algorithms and for inserting discretionay hyphens in word lists."" -mainExe ""LingTree.exe""  "; Check: returnFalse()
+Filename: "{app}\LingTree.exe"; Parameters: "-install -svcName ""LingTree"" -svcDesc ""LingTree is a tool that lets you easily describe a linguistic tree and produce a graphic image of it."" -mainExe ""LingTree.exe""  "; Check: returnFalse()
 
 [UninstallRun]
 Filename: "{app}\LingTree.exe "; Parameters: "-uninstall -svcName LingTree -stopOnUninstall"; Check: returnFalse()

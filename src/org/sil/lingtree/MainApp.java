@@ -7,6 +7,7 @@ package org.sil.lingtree;
 import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import org.sil.lingtree.model.EmptyElementFontInfo;
@@ -27,7 +28,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
@@ -125,7 +130,7 @@ public class MainApp extends Application {
 				controller.setTree(ltTree);
 				controller.handleDrawTree();
 			} else {
-				boolean fSucceeded = false; // askUserForNewOrToOpenExistingFile(bundle, controller);
+				boolean fSucceeded = askUserForNewOrToOpenExistingFile(bundle, controller);
 				if (!fSucceeded) {
 					System.exit(0);
 				}
@@ -141,6 +146,46 @@ public class MainApp extends Application {
 			e.printStackTrace();
 		}
 	}
+
+	protected boolean askUserForNewOrToOpenExistingFile(ResourceBundle bundle,
+			RootLayoutController controller) {
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle(bundle.getString("program.name"));
+		alert.setHeaderText(bundle.getString("file.initiallynotfound"));
+		alert.setContentText(bundle.getString("file.chooseanoption"));
+		Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+		stage.getIcons().add(getNewMainIconImage());
+
+		ButtonType buttonCreateNewTree = new ButtonType(
+				bundle.getString("label.createnewtree"));
+		ButtonType buttonOpenExistingTree = new ButtonType(
+				bundle.getString("label.openexistingtree"));
+		ButtonType buttonCancel = new ButtonType(bundle.getString("label.cancel"),
+				ButtonData.CANCEL_CLOSE);
+
+		alert.getButtonTypes().setAll(buttonCreateNewTree, buttonOpenExistingTree,
+				buttonCancel);
+
+		boolean fSucceeded = true;
+		Optional<ButtonType> result = alert.showAndWait();
+		if (result.isPresent() && result.get() == buttonCreateNewTree) {
+			controller.handleNewTree();
+			if (controller.getTree() == null) {
+				// The user canceled creating a new project
+				fSucceeded = false;
+			}
+		} else if (result.get() == buttonOpenExistingTree) {
+			controller.doFileOpen(true);
+			controller.setTree(ltTree);
+			controller.handleDrawTree();
+
+		} else {
+			// ... user chose CANCEL or closed the dialog
+			System.exit(0);
+		}
+		return fSucceeded;
+	}
+
 
 	public void loadTreeData(File file) {
 		DatabaseMigrator migrator = new DatabaseMigrator(file);
@@ -238,6 +283,10 @@ public class MainApp extends Application {
 
 	public LingTreeTree getTree() {
 		return ltTree;
+	}
+
+	public XMLBackEndProvider getXmlBackEndProvider() {
+		return xmlBackEndProvider;
 	}
 
 }
