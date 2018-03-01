@@ -817,14 +817,17 @@ public class RootLayoutController implements Initializable {
 			applicationPreferences.getSavedTreeParameters(ltTree);
 			ltTree.setDescription(initialDescription);
 			updateAllFontInfos();
-			this.treeDescription.setText(initialDescription);
-			this.treeDescription.positionCaret(1);
-			this.treeDescription.requestFocus();
-			this.menuItemUseFlatTree.setSelected(ltTree.isShowFlatView());
-			this.menuItemUseRightToLeftOrientation
+			treeDescription.setText(initialDescription);
+			treeDescription.positionCaret(1);
+			treeDescription.requestFocus();
+			menuItemUseFlatTree.setSelected(ltTree.isShowFlatView());
+			toggleButtonUseFlatTree.setSelected(ltTree.isShowFlatView());
+			menuItemUseRightToLeftOrientation
 					.setSelected(ltTree.isUseRightToLeftOrientation());
-			this.menuItemSaveAsPng.setSelected(ltTree.isSaveAsPng());
-			this.menuItemSaveAsSVG.setSelected(ltTree.isSaveAsSVG());
+			menuItemSaveAsPng.setSelected(ltTree.isSaveAsPng());
+			toggleButtonSaveAsPng.setSelected(ltTree.isSaveAsPng());
+			menuItemSaveAsSVG.setSelected(ltTree.isSaveAsSVG());
+			toggleButtonSaveAsSVG.setSelected(ltTree.isSaveAsSVG());
 			mainApp.updateStageTitle(fileCreated);
 			cleanDrawingArea();
 		}
