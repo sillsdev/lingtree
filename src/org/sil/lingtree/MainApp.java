@@ -10,6 +10,8 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import org.fxmisc.flowless.VirtualizedScrollPane;
+import org.fxmisc.richtext.InlineCssTextArea;
 import org.sil.lingtree.model.EmptyElementFontInfo;
 import org.sil.lingtree.model.GlossFontInfo;
 import org.sil.lingtree.model.LexFontInfo;
@@ -33,7 +35,9 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.control.SplitPane;
 import javafx.scene.image.Image;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
@@ -118,10 +122,13 @@ public class MainApp extends Application {
 
 			// Show the scene containing the root layout.
 			Scene scene = new Scene(rootLayout);
+
 			primaryStage.setScene(scene);
 			controller = loader.getController();
 			controller.setMainApp(this);
 			controller.setLocale(locale);
+
+			wrapTreeDescriptionInVirtualizedScrollPane();
 
 			// Try to load last opened file.
 			File file = applicationPreferences.getLastOpenedFile();
@@ -145,6 +152,16 @@ public class MainApp extends Application {
 			System.out.println("non-IO Exception caught!");
 			e.printStackTrace();
 		}
+	}
+
+	private void wrapTreeDescriptionInVirtualizedScrollPane() {
+		// we cannot use FXML for this; we have to do it programmatically
+		AnchorPane ap = (AnchorPane) rootLayout.getCenter();
+		VBox vb = (VBox) ap.getChildren().get(0);
+		SplitPane sp = (SplitPane) vb.getChildren().get(0);
+		InlineCssTextArea ta = (InlineCssTextArea) sp.getItems().get(0);;
+		VirtualizedScrollPane<InlineCssTextArea> vsTreeDescription = new VirtualizedScrollPane<>(ta);
+		sp.getItems().set(0, vsTreeDescription);
 	}
 
 	protected boolean askUserForNewOrToOpenExistingFile(ResourceBundle bundle,

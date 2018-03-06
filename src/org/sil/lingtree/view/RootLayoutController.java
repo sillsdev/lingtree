@@ -16,18 +16,27 @@ import java.io.Writer;
 import java.net.URL;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.TreeMap;
+import java.util.regex.Matcher;
 
 import javax.imageio.ImageIO;
 
+import org.antlr.v4.runtime.CharStream;
+import org.antlr.v4.runtime.CharStreams;
+import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.Token;
 import org.controlsfx.dialog.FontSelectorDialogWithColor;
+import org.fxmisc.richtext.InlineCssTextArea;
 import org.sil.lingtree.MainApp;
 import org.sil.lingtree.descriptionparser.DescriptionConstants;
+import org.sil.lingtree.descriptionparser.antlr4generated.DescriptionLexer;
 import org.sil.lingtree.model.EmptyElementFontInfo;
 import org.sil.lingtree.model.FontInfo;
 import org.sil.lingtree.model.GlossFontInfo;
@@ -179,7 +188,7 @@ public class RootLayoutController implements Initializable {
 	private CheckMenuItem menuItemShowMatchingParenWithArrowKeys;
 
 	@FXML
-	private TextArea treeDescription;
+	private InlineCssTextArea treeDescription;
 	@FXML
 	private Pane drawingArea;
 
@@ -234,9 +243,8 @@ public class RootLayoutController implements Initializable {
 					break;
 
 				case ")":
-					// the ) is not in the tree description yet. It is after the
-					// key is released.
-					// we handle this in onKeyReleased
+					// The ) is not in the tree description yet. It is after the
+					// key is released, so we handle this in onKeyReleased
 					// TODO: is there a better way to do this?
 					if (treeDescription.isEditable()) {
 						fCloseParenJustTyped = true;
@@ -360,18 +368,77 @@ public class RootLayoutController implements Initializable {
 					break;
 				}
 
+				// TODO: is this the best place for this?
+				computeHighlighting();
+
 				if (menuItemDrawAsType.isSelected() && fContentJustChangedSoDrawTree) {
 					handleDrawTree();
 				}
 			}
 		});
+
+		// If we decide we want to show line numbers, we do it like this:
+		//treeDescription.setParagraphGraphicFactory(LineNumberFactory.get(treeDescription));
+
+		//treeDescription.requestFollowCaret();  // does this make selected paren show?
+		// No, but if we change the text, will it?
+		// http://fxmisc.github.io/richtext/javadoc/0.8.2/org/fxmisc/richtext/ViewActions.html#requestFollowCaret--
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
-				treeDescription.setPromptText(bundle.getString("label.enterdescription"));
+				computeHighlighting();
 				treeDescription.requestFocus();
+				treeDescription.moveTo(0);
 			}
 		});
+	}
+
+	private void computeHighlighting() {
+		CharStream input = CharStreams.fromString(treeDescription.getText());
+		DescriptionLexer lexer = new DescriptionLexer(input);
+		CommonTokenStream tokens = new CommonTokenStream(lexer);
+		tokens.fill();
+
+		String syntagmeme = "font-family: serif;\n-fx-fill: black;\n-fx-font-size:" + applicationPreferences.getTreeDescriptionFontSize() + "pt;";
+		String nonterminal = NonTerminalFontInfo.getInstance().getCss();
+		String gloss = GlossFontInfo.getInstance().getCss();
+		String empty = EmptyElementFontInfo.getInstance().getCss();;
+		String lexical = LexFontInfo.getInstance().getCss();
+
+		String cssStyleClass = syntagmeme;
+		String textClassToUse = NonTerminalFontInfo.getInstance().getCss();
+		for (Token token : tokens.getTokens()) {
+			switch (token.getType()) {
+			// TODO: if the description grammar changes, we may need to adjust the case values as they may change
+			case 2: // opening parenthesis
+				cssStyleClass = syntagmeme;
+				textClassToUse = nonterminal;
+				break;
+			case 7: // \L
+				cssStyleClass = syntagmeme;
+				textClassToUse = lexical;
+				break;
+			case 8: // \G
+				cssStyleClass = syntagmeme;
+				textClassToUse = gloss;
+				break;
+			case 9: // \E
+				cssStyleClass = syntagmeme;
+				textClassToUse = empty;
+				break;
+			case 14: // text or content
+				cssStyleClass = textClassToUse;
+				break;
+			default:
+				cssStyleClass = syntagmeme;
+				break;
+			}
+			if (token.getType() != -1) { // -1 is EOF
+				int iStart = token.getStartIndex();
+				int iStop = token.getStopIndex()+1;
+				treeDescription.setStyle(iStart, iStop, cssStyleClass);
+			}
+		}
 	}
 
 	public MainApp getMainApp() {
@@ -386,8 +453,7 @@ public class RootLayoutController implements Initializable {
 				.getShowMatchingParenWithArrowKeys());
 		toggleButtonShowMatchingParenWithArrowKeys = setToggleButtonStyle(
 				menuItemShowMatchingParenWithArrowKeys, toggleButtonShowMatchingParenWithArrowKeys);
-		treeDescription.setFont(new Font(applicationPreferences.getTreeDescriptionFontSize()));
-		defaultFont = treeDescription.getFont();
+		defaultFont = new Font(applicationPreferences.getTreeDescriptionFontSize());
 	}
 
 	public Locale getCurrentLocale() {
@@ -407,7 +473,7 @@ public class RootLayoutController implements Initializable {
 
 	public void setTree(LingTreeTree ltTree) {
 		this.ltTree = ltTree;
-		treeDescription.setText(ltTree.getDescription());
+		treeDescription.replaceText(ltTree.getDescription());
 		menuItemUseFlatTree.setSelected(ltTree.isShowFlatView());
 		toggleButtonUseFlatTree = setToggleButtonStyle(menuItemUseFlatTree, toggleButtonUseFlatTree);
 		ltTree.setShowFlatView(menuItemUseFlatTree.isSelected());
@@ -516,6 +582,7 @@ public class RootLayoutController implements Initializable {
 	@FXML
 	protected void handleCut() {
 		treeDescription.cut();
+		computeHighlighting();
 	}
 
 	@FXML
@@ -525,17 +592,20 @@ public class RootLayoutController implements Initializable {
 		// return;
 		// }
 		treeDescription.paste();
+		computeHighlighting();
 		treeDescription.requestFocus();
 	}
 
 	@FXML
 	protected void handleUndo() {
 		treeDescription.undo();
+		computeHighlighting();
 	}
 
 	@FXML
 	protected void handleRedo() {
 		treeDescription.redo();
+		computeHighlighting();
 	}
 
 	@FXML
@@ -667,8 +737,8 @@ public class RootLayoutController implements Initializable {
 		Optional<Double> result = dialog.showAndWait();
 		if (result.isPresent()) {
 			defaultFont = new Font(result.get());
-			treeDescription.setFont(defaultFont);
 			applicationPreferences.setTreeDescriptionFontSize(result.get());
+			computeHighlighting();
 		}
 	}
 
@@ -821,8 +891,8 @@ public class RootLayoutController implements Initializable {
 			applicationPreferences.getSavedTreeParameters(ltTree);
 			ltTree.setDescription(initialDescription);
 			updateAllFontInfos();
-			treeDescription.setText(initialDescription);
-			treeDescription.positionCaret(1);
+			treeDescription.replaceText(initialDescription);
+			treeDescription.moveTo(1);
 			treeDescription.requestFocus();
 			menuItemUseFlatTree.setSelected(ltTree.isShowFlatView());
 			toggleButtonUseFlatTree.setSelected(ltTree.isShowFlatView());
@@ -841,6 +911,7 @@ public class RootLayoutController implements Initializable {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			computeHighlighting();
 		} else {
 			ltTree = null;
 		}
@@ -867,6 +938,7 @@ public class RootLayoutController implements Initializable {
 	public void handleOpenTree() {
 		doFileOpen(false);
 		setTree(mainApp.getTree());
+		computeHighlighting();
 		handleDrawTree();
 	}
 
@@ -1016,8 +1088,8 @@ public class RootLayoutController implements Initializable {
 			int i = treeDescription.getCaretPosition();
 			String contents = treeDescription.getText();
 			contents = contents.substring(0, i) + " )" + contents.substring(i);
-			treeDescription.setText(contents);
-			treeDescription.positionCaret(i);
+			treeDescription.replaceText(contents);
+			treeDescription.moveTo(i);
 		}
 	}
 
@@ -1059,6 +1131,7 @@ public class RootLayoutController implements Initializable {
 		ltTree.setEmptyElementFontInfo(fontInfo);
 		EmptyElementFontInfo.getInstance().setFont(fontInfo.getFont());
 		EmptyElementFontInfo.getInstance().setColor(fontInfo.getColor());
+		computeHighlighting();
 		handleDrawTree();
 		markAsDirty();
 	}
@@ -1069,6 +1142,7 @@ public class RootLayoutController implements Initializable {
 		ltTree.setGlossFontInfo(fontInfo);
 		GlossFontInfo.getInstance().setFont(fontInfo.getFont());
 		GlossFontInfo.getInstance().setColor(fontInfo.getColor());
+		computeHighlighting();
 		handleDrawTree();
 		markAsDirty();
 	}
@@ -1079,6 +1153,7 @@ public class RootLayoutController implements Initializable {
 		ltTree.setLexicalFontInfo(fontInfo);
 		LexFontInfo.getInstance().setFont(fontInfo.getFont());
 		LexFontInfo.getInstance().setColor(fontInfo.getColor());
+		computeHighlighting();
 		handleDrawTree();
 		markAsDirty();
 	}
@@ -1089,6 +1164,7 @@ public class RootLayoutController implements Initializable {
 		ltTree.setNonTerminalFontInfo(fontInfo);
 		NonTerminalFontInfo.getInstance().setFont(fontInfo.getFont());
 		NonTerminalFontInfo.getInstance().setColor(fontInfo.getColor());
+		computeHighlighting();
 		handleDrawTree();
 		markAsDirty();
 	}
@@ -1179,12 +1255,12 @@ public class RootLayoutController implements Initializable {
 		} else {
 			adjustForDeselection();
 		}
-		if (treeDescription.isUndoable()) {
+		if (treeDescription.isUndoAvailable()) {
 			menuItemEditUndo.setDisable(false);
 		} else {
 			menuItemEditUndo.setDisable(true);
 		}
-		if (treeDescription.isRedoable()) {
+		if (treeDescription.isRedoAvailable()) {
 			menuItemEditRedo.setDisable(false);
 		} else {
 			menuItemEditRedo.setDisable(true);

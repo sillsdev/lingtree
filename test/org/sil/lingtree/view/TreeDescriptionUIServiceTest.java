@@ -6,8 +6,8 @@
 package org.sil.lingtree.view;
 
 import static org.junit.Assert.*;
-import javafx.scene.control.TextArea;
 
+import org.fxmisc.richtext.InlineCssTextArea;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -17,11 +17,11 @@ public class TreeDescriptionUIServiceTest {
 	@Rule
 	public JavaFXThreadingRule javafxRule = new JavaFXThreadingRule();
 
-	TextArea treeDescription;
+	InlineCssTextArea treeDescription;
 	
 	@Before
 	public void setUp() throws Exception {
-		treeDescription = new TextArea("()");
+		treeDescription = new InlineCssTextArea("()");
 	}
 
 	@After
@@ -30,7 +30,7 @@ public class TreeDescriptionUIServiceTest {
 
 	@Test
 	public void processRightParenthesisTest() {
-		treeDescription.setText("(S (NP (N (beans))) (VP (V (grow))))");
+		treeDescription.replaceText("(S (NP (N (beans))) (VP (V (grow))))");
 		checkMatchingLeft(0, -1);
 		checkMatchingLeft(2, 0);
 		checkMatchingLeft(6, 3);
@@ -46,7 +46,7 @@ public class TreeDescriptionUIServiceTest {
 	}
 
 	private void checkMatchingLeft(int iRightPos, int iLeftExpected) {
-		treeDescription.positionCaret(iRightPos);
+		treeDescription.moveTo(iRightPos);
 		TreeDescriptionUIService.processRightParenthesis(treeDescription, iRightPos, true, 750.0, null, null);
 		int iLeftPos = TreeDescriptionUIService.findMatchingLeftParenthesisAndHighlightIt(iRightPos);
 		assertEquals(iLeftExpected, iLeftPos);
@@ -54,7 +54,7 @@ public class TreeDescriptionUIServiceTest {
 
 	@Test
 	public void processLeftParenthesisTest() {
-		treeDescription.setText("(S (NP (N (beans))) (VP (V (grow))))");
+		treeDescription.replaceText("(S (NP (N (beans))) (VP (V (grow))))");
 		checkMatchingRight(0, -1);
 		checkMatchingRight(1, 35);
 		checkMatchingRight(4, 18);
@@ -68,7 +68,7 @@ public class TreeDescriptionUIServiceTest {
 	}
 
 	private void checkMatchingRight(int iLeftPos, int iRightExpected) {
-		treeDescription.positionCaret(iLeftPos);
+		treeDescription.moveTo(iLeftPos);
 		TreeDescriptionUIService.processLeftParenthesis(treeDescription, false, 125.0, null, null);
 		int iRightPos = TreeDescriptionUIService.findMatchingRightParenthesisAndHighlightIt(iLeftPos, false);
 		assertEquals(iRightExpected, iRightPos);

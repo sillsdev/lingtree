@@ -11,6 +11,7 @@ import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.controlsfx.dialog.FontSelectorDialog;
+import org.sil.utility.StringUtilities;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -155,4 +156,23 @@ public class FontInfo {
 		return Font.font(fontFamily, weight, posture, fontSize);
 	}
 
+	public String getCss() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("font-family: ");
+		sb.append(getFontFamily());
+		sb.append(";\n-fx-font-size: ");
+		sb.append(getFontSize());
+		sb.append("pt;\n");
+		String sType = getFontType();
+		if (sType.contains("Italic")) {
+			sb.append("-fx-font-style: italic;\n");
+		}
+		if (sType.contains("Bold")) {
+			sb.append("-fx-font-weight: bold;\n");
+		}
+		sb.append("-fx-fill: ");
+		sb.append(StringUtilities.toRGBCode(getColor()));
+		sb.append(";\n");
+		return(sb.toString());
+	}
 }

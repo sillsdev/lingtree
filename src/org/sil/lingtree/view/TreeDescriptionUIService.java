@@ -6,18 +6,15 @@
 
 package org.sil.lingtree.view;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import org.fxmisc.richtext.InlineCssTextArea;
 import org.sil.lingtree.MainApp;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.concurrent.Task;
-import javafx.event.EventType;
 import javafx.scene.control.Alert;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
@@ -30,7 +27,7 @@ import javafx.util.Duration;
  */
 public class TreeDescriptionUIService {
 
-	private static TextArea treeDescription;
+	private static InlineCssTextArea treeDescription;
 	private static ResourceBundle bundle;
 	private static Image mainIcon;
 	private static List<KeyEvent> itemsKeyedDuringPause;
@@ -57,7 +54,7 @@ public class TreeDescriptionUIService {
 	 * @param image
 	 *            = image used in message
 	 */
-	public static void processRightParenthesis(TextArea description, int iRightParenthesis,
+	public static void processRightParenthesis(InlineCssTextArea description, int iRightParenthesis,
 			boolean fCaretAfterParen, double pause, ResourceBundle resource, Image image) {
 		treeDescription = description;
 		bundle = resource;
@@ -101,7 +98,7 @@ public class TreeDescriptionUIService {
 
 	private static Object removeMatchingLeftParenthesisHighlightAndRestoreCaret(
 			int iLeftParenthesis, int iRightParenthesis) {
-		treeDescription.positionCaret(iRightParenthesis);
+		treeDescription.moveTo(iRightParenthesis);
 		return null;
 	}
 
@@ -129,9 +126,8 @@ public class TreeDescriptionUIService {
 			iIndex--;
 		}
 		if (iIndex >= 0) {
-			treeDescription.positionCaret(iIndex);
-			treeDescription.selectForward();
-			// treeDescription.replaceSelection("-->(<--");
+			treeDescription.moveTo(iIndex);
+			treeDescription.selectRange(iIndex, iIndex+1);
 			return iIndex;
 		} else {
 			if (bundle != null) {
@@ -146,10 +142,6 @@ public class TreeDescriptionUIService {
 				alert.showAndWait();
 			}
 		}
-		// rtbTreeDescription.Select(Math.max(0, iCurrent - 1), 1);
-		// rtbTreeDescription.SelectionFont = m_fntSynTagmeme;
-		// rtbTreeDescription.SelectionColor = m_clrSynTagmeme;
-		// rtbTreeDescription.Select(iCurrent, 0);
 		return -1;
 	}
 
@@ -166,7 +158,7 @@ public class TreeDescriptionUIService {
 	 * @param image
 	 *            = image used in message
 	 */
-	public static void processLeftParenthesis(TextArea description, boolean fShowMsg,
+	public static void processLeftParenthesis(InlineCssTextArea description, boolean fShowMsg,
 			double pause, ResourceBundle resource, Image image) {
 		treeDescription = description;
 		bundle = resource;
@@ -191,7 +183,7 @@ public class TreeDescriptionUIService {
 
 	private static Object removeMatchingRightParenthesisHighlightAndRestoreCaret(
 			int iLeftParenthesis, int iRightParenthesis) {
-		treeDescription.positionCaret(iLeftParenthesis);
+		treeDescription.moveTo(iLeftParenthesis);
 		return null;
 	}
 
@@ -226,8 +218,8 @@ public class TreeDescriptionUIService {
 			iIndex++;
 		}
 		if (iIndex < iEnd) {
-			treeDescription.positionCaret(iIndex);
-			treeDescription.selectForward();
+			treeDescription.moveTo(iIndex);
+			treeDescription.selectRange(iIndex, iIndex+1);
 			return iIndex;
 		} else {
 			if (fShowMsg && bundle != null) {
