@@ -876,6 +876,9 @@ public class RootLayoutController implements Initializable {
 	 */
 	@FXML
 	public void handleNewTree() {
+		if (fIsDirty) {
+			askAboutSaving();
+		}
 		String sDirectoryPath = applicationPreferences.getLastOpenedDirectoryPath();
 		if (sDirectoryPath == "") {
 			// probably creating a new file the first time the program is run;
@@ -936,6 +939,9 @@ public class RootLayoutController implements Initializable {
 	 */
 	@FXML
 	public void handleOpenTree() {
+		if (fIsDirty) {
+			askAboutSaving();
+		}
 		doFileOpen(false);
 		setTree(mainApp.getTree());
 		computeHighlighting();
