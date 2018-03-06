@@ -11,6 +11,7 @@ import org.sil.lingtree.model.FontInfo;
 import org.sil.lingtree.model.LingTreeTree;
 import org.sil.utility.*;
 
+import javafx.scene.control.SplitPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -34,6 +35,7 @@ public class ApplicationPreferences {
 	static final String MAXIMIZED = "Maximized";
 	// Window parameters for main window and various dialogs
 	public static final String LAST_WINDOW = "lastWindow";
+	public static final String LAST_SPLIT_PANE_POSITION = "lastSplitPanePosition";
 
 	// Tree parameters to remember
 	static final String BACKGROUND_COLOR = "backgroundColor";
@@ -171,6 +173,15 @@ public class ApplicationPreferences {
 			setPreferencesKey(sWindow + POSITION_Y, stage.getY());
 		}
 		setPreferencesKey(sWindow + MAXIMIZED, stage.isMaximized());
+	}
+
+	public double getLastSplitPaneDividerPosition() {
+		return prefs.getDouble(LAST_SPLIT_PANE_POSITION, 0.5);
+	}
+
+	public void setLastSplitPaneDividerPosition(SplitPane splitPane) {
+		double[] dividers = splitPane.getDividerPositions();
+		setPreferencesKey(LAST_SPLIT_PANE_POSITION, dividers[0]);
 	}
 
 	public void getSavedTreeParameters(LingTreeTree ltTree) {

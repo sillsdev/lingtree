@@ -65,6 +65,7 @@ import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.IndexRange;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
@@ -191,6 +192,8 @@ public class RootLayoutController implements Initializable {
 	private InlineCssTextArea treeDescription;
 	@FXML
 	private Pane drawingArea;
+	@FXML
+	private SplitPane splitPane;
 
 	protected Clipboard systemClipboard = Clipboard.getSystemClipboard();
 
@@ -485,6 +488,10 @@ public class RootLayoutController implements Initializable {
 		ltTree.setSaveAsSVG(menuItemSaveAsSVG.isSelected());
 		menuItemUseRightToLeftOrientation.setSelected(ltTree.isUseRightToLeftOrientation());
 		ltTree.setUseRightToLeftOrientation(menuItemUseRightToLeftOrientation.isSelected());
+	}
+
+	public SplitPane getSplitPane() {
+		return splitPane;
 	}
 
 	public List<KeyEvent> getItemsKeyedDuringPause() {

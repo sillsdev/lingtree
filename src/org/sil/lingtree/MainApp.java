@@ -3,7 +3,7 @@
 // (http://www.gnu.org/licenses/lgpl-2.1.html)
 
 package org.sil.lingtree;
-	
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
@@ -41,7 +41,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
-
 public class MainApp extends Application {
 	private static final String kApplicationIconResource = "file:resources/images/LingTree128x128.png";
 	private Stage primaryStage;
@@ -77,26 +76,26 @@ public class MainApp extends Application {
 			this.primaryStage = primaryStage;
 			this.primaryStage.setTitle(kApplicationTitle);
 			this.primaryStage.getIcons().add(getNewMainIconImage());
-			//this.primaryStage.getScene().getStylesheets().add(getClass().getResource("LingTree.css").toExternalForm());
+			// this.primaryStage.getScene().getStylesheets().add(getClass().getResource("LingTree.css").toExternalForm());
 			restoreWindowSettings();
 
 			initRootLayout();
-//			saveDataPeriodically(Constants.SAVE_DATA_PERIODICITY);
-		} catch(Exception e) {
+			// saveDataPeriodically(Constants.SAVE_DATA_PERIODICITY);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Override
 	public void stop() throws IOException {
 		applicationPreferences.setLastWindowParameters(ApplicationPreferences.LAST_WINDOW,
 				primaryStage);
+		applicationPreferences.setLastSplitPaneDividerPosition(controller.getSplitPane());
 		applicationPreferences.setLastLocaleLanguage(locale.getLanguage());
 		if (controller.isDirty()) {
 			controller.askAboutSaving();
 		}
 	}
-
 
 	public static void main(String[] args) {
 		launch(args);
@@ -117,8 +116,8 @@ public class MainApp extends Application {
 				adjustMenusForMacOSX();
 			}
 
-//			sNotImplementedYetHeader = bundle.getString("misc.niyheader");
-//			sNotImplementedYetContent = bundle.getString("misc.niycontent");
+			// sNotImplementedYetHeader = bundle.getString("misc.niyheader");
+			// sNotImplementedYetContent = bundle.getString("misc.niycontent");
 
 			// Show the scene containing the root layout.
 			Scene scene = new Scene(rootLayout);
@@ -129,6 +128,9 @@ public class MainApp extends Application {
 			controller.setLocale(locale);
 
 			wrapTreeDescriptionInVirtualizedScrollPane();
+
+			double dividerPosition = applicationPreferences.getLastSplitPaneDividerPosition();
+			controller.getSplitPane().setDividerPosition(0, dividerPosition);
 
 			// Try to load last opened file.
 			File file = applicationPreferences.getLastOpenedFile();
@@ -143,7 +145,7 @@ public class MainApp extends Application {
 				}
 			}
 
-//			updateStatusBarNumberOfItems("");
+			// updateStatusBarNumberOfItems("");
 
 			primaryStage.show();
 		} catch (IOException e) {
@@ -159,7 +161,8 @@ public class MainApp extends Application {
 		AnchorPane ap = (AnchorPane) rootLayout.getCenter();
 		VBox vb = (VBox) ap.getChildren().get(0);
 		SplitPane sp = (SplitPane) vb.getChildren().get(0);
-		InlineCssTextArea ta = (InlineCssTextArea) sp.getItems().get(0);;
+		InlineCssTextArea ta = (InlineCssTextArea) sp.getItems().get(0);
+		;
 		VirtualizedScrollPane<InlineCssTextArea> vsTreeDescription = new VirtualizedScrollPane<>(ta);
 		sp.getItems().set(0, vsTreeDescription);
 	}
@@ -173,15 +176,13 @@ public class MainApp extends Application {
 		Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
 		stage.getIcons().add(getNewMainIconImage());
 
-		ButtonType buttonCreateNewTree = new ButtonType(
-				bundle.getString("label.createnewtree"));
+		ButtonType buttonCreateNewTree = new ButtonType(bundle.getString("label.createnewtree"));
 		ButtonType buttonOpenExistingTree = new ButtonType(
 				bundle.getString("label.openexistingtree"));
 		ButtonType buttonCancel = new ButtonType(bundle.getString("label.cancel"),
 				ButtonData.CANCEL_CLOSE);
 
-		alert.getButtonTypes().setAll(buttonCreateNewTree, buttonOpenExistingTree,
-				buttonCancel);
+		alert.getButtonTypes().setAll(buttonCreateNewTree, buttonOpenExistingTree, buttonCancel);
 
 		boolean fSucceeded = true;
 		Optional<ButtonType> result = alert.showAndWait();
@@ -202,7 +203,6 @@ public class MainApp extends Application {
 		}
 		return fSucceeded;
 	}
-
 
 	public void loadTreeData(File file) {
 		DatabaseMigrator migrator = new DatabaseMigrator(file);
@@ -232,8 +232,6 @@ public class MainApp extends Application {
 		NonTerminalFontInfo.getInstance().setColor(ltTree.getNonTerminalFontInfo().getColor());
 	}
 
-
-
 	protected void adjustMenusForMacOSX() {
 		VBox vbox = (VBox) rootLayout.getChildren().get(0);
 		MenuBar menuBar = (MenuBar) vbox.getChildren().get(0);
@@ -258,7 +256,6 @@ public class MainApp extends Application {
 		applicationPreferences.setLastOpenedFilePath(file);
 		applicationPreferences.setLastOpenedDirectoryPath(file.getParent());
 	}
-
 
 	public void updateStageTitle(File file) {
 		if (file != null) {
@@ -287,6 +284,7 @@ public class MainApp extends Application {
 			return null;
 		}
 	}
+
 	public String getOperatingSystem() {
 		return sOperatingSystem;
 	}

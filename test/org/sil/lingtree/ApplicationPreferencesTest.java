@@ -12,7 +12,11 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Orientation;
 import javafx.scene.Scene;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.SplitPane;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
@@ -43,6 +47,8 @@ public class ApplicationPreferencesTest {
 	boolean showMatchingParenWithArrowKeysLastUsed;
 	double treeDescriptionFontSizeLastUsed;
 	double showMatchingParenDelayLastUsed;
+	double splitPaneDividerPositionLastUsed;
+	SplitPane splitPane;
 
 	LingTreeTree ltTreeLastUsed;
 	ColorXmlAdaptor adaptor;
@@ -56,6 +62,7 @@ public class ApplicationPreferencesTest {
 		drawAsTypeLastUsed = applicationPreferences.getDrawAsType();
 		showMatchingParenWithArrowKeysLastUsed = applicationPreferences.getShowMatchingParenWithArrowKeys();
 		showMatchingParenDelayLastUsed = applicationPreferences.getShowMatchingParenDelay();
+		splitPaneDividerPositionLastUsed = applicationPreferences.getLastSplitPaneDividerPosition();
 		treeDescriptionFontSizeLastUsed = applicationPreferences.getTreeDescriptionFontSize();
 		applicationPreferences.setLastOpenedFilePath("last opened file");
 		applicationPreferences.setLastLocaleLanguage("en");
@@ -68,6 +75,10 @@ public class ApplicationPreferencesTest {
 		applicationPreferences.setDrawAsType(false);
 		applicationPreferences.setShowMatchingParenWithArrowKeys(false);
 		applicationPreferences.setShowMatchingParenDelay(750.0);
+		splitPane = new SplitPane(new TextArea(), new ScrollPane());
+		splitPane.setOrientation(Orientation.VERTICAL);
+		splitPane.setDividerPosition(0, 0.48);
+		applicationPreferences.setLastSplitPaneDividerPosition(splitPane);
 	}
 
 	@After
@@ -77,6 +88,8 @@ public class ApplicationPreferencesTest {
 		applicationPreferences.setDrawAsType(drawAsTypeLastUsed);
 		applicationPreferences.setShowMatchingParenWithArrowKeys(showMatchingParenWithArrowKeysLastUsed);
 		applicationPreferences.setShowMatchingParenDelay(showMatchingParenDelayLastUsed);
+		splitPane.setDividerPosition(0, splitPaneDividerPositionLastUsed);
+		applicationPreferences.setLastSplitPaneDividerPosition(splitPane);
 		applicationPreferences.setTreeDescriptionFontSize(treeDescriptionFontSizeLastUsed);
 		applicationPreferences.setLastWindowParameters(ApplicationPreferences.LAST_WINDOW, windowStageLastUsed);
 		applicationPreferences.setSavedTreeParameters(ltTreeLastUsed);
@@ -125,6 +138,14 @@ public class ApplicationPreferencesTest {
 		assertEquals("show matching paren delay", 750.0, applicationPreferences.getShowMatchingParenDelay(), 0.0);
 		applicationPreferences.setShowMatchingParenDelay(1000.0);;
 		assertEquals("show matching paren delay", 1000.0, applicationPreferences.getShowMatchingParenDelay(), 0.0);
+	}
+
+	@Test
+	public void splitPaneDividerPosition() {
+		assertEquals("split pane divider position", 0.48, applicationPreferences.getLastSplitPaneDividerPosition(), 0.0);
+		splitPane.setDividerPosition(0, 0.67);
+		applicationPreferences.setLastSplitPaneDividerPosition(splitPane);;
+		assertEquals("split pane divider position", 0.67, applicationPreferences.getLastSplitPaneDividerPosition(), 0.0);
 	}
 
 	@Test

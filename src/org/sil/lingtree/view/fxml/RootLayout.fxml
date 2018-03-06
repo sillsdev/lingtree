@@ -122,7 +122,7 @@
          <children>
             <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <SplitPane dividerPositions="0.3644524236983842" orientation="VERTICAL">
+                  <SplitPane fx:id="splitPane" dividerPositions="0.3644524236983842" orientation="VERTICAL">
                      <items>
                               <InlineCssTextArea fx:id="treeDescription" prefHeight="200.0" prefWidth="1000.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                         <ScrollPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
