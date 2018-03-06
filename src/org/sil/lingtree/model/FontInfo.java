@@ -158,9 +158,9 @@ public class FontInfo {
 
 	public String getCss() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("font-family: ");
+		sb.append("-fx-font-family: \"");
 		sb.append(getFontFamily());
-		sb.append(";\n-fx-font-size: ");
+		sb.append("\";\n-fx-font-size: ");
 		sb.append(getFontSize());
 		sb.append("pt;\n");
 		String sType = getFontType();

@@ -38,19 +38,19 @@ public class FontInfoTest {
 		FontInfo fi = new FontInfo("Courier New", 13.75, "");
 		fi.setColor(Color.CHARTREUSE);
 		String css = fi.getCss();
-		assertEquals("font-family: Courier New;\n-fx-font-size: 13.75pt;\n-fx-fill: #7fff00;\n", css);
+		assertEquals("-fx-font-family: \"Courier New\";\n-fx-font-size: 13.75pt;\n-fx-fill: #7fff00;\n", css);
 		fi.setFontType("Italic");
 		css = fi.getCss();
-		assertEquals("font-family: Courier New;\n-fx-font-size: 13.75pt;\n-fx-font-style: italic;\n-fx-fill: #7fff00;\n", css);
+		assertEquals("-fx-font-family: \"Courier New\";\n-fx-font-size: 13.75pt;\n-fx-font-style: italic;\n-fx-fill: #7fff00;\n", css);
 		fi.setFontType("Bold");
 		css = fi.getCss();
-		assertEquals("font-family: Courier New;\n-fx-font-size: 13.75pt;\n-fx-font-weight: bold;\n-fx-fill: #7fff00;\n", css);
+		assertEquals("-fx-font-family: \"Courier New\";\n-fx-font-size: 13.75pt;\n-fx-font-weight: bold;\n-fx-fill: #7fff00;\n", css);
 		fi.setFontType("Bold Italic");
 		css = fi.getCss();
-		assertEquals("font-family: Courier New;\n-fx-font-size: 13.75pt;\n-fx-font-style: italic;\n-fx-font-weight: bold;\n-fx-fill: #7fff00;\n", css);
+		assertEquals("-fx-font-family: \"Courier New\";\n-fx-font-size: 13.75pt;\n-fx-font-style: italic;\n-fx-font-weight: bold;\n-fx-fill: #7fff00;\n", css);
 		fi.setFontType("Regular");
 		css = fi.getCss();
-		assertEquals("font-family: Courier New;\n-fx-font-size: 13.75pt;\n-fx-fill: #7fff00;\n", css);
+		assertEquals("-fx-font-family: \"Courier New\";\n-fx-font-size: 13.75pt;\n-fx-fill: #7fff00;\n", css);
 		
 	}
 
