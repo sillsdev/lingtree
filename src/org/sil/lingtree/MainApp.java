@@ -262,8 +262,7 @@ public class MainApp extends Application {
 
 	public void updateStageTitle(File file) {
 		if (file != null) {
-			String sFileNameToUse = file.getName().replace(
-					"." + Constants.LINGTREE_DATA_FILE_EXTENSION, "");
+			String sFileNameToUse = file.getName();
 			if (controller.isDirty()) {
 				sFileNameToUse += "*";
 			}
