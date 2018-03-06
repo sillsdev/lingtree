@@ -51,6 +51,7 @@ import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
@@ -301,6 +302,23 @@ public class FontSelectorDialogWithColor extends Dialog<Font> {
 				}
 			});
 
+			fontListView.setOnKeyTyped(new EventHandler<KeyEvent>() {
+
+				@Override
+				public void handle(KeyEvent event) {
+					String charTyped = event.getCharacter();
+					System.out.println("char typed ='" + charTyped + "'");
+					List<String> matches = fontListView.getItems().filtered(f -> f.startsWith(charTyped));
+					System.out.println("\tmatched size=" + matches.size());
+					if (matches.size() > 0) {
+						String sFirst = matches.get(0);
+						System.out.println("\tfound='" + sFirst + "'");
+						fontListView.getSelectionModel().select(sFirst);
+						fontListView.scrollTo(sFirst);
+					}
+				}
+			});
+
 			ChangeListener<Object> sampleRefreshListener = new ChangeListener<Object>() {
 				@Override
 				public void changed(ObservableValue<? extends Object> arg0, Object arg1, Object arg2) {
@@ -411,8 +429,8 @@ public class FontSelectorDialogWithColor extends Dialog<Font> {
 			Platform.runLater(new Runnable() {
 				@Override
 				public void run() {
-					listView.scrollTo(selection);
 					listView.getSelectionModel().select(selection);
+					listView.scrollTo(selection);
 				}
 			});
 		}
