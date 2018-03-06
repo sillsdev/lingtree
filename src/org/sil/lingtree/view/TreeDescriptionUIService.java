@@ -98,6 +98,7 @@ public class TreeDescriptionUIService {
 
 	private static Object removeMatchingLeftParenthesisHighlightAndRestoreCaret(
 			int iLeftParenthesis, int iRightParenthesis) {
+		treeDescription.requestFollowCaret();
 		treeDescription.moveTo(iRightParenthesis);
 		return null;
 	}
@@ -126,6 +127,7 @@ public class TreeDescriptionUIService {
 			iIndex--;
 		}
 		if (iIndex >= 0) {
+			treeDescription.requestFollowCaret();
 			treeDescription.moveTo(iIndex);
 			treeDescription.selectRange(iIndex, iIndex+1);
 			return iIndex;
@@ -183,6 +185,7 @@ public class TreeDescriptionUIService {
 
 	private static Object removeMatchingRightParenthesisHighlightAndRestoreCaret(
 			int iLeftParenthesis, int iRightParenthesis) {
+		treeDescription.requestFollowCaret();
 		treeDescription.moveTo(iLeftParenthesis);
 		return null;
 	}
@@ -218,6 +221,7 @@ public class TreeDescriptionUIService {
 			iIndex++;
 		}
 		if (iIndex < iEnd) {
+			treeDescription.requestFollowCaret();
 			treeDescription.moveTo(iIndex);
 			treeDescription.selectRange(iIndex, iIndex+1);
 			return iIndex;

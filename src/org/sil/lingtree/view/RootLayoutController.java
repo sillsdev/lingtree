@@ -385,9 +385,6 @@ public class RootLayoutController implements Initializable {
 
 		treeDescription.setWrapText(true);
 
-		//treeDescription.requestFollowCaret();  // does this make selected paren show?
-		// No, but if we change the text, will it?
-		// http://fxmisc.github.io/richtext/javadoc/0.8.2/org/fxmisc/richtext/ViewActions.html#requestFollowCaret--
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
