@@ -383,6 +383,8 @@ public class RootLayoutController implements Initializable {
 		// If we decide we want to show line numbers, we do it like this:
 		//treeDescription.setParagraphGraphicFactory(LineNumberFactory.get(treeDescription));
 
+		treeDescription.setWrapText(true);
+
 		//treeDescription.requestFollowCaret();  // does this make selected paren show?
 		// No, but if we change the text, will it?
 		// http://fxmisc.github.io/richtext/javadoc/0.8.2/org/fxmisc/richtext/ViewActions.html#requestFollowCaret--
