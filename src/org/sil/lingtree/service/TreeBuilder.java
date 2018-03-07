@@ -6,9 +6,6 @@
 
 package org.sil.lingtree.service;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
 import org.antlr.v4.runtime.BailErrorStrategy;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
@@ -120,7 +117,7 @@ public class TreeBuilder {
 		// there is no need to try full LL(*)
 		}
 		catch (ParseCancellationException ex) {// thrown by BailErrorStrategy
-			tokens.reset(); // rewind input stream
+			tokens.seek(0); // rewind input stream
 			parser.reset();
 			parser.removeErrorListeners();
 			errListener = new DescriptionErrorListener.VerboseListener();

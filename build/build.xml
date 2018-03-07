@@ -19,15 +19,14 @@
 		<delete dir="projectRefs" />
 	
 		<mkdir dir="externalLibs" />
-	
 		<copy todir="externalLibs">
-			<fileset dir="C:\Users\Andy Black\Favorites\Downloads\Eclipse\Eclipse4.4\eclipse\plugins">
-				<filename name="org.hamcrest.core_1.3.0.v201303031735.jar"/>
-			</fileset>
-		</copy>
-		<copy todir="externalLibs">
-			<fileset dir="C:\Users\Andy Black\Favorites\Downloads\Eclipse\Eclipse4.4\eclipse\plugins\org.junit_4.11.0.v201303080030">
-				<filename name="junit.jar"/>
+			<fileset dir="C:\Users\Andy Black\Documents\Eclipse4.4Workspace\lingtree\Richtextfx">
+				<include name="flowless-0.6.jar"/>
+				<include name="reactfx-2.0-M5.jar"/>
+				<include name="richtextfx-0.8.1.jar"/>
+				<include name="undofx-1.3.1.jar"/>
+				<include name="wellbehavedfx-0.3.jar"/>
+				<include name="RichTextFX-0.8.1-License.txt"/>
 			</fileset>
 		</copy>
 		<copy todir="externalLibs">
@@ -59,10 +58,13 @@
 		<!-- Copy project-libs references -->
 		<copy todir="build/libs">
 			<fileset dir="externalLibs">
-				<include name="org.hamcrest.core_1.3.0.v201303031735.jar"/>
-				<include name="junit.jar"/>
 				<include name="controlsfx-8.40.12.jar"/>
 				<include name="antlr-4.7-complete.jar"/>
+				<include name="flowless-0.6.jar"/>
+				<include name="reactfx-2.0-M5.jar"/>
+				<include name="richtextfx-0.8.1.jar"/>
+				<include name="undofx-1.3.1.jar"/>
+				<include name="wellbehavedfx-0.3.jar"/>
 			</fileset>
 		</copy>
 	
@@ -115,7 +117,7 @@
 		<fx:application id="fxApplication"
 			name="LingTree"
 			mainClass="org.sil.lingtree.MainApp"
-			version="0.999.1.0 Alpha"
+			version="0.999.2.0 Beta"
 		/>
 	
 		<mkdir dir="build/classes/META-INF" />
@@ -131,7 +133,7 @@
 			<manifest>
 				<attribute name="Implementation-Vendor" value="sil.org"/>
 				<attribute name="Implementation-Title" value="LingTree"/>
-				<attribute name="Implementation-Version" value="0.999.1.0 Alpha"/>
+				<attribute name="Implementation-Version" value="0.999.2.0 Betaa"/>
 				<attribute name="JavaFX-Feature-Proxy" value="None"/>
 			</manifest>
 		</fx:jar>
