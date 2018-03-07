@@ -48,7 +48,6 @@ public class ApplicationPreferencesTest {
 	double treeDescriptionFontSizeLastUsed;
 	double showMatchingParenDelayLastUsed;
 	double splitPaneDividerPositionLastUsed;
-	SplitPane splitPane;
 
 	LingTreeTree ltTreeLastUsed;
 	ColorXmlAdaptor adaptor;
@@ -75,10 +74,7 @@ public class ApplicationPreferencesTest {
 		applicationPreferences.setDrawAsType(false);
 		applicationPreferences.setShowMatchingParenWithArrowKeys(false);
 		applicationPreferences.setShowMatchingParenDelay(750.0);
-		splitPane = new SplitPane(new TextArea(), new ScrollPane());
-		splitPane.setOrientation(Orientation.VERTICAL);
-		splitPane.setDividerPosition(0, 0.48);
-		applicationPreferences.setLastSplitPaneDividerPosition(splitPane);
+		applicationPreferences.setLastSplitPaneDividerPosition(0.48);
 	}
 
 	@After
@@ -88,8 +84,7 @@ public class ApplicationPreferencesTest {
 		applicationPreferences.setDrawAsType(drawAsTypeLastUsed);
 		applicationPreferences.setShowMatchingParenWithArrowKeys(showMatchingParenWithArrowKeysLastUsed);
 		applicationPreferences.setShowMatchingParenDelay(showMatchingParenDelayLastUsed);
-		splitPane.setDividerPosition(0, splitPaneDividerPositionLastUsed);
-		applicationPreferences.setLastSplitPaneDividerPosition(splitPane);
+		applicationPreferences.setLastSplitPaneDividerPosition(splitPaneDividerPositionLastUsed);
 		applicationPreferences.setTreeDescriptionFontSize(treeDescriptionFontSizeLastUsed);
 		applicationPreferences.setLastWindowParameters(ApplicationPreferences.LAST_WINDOW, windowStageLastUsed);
 		applicationPreferences.setSavedTreeParameters(ltTreeLastUsed);
@@ -143,8 +138,7 @@ public class ApplicationPreferencesTest {
 	@Test
 	public void splitPaneDividerPosition() {
 		assertEquals("split pane divider position", 0.48, applicationPreferences.getLastSplitPaneDividerPosition(), 0.0);
-		splitPane.setDividerPosition(0, 0.67);
-		applicationPreferences.setLastSplitPaneDividerPosition(splitPane);;
+		applicationPreferences.setLastSplitPaneDividerPosition(0.67);;
 		assertEquals("split pane divider position", 0.67, applicationPreferences.getLastSplitPaneDividerPosition(), 0.0);
 	}
 

@@ -179,9 +179,8 @@ public class ApplicationPreferences {
 		return prefs.getDouble(LAST_SPLIT_PANE_POSITION, 0.5);
 	}
 
-	public void setLastSplitPaneDividerPosition(SplitPane splitPane) {
-		double[] dividers = splitPane.getDividerPositions();
-		setPreferencesKey(LAST_SPLIT_PANE_POSITION, dividers[0]);
+	public void setLastSplitPaneDividerPosition(double position) {
+		setPreferencesKey(LAST_SPLIT_PANE_POSITION, position);
 	}
 
 	public void getSavedTreeParameters(LingTreeTree ltTree) {

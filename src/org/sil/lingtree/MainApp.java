@@ -90,7 +90,8 @@ public class MainApp extends Application {
 	public void stop() throws IOException {
 		applicationPreferences.setLastWindowParameters(ApplicationPreferences.LAST_WINDOW,
 				primaryStage);
-		applicationPreferences.setLastSplitPaneDividerPosition(controller.getSplitPane());
+		double[] dividers = controller.getSplitPane().getDividerPositions();
+		applicationPreferences.setLastSplitPaneDividerPosition(dividers[0]);
 		applicationPreferences.setLastLocaleLanguage(locale.getLanguage());
 		if (controller.isDirty()) {
 			controller.askAboutSaving();
