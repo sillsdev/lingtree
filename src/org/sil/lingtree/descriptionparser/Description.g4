@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------
-// Copyright (c) 2017 SIL International
+// Copyright (c) 2017-2018 SIL International
 // This software is licensed under the LGPL, version 2.1 or later
 // (http://www.gnu.org/licenses/lgpl-2.1.html)
 //
@@ -16,7 +16,7 @@ grammar Description;
 @header {
 	package org.sil.lingtree.descriptionparser.antlr4generated;
 }
-description  : SPACES? node EOF
+description  : node EOF
              | EOF {notifyErrorListeners("missingOpeningParen");}
              | {notifyErrorListeners("missingOpeningParen");} content
              | node {notifyErrorListeners("contentAfterCompletedTree");} content
@@ -33,11 +33,10 @@ node : openParen type? content? node* closeParen
      |           type  content?                   {notifyErrorListeners("missingOpeningParen");}
      ;
 
-openParen : ' '* '(' ' '*
+openParen : '('
           ;
           
-closeParen : ' '* ')' ' '* SPACES
-           | ' '* ')'
+closeParen : ')'
            ;
 
 type : nodeType lineType
@@ -59,34 +58,31 @@ nodeType : LEX
          | EMPTY
          ;
         
-content : (TEXT | BACKSLASH | SLASH)+ ' '* subscript superscript
-        | (TEXT | BACKSLASH | SLASH)+ ' '* superscript subscript
-        | (TEXT | BACKSLASH | SLASH)+ ' '* subscript
-        | (TEXT | BACKSLASH | SLASH)+ ' '* superscript
-        | (TEXT | BACKSLASH | SLASH)+ 
+content : (TEXT | TEXTWITHSPACES | BACKSLASH | SLASH)+ subscript superscript
+        | (TEXT | TEXTWITHSPACES | BACKSLASH | SLASH)+ superscript subscript
+        | (TEXT | TEXTWITHSPACES | BACKSLASH | SLASH)+ subscript
+        | (TEXT | TEXTWITHSPACES | BACKSLASH | SLASH)+ superscript
+        | (TEXT | TEXTWITHSPACES | BACKSLASH | SLASH)+
         | subscript superscript
         | superscript subscript
         | subscript
         | superscript
         ;
 
-subscript : SUBSCRIPT (TEXT | BACKSLASH | SLASH)+
-		  | SUBSCRIPTITALIC (TEXT | BACKSLASH | SLASH)+
+subscript : SUBSCRIPT       (TEXT | TEXTWITHSPACES | BACKSLASH | SLASH)+
+		  | SUBSCRIPTITALIC (TEXT | TEXTWITHSPACES | BACKSLASH | SLASH)+
 		  ;
 
-superscript : SUPERSCRIPT (TEXT | BACKSLASH | SLASH)+
-		    | SUPERSCRIPTITALIC (TEXT | BACKSLASH | SLASH)+
+superscript : SUPERSCRIPT       (TEXT | TEXTWITHSPACES | BACKSLASH | SLASH)+
+		    | SUPERSCRIPTITALIC (TEXT | TEXTWITHSPACES | BACKSLASH | SLASH)+
 		    ;
 
-// Try to capture just a sequence of whitespace
-SPACES: ' ' [ \t\n\r]+;
+OMIT : '\\O';
+TRIANGLE : '\\T';
 
-OMIT : '\\O'  ' '* ;
-TRIANGLE : '\\T'  ' '*;
-
-LEX   : '\\L' SPACES?;
-GLOSS : '\\G' SPACES?;
-EMPTY : '\\E' SPACES?;  // empty element (like a trace or non-overt pronoun)
+LEX   : '\\L';
+GLOSS : '\\G';
+EMPTY : '\\E'; // empty element (like a trace or non-overt pronoun)
 
 SUBSCRIPT : '/s' ;
 SUBSCRIPTITALIC : '/_' ;
@@ -98,7 +94,7 @@ SUPERSCRIPTITALIC : '/^' ;
 // We need to do it this way because the lexer is a greedy parser and will always
 // match the longest sequence (so we'll never see \O, \T, \L, \G, /s, or /S).
 TEXT : (
-	   [ ,.;:^!?@#$%&'"a-zA-Z0-9\u0080-\uFFFF+-]
+	   [,.;:^!?@#$%&'"a-zA-Z0-9\u0080-\uFFFF+-]
      | [_*=<>]
      | '['
      | ']'
@@ -113,10 +109,14 @@ TEXT : (
      | '|' 
      )+  ;
 
+TEXTWITHSPACES : TEXT ' ' TEXT
+               | TEXT ' ' TEXTWITHSPACES
+               ;
+
 // allow backslash for non-keyword items (\O, \T, \G, \L)
 BACKSLASH : '\\' ~[OTGL];
 
 // allow forward slash for non-keyword items )/s and /S)
 SLASH : '/' ~[sS];
 
-WS : [\t\r\n]+ -> skip ; // skip tabs, newlines, but leave spaces (for inside of node text)
+WS : [ \t\r\n]+ -> skip ; // skip tabs, newlines, but leave spaces (for inside of node text)

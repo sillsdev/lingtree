@@ -381,7 +381,7 @@ public class RootLayoutController implements Initializable {
 		});
 
 		// If we decide we want to show line numbers, we do it like this:
-		//treeDescription.setParagraphGraphicFactory(LineNumberFactory.get(treeDescription));
+		// treeDescription.setParagraphGraphicFactory(LineNumberFactory.get(treeDescription));
 
 		treeDescription.setWrapText(true);
 
@@ -401,34 +401,41 @@ public class RootLayoutController implements Initializable {
 		CommonTokenStream tokens = new CommonTokenStream(lexer);
 		tokens.fill();
 
-		String syntagmeme = "font-family: serif;\n-fx-fill: black;\n-fx-font-size:" + applicationPreferences.getTreeDescriptionFontSize() + "pt;";
+		String syntagmeme = "font-family: serif;\n-fx-fill: black;\n-fx-font-size:"
+				+ applicationPreferences.getTreeDescriptionFontSize() + "pt;";
 		String nonterminal = NonTerminalFontInfo.getInstance().getCss();
 		String gloss = GlossFontInfo.getInstance().getCss();
-		String empty = EmptyElementFontInfo.getInstance().getCss();;
+		String empty = EmptyElementFontInfo.getInstance().getCss();
+		;
 		String lexical = LexFontInfo.getInstance().getCss();
 
 		String cssStyleClass = syntagmeme;
 		String textClassToUse = NonTerminalFontInfo.getInstance().getCss();
 		for (Token token : tokens.getTokens()) {
+			// We keep the following output for when we want to see the set of
+			// tokens and their types
+			// System.out.println("token='" + token.getText() + "'; type=" + token.getType());
 			switch (token.getType()) {
-			// TODO: if the description grammar changes, we may need to adjust the case values as they may change
-			case 2: // opening parenthesis
+			// TODO: if the description grammar changes, we may need to adjust
+			// the case values as they may change
+			case 1: // opening parenthesis
 				cssStyleClass = syntagmeme;
 				textClassToUse = nonterminal;
 				break;
-			case 7: // \L
+			case 5: // \L
 				cssStyleClass = syntagmeme;
 				textClassToUse = lexical;
 				break;
-			case 8: // \G
+			case 6: // \G
 				cssStyleClass = syntagmeme;
 				textClassToUse = gloss;
 				break;
-			case 9: // \E
+			case 7: // \E
 				cssStyleClass = syntagmeme;
 				textClassToUse = empty;
 				break;
-			case 14: // text or content
+			case 12: // text
+			case 13: // text with spaces
 				cssStyleClass = textClassToUse;
 				break;
 			default:
@@ -437,7 +444,7 @@ public class RootLayoutController implements Initializable {
 			}
 			if (token.getType() != -1) { // -1 is EOF
 				int iStart = token.getStartIndex();
-				int iStop = token.getStopIndex()+1;
+				int iStop = token.getStopIndex() + 1;
 				treeDescription.setStyle(iStart, iStop, cssStyleClass);
 			}
 		}
@@ -905,8 +912,7 @@ public class RootLayoutController implements Initializable {
 			treeDescription.requestFocus();
 			menuItemUseFlatTree.setSelected(ltTree.isShowFlatView());
 			toggleButtonUseFlatTree.setSelected(ltTree.isShowFlatView());
-			menuItemUseRightToLeftOrientation
-					.setSelected(ltTree.isUseRightToLeftOrientation());
+			menuItemUseRightToLeftOrientation.setSelected(ltTree.isUseRightToLeftOrientation());
 			menuItemSaveAsPng.setSelected(ltTree.isSaveAsPng());
 			toggleButtonSaveAsPng.setSelected(ltTree.isSaveAsPng());
 			menuItemSaveAsSVG.setSelected(ltTree.isSaveAsSVG());

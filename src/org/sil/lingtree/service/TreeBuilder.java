@@ -15,6 +15,7 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.ConsoleErrorListener;
 import org.antlr.v4.runtime.DefaultErrorStrategy;
+import org.antlr.v4.runtime.NoViableAltException;
 import org.antlr.v4.runtime.atn.PredictionMode;
 import org.antlr.v4.runtime.misc.ParseCancellationException;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -127,7 +128,12 @@ public class TreeBuilder {
 			parser.addErrorListener(errListener);
 			// full now with full LL(*)
 			parser.getInterpreter().setPredictionMode(PredictionMode.LL);
-			parser.description();
+			try {
+			parseTree = parser.description();
+			}
+			catch (ParseCancellationException | NoViableAltException ex2) {
+				// do nothing
+			}
 		}
 		numberOfErrors = parser.getNumberOfSyntaxErrors();
 		if (numberOfErrors > 0) {
