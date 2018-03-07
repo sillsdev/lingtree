@@ -646,17 +646,21 @@ public class RootLayoutController implements Initializable {
 	private TreeDrawer drawTreePrep() {
 		sDescription = treeDescription.getText();
 		ltTree = TreeBuilder.parseAString(sDescription, ltTree);
+		updateTreeDataToBackEndProvider();
 		if (TreeBuilder.getNumberOfErrors() > 0) {
 			return null;
 		}
-		mainApp.getBackEndProvider().setLingTree(ltTree);
+		TreeDrawer drawer = new TreeDrawer(ltTree);
+		return drawer;
+	}
+
+	private void updateTreeDataToBackEndProvider() {
 		ltTree.setSaveAsPng(menuItemSaveAsPng.isSelected());
 		ltTree.setSaveAsSVG(menuItemSaveAsSVG.isSelected());
 		ltTree.setShowFlatView(menuItemUseFlatTree.isSelected());
 		ltTree.setUseRightToLeftOrientation(menuItemUseRightToLeftOrientation.isSelected());
-		ltTree.setDescription(sDescription);
-		TreeDrawer drawer = new TreeDrawer(ltTree);
-		return drawer;
+		ltTree.setDescription(treeDescription.getText());
+		mainApp.getBackEndProvider().setLingTree(ltTree);
 	}
 
 	private void reportErrorInDescriptionMessage() {
@@ -984,6 +988,7 @@ public class RootLayoutController implements Initializable {
 	 */
 	@FXML
 	public void handleSaveTree() throws IOException {
+		updateTreeDataToBackEndProvider();
 		File file = mainApp.getTreeDataFile();
 		if (file != null) {
 			mainApp.saveTreeData(file);
