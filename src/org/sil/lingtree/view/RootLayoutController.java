@@ -692,6 +692,14 @@ public class RootLayoutController implements Initializable {
 			sSyntaxErrorMessage = bundle.getString("descriptionsyntaxerror.too_many_node_types");
 			break;
 
+		case DescriptionConstants.MISSING_CONTENT_AFTER_SUBSCRIPT:
+			sSyntaxErrorMessage = bundle.getString("descriptionsyntaxerror.missing_content_after_subscript");
+			break;
+
+		case DescriptionConstants.MISSING_CONTENT_AFTER_SUPERSCRIPT:
+			sSyntaxErrorMessage = bundle.getString("descriptionsyntaxerror.missing_content_after_superscript");
+			break;
+
 		default:
 			System.out.println("error was: " + TreeBuilder.getErrorMessage());
 			System.out.println("number of errors was: " + TreeBuilder.getNumberOfErrors());

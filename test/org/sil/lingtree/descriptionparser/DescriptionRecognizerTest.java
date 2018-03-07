@@ -213,6 +213,14 @@ public class DescriptionRecognizerTest {
 		checkInvalidDescription("(NP (\\L\\Gnoun))", DescriptionConstants.TOO_MANY_NODE_TYPES, 9, 1);
 		checkInvalidDescription("(NP (\\E\\Gnoun))", DescriptionConstants.TOO_MANY_NODE_TYPES, 9, 1);
 		checkInvalidDescription("(NP (\\L\\Enoun))", DescriptionConstants.TOO_MANY_NODE_TYPES, 9, 1);
+		checkInvalidDescription("(NP/s)", DescriptionConstants.MISSING_CONTENT_AFTER_SUBSCRIPT, 5, 1);
+		checkInvalidDescription("(NP/_)", DescriptionConstants.MISSING_CONTENT_AFTER_SUBSCRIPT, 5, 1);
+		checkInvalidDescription("(NP/s/Sb)", DescriptionConstants.MISSING_CONTENT_AFTER_SUBSCRIPT, 5, 1);
+		checkInvalidDescription("(NP/_/^a)", DescriptionConstants.MISSING_CONTENT_AFTER_SUBSCRIPT, 5, 1);
+		checkInvalidDescription("(NP/S)", DescriptionConstants.MISSING_CONTENT_AFTER_SUPERSCRIPT, 5, 1);
+		checkInvalidDescription("(NP/^)", DescriptionConstants.MISSING_CONTENT_AFTER_SUPERSCRIPT, 5, 1);
+		checkInvalidDescription("(NP/S/sb)", DescriptionConstants.MISSING_CONTENT_AFTER_SUPERSCRIPT, 5, 1);
+		checkInvalidDescription("(NP/^/_a)", DescriptionConstants.MISSING_CONTENT_AFTER_SUPERSCRIPT, 5, 1);
 	}
 
 	private void checkInvalidDescription(String sDescription, String sFailedPortion, int iPos,

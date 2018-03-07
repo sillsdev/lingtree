@@ -71,10 +71,14 @@ content : (TEXT | TEXTWITHSPACES | BACKSLASH | SLASH)+ subscript superscript
 
 subscript : SUBSCRIPT       (TEXT | TEXTWITHSPACES | BACKSLASH | SLASH)+
 		  | SUBSCRIPTITALIC (TEXT | TEXTWITHSPACES | BACKSLASH | SLASH)+
+		  | SUBSCRIPT       {notifyErrorListeners("missingContentAfterSubscript");}
+		  | SUBSCRIPTITALIC {notifyErrorListeners("missingContentAfterSubscript");}
 		  ;
 
 superscript : SUPERSCRIPT       (TEXT | TEXTWITHSPACES | BACKSLASH | SLASH)+
 		    | SUPERSCRIPTITALIC (TEXT | TEXTWITHSPACES | BACKSLASH | SLASH)+
+		    | SUPERSCRIPT       {notifyErrorListeners("missingContentAfterSuperscript");}
+		    | SUPERSCRIPTITALIC {notifyErrorListeners("missingContentAfterSuperscript");}
 		    ;
 
 OMIT : '\\O';

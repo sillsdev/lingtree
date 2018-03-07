@@ -96,6 +96,12 @@ public class BuildTreeFromDescriptionListenerTest extends ServiceBaseTest {
 		ltTree = TreeBuilder.parseAString("(S (NP) VP))", origTree);
 		checkErrorValues(origTree, ltTree, 2, 1, 8, DescriptionConstants.MISSING_OPENING_PAREN);
 
+		ltTree = TreeBuilder.parseAString("(NP/s)", origTree);
+		checkErrorValues(origTree, ltTree, 1, 1, 5, DescriptionConstants.MISSING_CONTENT_AFTER_SUBSCRIPT);
+
+		ltTree = TreeBuilder.parseAString("(NP/S)", origTree);
+		checkErrorValues(origTree, ltTree, 1, 1, 5, DescriptionConstants.MISSING_CONTENT_AFTER_SUPERSCRIPT);
+
 		ltTree = TreeBuilder.parseAString("(S NP) (V) (VP))", origTree);
 		checkErrorValues(origTree, ltTree, 1, 1, 7, DescriptionConstants.CONTENT_AFTER_COMPLETED_TREE);
 
