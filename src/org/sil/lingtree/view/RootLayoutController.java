@@ -947,7 +947,7 @@ public class RootLayoutController implements Initializable {
 	}
 
 	/**
-	 * Opens a FileChooser to let the user select a language project to load.
+	 * Opens a FileChooser to let the user select a tree to load.
 	 */
 	@FXML
 	public void handleOpenTree() {
@@ -957,6 +957,8 @@ public class RootLayoutController implements Initializable {
 		doFileOpen(false);
 		setTree(mainApp.getTree());
 		computeHighlighting();
+		treeDescription.requestFocus();
+		treeDescription.moveTo(0);
 		handleDrawTree();
 	}
 
@@ -975,7 +977,7 @@ public class RootLayoutController implements Initializable {
 	}
 
 	/**
-	 * Saves the file to the language project file that is currently open. If
+	 * Saves the file to the tree file that is currently open. If
 	 * there is no open file, the "save as" dialog is shown.
 	 *
 	 * @throws IOException
