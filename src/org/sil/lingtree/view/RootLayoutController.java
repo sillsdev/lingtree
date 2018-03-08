@@ -958,6 +958,26 @@ public class RootLayoutController implements Initializable {
 		fiUsedWhenDrawing.setFontType(fiFromTree.getFontType());
 	}
 
+	@FXML
+	public void handleQuickReferenceGuide() {
+		try {
+			// Load the fxml file and create a new stage for the popup.
+			Stage dialogStage = new Stage();
+			String resource = "fxml/QuickReferenceGuide.fxml";
+			String title = bundle.getString("quick.title");
+			FXMLLoader loader = ControllerUtilities.getLoader(mainApp, currentLocale, dialogStage,
+					resource, title);
+
+			QuickReferenceGuideController controller = loader.getController();
+			controller.setDialogStage(dialogStage);
+			controller.setMainApp(mainApp);
+			dialogStage.setResizable(true);
+			dialogStage.initModality(Modality.NONE);
+			dialogStage.show();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 	/**
 	 * Opens a FileChooser to let the user select a tree to load.
 	 */

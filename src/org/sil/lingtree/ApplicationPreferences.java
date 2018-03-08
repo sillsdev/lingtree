@@ -51,6 +51,7 @@ public class ApplicationPreferences {
 	static final String HORIZONTAL_OFFSET = "horizontalOffset";
 	static final String INITIAL_X_COORDINATE = "initialXCoordinate";
 	static final String INITIAL_Y_COORDINATE = "initialYCoordinate";
+	public static final String LAST_QUICK_REFERENCE_GUIDE = "lastQuickReferenceGuide";
 	static final String LEX_GLOSS_GAP_ADJUSTMENT = "lexGlossGapAdjustment";
 	static final String LEXICAL_FONT_COLOR = "lexicalFontColor";
 	static final String LEXICAL_FONT_FAMILY = "lexicalFontFamily";
