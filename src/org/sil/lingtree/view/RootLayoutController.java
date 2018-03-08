@@ -64,6 +64,7 @@ import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.IndexRange;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextArea;
@@ -163,6 +164,8 @@ public class RootLayoutController implements Initializable {
 	@FXML
 	private Tooltip tooltipToolbarSaveAsSVG;
 
+	@FXML
+	private MenuBar menuBar;
 	@FXML
 	private MenuItem menuItemEditUndo;
 	@FXML
@@ -463,6 +466,10 @@ public class RootLayoutController implements Initializable {
 		toggleButtonShowMatchingParenWithArrowKeys = setToggleButtonStyle(
 				menuItemShowMatchingParenWithArrowKeys, toggleButtonShowMatchingParenWithArrowKeys);
 		defaultFont = new Font(applicationPreferences.getTreeDescriptionFontSize());
+	}
+
+	public MenuBar getMenuBar() {
+		return menuBar;
 	}
 
 	public Locale getCurrentLocale() {

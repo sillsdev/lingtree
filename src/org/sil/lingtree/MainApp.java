@@ -26,6 +26,7 @@ import org.sil.lingtree.ApplicationPreferences;
 import org.sil.lingtree.backendprovider.XMLBackEndProvider;
 
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -37,6 +38,8 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.SplitPane;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
@@ -122,6 +125,19 @@ public class MainApp extends Application {
 
 			// Show the scene containing the root layout.
 			Scene scene = new Scene(rootLayout);
+
+			// Because we see the ALT character in the tree description when the
+			// tree description node has focus (which it normally does), we need to
+			// catch the ALT and put focus on the menu bar. Otherwise, the menu
+			// accelerator keys are ignored.
+			scene.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
+				public void handle(KeyEvent ke) {
+					if (ke.getCode() == KeyCode.ALT) {
+						controller.getMenuBar().requestFocus();
+						ke.consume();
+					}
+				}
+			});
 
 			primaryStage.setScene(scene);
 			controller = loader.getController();
