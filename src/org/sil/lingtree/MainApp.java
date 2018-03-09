@@ -33,6 +33,7 @@ import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
@@ -42,6 +43,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
 public class MainApp extends Application {
@@ -190,6 +192,10 @@ public class MainApp extends Application {
 		alert.setTitle(bundle.getString("program.name"));
 		alert.setHeaderText(bundle.getString("file.initiallynotfound"));
 		alert.setContentText(bundle.getString("file.chooseanoption"));
+		alert.setResizable(true);
+		// Following comes from https://stackoverflow.com/questions/28937392/javafx-alerts-and-their-size
+		// It's an attempt to get the buttons' text to show completely
+		alert.getDialogPane().getChildren().stream().filter(node -> node instanceof Label).forEach(node -> ((Label)node).setMinHeight(Region.USE_PREF_SIZE));
 		Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
 		stage.getIcons().add(getNewMainIconImage());
 
