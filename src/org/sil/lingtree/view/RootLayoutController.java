@@ -1115,6 +1115,11 @@ public class RootLayoutController implements Initializable {
 	 */
 	@FXML
 	private void handleChangeInterfaceLanguage() {
+		// apparently changing the locale can reset the tree contents so
+		// we ask about saving the data first
+		if (fIsDirty) {
+			askAboutSaving();
+		}
 
 		Map<String, ResourceBundle> validLocales = new TreeMap<String, ResourceBundle>();
 		getListOfValidLocales(validLocales);
