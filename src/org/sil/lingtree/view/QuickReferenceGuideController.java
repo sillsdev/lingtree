@@ -18,6 +18,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 /**
  * @author Andy Black
@@ -55,7 +56,7 @@ public class QuickReferenceGuideController implements Initializable {
 	 */
 	public void setDialogStage(Stage dialogStage) {
 		this.dialogStage = dialogStage;
-		
+		this.dialogStage.initStyle(StageStyle.UTILITY);
 		this.dialogStage.setOnCloseRequest(event -> {
 			preferences.setLastWindowParameters(ApplicationPreferences.LAST_QUICK_REFERENCE_GUIDE, dialogStage);
 		});
@@ -82,8 +83,8 @@ public class QuickReferenceGuideController implements Initializable {
 		sb.append("</title>\n<style type=\"text/css\">\n");
 		sb.append("body {background-color:#fffff5;}\n");
 		sb.append("h1 {color:#663399;}\n");
-		sb.append("th {align:left;}\n");
-		sb.append("td {valign:top;}\n");
+		sb.append("th {text-align:left; vertical-align:bottom;}\n");
+		sb.append("td {vertical-align:top; padding-left:.25in; text-indent:-.25in;}\n");
 		sb.append("</style>\n</head>\n<body>\n");
 	}
 
@@ -97,8 +98,6 @@ public class QuickReferenceGuideController implements Initializable {
 		formatTableHeader(sb);
 		formatTableRow(sb, "(", "quick.anewtreelevel");
 		formatTableRow(sb, ")", "quick.endatreelevel");
-		formatTableRow(sb, "\\(", "quick.openparenthesis");
-		formatTableRow(sb, "\\)", "quick.closeparenthesis");
 		formatTableRow(sb, "\\E", "quick.emptynode");
 		formatTableRow(sb, "\\G", "quick.glossnode");
 		formatTableRow(sb, "\\L", "quick.lexicalnode");
@@ -108,6 +107,8 @@ public class QuickReferenceGuideController implements Initializable {
 		formatTableRow(sb, "/_", "quick.subscriptitalic");
 		formatTableRow(sb, "/S", "quick.superscript");
 		formatTableRow(sb, "/^", "quick.superscriptitalic");
+		formatTableRow(sb, "\\(", "quick.openparenthesis");
+		formatTableRow(sb, "\\)", "quick.closeparenthesis");
 		sb.append("</table>\n");
 	}
 
@@ -128,7 +129,7 @@ public class QuickReferenceGuideController implements Initializable {
 	}
 
 	private void formatHTMLEnding(StringBuilder sb) {
-		sb.append("<hr/>\n<p align=\"center\">Copyright &copy; 2002-2018 SIL International</p></body>\n</html>\n");
+		sb.append("<hr/>\n<div align=\"center\">Copyright &copy; 2002-2018 SIL International</div></body>\n</html>\n");
 	}
 
 }
