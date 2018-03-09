@@ -188,11 +188,11 @@ public class ApplicationPreferences {
 		ltTree.setHorizontalGap(prefs.getDouble(HORIZONTAL_GAP, 20));
 		ltTree.setHorizontalOffset(prefs.getDouble(HORIZONTAL_OFFSET, 225));
 		ltTree.setInitialXCoordinate(prefs.getDouble(INITIAL_X_COORDINATE, 10));
-		ltTree.setInitialYCoordinate(prefs.getDouble(INITIAL_Y_COORDINATE, 10));
+		ltTree.setInitialYCoordinate(prefs.getDouble(INITIAL_Y_COORDINATE, 20));
 		ltTree.setLexGlossGapAdjustment(prefs.getDouble(LEX_GLOSS_GAP_ADJUSTMENT, 0));
-		ltTree.setLineWidth(prefs.getDouble(LINE_WIDTH, 10));
+		ltTree.setLineWidth(prefs.getDouble(LINE_WIDTH, 1));
 		ltTree.setSaveAsPng(prefs.getBoolean(SAVE_AS_PNG, false));
-		ltTree.setSaveAsSVG(prefs.getBoolean(SAVE_AS_SVG, false));
+		ltTree.setSaveAsSVG(prefs.getBoolean(SAVE_AS_SVG, true));
 		ltTree.setShowFlatView(prefs.getBoolean(SHOW_FLAT_VIEW, false));
 		ltTree.setVerticalGap(prefs.getDouble(VERTICAL_GAP, 20));
 
@@ -203,18 +203,18 @@ public class ApplicationPreferences {
 		final String sDefaultType = "Regular";
 		final String sDefaultColor = "#000000";
 		FontInfo fontInfo = new FontInfo(prefs.get(EMPTY_ELEMENT_FONT_FAMILY, sDefaultFamily), prefs.getDouble(
-				EMPTY_ELEMENT_FONT_SIZE, 12), prefs.get(EMPTY_ELEMENT_FONT_TYPE, sDefaultType));
+				EMPTY_ELEMENT_FONT_SIZE, 12), prefs.get(EMPTY_ELEMENT_FONT_TYPE, "Italic"));
 		fontInfo.setColor(Color.web(prefs.get(EMPTY_ELEMENT_FONT_COLOR, sDefaultColor)));
 		ltTree.setEmptyElementFontInfo(fontInfo);
 
 		fontInfo = new FontInfo(prefs.get(GLOSS_FONT_FAMILY, sDefaultFamily),
 				prefs.getDouble(GLOSS_FONT_SIZE, 12), prefs.get(GLOSS_FONT_TYPE, sDefaultType));
-		fontInfo.setColor(Color.web(prefs.get(GLOSS_FONT_COLOR, sDefaultColor)));
+		fontInfo.setColor(Color.web(prefs.get(GLOSS_FONT_COLOR, "#008000")));
 
 		ltTree.setGlossFontInfo(fontInfo);
 		fontInfo = new FontInfo(prefs.get(LEXICAL_FONT_FAMILY, sDefaultFamily), prefs.getDouble(
-				LEXICAL_FONT_SIZE, 12), prefs.get(LEXICAL_FONT_TYPE, sDefaultType));
-		fontInfo.setColor(Color.web(prefs.get(LEXICAL_FONT_COLOR, sDefaultColor)));
+				LEXICAL_FONT_SIZE, 12), prefs.get(LEXICAL_FONT_TYPE, "Bold"));
+		fontInfo.setColor(Color.web(prefs.get(LEXICAL_FONT_COLOR, "#0000ff")));
 		ltTree.setLexicalFontInfo(fontInfo);
 
 		fontInfo = new FontInfo(prefs.get(NON_TERMINAL_FONT_FAMILY, sDefaultFamily),
