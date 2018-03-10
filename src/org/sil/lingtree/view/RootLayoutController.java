@@ -205,7 +205,7 @@ public class RootLayoutController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		bundle = resources;
-
+		sFileFilterDescription = bundle.getString("file.filterdescription");
 		createToolbarButtons(bundle);
 
 		toggleButtonUseFlatTree.getStyleClass().add(kUnPressedStyle);
@@ -919,7 +919,7 @@ public class RootLayoutController implements Initializable {
 		}
 		applicationPreferences.setLastOpenedDirectoryPath(sDirectoryPath);
 		File fileCreated = ControllerUtilities.doFileSaveAs(mainApp, currentLocale, false,
-				lingTreeFilterDescription);
+				lingTreeFilterDescription, bundle.getString("file.new"));
 		if (fileCreated != null) {
 			final String initialDescription = "( )";
 			ltTree = new LingTreeTree();
@@ -1095,7 +1095,7 @@ public class RootLayoutController implements Initializable {
 	 */
 	@FXML
 	private void handleSaveTreeAs() {
-		ControllerUtilities.doFileSaveAs(mainApp, currentLocale, false, lingTreeFilterDescription);
+		ControllerUtilities.doFileSaveAs(mainApp, currentLocale, false, lingTreeFilterDescription, null);
 		// TODO: make sure we know what the new file path is
 		markAsClean();
 	}

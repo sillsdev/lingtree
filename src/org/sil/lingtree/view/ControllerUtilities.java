@@ -109,14 +109,14 @@ public class ControllerUtilities {
 	}
 
 	public static File doFileSaveAs(MainApp mainApp, Locale locale, Boolean fForceSave,
-			String lingTreeFilterDescription) {
+			String lingTreeFilterDescription, String sTitle) {
 		FileChooser fileChooser = ControllerUtilities.initFileChooser(mainApp,
 				lingTreeFilterDescription, Constants.LINGTREE_DATA_FILE_EXTENSIONS);
 
 		File file = null;
 		if (fForceSave) {
 			while (file == null) {
-				file = askUserToSaveFile(mainApp, fileChooser);
+				file = askUserToSaveFile(mainApp, fileChooser, sTitle);
 				if (file == null) {
 					ResourceBundle bundle = ResourceBundle.getBundle(
 							"org.sil.lingtree.resources.LingTree", locale);
@@ -132,12 +132,15 @@ public class ControllerUtilities {
 				}
 			}
 		} else {
-			file = askUserToSaveFile(mainApp, fileChooser);
+			file = askUserToSaveFile(mainApp, fileChooser, sTitle);
 		}
 		return file;
 	}
 
-	public static File askUserToSaveFile(MainApp mainApp, FileChooser fileChooser) {
+	public static File askUserToSaveFile(MainApp mainApp, FileChooser fileChooser, String sTitle) {
+		if (sTitle != null) {
+			fileChooser.setTitle(sTitle);
+		}
 		File file = fileChooser.showSaveDialog(mainApp.getPrimaryStage());
 
 		if (file != null) {
