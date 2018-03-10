@@ -133,7 +133,7 @@
 			<manifest>
 				<attribute name="Implementation-Vendor" value="sil.org"/>
 				<attribute name="Implementation-Title" value="LingTree"/>
-				<attribute name="Implementation-Version" value="0.999.2.0 Betaa"/>
+				<attribute name="Implementation-Version" value="0.999.3.0 Betaa"/>
 				<attribute name="JavaFX-Feature-Proxy" value="None"/>
 			</manifest>
 		</fx:jar>
@@ -145,13 +145,20 @@
 			embedJNLP="false"
 			extension="false"
 			includeDT="false"
+			nativeBundles="exe"
 			offlineAllowed="true"
 			outdir="${basedir}/deploy"
-			outfile="LingTree" nativeBundles="exe"
+			outfile="LingTree"
 			updatemode="background" >
 	
 			<fx:platform basedir="${java.home}"/>
-			<fx:info title="LingTree" vendor="SIL International"/>
+			<fx:info
+				title="LingTree"
+				vendor="SIL International"
+				copyright="Copyright © 2018 SIL International"
+				license="LGPL"
+				description="LingTree is a tool that lets you easily describe a linguistic tree and produce a graphic image of it."
+			/>
 	
 			<fx:application refId="fxApplication"/>
 			<fx:resources refid="appRes"/>
