@@ -85,6 +85,9 @@ public class QuickReferenceGuideController implements Initializable {
 		sb.append("h1 {color:#663399;}\n");
 		sb.append("th {text-align:left; vertical-align:bottom;}\n");
 		sb.append("td {vertical-align:top; padding-left:.25in; text-indent:-.25in;}\n");
+		sb.append("td.category {column-span:2; text-align:left; font-style:italic; font-size:smaller;}\n");
+		sb.append("td.default {font-style:italic; font-size:smaller;}\n");
+		sb.append("tr.category {background-color:yellow;}\n");
 		sb.append("</style>\n</head>\n<body>\n");
 	}
 
@@ -98,11 +101,16 @@ public class QuickReferenceGuideController implements Initializable {
 		formatTableHeader(sb);
 		formatTableRow(sb, "(", "quick.anewtreelevel");
 		formatTableRow(sb, ")", "quick.endatreelevel");
-		formatTableRow(sb, "\\E", "quick.emptynode");
-		formatTableRow(sb, "\\G", "quick.glossnode");
-		formatTableRow(sb, "\\L", "quick.lexicalnode");
+		formatTableCategoryRow(sb, "quick.linetype");
 		formatTableRow(sb, "\\O", "quick.omitlineabove");
 		formatTableRow(sb, "\\T", "quick.triangleover");
+		formatTableDefaultRow(sb, "quick.default", "quick.lineovernode");
+		formatTableCategoryRow(sb, "quick.nodetype");
+		formatTableRow(sb, "\\L", "quick.lexicalnode");
+		formatTableRow(sb, "\\G", "quick.glossnode");
+		formatTableRow(sb, "\\E", "quick.emptynode");
+		formatTableDefaultRow(sb, "quick.default", "quick.nonterminalnode");
+		formatTableCategoryRow(sb, "quick.contentwithinanode");
 		formatTableRow(sb, "/s", "quick.subscript");
 		formatTableRow(sb, "/_", "quick.subscriptitalic");
 		formatTableRow(sb, "/S", "quick.superscript");
@@ -115,7 +123,7 @@ public class QuickReferenceGuideController implements Initializable {
 	private void formatTableHeader(StringBuilder sb) {
 		sb.append("<table>\n<tr><th>");
 		sb.append(bundle.getString("quick.keythis"));
-		sb.append("</th><th>&nbsp;</th><th>");
+		sb.append("</th><th>");
 		sb.append(bundle.getString("quick.togetthis"));
 		sb.append("</th></tr>\n");
 	}
@@ -123,13 +131,27 @@ public class QuickReferenceGuideController implements Initializable {
 	private void formatTableRow(StringBuilder sb, String keySequence, String resultKey) {
 		sb.append("<tr><td>");
 		sb.append(keySequence);
-		sb.append("</td><td>&nbsp;</td><td>");
+		sb.append("</td><td>");
+		sb.append(bundle.getString(resultKey));
+		sb.append("</td></tr>\n");
+	}
+
+	private void formatTableCategoryRow(StringBuilder sb, String categoryKey) {
+		sb.append("<tr class=\"category\"><td>&nbsp;&nbsp;&nbsp;");
+		sb.append(bundle.getString(categoryKey));
+		sb.append("</td></tr>\n");
+	}
+
+	private void formatTableDefaultRow(StringBuilder sb, String defaultKey, String resultKey) {
+		sb.append("<tr><td class=\"default\">");
+		sb.append(bundle.getString(defaultKey));
+		sb.append("</td><td>");
 		sb.append(bundle.getString(resultKey));
 		sb.append("</td></tr>\n");
 	}
 
 	private void formatHTMLEnding(StringBuilder sb) {
-		sb.append("<hr/>\n<div align=\"center\">Copyright &copy; 2002-2018 SIL International</div></body>\n</html>\n");
+		sb.append("<hr/>\n</body>\n</html>\n");
 	}
 
 }
