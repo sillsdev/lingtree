@@ -58,6 +58,8 @@ public class MainApp extends Application {
 	private LingTreeTree ltTree;
 	private final String sOperatingSystem = System.getProperty("os.name");
 
+	static String[] userArgs;
+
 	public Stage getPrimaryStage() {
 		return primaryStage;
 	}
@@ -104,6 +106,7 @@ public class MainApp extends Application {
 	}
 
 	public static void main(String[] args) {
+		userArgs = args;
 		launch(args);
 	}
 
@@ -151,8 +154,15 @@ public class MainApp extends Application {
 			double dividerPosition = applicationPreferences.getLastSplitPaneDividerPosition();
 			controller.getSplitPane().setDividerPosition(0, dividerPosition);
 
-			// Try to load last opened file.
-			File file = applicationPreferences.getLastOpenedFile();
+			File file;
+			if (userArgs.length > 0) {
+				// User double-clicked on file name
+				// userArgs[0] is the file path
+				file = new File(userArgs[0]);
+			} else {
+				// Try to load last opened file.
+				file = applicationPreferences.getLastOpenedFile();
+			}
 			if (file != null && file.exists()) {
 				loadTreeData(file);
 				controller.setTree(ltTree);

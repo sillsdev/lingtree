@@ -157,9 +157,10 @@
 				vendor="SIL International"
 				copyright="Copyright © 2018 SIL International"
 				license="LGPL"
-				description="LingTree is a tool that lets you easily describe a linguistic tree and produce a graphic image of it."
-			/>
-	
+				description="LingTree is a tool that lets you easily describe a linguistic tree and produce a graphic image of it.">
+				<fx:association extension="tre" mimetype="text/x-lingtree" description="LingTree file"/>
+			</fx:info>
+
 			<fx:application refId="fxApplication"/>
 			<fx:resources refid="appRes"/>
 			<fx:preferences shortcut="true" menu="true" install="true" />
