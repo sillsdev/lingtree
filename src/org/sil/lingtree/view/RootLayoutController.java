@@ -404,7 +404,7 @@ public class RootLayoutController implements Initializable {
 		CommonTokenStream tokens = new CommonTokenStream(lexer);
 		tokens.fill();
 
-		String syntagmeme = "font-family: serif;\n-fx-fill: black;\n-fx-font-size:"
+		String syntagmeme = "-fx-font-family: Monospaced;\n-fx-fill: black;\n-fx-font-size:"
 				+ applicationPreferences.getTreeDescriptionFontSize() + "pt;";
 		String nonterminal = NonTerminalFontInfo.getInstance().getCss();
 		String gloss = GlossFontInfo.getInstance().getCss();
