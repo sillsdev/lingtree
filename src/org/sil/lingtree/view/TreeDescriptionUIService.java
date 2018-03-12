@@ -6,6 +6,7 @@
 
 package org.sil.lingtree.view;
 
+import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -54,8 +55,9 @@ public class TreeDescriptionUIService {
 	 * @param image
 	 *            = image used in message
 	 */
-	public static void processRightParenthesis(InlineCssTextArea description, int iRightParenthesis,
-			boolean fCaretAfterParen, double pause, ResourceBundle resource, Image image) {
+	public static void processRightParenthesis(InlineCssTextArea description,
+			int iRightParenthesis, boolean fCaretAfterParen, double pause, ResourceBundle resource,
+			Image image) {
 		treeDescription = description;
 		bundle = resource;
 		mainIcon = image;
@@ -66,9 +68,9 @@ public class TreeDescriptionUIService {
 			Timeline timeline = new Timeline(new KeyFrame(Duration.millis(pause), event -> {
 				removeMatchingLeftParenthesisHighlightAndRestoreCaret(iLeftParenthesis,
 						iRightParenthesis + (fCaretAfterParen ? 1 : 0));
-					treeDescription.setEditable(true);
-					processAnyItemsKeyedDuringPause();
-				}));
+				treeDescription.setEditable(true);
+				processAnyItemsKeyedDuringPause();
+			}));
 			timeline.play();
 		} else {
 			treeDescription.setEditable(true);
@@ -77,20 +79,28 @@ public class TreeDescriptionUIService {
 
 	private static void processAnyItemsKeyedDuringPause() {
 		if (itemsKeyedDuringPause != null && itemsKeyedDuringPause.size() > 0) {
-			for (KeyEvent keyEvent : itemsKeyedDuringPause) {
-				if (keyEvent.getCharacter().equals("(")) {
-					int i = treeDescription.getCaretPosition();
-					treeDescription.insertText(i, "(");
-				} else if (keyEvent.getCharacter().equals(")")) {
-					int i = treeDescription.getCaretPosition();
-					treeDescription.insertText(i, ")");
-				} else {
-					KeyEvent newEvent = new KeyEvent(keyEvent.getSource(), keyEvent.getTarget(),
-							keyEvent.getEventType(), keyEvent.getCharacter(), keyEvent.getText(),
-							keyEvent.getCode(), keyEvent.isShiftDown(), keyEvent.isControlDown(),
-							keyEvent.isAltDown(), keyEvent.isMetaDown());
-					treeDescription.fireEvent(newEvent);
+			try {
+				for (KeyEvent keyEvent : itemsKeyedDuringPause) {
+					if (keyEvent.getCharacter().equals("(")) {
+						int i = treeDescription.getCaretPosition();
+						treeDescription.insertText(i, "(");
+					} else if (keyEvent.getCharacter().equals(")")) {
+						int i = treeDescription.getCaretPosition();
+						treeDescription.insertText(i, ")");
+					} else {
+						KeyEvent newEvent = new KeyEvent(keyEvent.getSource(),
+								keyEvent.getTarget(), keyEvent.getEventType(),
+								keyEvent.getCharacter(), keyEvent.getText(), keyEvent.getCode(),
+								keyEvent.isShiftDown(), keyEvent.isControlDown(),
+								keyEvent.isAltDown(), keyEvent.isMetaDown());
+						treeDescription.fireEvent(newEvent);
+					}
 				}
+			} catch (ConcurrentModificationException e) {
+				// This can happen if a user types several arrow keys
+				// very quickly and does not wait for the matching to occur.
+				// Currently, we do nothing but warn the user in the
+				// documentation.
 			}
 			itemsKeyedDuringPause.clear();
 		}
@@ -129,7 +139,7 @@ public class TreeDescriptionUIService {
 		if (iIndex >= 0) {
 			treeDescription.requestFollowCaret();
 			treeDescription.moveTo(iIndex);
-			treeDescription.selectRange(iIndex, iIndex+1);
+			treeDescription.selectRange(iIndex, iIndex + 1);
 			return iIndex;
 		} else {
 			if (bundle != null) {
@@ -174,9 +184,9 @@ public class TreeDescriptionUIService {
 			Timeline timeline = new Timeline(new KeyFrame(Duration.millis(pause), event -> {
 				removeMatchingRightParenthesisHighlightAndRestoreCaret(iLeftParenthesis,
 						iRightParenthesis);
-					treeDescription.setEditable(true);
-					processAnyItemsKeyedDuringPause();
-				}));
+				treeDescription.setEditable(true);
+				processAnyItemsKeyedDuringPause();
+			}));
 			timeline.play();
 		} else {
 			treeDescription.setEditable(true);
@@ -223,7 +233,7 @@ public class TreeDescriptionUIService {
 		if (iIndex < iEnd) {
 			treeDescription.requestFollowCaret();
 			treeDescription.moveTo(iIndex);
-			treeDescription.selectRange(iIndex, iIndex+1);
+			treeDescription.selectRange(iIndex, iIndex + 1);
 			return iIndex;
 		} else {
 			if (fShowMsg && bundle != null) {

@@ -239,8 +239,7 @@ public class RootLayoutController implements Initializable {
 				switch (sCharacter) {
 				case "(":
 					// the ( is not in the tree description yet. It is after the
-					// key is released.
-					// we handle this in onKeyReleased
+					// key is released, so we handle this in onKeyReleased
 					// TODO: is there a better way to do this?
 					if (treeDescription.isEditable()) {
 						fOpenParenJustTyped = true;
@@ -288,6 +287,7 @@ public class RootLayoutController implements Initializable {
 			public void handle(KeyEvent event) {
 				if (!treeDescription.isEditable()) {
 					itemsKeyedDuringPause.add(event);
+					return;
 				}
 				int index;
 				Image mainIcon = mainApp.getNewMainIconImage();
@@ -353,6 +353,12 @@ public class RootLayoutController implements Initializable {
 									index, false,
 									applicationPreferences.getShowMatchingParenDelay(), bundle,
 									mainIcon);
+						} else if (treeDescription.getText(index, index + 1).equals("(")) {
+							TreeDescriptionUIService
+									.setItemsKeyedDuringPause(itemsKeyedDuringPause);
+							TreeDescriptionUIService.processLeftParenthesis(treeDescription, false,
+									applicationPreferences.getShowMatchingParenDelay(), bundle,
+									mainIcon);
 						}
 					}
 					break;
@@ -365,6 +371,14 @@ public class RootLayoutController implements Initializable {
 							TreeDescriptionUIService
 									.setItemsKeyedDuringPause(itemsKeyedDuringPause);
 							TreeDescriptionUIService.processLeftParenthesis(treeDescription, true,
+									applicationPreferences.getShowMatchingParenDelay(), bundle,
+									mainIcon);
+						} else if (treeDescription.getText(Math.max(0, index - 1), index).equals(
+								")")) {
+							TreeDescriptionUIService
+									.setItemsKeyedDuringPause(itemsKeyedDuringPause);
+							TreeDescriptionUIService.processRightParenthesis(treeDescription,
+									index - 1, true,
 									applicationPreferences.getShowMatchingParenDelay(), bundle,
 									mainIcon);
 						}
@@ -417,7 +431,8 @@ public class RootLayoutController implements Initializable {
 		for (Token token : tokens.getTokens()) {
 			// We keep the following output for when we want to see the set of
 			// tokens and their types
-			// System.out.println("token='" + token.getText() + "'; type=" + token.getType());
+			// System.out.println("token='" + token.getText() + "'; type=" +
+			// token.getType());
 			switch (token.getType()) {
 			// TODO: if the description grammar changes, we may need to adjust
 			// the case values as they may change
@@ -700,11 +715,13 @@ public class RootLayoutController implements Initializable {
 			break;
 
 		case DescriptionConstants.MISSING_CONTENT_AFTER_SUBSCRIPT:
-			sSyntaxErrorMessage = bundle.getString("descriptionsyntaxerror.missing_content_after_subscript");
+			sSyntaxErrorMessage = bundle
+					.getString("descriptionsyntaxerror.missing_content_after_subscript");
 			break;
 
 		case DescriptionConstants.MISSING_CONTENT_AFTER_SUPERSCRIPT:
-			sSyntaxErrorMessage = bundle.getString("descriptionsyntaxerror.missing_content_after_superscript");
+			sSyntaxErrorMessage = bundle
+					.getString("descriptionsyntaxerror.missing_content_after_superscript");
 			break;
 
 		default:
@@ -985,6 +1002,7 @@ public class RootLayoutController implements Initializable {
 			e.printStackTrace();
 		}
 	}
+
 	/**
 	 * Opens a FileChooser to let the user select a tree to load.
 	 */
@@ -1016,8 +1034,8 @@ public class RootLayoutController implements Initializable {
 	}
 
 	/**
-	 * Saves the file to the tree file that is currently open. If
-	 * there is no open file, the "save as" dialog is shown.
+	 * Saves the file to the tree file that is currently open. If there is no
+	 * open file, the "save as" dialog is shown.
 	 *
 	 * @throws IOException
 	 */
@@ -1095,7 +1113,8 @@ public class RootLayoutController implements Initializable {
 	 */
 	@FXML
 	private void handleSaveTreeAs() {
-		ControllerUtilities.doFileSaveAs(mainApp, currentLocale, false, lingTreeFilterDescription, null);
+		ControllerUtilities.doFileSaveAs(mainApp, currentLocale, false, lingTreeFilterDescription,
+				null);
 		// TODO: make sure we know what the new file path is
 		markAsClean();
 	}
