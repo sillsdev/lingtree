@@ -3,8 +3,8 @@
 [Setup]
 AppId={{fxApplication}}
 AppName=LingTree
-AppVersion=0.999.3.0 Beta
-AppVerName=LingTree 0.999.3.0 Beta
+AppVersion=0.999.4.0 Beta
+AppVerName=LingTree version 0.999.4.0 Beta
 AppPublisher=SIL International
 AppComments=LingTree
 AppCopyright=Copyright © 2018 SIL International
@@ -29,11 +29,17 @@ SolidCompression=yes
 PrivilegesRequired=admin
 SetupIconFile=LingTree\LingTree.ico
 UninstallDisplayIcon={app}\LingTree.ico
-UninstallDisplayName=LingTree
+UninstallDisplayName=LingTree version 0.999.4.0 Beta
 WizardImageStretch=No
 WizardSmallImageFile=LingTree-setup-icon.bmp   
 ArchitecturesInstallIn64BitMode=x64
+ChangesAssociations=yes
 
+[Registry]
+Root: HKCR; Subkey: ".tre"; ValueType: string; ValueName: ""; ValueData: "LingTreeFile"; Flags: uninsdeletevalue
+Root: HKCR; Subkey: "Mime\Database\Content Type\text/x-lingtree"; ValueType: string; ValueName: "Extension"; ValueData: ".tre"; Flags: uninsdeletevalue
+Root: HKCR; Subkey: "LingTreeFile"; ValueType: string; ValueName: ""; ValueData: "LingTree file"; Flags: uninsdeletekey
+Root: HKCR; Subkey: "LingTreeFile\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\LingTree"" ""%1"""
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
