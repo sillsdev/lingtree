@@ -307,12 +307,13 @@ public class FontSelectorDialogWithColor extends Dialog<Font> {
 				@Override
 				public void handle(KeyEvent event) {
 					String charTyped = event.getCharacter();
-					System.out.println("char typed ='" + charTyped + "'");
 					List<String> matches = fontListView.getItems().filtered(f -> f.startsWith(charTyped));
-					System.out.println("\tmatched size=" + matches.size());
+					if (matches.size() == 0) {
+						String upperCase = charTyped.toUpperCase(bundle.getLocale());
+						matches = fontListView.getItems().filtered(f -> f.startsWith(upperCase));
+					}
 					if (matches.size() > 0) {
 						String sFirst = matches.get(0);
-						System.out.println("\tfound='" + sFirst + "'");
 						fontListView.getSelectionModel().select(sFirst);
 						fontListView.scrollTo(sFirst);
 					}
