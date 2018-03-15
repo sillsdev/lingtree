@@ -1,0 +1,36 @@
+﻿<?xml version='1.0' standalone='no'?>
+<svg width='144.666015625' height='176.1796875' version='1.1' xmlns='http://www.w3.org/2000/svg' contentScriptType='text/javascript'>
+<script  id="clientEventHandlersJS">
+function OnClickLingTreeNode(node){}
+</script>
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="61.750244140625" y="20.0" font-family="Arial" font-size="12.0" fill="#000000"></text>
+<text x="25.4638671875" y="55.9609375" font-family="Arial" font-size="12.0" fill="#000000">σ</text>
+<line x1="61.750244140625" y1="26.01171875" x2="29.1669921875" y2="42.09765625" stroke="#000000" stroke-width="1.0"/>
+<text x="10.0" y="89.3671875" font-family="Arial" font-size="12.0" fill="#000000">O</text>
+<line x1="29.1669921875" y1="61.50390625" x2="14.6669921875" y2="75.50390625" stroke="#000000" stroke-width="1.0"/>
+<text x="13.0" y="156.1796875" font-family="Arial" font-size="12.0" fill="#ff0000">t</text>
+<line x1="14.6669921875" y1="94.91015625" x2="14.6669921875" y2="142.31640625" stroke="#000000" stroke-width="1.0"/>
+<text x="39.333984375" y="89.3671875" font-family="Arial" font-size="12.0" fill="#000000">N</text>
+<line x1="29.1669921875" y1="61.50390625" x2="43.6669921875" y2="75.50390625" stroke="#000000" stroke-width="1.0"/>
+<text x="39.333984375" y="122.7734375" font-family="Arial" font-size="12.0" fill="#000000">R</text>
+<line x1="43.6669921875" y1="94.91015625" x2="43.6669921875" y2="108.91015625" stroke="#000000" stroke-width="1.0"/>
+<text x="40.330078125" y="156.1796875" font-family="Arial" font-size="12.0" fill="#ff0000">e</text>
+<line x1="43.6669921875" y1="128.31640625" x2="43.6669921875" y2="142.31640625" stroke="#000000" stroke-width="1.0"/>
+<text x="90.63037109375" y="55.9609375" font-family="Arial" font-size="12.0" fill="#000000">σ</text>
+<line x1="61.750244140625" y1="26.01171875" x2="94.33349609375" y2="42.09765625" stroke="#000000" stroke-width="1.0"/>
+<text x="68.0" y="89.3671875" font-family="Arial" font-size="12.0" fill="#000000">O</text>
+<line x1="94.33349609375" y1="61.50390625" x2="72.6669921875" y2="75.50390625" stroke="#000000" stroke-width="1.0"/>
+<text x="69.330078125" y="156.1796875" font-family="Arial" font-size="12.0" fill="#ff0000">p</text>
+<line x1="72.6669921875" y1="94.91015625" x2="72.6669921875" y2="142.31640625" stroke="#000000" stroke-width="1.0"/>
+<text x="111.6669921875" y="89.3671875" font-family="Arial" font-size="12.0" fill="#000000">N</text>
+<line x1="94.33349609375" y1="61.50390625" x2="116.0" y2="75.50390625" stroke="#000000" stroke-width="1.0"/>
+<text x="97.333984375" y="122.7734375" font-family="Arial" font-size="12.0" fill="#000000">R</text>
+<line x1="116.0" y1="94.91015625" x2="101.6669921875" y2="108.91015625" stroke="#000000" stroke-width="1.0"/>
+<text x="100.333984375" y="156.1796875" font-family="Arial" font-size="12.0" fill="#ff0000">i</text>
+<line x1="101.6669921875" y1="128.31640625" x2="101.6669921875" y2="142.31640625" stroke="#000000" stroke-width="1.0"/>
+<text x="126.0" y="122.7734375" font-family="Arial" font-size="12.0" fill="#000000">C</text>
+<line x1="116.0" y1="94.91015625" x2="130.3330078125" y2="108.91015625" stroke="#000000" stroke-width="1.0"/>
+<text x="127.3330078125" y="156.1796875" font-family="Arial" font-size="12.0" fill="#ff0000">k</text>
+<line x1="130.3330078125" y1="128.31640625" x2="130.3330078125" y2="142.31640625" stroke="#000000" stroke-width="1.0"/>
+</svg>

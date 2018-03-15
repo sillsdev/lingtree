@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<lingTreeTree dbversion="2">
+    <backgroundColor>#ffffff</backgroundColor>
+    <description>(S (PP  (\T\L בְּרֵאשִׁית (\G in the beginning ) ) ) (VP (V (\L בָּרָא (\G created )) )
+(NP (N(\L אֱלֹהִים (\G God )) ) )
+(NP (NP (DObj (\L אֵת (\G obj )) ) (N (\L הַשָּׁמַיִם (\G the heavens ))) ) (NP (DObj (\L וְאֵת (\G and.obj )) ) (N (\L הָאָרֶץ (\G the earth ) ) )) ) ))</description>
+    <emptyElementFontInfo>
+        <color>#000000</color>
+        <fontFamily>Arial</fontFamily>
+        <fontSize>12.0</fontSize>
+        <fontType>Regular</fontType>
+    </emptyElementFontInfo>
+    <glossFontInfo>
+        <color>#80b380</color>
+        <fontFamily>Arial</fontFamily>
+        <fontSize>12.0</fontSize>
+        <fontType>Regular</fontType>
+    </glossFontInfo>
+    <horizontalGap>20.0</horizontalGap>
+    <horizontalOffset>508.48486328125</horizontalOffset>
+    <initialXCoordinate>20.0</initialXCoordinate>
+    <initialYCoordinate>20.0</initialYCoordinate>
+    <lexGlossGapAdjustment>0.0</lexGlossGapAdjustment>
+    <lexicalFontInfo>
+        <color>#1a3399</color>
+        <fontFamily>Ezra SIL</fontFamily>
+        <fontSize>15.0</fontSize>
+        <fontType>Regular</fontType>
+    </lexicalFontInfo>
+    <lineColor>#000000</lineColor>
+    <lineWidth>1.0</lineWidth>
+    <nonTerminalFontInfo>
+        <color>#000000</color>
+        <fontFamily>Times New Roman</fontFamily>
+        <fontSize>12.0</fontSize>
+        <fontType>Regular</fontType>
+    </nonTerminalFontInfo>
+    <saveAsPng>false</saveAsPng>
+    <saveAsSVG>true</saveAsSVG>
+    <showFlatView>false</showFlatView>
+    <useRightToLeftOrientation>true</useRightToLeftOrientation>
+    <verticalGap>20.0</verticalGap>
+</lingTreeTree>

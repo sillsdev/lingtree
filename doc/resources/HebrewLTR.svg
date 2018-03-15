@@ -1,0 +1,55 @@
+﻿<?xml version='1.0' standalone='no'?>
+<svg width='488.59716796875' height='240.744140625' version='1.1' xmlns='http://www.w3.org/2000/svg' contentScriptType='text/javascript'>
+<script  id="clientEventHandlersJS">
+function OnClickLingTreeNode(node){}
+</script>
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="152.70855712890625" y="20.0" font-family="Times New Roman" font-size="12.0" fill="#000000">S</text>
+<text x="55.6953125" y="53.2890625" font-family="Times New Roman" font-size="12.0" fill="#000000">PP</text>
+<line x1="156.04547119140625" y1="25.595703125" x2="62.369140625" y2="39.595703125" stroke="#000000" stroke-width="1.0"/>
+<text x="35.331787109375" y="86.578125" font-family="Ezra SIL" font-size="15.0" fill="#1a3399">בְּרֵאשִׁית</text>
+<line x1="38.331787109375" y1="67.4794921875" x2="62.369140625" y2="58.884765625" stroke="#000000" stroke-width="1.0"/>
+<line x1="62.369140625" y1="58.884765625" x2="86.406494140625" y2="67.4794921875" stroke="#000000" stroke-width="1.0"/>
+<line x1="38.331787109375" y1="67.4794921875" x2="86.406494140625" y2="67.4794921875" stroke="#000000" stroke-width="1.0"/>
+<text x="20.0" y="108.73388671875" font-family="Arial" font-size="12.0" fill="#80b380">in the beginning</text>
+<text x="242.0518798828125" y="53.2890625" font-family="Times New Roman" font-size="12.0" fill="#000000">VP</text>
+<line x1="156.04547119140625" y1="25.595703125" x2="249.7218017578125" y2="39.595703125" stroke="#000000" stroke-width="1.0"/>
+<text x="140.41796875" y="86.578125" font-family="Times New Roman" font-size="12.0" fill="#000000">V</text>
+<line x1="249.7218017578125" y1="58.884765625" x2="144.7509765625" y2="72.884765625" stroke="#000000" stroke-width="1.0"/>
+<text x="130.41748046875" y="128.73388671875" font-family="Ezra SIL" font-size="15.0" fill="#1a3399">בָּרָא</text>
+<line x1="144.7509765625" y1="92.173828125" x2="144.7509765625" y2="109.63525390625" stroke="#000000" stroke-width="1.0"/>
+<text x="124.73828125" y="150.8896484375" font-family="Arial" font-size="12.0" fill="#80b380">created</text>
+<text x="194.537841796875" y="86.578125" font-family="Times New Roman" font-size="12.0" fill="#000000">NP</text>
+<line x1="249.7218017578125" y1="58.884765625" x2="202.286865234375" y2="72.884765625" stroke="#000000" stroke-width="1.0"/>
+<text x="197.874755859375" y="128.73388671875" font-family="Times New Roman" font-size="12.0" fill="#000000">N</text>
+<line x1="202.286865234375" y1="92.173828125" x2="202.286865234375" y2="115.04052734375" stroke="#000000" stroke-width="1.0"/>
+<text x="184.763671875" y="170.8896484375" font-family="Ezra SIL" font-size="15.0" fill="#1a3399">אֱלֹהִי</text>
+<line x1="202.286865234375" y1="134.32958984375" x2="202.286865234375" y2="151.791015625" stroke="#000000" stroke-width="1.0"/>
+<text x="190.946044921875" y="193.04541015625" font-family="Arial" font-size="12.0" fill="#80b380">God</text>
+<text x="346.943603515625" y="86.578125" font-family="Times New Roman" font-size="12.0" fill="#000000">NP</text>
+<line x1="249.7218017578125" y1="58.884765625" x2="354.692626953125" y2="72.884765625" stroke="#000000" stroke-width="1.0"/>
+<text x="278.40673828125" y="128.73388671875" font-family="Times New Roman" font-size="12.0" fill="#000000">NP</text>
+<line x1="354.692626953125" y1="92.173828125" x2="286.15576171875" y2="115.04052734375" stroke="#000000" stroke-width="1.0"/>
+<text x="239.81005859375" y="170.8896484375" font-family="Times New Roman" font-size="12.0" fill="#000000">DObj</text>
+<line x1="286.15576171875" y1="134.32958984375" x2="253.14306640625" y2="157.1962890625" stroke="#000000" stroke-width="1.0"/>
+<text x="243.735107421875" y="213.04541015625" font-family="Ezra SIL" font-size="15.0" fill="#1a3399">אֵת</text>
+<line x1="253.14306640625" y1="176.4853515625" x2="253.14306640625" y2="193.94677734375" stroke="#000000" stroke-width="1.0"/>
+<text x="245.13623046875" y="235.201171875" font-family="Arial" font-size="12.0" fill="#80b380">obj</text>
+<text x="314.75634765625" y="170.8896484375" font-family="Times New Roman" font-size="12.0" fill="#000000">N</text>
+<line x1="286.15576171875" y1="134.32958984375" x2="319.16845703125" y2="157.1962890625" stroke="#000000" stroke-width="1.0"/>
+<text x="296.53662109375" y="213.04541015625" font-family="Ezra SIL" font-size="15.0" fill="#1a3399">הַשָּׁמַיִם</text>
+<line x1="319.16845703125" y1="176.4853515625" x2="319.16845703125" y2="193.94677734375" stroke="#000000" stroke-width="1.0"/>
+<text x="286.47607421875" y="235.201171875" font-family="Arial" font-size="12.0" fill="#80b380">the heavens</text>
+<text x="415.48046875" y="128.73388671875" font-family="Times New Roman" font-size="12.0" fill="#000000">NP</text>
+<line x1="354.692626953125" y1="92.173828125" x2="423.2294921875" y2="115.04052734375" stroke="#000000" stroke-width="1.0"/>
+<text x="378.21240234375" y="170.8896484375" font-family="Times New Roman" font-size="12.0" fill="#000000">DObj</text>
+<line x1="423.2294921875" y1="134.32958984375" x2="391.54541015625" y2="157.1962890625" stroke="#000000" stroke-width="1.0"/>
+<text x="379.610595703125" y="213.04541015625" font-family="Ezra SIL" font-size="15.0" fill="#1a3399">וְאֵת</text>
+<line x1="391.54541015625" y1="176.4853515625" x2="391.54541015625" y2="193.94677734375" stroke="#000000" stroke-width="1.0"/>
+<text x="371.86083984375" y="235.201171875" font-family="Arial" font-size="12.0" fill="#80b380">and.obj</text>
+<text x="450.50146484375" y="170.8896484375" font-family="Times New Roman" font-size="12.0" fill="#000000">N</text>
+<line x1="423.2294921875" y1="134.32958984375" x2="454.91357421875" y2="157.1962890625" stroke="#000000" stroke-width="1.0"/>
+<text x="435.89990234375" y="213.04541015625" font-family="Ezra SIL" font-size="15.0" fill="#1a3399">הָאָרֶץ</text>
+<line x1="454.91357421875" y1="176.4853515625" x2="454.91357421875" y2="193.94677734375" stroke="#000000" stroke-width="1.0"/>
+<text x="431.22998046875" y="235.201171875" font-family="Arial" font-size="12.0" fill="#80b380">the earth</text>
+</svg>

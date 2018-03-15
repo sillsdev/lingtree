@@ -6,6 +6,7 @@
 
 package org.sil.lingtree.view;
 
+import java.awt.Desktop;
 import java.awt.image.BufferedImage;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -49,6 +50,9 @@ import org.sil.lingtree.view.ControllerUtilities;
 import org.sil.lingtree.Constants;
 import org.sil.lingtree.ApplicationPreferences;
 import org.sil.utility.StringUtilities;
+
+import com.sun.deploy.uitoolkit.impl.fx.HostServicesFactory;
+import com.sun.javafx.application.HostServicesDelegate;
 
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -606,6 +610,27 @@ public class RootLayoutController implements Initializable {
 		Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
 		stage.getIcons().add(mainApp.getNewMainIconImage());
 		alert.showAndWait();
+	}
+
+	@FXML
+	private void handleUserDocumentation() {
+		showFileToUser("doc/UserDocumentation.pdf");
+	}
+
+	protected void showFileToUser(String sFileToShow) {
+		if (!mainApp.getOperatingSystem().equals("Mac OS X")) {
+			HostServicesDelegate hostServices = HostServicesFactory.getInstance(mainApp);
+			hostServices.showDocument("file:" + sFileToShow);
+		} else {
+			if (Desktop.isDesktopSupported()) {
+				try {
+					File myFile = new File(sFileToShow);
+					Desktop.getDesktop().open(myFile);
+				} catch (IOException ex) {
+					// no application registered for PDFs
+				}
+			}
+		}
 	}
 
 	@FXML

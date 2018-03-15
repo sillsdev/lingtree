@@ -1,0 +1,3228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xlingpaper PUBLIC "-//XMLmind//DTD XLingPap//EN"
+"XLingPap.dtd">
+<xlingpaper
+version="2.24.0"
+><styledPaper
+><lingPaper
+automaticallywrapinterlinears="yes"
+version="2.28.0"
+><frontMatter
+><title
+><object
+type="tLingTree"
+></object
+> User Documentation</title
+><author
+>H. Andrew Black</author
+><affiliation
+>SIL International</affiliation
+><emailAddress
+>lingtree_support@sil.org</emailAddress
+><date
+>March 15, 2018</date
+><version
+>Version 1.0.0</version
+><version
+>Copyright © 2002-2018 SIL International</version
+><contents
+></contents
+></frontMatter
+><section1
+id="sIntro"
+><secTitle
+>Introduction</secTitle
+><p
+><object
+type="tLingTree"
+></object
+> is a tool to produce linguistic tree diagrams. You key in a description of the tree, process that description, and LingTree shows what the tree looks like. The tree can be saved in up to two different file formats so that it can be included in papers or web pages.</p
+><p
+><object
+type="tLingTree"
+></object
+> looks like what is shown in <exampleRef
+letter="xNewTree"
+num="xNewTree"
+></exampleRef
+>.</p
+><example
+num="xNewTree"
+><chart
+><img
+src="resources/NewTree.png"
+width="450"
+></img
+></chart
+></example
+><p
+>The file name where the tree information is stored is shown in the upper left part of the window. You key the description in the top pane, process the description, and then the tree appears in the bottom pane. See section <sectionRef
+sec="sEditDescription"
+></sectionRef
+> for information on keying a tree description and processing a tree.</p
+><p
+>You can drag the edges of the window to make it larger. You can also drag the bar between the panes to make either the tree display or the description larger (or smaller).</p
+></section1
+><section1
+id="sEditDescription"
+><secTitle
+>Keying a tree description</secTitle
+><p
+>You key in a tree description in the top pane. To show the corresponding tree in the bottom pane, you "process" the description in any one of four ways:</p
+><ul
+><li
+>by clicking the "process the tree description tool bar button" (<img
+src="resources/ProcessDescription.png"
+></img
+>);</li
+><li
+>by clicking on the <object
+type="tMenuItem"
+>Tree</object
+> menu item and then <object
+type="tMenuItem"
+>Process Description</object
+>;</li
+><li
+>by typing <object
+type="tKey"
+>Ctrl-D</object
+> (holding the <object
+type="tKey"
+>Ctrl</object
+> key down while pressing the <object
+type="tKey"
+>D</object
+> key); or</li
+><li
+>by using the <object
+type="tMenuItem"
+>Settings</object
+> menu item / <object
+type="tMenuItem"
+>Draw tree as you type</object
+> option. This will draw the tree for each keystroke you use in the tree description.<endnote
+id="nInsertClosingParenthesis"
+><p
+>When you key an opening parenthesis, it also automatically inserts a space and a closing parenthesis.</p
+></endnote
+> (See section <sectionRef
+sec="sDrawAsType"
+></sectionRef
+>.)</li
+></ul
+><p
+>All four do the same processing of the tree description and are equivalent in effect.</p
+><section2
+id="sBasicTreeDescription"
+><secTitle
+>Basic tree description</secTitle
+><p
+>A tree description consists of a set of nodes enclosed within parentheses. The parentheses may be nested according to the tree structure. Whenever you key a closing parenthesis ')', the matching opening parenthesis will be selected briefly. Similarly, when you key an opening parenthesis '(', any matching closing parenthesis will be selected briefly. (If you have selected the <object
+type="tMenuItem"
+>Settings</object
+> menu item / <object
+type="tMenuItem"
+>Draw tree as you type</object
+> option, the closing parenthesis is inserted automatically when you key an opening parenthesis.) This is to help you match nested opening and closing parentheses. You can control how long the matching parenthesis is selected; see section <sectionRef
+sec="sDelayMatching"
+></sectionRef
+>.</p
+><p
+>When keying a tree description, you can force a new line to occur by pressing the <object
+type="tKey"
+>Enter</object
+> key. You can also enter spaces and even tabs.</p
+><p
+>Here are two examples of how to key trees.</p
+><p
+>When you key what is in <exampleRef
+contentType="ctRegular"
+letter="xBasic1"
+num="xBasic1"
+></exampleRef
+><exampleRef
+contentType="ctKeyColor"
+letter="xBasic1Color"
+num="xBasic1Color"
+></exampleRef
+>, it shows up as in <exampleRef
+letter="xBasic1Tree"
+num="xBasic1Tree"
+></exampleRef
+>.</p
+><example
+contentType="ctRegular"
+num="xBasic1"
+><word
+><langData
+lang="lTreeExample"
+>(S (NP) (VP))</langData
+></word
+></example
+><example
+contentType="ctKeyColor"
+num="xBasic1Color"
+><word
+><langData
+lang="lTreeExample"
+><object
+type="tSynTagmeme"
+>(</object
+><object
+type="tNonterminal"
+>S</object
+><object
+type="tSynTagmeme"
+> (</object
+><object
+type="tNonterminal"
+>NP</object
+><object
+type="tSynTagmeme"
+>) (</object
+><object
+type="tNonterminal"
+>VP</object
+><object
+type="tSynTagmeme"
+>))</object
+></langData
+></word
+></example
+><example
+num="xBasic1Tree"
+><chart
+><img
+XeLaTeXSpecial="scaled='1250'"
+src="resources/sNpVp.svg"
+></img
+></chart
+></example
+><p
+>And if you key what is in <exampleRef
+contentType="ctRegular"
+letter="xBasic2"
+num="xBasic2"
+></exampleRef
+><exampleRef
+contentType="ctKeyColor"
+letter="xBasic2Color"
+num="xBasic2Color"
+></exampleRef
+></p
+><example
+contentType="ctRegular"
+num="xBasic2"
+><word
+><langData
+lang="lTreeExample"
+>(S (NP (Lee)) (VP (V (gets)) (NP (Det (the)) (N (idea)))))</langData
+></word
+></example
+><example
+contentType="ctKeyColor"
+num="xBasic2Color"
+><word
+><langData
+lang="lTreeExample"
+><object
+type="tSynTagmeme"
+>(</object
+><object
+type="tNonterminal"
+>S</object
+><object
+type="tSynTagmeme"
+> (</object
+><object
+type="tNonterminal"
+>NP</object
+><object
+type="tSynTagmeme"
+> (</object
+><object
+type="tNonterminal"
+>Lee</object
+><object
+type="tSynTagmeme"
+>)) (</object
+><object
+type="tNonterminal"
+>VP</object
+><object
+type="tSynTagmeme"
+> (</object
+><object
+type="tNonterminal"
+>V</object
+><object
+type="tSynTagmeme"
+> (</object
+><object
+type="tNonterminal"
+>gets</object
+><object
+type="tSynTagmeme"
+>)) (</object
+><object
+type="tNonterminal"
+>NP</object
+><object
+type="tSynTagmeme"
+> (</object
+><object
+type="tNonterminal"
+>Det</object
+><object
+type="tSynTagmeme"
+> (</object
+><object
+type="tNonterminal"
+>the</object
+><object
+type="tSynTagmeme"
+>)) (</object
+><object
+type="tNonterminal"
+>N</object
+><object
+type="tSynTagmeme"
+> (</object
+><object
+type="tNonterminal"
+>idea</object
+><object
+type="tSynTagmeme"
+>)))))</object
+></langData
+></word
+></example
+><pc
+>it will produce what is in <exampleRef
+letter="xBasic2Tree"
+num="xBasic2Tree"
+></exampleRef
+></pc
+><example
+num="xBasic2Tree"
+><chart
+><img
+XeLaTeXSpecial="scaled='1250'"
+src="resources/LeeGetsTheIdea.svg"
+></img
+></chart
+></example
+><p
+>You may set font and color information for the nodes. See section <sectionRef
+sec="sFontColor"
+></sectionRef
+>. When you do, the font and color will show in the description pane.</p
+></section2
+><section2
+id="sNodeTypes"
+><secTitle
+>Indicating node types</secTitle
+><p
+><object
+type="tLingTree"
+></object
+> has four node types:</p
+><ol
+><li
+>Non-terminal (<sectionRef
+sec="sNonTerminalNode"
+></sectionRef
+>)</li
+><li
+>Lexical (<sectionRef
+sec="sLexicalNode"
+></sectionRef
+>)</li
+><li
+>Gloss (<sectionRef
+sec="sGlossNode"
+></sectionRef
+>)</li
+><li
+>Empty element (<sectionRef
+sec="sEmptyElementNode"
+></sectionRef
+>)</li
+></ol
+><p
+>At most one node type can be indicated. If you key two or more types, an error message will be shown instead of the tree diagram.</p
+><section3
+id="sNonTerminalNode"
+><secTitle
+>Indicating a non-terminal node</secTitle
+><p
+>The default type is what we call a non-terminal node. The thinking is that a typical full syntactic tree would have non-terminal nodes (for the syntactic constituents) and each branch would end with a lexical node and possibly also a gloss node.</p
+><p
+>Note that to indicate that a node is a non-terminal node, you do not have to do anything. Just key the parentheses around it.</p
+><p
+>You can control the formatting of non-terminal nodes. See section <sectionRef
+sec="sFontColor"
+></sectionRef
+>.</p
+></section3
+><section3
+id="sLexicalNode"
+><secTitle
+>Indicating a lexical node</secTitle
+><p
+>To mark a node in the tree as a lexical item, key <object
+type="tSynTagmeme"
+>\L</object
+> before it (i.e., right after the opening parenthesis). While it is not required to include a space between the <object
+type="tSynTagmeme"
+>\L</object
+> and the lexical content that follows it, it can make the description easier to read. For example, suppose we have set the parameters so that lexical nodes come out in red (see section <sectionRef
+sec="sFontColor"
+></sectionRef
+>). Then keying what is in <exampleRef
+contentType="ctRegular"
+letter="xLexical"
+num="xLexical"
+></exampleRef
+><exampleRef
+contentType="ctKeyColor"
+letter="xLexicalColor"
+num="xLexicalColor"
+></exampleRef
+></p
+><example
+contentType="ctRegular"
+num="xLexical"
+><word
+><langData
+lang="lTreeExample"
+>(S (NP (\L John)) (VP (V (\L sleeps))))</langData
+></word
+></example
+><example
+contentType="ctKeyColor"
+num="xLexicalColor"
+><word
+><langData
+lang="lTreeExample"
+><object
+type="tSynTagmeme"
+>(</object
+><object
+type="tNonterminal"
+>S</object
+><object
+type="tSynTagmeme"
+> (</object
+><object
+type="tNonterminal"
+>NP</object
+><object
+type="tSynTagmeme"
+> (\L </object
+><object
+type="tLexical"
+>John</object
+><object
+type="tSynTagmeme"
+>)) (</object
+><object
+type="tNonterminal"
+>VP</object
+><object
+type="tSynTagmeme"
+> (</object
+><object
+type="tNonterminal"
+>V</object
+><object
+type="tSynTagmeme"
+> (\L </object
+><object
+type="tLexical"
+>sleeps</object
+><object
+type="tSynTagmeme"
+>))))</object
+></langData
+></word
+></example
+><pc
+>will produce what is in <exampleRef
+letter="xLexicalTree"
+num="xLexicalTree"
+></exampleRef
+>.</pc
+><example
+num="xLexicalTree"
+><chart
+><img
+XeLaTeXSpecial="scaled='1250'"
+src="resources/JohnSleepsRed.svg"
+></img
+></chart
+></example
+><p
+>If you do not key the <object
+type="tSynTagmeme"
+>\L</object
+>, then it will look like what is in <exampleRef
+letter="xLexicalNo"
+num="xLexicalNo"
+></exampleRef
+>.</p
+><example
+num="xLexicalNo"
+><chart
+><img
+XeLaTeXSpecial="scaled='1250'"
+src="resources/JohnSleeps.svg"
+></img
+></chart
+></example
+><pc
+>That is, every node is considered to be a non-terminal node.</pc
+></section3
+><section3
+id="sGlossNode"
+><secTitle
+>Indicating a gloss node</secTitle
+><p
+>To mark a node in the tree as a gloss node, key <object
+type="tSynTagmeme"
+>\G</object
+> before it (i.e., right after the opening parenthesis). While it is not required to include a space between the <object
+type="tSynTagmeme"
+>\G</object
+> and the gloss content that follows it, it can make the description easier to read. If one is going to mark glosses, one should also mark lexical nodes. For example, suppose we have set the parameters so that lexical nodes come out in red and gloss nodes come out in blue (see section <sectionRef
+sec="sFontColor"
+></sectionRef
+>). Then keying what is in <exampleRef
+contentType="ctRegular"
+letter="xGloss"
+num="xGloss"
+></exampleRef
+><exampleRef
+contentType="ctKeyColor"
+letter="xGlossColor"
+num="xGlossColor"
+></exampleRef
+></p
+><example
+contentType="ctRegular"
+num="xGloss"
+><word
+><langData
+lang="lTreeExample"
+>(S (NP (\L Juan (\G John))) (VP (V (\L duerme (\G sleeps)))))</langData
+></word
+></example
+><example
+contentType="ctKeyColor"
+num="xGlossColor"
+><word
+><langData
+lang="lTreeExample"
+><object
+type="tSynTagmeme"
+>(</object
+><object
+type="tNonterminal"
+>S</object
+><object
+type="tSynTagmeme"
+> (</object
+><object
+type="tNonterminal"
+>NP</object
+><object
+type="tSynTagmeme"
+> (\L </object
+><object
+type="tLexical"
+>Juan</object
+><object
+type="tSynTagmeme"
+> (\G </object
+><object
+type="tGloss"
+>John</object
+><object
+type="tSynTagmeme"
+>))) (</object
+><object
+type="tNonterminal"
+>VP</object
+><object
+type="tSynTagmeme"
+> (</object
+><object
+type="tNonterminal"
+>V</object
+><object
+type="tSynTagmeme"
+> (\L </object
+><object
+type="tLexical"
+>duerme</object
+><object
+type="tSynTagmeme"
+> (\G </object
+><object
+type="tGloss"
+>sleeps</object
+><object
+type="tSynTagmeme"
+>)))))</object
+></langData
+></word
+></example
+><pc
+>produces what is in <exampleRef
+letter="xGlossTree"
+num="xGlossTree"
+></exampleRef
+>.</pc
+><example
+num="xGlossTree"
+><chart
+><img
+XeLaTeXSpecial="scaled='1250'"
+src="resources/JuanDuermeRedBlue.svg"
+></img
+></chart
+></example
+><p
+>Notice that there are no lines between the lexical nodes and their respective glosses and that the glosses are relatively close to the lexical node.</p
+><p
+>If you do not key the <object
+type="tSynTagmeme"
+>\G</object
+> , then it would look like what is in <exampleRef
+letter="xGlossNo"
+num="xGlossNo"
+></exampleRef
+>.</p
+><example
+num="xGlossNo"
+><chart
+><img
+XeLaTeXSpecial="scaled='1250'"
+src="resources/JuanDuerme.svg"
+></img
+></chart
+></example
+><p
+>Notice that there is a line between the lexical node and their daughter node. The blue color also does not show for the daughter nodes.</p
+></section3
+><section3
+id="sEmptyElementNode"
+><secTitle
+>Indicating an “empty element” node</secTitle
+><p
+>In some syntactic theories which show movement, the convention is to indicate a “trace” of where the moved constituent used to be. You can use an empty element node for traces.</p
+><p
+>Also, some syntactic theories want to show “empty pronouns” where a non-overt pronoun is considered to occur in the tree structure. You can use an empty element for an empty pronoun node.</p
+><p
+>To mark a node in the tree as an empty element node, key <object
+type="tSynTagmeme"
+>\E</object
+> before it (i.e., right after the opening parenthesis). While it is not required to include a space between the <object
+type="tSynTagmeme"
+>\E</object
+> and the empty element content that follows it, it can make the description easier to read. Conventionally, if one has an empty element, then there is no gloss daughter node. For example, suppose we have set the parameters so that empty element nodes come out in purple and italic (see section <sectionRef
+sec="sFontColor"
+></sectionRef
+>). Then keying what is in <exampleRef
+contentType="ctRegular"
+letter="xEmpty"
+num="xEmpty"
+></exampleRef
+><exampleRef
+contentType="ctKeyColor"
+letter="xEmptyColor"
+num="xEmptyColor"
+></exampleRef
+></p
+><example
+contentType="ctRegular"
+num="xEmpty"
+><word
+><langData
+lang="lTreeExample"
+>(QP (DP (\E pro)) (Q' (Q (\E t)) (DP (\L mee bzaan noo (\G my brothers)))))</langData
+></word
+></example
+><example
+contentType="ctKeyColor"
+num="xEmptyColor"
+><word
+><langData
+lang="lTreeExample"
+><object
+type="tSynTagmeme"
+>(QP (DP (\E </object
+><object
+type="tEmpty"
+>pro</object
+><object
+type="tSynTagmeme"
+>)) (Q' (Q (\E </object
+><object
+type="tEmpty"
+>t</object
+><object
+type="tSynTagmeme"
+>)) (DP (\L </object
+><object
+type="tLexical"
+>mee bzaan noo</object
+><object
+type="tSynTagmeme"
+> (\G </object
+><object
+type="tGloss"
+>my brothers</object
+><object
+type="tSynTagmeme"
+>)))))</object
+></langData
+></word
+></example
+><pc
+>produces what is in <exampleRef
+letter="xEmptyTree"
+num="xEmptyTree"
+></exampleRef
+>.</pc
+><example
+num="xEmptyTree"
+><chart
+><img
+XeLaTeXSpecial="scaled='1250'"
+src="resources/EmptyElementItalic.svg"
+></img
+></chart
+></example
+><p
+>If you do not key the <object
+type="tSynTagmeme"
+>\E</object
+> , then it would look like what is in <exampleRef
+letter="xEmptyNo"
+num="xEmptyNo"
+></exampleRef
+>.</p
+><example
+num="xEmptyNo"
+><chart
+><img
+XeLaTeXSpecial="scaled='1250'"
+src="resources/EmptyElement.svg"
+></img
+></chart
+></example
+><p
+>Notice that the empty pronoun and trace nodes are treated as non-terminal nodes..</p
+></section3
+></section2
+><section2
+id="sLiineTypes"
+><secTitle
+>Indicating line types</secTitle
+><p
+>Besides the node types, there are three line types to control what kind of line should appear over a node:</p
+><ol
+><li
+>Regular line (<sectionRef
+sec="sRegularLine"
+></sectionRef
+>)</li
+><li
+>Triangle (<sectionRef
+sec="sTriangle"
+></sectionRef
+>)</li
+><li
+>Omit a line (<sectionRef
+sec="sOmitLine"
+></sectionRef
+>)</li
+></ol
+><p
+>At most one line type can be indicated. If you key two or more types, an error message will be shown instead of the tree diagram.</p
+><section3
+id="sRegularLine"
+><secTitle
+>Regular line</secTitle
+><p
+>The default is to produce a regular line over a node. You do not have to do anything for this to happen. We have already seen examples where a line occurs over nodes.</p
+></section3
+><section3
+id="sTriangle"
+><secTitle
+>Indicating a triangle (a phrase)</secTitle
+><p
+>To mark a node as a phrase by using a triangle above it, key <object
+type="tSynTagmeme"
+>\T</object
+> before it (i.e., right after the opening parenthesis). While it is not required to include a space between the <object
+type="tSynTagmeme"
+>\T</object
+> and whatever follows it, it can make the description easier to read. For example, keying what is in <exampleRef
+contentType="ctRegular"
+letter="xTriangle"
+num="xTriangle"
+></exampleRef
+><exampleRef
+contentType="ctKeyColor"
+letter="xTriangleColor"
+num="xTriangleColor"
+></exampleRef
+></p
+><example
+contentType="ctRegular"
+num="xTriangle"
+><word
+><langData
+lang="lTreeExample"
+>(NP (\T all the King’s men))</langData
+></word
+></example
+><example
+contentType="ctKeyColor"
+num="xTriangleColor"
+><word
+><langData
+lang="lTreeExample"
+><object
+type="tSynTagmeme"
+>(</object
+><object
+type="tNonterminal"
+>NP</object
+><object
+type="tSynTagmeme"
+> (\T </object
+><object
+type="tNonterminal"
+>all the King’s men</object
+><object
+type="tSynTagmeme"
+>))</object
+></langData
+></word
+></example
+><pc
+>will produce what is in <exampleRef
+letter="xTriangleTree"
+num="xTriangleTree"
+></exampleRef
+>.</pc
+><example
+num="xTriangleTree"
+><chart
+><img
+XeLaTeXSpecial="scaled='1250'"
+src="resources/AllTheKingsMenTriangle.svg"
+></img
+></chart
+></example
+><p
+>If you do not key the <object
+type="tSynTagmeme"
+>\T</object
+>, then it will look like what is in <exampleRef
+letter="xTriangleNo"
+num="xTriangleNo"
+></exampleRef
+>.</p
+><example
+num="xTriangleNo"
+><chart
+><img
+XeLaTeXSpecial="scaled='1250'"
+src="resources/AllTheKingsMen.svg"
+></img
+></chart
+></example
+><p
+>You may key both a triangle and either a lexical item or an empty element for a given node. The order in which you key the <object
+type="tSynTagmeme"
+>\T</object
+> and either the <object
+type="tSynTagmeme"
+>\L</object
+> or the <object
+type="tSynTagmeme"
+>\E</object
+> is not crucial. Either order will work. You may find that it is easier to read and think about, though, if you key the <object
+type="tSynTagmeme"
+>\T</object
+> first since it has to do with what occurs over the node, while the <object
+type="tSynTagmeme"
+>\L</object
+> or <object
+type="tSynTagmeme"
+>\E</object
+> has to do with what is in the node.</p
+><p
+>Note that if you use the “Flat” option (see section <sectionRef
+sec="sFlatTree"
+></sectionRef
+>) while using triangles, you will need to also use either the <object
+type="tSynTagmeme"
+>\L</object
+> or the <object
+type="tSynTagmeme"
+>\G</object
+> at the same time. Otherwise, the triangle node may not be at the same level as other “flattened” nodes.</p
+></section3
+><section3
+id="sOmitLine"
+><secTitle
+>Omitting a line</secTitle
+><p
+>To not have a line show above a node, key <object
+type="tSynTagmeme"
+>\O</object
+> before it (i.e., right after the opening parenthesis). While it is not required to include a space between the <object
+type="tSynTagmeme"
+>\O</object
+> and whatever follows it, it can make the description easier to read. For example, keying what is in <exampleRef
+contentType="ctRegular"
+letter="xOmitLine"
+num="xOmitLine"
+></exampleRef
+><exampleRef
+contentType="ctKeyColor"
+letter="xOmitLineColor"
+num="xOmitLineColor"
+></exampleRef
+></p
+><example
+contentType="ctRegular"
+num="xOmitLine"
+><word
+><langData
+lang="lTreeExample"
+>((\O σ (O (\L t)) (N (R (\L e)))) (\O σ (O (\L p)) (N (R (\L i)) (C (\L k)))))</langData
+></word
+></example
+><example
+contentType="ctKeyColor"
+num="xOmitLineColor"
+><word
+><langData
+lang="lTreeExample"
+><object
+type="tSynTagmeme"
+>((\O </object
+><object
+type="tNonterminal"
+>σ</object
+><object
+type="tSynTagmeme"
+> (</object
+><object
+type="tNonterminal"
+>O</object
+><object
+type="tSynTagmeme"
+> (\L </object
+><object
+type="tLexical"
+>t</object
+><object
+type="tSynTagmeme"
+>)) (</object
+><object
+type="tNonterminal"
+>N</object
+><object
+type="tSynTagmeme"
+> (</object
+><object
+type="tNonterminal"
+>R</object
+><object
+type="tSynTagmeme"
+> (\L </object
+><object
+type="tLexical"
+>e</object
+><object
+type="tSynTagmeme"
+>)))) (\O </object
+><object
+type="tNonterminal"
+>σ</object
+><object
+type="tSynTagmeme"
+> (</object
+><object
+type="tNonterminal"
+>O</object
+><object
+type="tSynTagmeme"
+> (\L </object
+><object
+type="tLexical"
+>p</object
+><object
+type="tSynTagmeme"
+>)) (</object
+><object
+type="tNonterminal"
+>N</object
+><object
+type="tSynTagmeme"
+> (</object
+><object
+type="tNonterminal"
+>R</object
+><object
+type="tSynTagmeme"
+> (\L </object
+><object
+type="tLexical"
+>i</object
+><object
+type="tSynTagmeme"
+>)) (</object
+><object
+type="tNonterminal"
+>C</object
+><object
+type="tSynTagmeme"
+> (\L </object
+><object
+type="tLexical"
+>k</object
+><object
+type="tSynTagmeme"
+>)))))</object
+></langData
+></word
+></example
+><pc
+>will produce what is in <exampleRef
+letter="xOmitLineTree"
+num="xOmitLineTree"
+></exampleRef
+> (assuming that the "flat" structure parameter is also chosen; see <sectionRef
+sec="sFlatTree"
+></sectionRef
+>).</pc
+><example
+num="xOmitLineTree"
+><chart
+><img
+XeLaTeXSpecial="scaled='1250'"
+src="resources/TepicSyllable.svg"
+></img
+></chart
+></example
+><p
+>If you do not key the <object
+type="tSynTagmeme"
+>\O</object
+> symbols, then it will look like what is in <exampleRef
+letter="xOmitLineNo"
+num="xOmitLineNo"
+></exampleRef
+>.</p
+><example
+num="xOmitLineNo"
+><chart
+><img
+XeLaTeXSpecial="scaled='1250'"
+src="resources/TepicSyllableLines.svg"
+></img
+></chart
+></example
+><p
+>You may combine the omit lines command with either a lexical item or an empty element for a given node. The order in which you key the <object
+type="tSynTagmeme"
+>\O</object
+> and either the <object
+type="tSynTagmeme"
+>\L</object
+> or the <object
+type="tSynTagmeme"
+>\E</object
+> is not crucial. Either order will work. You may find that it is easier to read and think about, though, if you key the <object
+type="tSynTagmeme"
+>\O</object
+> first since it has to do with what occurs over the node, while the <object
+type="tSynTagmeme"
+>\L</object
+> or <object
+type="tSynTagmeme"
+>\E</object
+> has to do with what is in the node.</p
+></section3
+></section2
+><section2
+id="sNodeContent"
+><secTitle
+>Indicating the node content</secTitle
+><p
+>In the vast majority of cases, you merely key the content of the node. The only exceptions are for inserting subscripts and/or superscripts and for keying parentheses that will occur as content.</p
+><section3
+id="sSubscriptsSuperscripts"
+><secTitle
+>Indicating subscripts or superscripts</secTitle
+><p
+>One can include simple subscripts and superscripts within a tree node.</p
+><section4
+id="sSubscript"
+><secTitle
+>Subscript</secTitle
+><p
+>To have a subscript show up at the end of some text, key <object
+type="tSynTagmeme"
+>/s</object
+> before the subscript text. Note that this has a forward slash, not a backslash. It also uses a lowercase <object
+type="tSynTagmeme"
+>s</object
+>, not uppercase (uppercase is used for a superscript). One does not have to include a space between the <object
+type="tSynTagmeme"
+>/s</object
+> and whatever follows it. For example, keying what is in <exampleRef
+contentType="ctRegular"
+letter="xSubscript"
+num="xSubscript"
+></exampleRef
+><exampleRef
+contentType="ctKeyColor"
+letter="xSubscriptColor"
+num="xSubscriptColor"
+></exampleRef
+></p
+><example
+contentType="ctRegular"
+num="xSubscript"
+><word
+><langData
+lang="lTreeExample"
+>(S (NP/s1 (N (dogs))) (VP (V (chase)) (NP/s2 (N (cats)))))</langData
+></word
+></example
+><example
+contentType="ctKeyColor"
+num="xSubscriptColor"
+><word
+><langData
+lang="lTreeExample"
+><object
+type="tSynTagmeme"
+>(</object
+><object
+type="tNonterminal"
+>S</object
+><object
+type="tSynTagmeme"
+> (</object
+><object
+type="tNonterminal"
+>NP</object
+><object
+type="tSynTagmeme"
+>/s</object
+><object
+type="tNonterminal"
+>1</object
+><object
+type="tSynTagmeme"
+> (</object
+><object
+type="tNonterminal"
+>N</object
+><object
+type="tSynTagmeme"
+> (</object
+><object
+type="tNonterminal"
+>dogs</object
+><object
+type="tSynTagmeme"
+>))) (</object
+><object
+type="tNonterminal"
+>VP</object
+><object
+type="tSynTagmeme"
+> (</object
+><object
+type="tNonterminal"
+>V</object
+><object
+type="tSynTagmeme"
+> (</object
+><object
+type="tNonterminal"
+>chase</object
+><object
+type="tSynTagmeme"
+>)) (</object
+><object
+type="tNonterminal"
+>NP</object
+><object
+type="tSynTagmeme"
+>/s</object
+><object
+type="tNonterminal"
+>2</object
+><object
+type="tSynTagmeme"
+> (</object
+><object
+type="tNonterminal"
+>N</object
+><object
+type="tSynTagmeme"
+> (</object
+><object
+type="tNonterminal"
+>cats</object
+><object
+type="tSynTagmeme"
+>)))))</object
+></langData
+></word
+></example
+><pc
+>will produce what is in <exampleRef
+letter="xSubscriptTree"
+num="xSubscriptTree"
+></exampleRef
+>.</pc
+><example
+num="xSubscriptTree"
+><chart
+><img
+XeLaTeXSpecial="scaled='1250'"
+src="resources/SubscriptExample.svg"
+></img
+></chart
+></example
+><p
+>Note that the subscript will use the same font family and color that the node it is in uses. So if the node is a non-terminal, then it uses the non-terminal font family and color. Similarly for lexical, gloss, and empty node types. The subscript text also is always in regular style (i.e., neither bold nor italic). To get an italic subscript, see section <sectionRef
+sec="sSubscriptItalic"
+></sectionRef
+>.</p
+><p
+>If you do not key the <object
+type="tSynTagmeme"
+>/s</object
+>, then it will look like what is in <exampleRef
+letter="xSubscriptNo"
+num="xSubscriptNo"
+></exampleRef
+>.</p
+><example
+num="xSubscriptNo"
+><chart
+><img
+XeLaTeXSpecial="scaled='1250'"
+src="resources/SubscriptExampleNo.svg"
+></img
+></chart
+></example
+></section4
+><section4
+id="sSubscriptItalic"
+><secTitle
+>Subscript in italic</secTitle
+><p
+>Keying the <object
+type="tSynTagmeme"
+>/s</object
+> before the subscript text results in the subscript coming out in regular style (i.e., neither bold nor italic). If you need a subscript to be italic, use <object
+type="tSynTagmeme"
+>/_</object
+>, instead. The only difference between <object
+type="tSynTagmeme"
+>/s</object
+> and <object
+type="tSynTagmeme"
+>/_</object
+> is that the first is rendered in regular style and the latter is rendered in italic.</p
+><p
+>For example, keying what is in <exampleRef
+contentType="ctRegular"
+letter="xSubcriptItalic"
+num="xSubcriptItalic"
+></exampleRef
+><exampleRef
+contentType="ctKeyColor"
+letter="xSubcriptItalicColor"
+num="xSubcriptItalicColor"
+></exampleRef
+></p
+><example
+contentType="ctRegular"
+num="xSubcriptItalic"
+><word
+><langData
+lang="lTreeExample"
+>(S (NP/_1 (N (dogs))) (VP (V (chase)) (NP/_2 (N (cats)))))</langData
+></word
+></example
+><example
+contentType="ctKeyColor"
+num="xSubcriptItalicColor"
+><word
+><langData
+lang="lTreeExample"
+><object
+type="tSynTagmeme"
+>(</object
+><object
+type="tNonterminal"
+>S</object
+><object
+type="tSynTagmeme"
+> (</object
+><object
+type="tNonterminal"
+>NP</object
+><object
+type="tSynTagmeme"
+>/_</object
+><object
+type="tNonterminal"
+>1</object
+><object
+type="tSynTagmeme"
+> (</object
+><object
+type="tNonterminal"
+>N</object
+><object
+type="tSynTagmeme"
+> (</object
+><object
+type="tNonterminal"
+>dogs</object
+><object
+type="tSynTagmeme"
+>))) (</object
+><object
+type="tNonterminal"
+>VP</object
+><object
+type="tSynTagmeme"
+> (</object
+><object
+type="tNonterminal"
+>V</object
+><object
+type="tSynTagmeme"
+> (</object
+><object
+type="tNonterminal"
+>chase</object
+><object
+type="tSynTagmeme"
+>)) (</object
+><object
+type="tNonterminal"
+>NP</object
+><object
+type="tSynTagmeme"
+>/_</object
+><object
+type="tNonterminal"
+>2</object
+><object
+type="tSynTagmeme"
+> (</object
+><object
+type="tNonterminal"
+>N</object
+><object
+type="tSynTagmeme"
+> (</object
+><object
+type="tNonterminal"
+>cats</object
+><object
+type="tSynTagmeme"
+>)))))</object
+></langData
+></word
+></example
+><pc
+>will produce what is in <exampleRef
+letter="xSubscriptItalicTree"
+num="xSubscriptItalicTree"
+></exampleRef
+>.</pc
+><example
+num="xSubscriptItalicTree"
+><chart
+><img
+XeLaTeXSpecial="scaled='1250'"
+src="resources/SubscriptExampleItalic.svg"
+></img
+></chart
+></example
+></section4
+><section4
+id="sSuperscript"
+><secTitle
+>Superscript</secTitle
+><p
+>To have a superscript show up at the end of some text, key <object
+type="tSynTagmeme"
+>/S</object
+> before the superscript text. Note that this has a forward slash, not a backslash. It also uses an uppercase <object
+type="tSynTagmeme"
+>S</object
+>, not lowercase (lowercase is used for a subscript). One does not have to include a space between the <object
+type="tSynTagmeme"
+>/S</object
+> and whatever follows it. For example, keying what is in <exampleRef
+contentType="ctRegular"
+letter="xSuperscript"
+num="xSuperscript"
+></exampleRef
+><exampleRef
+contentType="ctKeyColor"
+letter="xSuperscriptColor"
+num="xSuperscriptColor"
+></exampleRef
+></p
+><example
+contentType="ctRegular"
+num="xSuperscript"
+><word
+><langData
+lang="lTreeExample"
+>(IP (DP) (I/S1))</langData
+></word
+></example
+><example
+contentType="ctKeyColor"
+num="xSuperscriptColor"
+><word
+><langData
+lang="lTreeExample"
+><object
+type="tSynTagmeme"
+>(</object
+><object
+type="tNonterminal"
+>IP</object
+><object
+type="tSynTagmeme"
+> (</object
+><object
+type="tNonterminal"
+>DP</object
+><object
+type="tSynTagmeme"
+>) (</object
+><object
+type="tNonterminal"
+>I</object
+><object
+type="tSynTagmeme"
+>/S</object
+><object
+type="tNonterminal"
+>1</object
+><object
+type="tSynTagmeme"
+>))</object
+></langData
+></word
+></example
+><pc
+>will produce what is in <exampleRef
+letter="xSuperscriptTree"
+num="xSuperscriptTree"
+></exampleRef
+>.</pc
+><example
+num="xSuperscriptTree"
+><chart
+><img
+XeLaTeXSpecial="scaled='1250'"
+src="resources/SuperscriptExample.svg"
+></img
+></chart
+></example
+><p
+>Note that the superscript will use the same font family and color that the node it is in uses. So if the node is a non-terminal, then it uses the non-terminal font family and color. Similarly for lexical, gloss, and empty node types. The superscript text also is always in regular style (i.e., neither bold nor italic). To get an italic superscript, see section <sectionRef
+sec="sSuperscriptItalic"
+></sectionRef
+>.</p
+><p
+>If you do not key the <object
+type="tSynTagmeme"
+>/S</object
+>, then it will look like what is in <exampleRef
+letter="xSuperscriptNo"
+num="xSuperscriptNo"
+></exampleRef
+>.</p
+><example
+num="xSuperscriptNo"
+><chart
+><img
+XeLaTeXSpecial="scaled='1250'"
+src="resources/SuperscriptExampleNo.svg"
+></img
+></chart
+></example
+></section4
+><section4
+id="sSuperscriptItalic"
+><secTitle
+>Superscript in italic</secTitle
+><p
+>Keying the <object
+type="tSynTagmeme"
+>/S</object
+> before the superscript text results in the superscript coming out in regular style (i.e., neither bold nor italic). If you need a superscript to be italic, use <object
+type="tSynTagmeme"
+>/^</object
+>, instead. The only difference between <object
+type="tSynTagmeme"
+>/S</object
+> and <object
+type="tSynTagmeme"
+>/^</object
+> is that the first is rendered in regular style and the latter is rendered in italic.</p
+><p
+>For example, keying what is in <exampleRef
+contentType="ctRegular"
+letter="xSupercriptItalic"
+num="xSupercriptItalic"
+></exampleRef
+><exampleRef
+contentType="ctKeyColor"
+letter="xSupercriptItalicColor"
+num="xSupercriptItalicColor"
+></exampleRef
+></p
+><example
+contentType="ctRegular"
+num="xSupercriptItalic"
+><word
+><langData
+lang="lTreeExample"
+>(IP (DP) (I/^1))</langData
+></word
+></example
+><example
+contentType="ctKeyColor"
+num="xSupercriptItalicColor"
+><word
+><langData
+lang="lTreeExample"
+><object
+type="tSynTagmeme"
+>(</object
+><object
+type="tNonterminal"
+>IP</object
+><object
+type="tSynTagmeme"
+> (</object
+><object
+type="tNonterminal"
+>DP</object
+><object
+type="tSynTagmeme"
+>) (</object
+><object
+type="tNonterminal"
+>I</object
+><object
+type="tSynTagmeme"
+>/^</object
+><object
+type="tNonterminal"
+>1</object
+><object
+type="tSynTagmeme"
+>))</object
+></langData
+></word
+></example
+><pc
+>will produce what is in <exampleRef
+letter="xSuperscriptItalicTree"
+num="xSuperscriptItalicTree"
+></exampleRef
+>.</pc
+><example
+num="xSuperscriptItalicTree"
+><chart
+><img
+XeLaTeXSpecial="scaled='1250'"
+src="resources/SuperscriptExampleItalic.svg"
+></img
+></chart
+></example
+></section4
+><section4
+id="s1.7.3"
+><secTitle
+>Combining subscripts and superscripts can be done</secTitle
+><p
+>Unlike the older version of <object
+type="tLingTree"
+></object
+>, you can have both a subscript and a superscript on the same node. It does not matter which order you key the subscript and superscript. Either will work.</p
+><p
+>For example, if you key what is in <exampleRef
+contentType="ctRegular"
+letter="xSubscriptSupercriptItalic"
+num="xSubscriptSupercriptItalic"
+></exampleRef
+><exampleRef
+contentType="ctKeyColor"
+letter="xSubscriptSupercriptItalicColor"
+num="xSubscriptSupercriptItalicColor"
+></exampleRef
+></p
+><example
+contentType="ctRegular"
+num="xSubscriptSupercriptItalic"
+><word
+><langData
+lang="lTreeExample"
+>(NP (N/S'/_j (PP)))</langData
+></word
+></example
+><example
+contentType="ctKeyColor"
+num="xSubscriptSupercriptItalicColor"
+><word
+><langData
+lang="lTreeExample"
+><object
+type="tSynTagmeme"
+>(</object
+><object
+type="tNonterminal"
+>NP</object
+><object
+type="tSynTagmeme"
+> (</object
+><object
+type="tNonterminal"
+>N</object
+><object
+type="tSynTagmeme"
+>/S</object
+><object
+type="tNonterminal"
+>'</object
+><object
+type="tSynTagmeme"
+>/_</object
+><object
+type="tNonterminal"
+>j</object
+><object
+type="tSynTagmeme"
+> (</object
+><object
+type="tNonterminal"
+>PP</object
+><object
+type="tSynTagmeme"
+>)))</object
+></langData
+></word
+></example
+><pc
+>the result will look like <exampleRef
+letter="xSubscriptSuperscriptTree"
+num="xSubscriptSuperscriptTree"
+></exampleRef
+>.</pc
+><example
+num="xSubscriptSuperscriptTree"
+><chart
+><img
+XeLaTeXSpecial="scaled='1250'"
+src="resources/SubscriptSuperscript.svg"
+></img
+></chart
+></example
+></section4
+></section3
+><section3
+id="sParentheses"
+><secTitle
+>Handling parentheses</secTitle
+><p
+>If you need to put an opening or closing parenthesis in your tree, quote the parenthesis by using a backslash immediately before it. For example, if you key what is in <exampleRef
+contentType="ctRegular"
+letter="xParen"
+num="xParen"
+></exampleRef
+><exampleRef
+contentType="ctKeyColor"
+letter="xParenColor"
+num="xParenColor"
+></exampleRef
+></p
+><example
+contentType="ctRegular"
+num="xParen"
+><word
+><langData
+lang="lTreeExample"
+>(NP (Paul \(the bear\)))</langData
+></word
+></example
+><example
+contentType="ctKeyColor"
+num="xParenColor"
+><word
+><langData
+lang="lTreeExample"
+><object
+type="tSynTagmeme"
+>(</object
+><object
+type="tNonterminal"
+>NP</object
+><object
+type="tSynTagmeme"
+> (</object
+><object
+type="tNonterminal"
+>Paul</object
+><object
+type="tNonterminal"
+> \(the bear\)</object
+><object
+type="tSynTagmeme"
+>))</object
+></langData
+></word
+></example
+><pc
+>it will come out as in <exampleRef
+letter="xParenTree"
+num="xParenTree"
+></exampleRef
+>.</pc
+><example
+num="xParenTree"
+><chart
+><img
+XeLaTeXSpecial="scaled='1250'"
+src="resources/Paren.svg"
+></img
+></chart
+></example
+><p
+>If you do not quote the parentheses with a backslash, then it will look like what is in <exampleRef
+letter="xParenNo"
+num="xParenNo"
+></exampleRef
+>.</p
+><example
+num="xParenNo"
+><chart
+><img
+XeLaTeXSpecial="scaled='1250'"
+src="resources/ParenNo.svg"
+></img
+></chart
+></example
+></section3
+></section2
+></section1
+><section1
+id="sFormatting"
+><secTitle
+>Formating a tree</secTitle
+><p
+>One can adjust the positioning of the tree and its nodes as well as choose the fonts, sizes, and colors for the non-terminal, lexical, gloss and empty nodes. One can also set a background color and determine the color and thickness of the lines in the trees. In addition, one can have the tree show all of its lexical and gloss items at the same vertical position (which we refer to as using a “flat” view of the tree).</p
+><p
+>All of these parameters are available on the <object
+type="tMenuItem"
+>Format</object
+> menu item.</p
+><p
+>Please note that these settings are associated with each individual tree diagram. Thus, you can set them to make a given tree diagram look its best.</p
+><section2
+id="sFlatTree"
+><secTitle
+>Showing “flat” trees</secTitle
+><p
+>The <object
+type="tMenuItem"
+>Use flat tree</object
+> item in the <object
+type="tMenuItem"
+>Format</object
+> main menu controls how the lexical and gloss nodes are displayed. It will have a check mark before it if flat trees are to be drawn. There also is a button on the toolbar for controlling flat trees. Example <exampleRef
+letter="xFlatButton"
+num="xFlatButton"
+></exampleRef
+> indicates what this button looks like in its two states.</p
+><example
+num="xFlatButton"
+><table
+border="1"
+><tr
+><th
+align="center"
+>Show as flat</th
+><th
+align="center"
+>Show regularly</th
+></tr
+><tr
+><td
+XeLaTeXSpecial="valign-fixup='-3pt'"
+align="center"
+><img
+src="resources/FlatPressed.png"
+></img
+></td
+><td
+XeLaTeXSpecial="valign-fixup='-3pt'"
+align="center"
+><img
+src="resources/FlatNotPressed.png"
+></img
+></td
+></tr
+></table
+></example
+><p
+>For example, without using the flat mode, the description in <exampleRef
+letter="xNJuanKitaNKowatl"
+num="xNJuanKitaNKowatl"
+></exampleRef
+></p
+><example
+num="xNJuanKitaNKowatl"
+><word
+><langData
+lang="lTreeExample"
+>(IP (NP (Det (\L n (\G the))) (N' (N (\L Juan (\G John))))) (I' (I0) (VP (V' (V (\L kita (\G sees))) (NP (Det (\L n (\G the))) (N' (N (\L koatl (\G snake)))))))))</langData
+></word
+></example
+><pc
+>will appear as in <exampleRef
+letter="xNJuanKitaNKowatlTree"
+num="xNJuanKitaNKowatlTree"
+></exampleRef
+> (assuming that lexical nodes are set to be in red and gloss nodes are in blue).</pc
+><example
+num="xNJuanKitaNKowatlTree"
+><chart
+><img
+XeLaTeXSpecial="scaled='1250'"
+src="resources/NJuanKitaNKowatl.svg"
+></img
+></chart
+></example
+><p
+>When using flat mode, however, it will look like the tree in <exampleRef
+letter="xNJuanKitaNKowatlTreeFlat"
+num="xNJuanKitaNKowatlTreeFlat"
+></exampleRef
+>.</p
+><example
+num="xNJuanKitaNKowatlTreeFlat"
+><chart
+><img
+XeLaTeXSpecial="scaled='1250'"
+src="resources/NJuanKitaNKowatlFlat.svg"
+></img
+></chart
+></example
+></section2
+><section2
+id="sRigtToLeft"
+><secTitle
+>Draw a tree right-to-left</secTitle
+><p
+>The second item under the main <object
+type="tMenuItem"
+>Format</object
+> menu item is <object
+type="tMenuItem"
+>Draw tree right-to-left</object
+>. When this has a check mark before it, the tree will be drawn from right-to-left. For example, if the non-terminal, lexical, and gloss fonts and colors have been set as shown in example <exampleRef
+letter="xHebrewRTLTree"
+num="xHebrewRTLTree"
+></exampleRef
+> below, then the description given in <exampleRef
+letter="xHebrewRTL"
+num="xHebrewRTL"
+></exampleRef
+>.</p
+><example
+num="xHebrewRTL"
+><word
+><langData
+lang="lTreeExample"
+>(S (PP (\T\L <langData
+lang="lHebrew"
+>בְּרֵאשִׁית</langData
+> (\G in the beginning ) ) ) (VP (V (\L <langData
+lang="lHebrew"
+>בָּרָא</langData
+>(\G created )) ) (NP (N(\L <langData
+lang="lHebrew"
+>אֱלֹהִים</langData
+> (\G God )) ) ) (NP (NP (DObj (\L <langData
+lang="lHebrew"
+>אֵת</langData
+> (\G obj )) ) (N (\L <langData
+lang="lHebrew"
+>הַשָּׁמַיִם</langData
+> (\G the heavens ))) ) (NP (DObj (\L <langData
+lang="lHebrew"
+>וְאֵת</langData
+> (\G and.obj )) ) (N (\L <langData
+lang="lHebrew"
+>הָאָרֶץ</langData
+> (\G the earth ) ) )) ) ))</langData
+></word
+></example
+><pc
+>looks like example <exampleRef
+letter="xHebrewRTLTree"
+num="xHebrewRTLTree"
+></exampleRef
+> when the <object
+type="tMenuItem"
+>Draw tree right-to-left</object
+> is checked and example <exampleRef
+letter="xHebrewLTRTree"
+num="xHebrewLTRTree"
+></exampleRef
+> when it is not checked.</pc
+><example
+num="xHebrewRTLTree"
+><chart
+><img
+XeLaTeXSpecial="scaled='1050'"
+src="resources/Hebrew.svg"
+></img
+></chart
+></example
+><example
+num="xHebrewLTRTree"
+><chart
+><img
+XeLaTeXSpecial="scaled='1050'"
+src="resources/HebrewLTR.svg"
+></img
+></chart
+></example
+></section2
+><section2
+id="sFontColor"
+><secTitle
+>Setting the font and color information</secTitle
+><p
+>The next portion of the main <object
+type="tMenuItem"
+>Format</object
+> menu item is for setting font and color information for the four node types:</p
+><ol
+><li
+>Non-terminal (<sectionRef
+sec="sNonTerminalNode"
+></sectionRef
+>)</li
+><li
+>Lexical (<sectionRef
+sec="sLexicalNode"
+></sectionRef
+>)</li
+><li
+>Gloss (<sectionRef
+sec="sGlossNode"
+></sectionRef
+>)</li
+><li
+>Empty element (<sectionRef
+sec="sEmptyElementNode"
+></sectionRef
+>)</li
+></ol
+><p
+>When you select one of these, it brings up a dialog box showing font family, style, size and color options. The set of style options shown depends on what styles the selected font has. So if the font only has “Regular,” then only Regular will appear in the list of styles.</p
+><p
+>If you click in the Font list, then you can key a letter and it will go to the first font name that begins with that letter.</p
+><p
+>To get the color chooser, click on the drop-down box in the lower left portion of the dialog. It will look something like what is in <exampleRef
+letter="xColorChooser"
+num="xColorChooser"
+></exampleRef
+>.</p
+><example
+num="xColorChooser"
+><chart
+><img
+src="resources/ColorChooser.png"
+></img
+></chart
+></example
+><pc
+>You can click on the color you want or you can click on the “Custom Color” link. Doing so gives you what is in <exampleRef
+letter="xCustomColor"
+num="xCustomColor"
+></exampleRef
+>.</pc
+><example
+num="xCustomColor"
+><chart
+><img
+src="resources/CustomColor.png"
+></img
+></chart
+></example
+><p
+>If you click on the Web tab, you can key in a code for the color. A list of color names, their color, and the code can be found at <link
+href="https://www.w3schools.com/cssref/css_colors.asp"
+>https://​www.w3schools.com/​cssref/​css_colors.asp</link
+>.</p
+><p
+>When you click on the main dialog's OK button, the tree description and tree diagram will reflect the new font and color information.</p
+></section2
+><section2
+id="sTreeSpacing"
+><secTitle
+>Tree spacing parameters</secTitle
+><p
+>The third from last item in the main <object
+type="tMenuItem"
+>Format</object
+> menu item is <object
+type="tMenuItem"
+>Tree spacing parameters</object
+>. When you select this menu item, it brings up a dialog that looks like what is in <exampleRef
+letter="xTreeSpacingParameters"
+num="xTreeSpacingParameters"
+></exampleRef
+>.</p
+><example
+num="xTreeSpacingParameters"
+><chart
+><img
+src="resources/TreeSpacingParameters.png"
+width="450"
+></img
+></chart
+></example
+><pc
+>Each row has a description of the parameter and a box to key a numerical value. You can use negative numbers.</pc
+></section2
+><section2
+id="sBackgroundLine"
+><secTitle
+>Background and line parameters</secTitle
+><p
+>The second from last item in the main <object
+type="tMenuItem"
+>Format</object
+> menu item is <object
+type="tMenuItem"
+>Tree spacing parameters</object
+>. When you select this menu item, it brings up a dialog that looks like what is in <exampleRef
+letter="xBackgroundLine"
+num="xBackgroundLine"
+></exampleRef
+>.</p
+><example
+num="xBackgroundLine"
+><chart
+><img
+src="resources/BackgroundLine.png"
+width="450"
+></img
+></chart
+></example
+><pc
+>You can set the color of the tree background and the width and color of the lines.</pc
+></section2
+><section2
+id="sSaveForNew"
+><secTitle
+>Saving format information for use with new tree diagrams</secTitle
+><p
+>The last item in the main <object
+type="tMenuItem"
+>Format</object
+> menu item is <object
+type="tMenuItem"
+>Save the current tree settings to use for new tree diagrams</object
+>. When you select this menu item, the set of tree formatting values used for the current tree are remembered for any new tree diagrams in the future.</p
+></section2
+></section1
+><section1
+id="sSettings"
+><secTitle
+>User convenience options</secTitle
+><p
+>The <object
+type="tMenuItem"
+>Settings</object
+> menu item has several options you can use to (hopefully) improve your experience with using <object
+type="tLingTree"
+></object
+>. These are described below along with one useful item under the <object
+type="tMenuItem"
+>Help</object
+> menu.</p
+><p
+>Please note that these settings are associated with the <object
+type="tLingTree"
+></object
+> program on your computer. Once you set them, they will be used each time you use <object
+type="tLingTree"
+></object
+> (until you change them, of course).</p
+><section2
+id="sSyntagmemeFontSize"
+><secTitle
+>Font size for tree description symbols</secTitle
+><p
+>The first item under the main <object
+type="tMenuItem"
+>Settings</object
+> menu item is <object
+type="tMenuItem"
+>Font size for tree description symbols</object
+>. This lets you set the font size for the symbols used in a tree description, that is <object
+type="tSynTagmeme"
+>(</object
+>, <object
+type="tSynTagmeme"
+>)</object
+>, <object
+type="tSynTagmeme"
+>\L</object
+>, <object
+type="tSynTagmeme"
+>\G</object
+>, etc. The motivation for this is that some very high resolution screens may make it a bit difficult to see these or, alternatively, they may appear quite large in comparison to the other material in a tree description. So you can change their size.</p
+></section2
+><section2
+id="sDrawAsType"
+><secTitle
+>Draw the tree as you type</secTitle
+><p
+>The second item under the main <object
+type="tMenuItem"
+>Settings</object
+> menu item is <object
+type="tMenuItem"
+>Draw tree as you type</object
+>. When this menu item has a check mark before it, each time you change or edit something in the tree description, <object
+type="tLingTree"
+></object
+> will redraw the tree diagram.</p
+><p
+>When using this mode, whenever you key an opening parenthesis, <object
+type="tLingTree"
+></object
+> will automatically insert a space and a closing parenthesis. The idea is to help you keep opening and closing parentheses matched.</p
+><p
+>Sometimes the automatic drawing of the tree diagram will cause an error message to appear where the tree diagram normally shows; for example, if you have deleted a parenthesis and no longer have a matching opening or closing one, then there will be a message about a missing opening or closing parenthesis. As soon as the tree description is well-formed, the tree diagram will appear.</p
+></section2
+><section2
+id="sArrowKeysShowMatching"
+><secTitle
+>Show matching parenthesis with arrow keys</secTitle
+><p
+>As mentioned in section <sectionRef
+sec="sBasicTreeDescription"
+></sectionRef
+>, when you key a parenthesis, <object
+type="tLingTree"
+></object
+> will temporarily select the matching parenthesis to help you see the nested structure of the description. There are times, however, when you need to see matching parentheses and it would be nice if you did not have to delete a parenthesis and immediately re-key it. For this reason, there is the third item under the main <object
+type="tMenuItem"
+>Settings</object
+> menu item: <object
+type="tMenuItem"
+>Show matching parenthesis with arrow keys</object
+>. When this is checked, whenever you use an arrow key to cross over a parenthesis in the description, <object
+type="tLingTree"
+></object
+> will temporarily select the parenthesis that matches the one crossed over.</p
+><p
+>Besides using this menu option, you can also use the toolbar button shown in <exampleRef
+letter="xShowMatchingParensArrows"
+num="xShowMatchingParensArrows"
+></exampleRef
+>.</p
+><example
+num="xShowMatchingParensArrows"
+><table
+border="1"
+><tr
+><th
+align="center"
+>Show matching with arrows</th
+><th
+align="center"
+>Do not show matching with arrows</th
+></tr
+><tr
+><td
+XeLaTeXSpecial="valign-fixup='-3pt'"
+align="center"
+><img
+src="resources/ShowParensPressed.png"
+></img
+></td
+><td
+XeLaTeXSpecial="valign-fixup='-3pt'"
+align="center"
+><img
+src="resources/ShowParensNotPressed.png"
+></img
+></td
+></tr
+></table
+></example
+></section2
+><section2
+id="sDelayMatching"
+><secTitle
+>Delay to use when showing matching parentheses</secTitle
+><p
+>The fourth item under the main <object
+type="tMenuItem"
+>Settings</object
+> menu item is <object
+type="tMenuItem"
+>Delay to use when showing matching parentheses</object
+>. The default delay is 750 milliseconds (i.e., three quarters of a second). You can change the delay value to be shorter or longer by using this menu item. The shortest allowed value is 125 milliseconds (i.e., one eighth of a second) and the longest value allowed is 4000 milliseconds (i.e., 4 seconds).</p
+></section2
+><section2
+id="sInterfaceLanguage"
+><secTitle
+>Change the interface language</secTitle
+><p
+>You can set the user interface language by using the <object
+type="tMenuItem"
+>Settings / Change the interface language</object
+> menu item. This brings up a dialog box showing the current interface language in a drop down chooser. Click on the chooser's drop down button to see other interface language choices. The choices given use the name of the language in the current interface language (so if the current interface language is English, then it will show “Spanish” as an option; if the current interface language is Spanish, it will show English as “inglés”).</p
+><p
+>The current version has English and a rough, most likely often inaccurate version of Spanish. Any corrections to the Spanish are welcome.</p
+></section2
+><section2
+id="sQuicReferenceGuide"
+><secTitle
+>Quick Reference Guide</secTitle
+><p
+>The main <object
+type="tMenuItem"
+>Help</object
+> menu item has a <object
+type="tMenuItem"
+>Quick Reference Guide</object
+> item. When you select this item, it brings up a dialog box containing a list of the special symbols you can key to get a particular result. You can position and/or resize this dialog so that you can see it while also keying a tree description. That is, unlike most dialog boxes, you do not have to close this dialog box before you can continue working. It will stay open until you close it.</p
+></section2
+></section1
+><section1
+id="sOutput"
+><secTitle
+>Saving the tree</secTitle
+><p
+>While the resulting tree looks nice within the <object
+type="tLingTree"
+></object
+> program, what one usually wants to do is to embed the tree diagram in some other document. <object
+type="tLingTree"
+></object
+> allows you to save the tree in up to two formats:</p
+><ul
+><li
+>A Portable Network Graphics (*.png) file.</li
+><li
+>Scalable Vector Graphics format (*.svg) file.</li
+></ul
+><p
+>You select which of these formats you wish to save by clicking on the <object
+type="tMenuItem"
+>File</object
+> menu item and then clicking on the <object
+type="tMenuItem"
+>Save tree as .png</object
+> and/or <object
+type="tMenuItem"
+>Save tree as .svg</object
+> items.</p
+><p
+>Besides using these menu options, you can also use the toolbar buttons shown in <exampleRef
+letter="xSaveAsPNG"
+num="xSaveAsPNG"
+></exampleRef
+> and <exampleRef
+letter="xSaveAsSVG"
+num="xSaveAsSVG"
+></exampleRef
+>.</p
+><example
+num="xSaveAsPNG"
+><table
+border="1"
+><tr
+><th
+align="center"
+>Save tree as .png</th
+><th
+align="center"
+>Do not save tree as .png</th
+></tr
+><tr
+><td
+XeLaTeXSpecial="valign-fixup='-3pt'"
+align="center"
+><img
+src="resources/PngPressed.png"
+></img
+></td
+><td
+XeLaTeXSpecial="valign-fixup='-3pt'"
+align="center"
+><img
+src="resources/PngNotPressed.png"
+></img
+></td
+></tr
+></table
+></example
+><example
+num="xSaveAsSVG"
+><table
+border="1"
+><tr
+><th
+align="center"
+>Save tree as .svg</th
+><th
+align="center"
+>Do not save tree as .svg</th
+></tr
+><tr
+><td
+XeLaTeXSpecial="valign-fixup='-3pt'"
+align="center"
+><img
+src="resources/SvgPressed.png"
+></img
+></td
+><td
+XeLaTeXSpecial="valign-fixup='-3pt'"
+align="center"
+><img
+src="resources/SvgNotPressed.png"
+></img
+></td
+></tr
+></table
+></example
+><p
+>You merely check the formats you wish to use. LingTree will produce a file with the given extension for each checked format. The file name (i.e., the part before the extension) is the same for all of them.</p
+><p
+>In addition, you will find a file with an extension of ".tre" which contains information for LingTree to draw the tree. Do not edit this file. This has all the information about the tree description that <object
+type="tLingTree"
+></object
+> uses.</p
+><p
+>Note that once you set these Save Formats, they stay in effect for all ensuing trees you build.</p
+><p
+>Of these two formats, we highly recommend that you use the Scalable Vector Graphics format (*.svg) whenever possible. This is because SVG format will always look nice in a web browser or a PDF file, no matter how large the user makes the page appear.</p
+><p
+>Another reason for using the SVG format is that if you find that <object
+type="tLingTree"
+></object
+> cannot do everything you need for a particular tree diagram, you can produce the SVG form and then use a tool like <object
+type="tTool"
+>InkScape</object
+> to do the rest. See <link
+href="https://inkscape.org/en/"
+>https://​inkscape.org/​en/</link
+> for more on <object
+type="tTool"
+>InkScape</object
+>.</p
+><p
+>If you do find yourself in a situation where you absolutely must have a pure graphics image file and the Portable Network Graphics (*.png) form is not acceptable, you can use various tools to convert your PNG file to some other graphics image format. Example <exampleRef
+letter="xGraphicImageConverters"
+num="xGraphicImageConverters"
+></exampleRef
+> lists some possibilities.</p
+><example
+num="xGraphicImageConverters"
+><table
+border="1"
+><tr
+><th
+>Operating System</th
+><th
+>Tool</th
+><th
+>Potential formats</th
+></tr
+><tr
+><th
+>Windows</th
+><td
+><object
+type="tTool"
+>Paint</object
+></td
+><td
+>.bmp, .jpg, .gif, .tif</td
+></tr
+><tr
+><th
+>Mac OS X</th
+><td
+><object
+type="tTool"
+>Preview</object
+></td
+><td
+>.jpeg, .tiff</td
+></tr
+><tr
+><th
+>Linux</th
+><td
+><object
+type="tTool"
+>Image Viewer</object
+></td
+><td
+>.bmp, .jpeg, .gif, .tiff</td
+></tr
+></table
+></example
+><p
+>In addition, there is the <object
+type="tTool"
+>XnConvert</object
+> program available at <link
+href="https://www.xnview.com/en/xnconvert/"
+>https://​www.xnview.com/​en/​xnconvert/</link
+>. It runs on all three operating systems and can convert to many different image formats.</p
+></section1
+><section1
+id="sErrorMessage"
+><secTitle
+>Error messages</secTitle
+><p
+>Whenever you process a tree description, if <object
+type="tLingTree"
+></object
+> notices any error in the description, it will show the error message in the same place where the tree diagram usually appears. The message tries to indicate what the problem is and where it was found (in terms of line number and character position). It also shows where in the tree description the error was found. While these messages are intended to be helpful, sometimes it may be the case that what needs to be done to fix the error is not necessarily what the message implies will fix it.</p
+><p
+>For example, when the message is about a missing closing parenthesis, the message actually indicates the innermost place where the outer parentheses match. So it may not be the best place to insert a closing parenthesis; but, on the other hand, it may work just fine. You may want to use the arrow keys to find the best place to fix the problem (see section <sectionRef
+sec="sArrowKeysShowMatching"
+></sectionRef
+>).</p
+><p
+>Another thing to note is that for longer, more complicated tree descriptions, it may take a 2-3 times longer for the tree drawing process to happen if it finds an error.</p
+><p
+>Example <exampleRef
+letter="xErrorTypes"
+num="xErrorTypes"
+></exampleRef
+> lists the error types <object
+type="tLingTree"
+></object
+> reports along with a brief description of what the error type might mean.</p
+><example
+num="xErrorTypes"
+><table
+border="1"
+><tr
+><th
+width="2in"
+>Error Type</th
+><th
+width="3.25in"
+>Meaning</th
+></tr
+><tr
+><td
+><object
+type="tErrorType"
+>Missing closing parenthesis</object
+></td
+><td
+>At least one closing parenthesis is missing.</td
+></tr
+><tr
+><td
+><object
+type="tErrorType"
+>Missing content after subscript</object
+></td
+><td
+>There is a subscript symbol but there is not content after it. See sections <sectionRef
+sec="sSubscript"
+></sectionRef
+> and <sectionRef
+sec="sSubscriptItalic"
+></sectionRef
+>.</td
+></tr
+><tr
+><td
+><object
+type="tErrorType"
+>Missing content after superscript</object
+></td
+><td
+>There is a superscript symbol but there is not content after it. See sections <sectionRef
+sec="sSuperscript"
+></sectionRef
+> and <sectionRef
+sec="sSuperscriptItalic"
+></sectionRef
+>.</td
+></tr
+><tr
+><td
+><object
+type="tErrorType"
+>Missing opening parenthesis</object
+></td
+><td
+>An opening parenthesis needs to be inserted. This can happen when there is a node with content followed by a node type or a line type. See sections <sectionRef
+sec="sNodeTypes"
+></sectionRef
+> and <sectionRef
+sec="sLiineTypes"
+></sectionRef
+>.</td
+></tr
+><tr
+><td
+><object
+type="tErrorType"
+>Syntax error in description</object
+></td
+><td
+>Perhaps obviously, this indicates some kind of error, but <object
+type="tLingTree"
+></object
+> failed to identify it. Look at where it was found and see if you can guess what might be wrong.</td
+></tr
+><tr
+><td
+><object
+type="tErrorType"
+>There is content after a completed tree</object
+></td
+><td
+>A “completed tree” means that there is a matching closing parenthesis for the first opening parenthesis. This error indicates that some content or nodes occur after the closing parenthesis which matches the first opening parenthesis. It may be that you need another opening parenthesis before the first opening parenthesis or maybe some content was keyed in the wrong place at the end.</td
+></tr
+><tr
+><td
+><object
+type="tErrorType"
+>Too many closing parentheses</object
+></td
+><td
+>A closing parenthesis was found that does not have a matching opening parenthesis.</td
+></tr
+><tr
+><td
+><object
+type="tErrorType"
+>Too many line types</object
+></td
+><td
+>Only one line type is allowed in a node. See section <sectionRef
+sec="sLiineTypes"
+></sectionRef
+>.</td
+></tr
+><tr
+><td
+><object
+type="tErrorType"
+>Too many node types</object
+></td
+><td
+>Only one node type is allowed in a node. See section <sectionRef
+sec="sNodeTypes"
+></sectionRef
+>.</td
+></tr
+></table
+></example
+></section1
+><section1
+id="sKnownProblems"
+><secTitle
+>Known problems</secTitle
+><p
+>The following items are known to be less than desirable with this version of <object
+type="tLingTree"
+></object
+>:</p
+><ul
+><li
+>When you have a <object
+type="tLingTree"
+></object
+> description file created by the older version of <object
+type="tLingTree"
+></object
+> (version 0.7.5 or earlier), this newer version of <object
+type="tLingTree"
+></object
+> will open and attempt to convert the file to the new format. Sometimes, the conversion process works less than ideally.<endnote
+id="nMigration"
+><p
+>The main issue here is that the size units in the older version were in .01 mm while the new version uses pixels. With some high resolution screens (at least on Windows operating systems), the conversion process is not always correct.</p
+></endnote
+> For example, the line thickness may be quite large. In such cases, use the items in the <object
+type="tMenuItem"
+>Format</object
+> menu to fix the problem (see section <sectionRef
+sec="sFormatting"
+></sectionRef
+>, especially <sectionRef
+sec="sTreeSpacing"
+></sectionRef
+> and <sectionRef
+sec="sBackgroundLine"
+></sectionRef
+>).</li
+><li
+>When showing matching parentheses while using arrow keys (see section <sectionRef
+sec="sArrowKeysShowMatching"
+></sectionRef
+>), if you type several arrow keys quickly, the cursor caret may not be where you expect it. Either<ul
+><li
+>turn off the show matching parentheses with the arrow keys option;</li
+><li
+>set the delay to be shorter (see section <sectionRef
+sec="sDelayMatching"
+></sectionRef
+>); or</li
+><li
+>wait for the matching parenthesis to show before pressing the next arrow key.</li
+></ul
+></li
+></ul
+></section1
+><section1
+id="sSupport"
+><secTitle
+>Support</secTitle
+><p
+>If you have any questions with <object
+type="tLingTree"
+></object
+> or find bugs in it, please send an email to <link
+href="mailto:lingtree_support@sil.org"
+>lingtree_support@sil.org</link
+> or go to the <object
+type="tLingTree"
+></object
+> web site at <link
+href="https://software.sil.org/lingtree/"
+>https://​software.sil.org/​lingtree/</link
+>.</p
+></section1
+><backMatter
+><endnotes
+></endnotes
+><references
+></references
+></backMatter
+><languages
+><language
+id="lVernacular"
+name="vernacular"
+></language
+><language
+id="lGloss"
+name="gloss"
+></language
+><language
+id="en"
+></language
+><language
+font-family="Ezra SIL"
+id="lHebrew"
+></language
+><language
+color="black"
+font-family="Courier New"
+id="lTreeExample"
+></language
+></languages
+><types
+><comment
+>The following types are provided as pre-set examples. You may well want to create your own types that refer to one or more of these. You do that by typing in the names of the types in the types attribute of your type.</comment
+><type
+font-weight="bold"
+id="tBold"
+></type
+><type
+font-style="italic"
+font-weight="bold"
+id="tBoldItalic"
+></type
+><type
+font-weight="bold"
+id="tEmphasis"
+></type
+><type
+id="tGrammaticalGloss"
+types="tSmallCaps"
+></type
+><type
+font-style="italic"
+id="tItalic"
+></type
+><type
+cssSpecial="text-decoration:none"
+id="tNoOverline"
+xsl-foSpecial="text-decoration=&quot;no-overline&quot;"
+></type
+><type
+font-variant="normal"
+id="tNoSmallCaps"
+></type
+><type
+cssSpecial="text-decoration:none"
+id="tNoStrikethrough"
+xsl-foSpecial="text-decoration=&quot;no-line-through&quot;"
+></type
+><type
+cssSpecial="text-decoration:none"
+id="tNoUnderline"
+xsl-foSpecial="text-decoration=&quot;no-underline&quot;"
+></type
+><type
+cssSpecial="text-decoration:overline"
+id="tOverline"
+xsl-foSpecial="text-decoration=&quot;overline&quot;"
+></type
+><type
+font-style="normal"
+font-variant="normal"
+font-weight="normal"
+id="tRegular"
+></type
+><type
+font-family="Charis SIL Small Caps"
+id="tSmallCaps"
+></type
+><type
+XeLaTeXSpecial="line-through"
+cssSpecial="text-decoration:line-through"
+id="tStrikethrough"
+xsl-foSpecial="text-decoration=&quot;line-through&quot;"
+></type
+><type
+XeLaTeXSpecial="subscript"
+cssSpecial="vertical-align:sub;"
+font-size="65%"
+id="tSubscript"
+xsl-foSpecial="baseline-shift='sub'"
+></type
+><type
+XeLaTeXSpecial="superscript"
+cssSpecial="vertical-align:super;"
+font-size="65%"
+id="tSuperscript"
+xsl-foSpecial="baseline-shift='super'"
+></type
+><type
+XeLaTeXSpecial="underline"
+cssSpecial="text-decoration:underline"
+id="tUnderline"
+xsl-foSpecial="text-decoration=&quot;underline&quot;"
+></type
+><comment
+>Add your custom types here.</comment
+><type
+id="tDialogTitle"
+></type
+><type
+color="#800080"
+font-family="Arial"
+font-size="12pt"
+font-style="italic"
+id="tEmpty"
+></type
+><type
+color="red"
+id="tErrorType"
+></type
+><type
+color="blue"
+font-family="Arial"
+id="tGloss"
+></type
+><type
+color="#009900"
+font-family="Charis SIL"
+font-weight="bold"
+id="tKey"
+></type
+><type
+color="red"
+font-family="Arial"
+font-size="12pt"
+id="tLexical"
+></type
+><type
+before="LingTree"
+color="navy"
+id="tLingTree"
+></type
+><type
+color="maroon"
+id="tMenuItem"
+></type
+><type
+color="black"
+font-family="Arial"
+font-size="12pt"
+id="tNonterminal"
+></type
+><type
+color="black"
+font-family="Monospaced"
+font-weight="bold"
+id="tSynTagmeme"
+></type
+><type
+color="navy"
+id="tTool"
+></type
+></types
+><contentControl
+><contentTypes
+><contentType
+id="ctKeyColor"
+>Tree description in color/font</contentType
+><contentType
+id="ctRegular"
+>Tree description plain</contentType
+></contentTypes
+><contentControlChoices
+><contentControlChoice
+active="yes"
+exclude="ctKeyColor"
+>Tree description regular</contentControlChoice
+><contentControlChoice
+active="no"
+>Tree description color/font</contentControlChoice
+></contentControlChoices
+></contentControl
+></lingPaper
+><publisherStyleSheet
+><publisherStyleSheetName
+>SIL International Paper Stylesheet</publisherStyleSheetName
+><publisherStyleSheetVersion
+>0.4.5</publisherStyleSheetVersion
+><pageLayout
+><pageWidth
+>8.5in</pageWidth
+><pageHeight
+>11in</pageHeight
+><pageTopMargin
+>.7in</pageTopMargin
+><pageBottomMargin
+>.675in</pageBottomMargin
+><pageInsideMargin
+>1.5in</pageInsideMargin
+><pageOutsideMargin
+>1in</pageOutsideMargin
+><useThesisSubmissionStyle
+></useThesisSubmissionStyle
+><headerMargin
+>.25in</headerMargin
+><footerMargin
+>.25in</footerMargin
+><paragraphIndent
+>1em</paragraphIndent
+><blockQuoteIndent
+>.125in</blockQuoteIndent
+><lineSpacing
+></lineSpacing
+><defaultFontFamily
+>Charis SIL</defaultFontFamily
+><basicPointSize
+>12</basicPointSize
+><footnotePointSize
+>10</footnotePointSize
+><footnoteLine
+leaderlength="2in"
+leaderpattern="rule"
+textalign="left"
+></footnoteLine
+><linkLayout
+color="blue"
+decoration="underline"
+><abbrRefLinkLayout
+></abbrRefLinkLayout
+><appendixRefLinkLayout
+></appendixRefLinkLayout
+><citationLinkLayout
+></citationLinkLayout
+><contentsLinkLayout
+></contentsLinkLayout
+><endnoteRefLinkLayout
+></endnoteRefLinkLayout
+><exampleRefLinkLayout
+></exampleRefLinkLayout
+><genericRefLinkLayout
+></genericRefLinkLayout
+><indexLinkLayout
+></indexLinkLayout
+><interlinearRefLinkLayout
+></interlinearRefLinkLayout
+><linkLinkLayout
+></linkLinkLayout
+><sectionRefLinkLayout
+></sectionRefLinkLayout
+><urlLinkLayout
+></urlLinkLayout
+></linkLayout
+><headerFooterPageStyles
+font-family="Times New Roman"
+font-size="9pt"
+font-style="italic"
+><headerFooterFirstPage
+><header
+><leftHeaderFooterItem
+><nothing
+></nothing
+></leftHeaderFooterItem
+><centerHeaderFooterItem
+><nothing
+></nothing
+></centerHeaderFooterItem
+><rightHeaderFooterItem
+><nothing
+></nothing
+></rightHeaderFooterItem
+></header
+><footer
+><leftHeaderFooterItem
+><nothing
+></nothing
+></leftHeaderFooterItem
+><centerHeaderFooterItem
+><pageNumber
+font-size="smaller"
+font-style="italic"
+></pageNumber
+></centerHeaderFooterItem
+><rightHeaderFooterItem
+><nothing
+></nothing
+></rightHeaderFooterItem
+></footer
+></headerFooterFirstPage
+><headerFooterOddEvenPages
+><headerFooterEvenPage
+><header
+><leftHeaderFooterItem
+><pageNumber
+font-size="smaller"
+font-style="italic"
+></pageNumber
+></leftHeaderFooterItem
+><centerHeaderFooterItem
+><nothing
+></nothing
+></centerHeaderFooterItem
+><rightHeaderFooterItem
+><paperTitle
+font-size="smaller"
+font-style="italic"
+></paperTitle
+></rightHeaderFooterItem
+></header
+><footer
+><leftHeaderFooterItem
+><nothing
+></nothing
+></leftHeaderFooterItem
+><centerHeaderFooterItem
+><nothing
+></nothing
+></centerHeaderFooterItem
+><rightHeaderFooterItem
+><nothing
+></nothing
+></rightHeaderFooterItem
+></footer
+></headerFooterEvenPage
+><headerFooterOddPage
+><header
+><leftHeaderFooterItem
+><sectionTitle
+font-size="smaller"
+font-style="italic"
+></sectionTitle
+></leftHeaderFooterItem
+><centerHeaderFooterItem
+><nothing
+></nothing
+></centerHeaderFooterItem
+><rightHeaderFooterItem
+><pageNumber
+font-size="smaller"
+font-style="italic"
+></pageNumber
+></rightHeaderFooterItem
+></header
+><footer
+><leftHeaderFooterItem
+><nothing
+></nothing
+></leftHeaderFooterItem
+><centerHeaderFooterItem
+><nothing
+></nothing
+></centerHeaderFooterItem
+><rightHeaderFooterItem
+><nothing
+></nothing
+></rightHeaderFooterItem
+></footer
+></headerFooterOddPage
+></headerFooterOddEvenPages
+></headerFooterPageStyles
+></pageLayout
+><frontMatterLayout
+><comment
+>Front Matter Layout</comment
+><titleLayout
+font-size="18pt"
+font-weight="bold"
+pagebreakbefore="yes"
+spacebefore="1.25in"
+startonoddpage="yes"
+textalign="center"
+></titleLayout
+><subtitleLayout
+font-size="14pt"
+font-weight="bold"
+textalign="center"
+></subtitleLayout
+><authorLayout
+font-style="italic"
+textalign="center"
+></authorLayout
+><affiliationLayout
+font-style="italic"
+textalign="center"
+></affiliationLayout
+><emailAddressLayout
+font-size="90%"
+textalign="center"
+></emailAddressLayout
+><presentedAtLayout
+font-size="10pt"
+textalign="center"
+textbefore="Presented at "
+></presentedAtLayout
+><dateLayout
+font-size="10pt"
+textalign="center"
+></dateLayout
+><versionLayout
+font-size="10pt"
+textalign="center"
+></versionLayout
+><contentsLayout
+font-size="14pt"
+font-weight="bold"
+spaceafter="12pt"
+spacebefore="24pt"
+textalign="center"
+useperiodafterappendixletter="yes"
+></contentsLayout
+><abstractLayout
+font-size="14pt"
+font-weight="bold"
+spaceafter="12pt"
+spacebefore="24pt"
+textalign="center"
+></abstractLayout
+><acknowledgementsLayout
+font-size="14pt"
+font-weight="bold"
+spaceafter="12pt"
+spacebefore="24pt"
+textalign="center"
+></acknowledgementsLayout
+><prefaceLayout
+font-size="14pt"
+font-weight="bold"
+spaceafter="12pt"
+spacebefore="24pt"
+textalign="center"
+></prefaceLayout
+></frontMatterLayout
+><bodyLayout
+><comment
+>Body Layout</comment
+><section1Layout
+><sectionTitleLayout
+font-size="14pt"
+font-weight="bold"
+spaceafter="12pt"
+spacebefore="24pt"
+textalign="center"
+></sectionTitleLayout
+></section1Layout
+><section2Layout
+><sectionTitleLayout
+font-size="12pt"
+font-weight="bold"
+spaceafter="12pt"
+spacebefore="12pt"
+textalign="start"
+></sectionTitleLayout
+></section2Layout
+><section3Layout
+><sectionTitleLayout
+font-style="italic"
+font-weight="bold"
+spaceafter="12pt"
+spacebefore="12pt"
+textalign="start"
+></sectionTitleLayout
+></section3Layout
+><section4Layout
+><sectionTitleLayout
+font-style="italic"
+spaceafter="12pt"
+spacebefore="12pt"
+textalign="start"
+></sectionTitleLayout
+></section4Layout
+><section5Layout
+ignore="yes"
+><sectionTitleLayout
+></sectionTitleLayout
+></section5Layout
+><section6Layout
+ignore="yes"
+><sectionTitleLayout
+></sectionTitleLayout
+></section6Layout
+></bodyLayout
+><backMatterLayout
+><comment
+>Back Matter Layout</comment
+><acknowledgementsLayout
+font-size="14pt"
+font-weight="bold"
+spaceafter="12pt"
+spacebefore="24pt"
+textalign="center"
+></acknowledgementsLayout
+><appendixLayout
+><appendixTitleLayout
+font-size="14pt"
+font-weight="bold"
+spaceafter="12pt"
+spacebefore="24pt"
+textafterletter=". "
+textalign="center"
+></appendixTitleLayout
+></appendixLayout
+><glossaryLayout
+font-size="14pt"
+font-weight="bold"
+spaceafter="12pt"
+spacebefore="24pt"
+textalign="center"
+></glossaryLayout
+><referencesTitleLayout
+font-size="14pt"
+font-weight="bold"
+spaceafter="12pt"
+spacebefore="24pt"
+textalign="center"
+></referencesTitleLayout
+><xi:include
+href="../../asheninka/doc/SILInternationalReferencesStylesheet.xml"
+xpointer="element(/1)"
+xmlns:xi="http://www.w3.org/2001/XInclude"
+></xi:include
+><indexLayout
+font-size="14pt"
+font-weight="bold"
+spaceafter="12pt"
+spacebefore="24pt"
+textalign="center"
+></indexLayout
+></backMatterLayout
+><contentLayout
+><comment
+>Document Content Layout</comment
+><exampleLayout
+indent-after=".125in"
+indent-before=".125in"
+></exampleLayout
+><interlinearSourceStyle
+></interlinearSourceStyle
+><endnoteRefLayout
+></endnoteRefLayout
+><figureLayout
+captionLocation="after"
+><figureLabelLayout
+textafter=" "
+></figureLabelLayout
+><figureNumberLayout
+></figureNumberLayout
+><figureCaptionLayout
+textbefore=" "
+></figureCaptionLayout
+></figureLayout
+><figureRefLayout
+></figureRefLayout
+><tablenumberedLayout
+captionLocation="after"
+><tablenumberedLabelLayout
+textafter=" "
+></tablenumberedLabelLayout
+><tablenumberedNumberLayout
+></tablenumberedNumberLayout
+><tablenumberedCaptionLayout
+textbefore="  "
+></tablenumberedCaptionLayout
+></tablenumberedLayout
+><tablenumberedRefLayout
+></tablenumberedRefLayout
+></contentLayout
+></publisherStyleSheet
+></styledPaper
+></xlingpaper
+>

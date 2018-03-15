@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<lingTreeTree dbversion="2">
+    <backgroundColor>#ffffff</backgroundColor>
+    <description>((\O σ (O (\L t)) (N (R (\L e)))) (\O σ (O (\L p)) (N (R (\L i)) (C (\L k)))))</description>
+    <emptyElementFontInfo>
+        <color>#800080</color>
+        <fontFamily>Arial</fontFamily>
+        <fontSize>12.0</fontSize>
+        <fontType>Italic</fontType>
+    </emptyElementFontInfo>
+    <glossFontInfo>
+        <color>#0000ff</color>
+        <fontFamily>Arial</fontFamily>
+        <fontSize>12.0</fontSize>
+        <fontType>Regular</fontType>
+    </glossFontInfo>
+    <horizontalGap>20.0</horizontalGap>
+    <horizontalOffset>154.666015625</horizontalOffset>
+    <initialXCoordinate>10.0</initialXCoordinate>
+    <initialYCoordinate>-20.0</initialYCoordinate>
+    <lexGlossGapAdjustment>0.0</lexGlossGapAdjustment>
+    <lexicalFontInfo>
+        <color>#ff0000</color>
+        <fontFamily>Arial</fontFamily>
+        <fontSize>12.0</fontSize>
+        <fontType>Regular</fontType>
+    </lexicalFontInfo>
+    <lineColor>#000000</lineColor>
+    <lineWidth>1.0</lineWidth>
+    <nonTerminalFontInfo>
+        <color>#000000</color>
+        <fontFamily>Arial</fontFamily>
+        <fontSize>12.0</fontSize>
+        <fontType>Regular</fontType>
+    </nonTerminalFontInfo>
+    <saveAsPng>false</saveAsPng>
+    <saveAsSVG>true</saveAsSVG>
+    <showFlatView>true</showFlatView>
+    <useRightToLeftOrientation>false</useRightToLeftOrientation>
+    <verticalGap>20.0</verticalGap>
+</lingTreeTree>

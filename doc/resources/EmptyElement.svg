@@ -1,0 +1,23 @@
+﻿<?xml version='1.0' standalone='no'?>
+<svg width='177.41015625' height='139.16796875' version='1.1' xmlns='http://www.w3.org/2000/svg' contentScriptType='text/javascript'>
+<script  id="clientEventHandlersJS">
+function OnClickLingTreeNode(node){}
+</script>
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="46.181640625" y="20.0" font-family="Arial" font-size="12.0" fill="#000000">QP</text>
+<text x="10.3369140625" y="53.40625" font-family="Arial" font-size="12.0" fill="#000000">DP</text>
+<line x1="54.8505859375" y1="25.54296875" x2="18.671875" y2="39.54296875" stroke="#000000" stroke-width="1.0"/>
+<text x="10.0" y="86.8125" font-family="Arial" font-size="12.0" fill="#000000">pro</text>
+<line x1="18.671875" y1="58.94921875" x2="18.671875" y2="72.94921875" stroke="#000000" stroke-width="1.0"/>
+<text x="85.216796875" y="53.40625" font-family="Arial" font-size="12.0" fill="#000000">Q'</text>
+<line x1="54.8505859375" y1="25.54296875" x2="91.029296875" y2="39.54296875" stroke="#000000" stroke-width="1.0"/>
+<text x="51.345703125" y="86.8125" font-family="Arial" font-size="12.0" fill="#000000">Q</text>
+<line x1="91.029296875" y1="58.94921875" x2="56.0126953125" y2="72.94921875" stroke="#000000" stroke-width="1.0"/>
+<text x="54.345703125" y="120.21875" font-family="Arial" font-size="12.0" fill="#000000">t</text>
+<line x1="56.0126953125" y1="92.35546875" x2="56.0126953125" y2="106.35546875" stroke="#000000" stroke-width="1.0"/>
+<text x="117.7109375" y="86.8125" font-family="Arial" font-size="12.0" fill="#000000">DP</text>
+<line x1="91.029296875" y1="58.94921875" x2="126.0458984375" y2="72.94921875" stroke="#000000" stroke-width="1.0"/>
+<text x="84.681640625" y="120.21875" font-family="Arial" font-size="12.0" fill="#ff0000">mee bzaan noo</text>
+<line x1="126.0458984375" y1="92.35546875" x2="126.0458984375" y2="106.35546875" stroke="#000000" stroke-width="1.0"/>
+<text x="94.3701171875" y="133.625" font-family="Arial" font-size="12.0" fill="#0000ff">my brothers</text>
+</svg>

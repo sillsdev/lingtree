@@ -83,6 +83,7 @@
                 <Menu mnemonicParsing="true" text="%menu.help">
                   <items>
                     <MenuItem mnemonicParsing="true" onAction="#handleQuickReferenceGuide" text="%menu.quickreferenceguide" />
+                    <MenuItem mnemonicParsing="true" onAction="#handleUserDocumentation" text="%menu.userdocumentation" />
                     <SeparatorMenuItem />
                     <MenuItem mnemonicParsing="true" onAction="#handleAbout" text="%menu.about" />
                   </items>
