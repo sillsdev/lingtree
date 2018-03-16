@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="build-do-deploy" basedir="." xmlns:fx="javafx:com.sun.javafx.tools.ant">
+	<import file="${basedir}/build-init-fx-tasks.xml" as="nested"/>
+	<import file="${basedir}/build-setup-staging-area.xml" as="nested"/>
+	<import file="${basedir}/build-do-compile.xml" as="nested"/>
+
+	<property name="appName" value="LingTree"/>
+	<property name="version" value="1.0.0.0"/>
+
+	<target name="do-deploy" depends="nested.setup-staging-area, nested.do-compile, nested.init-fx-tasks">
+		<antcall target="build-windows-iss-file"/>
+
+		<delete file="dist" />
+		<delete file="deploy" />
+
+		<mkdir dir="dist" />
+		<mkdir dir="dist/libs" />
+		<copy todir="dist/libs">
+			<fileset dir="externalLibs">
+				<include name="*" />
+			</fileset>
+		</copy>
+
+		<mkdir dir="dist/doc" />
+		<copy todir="dist/doc">
+			<fileset dir="doc">
+				<include name="*" />
+			</fileset>
+		</copy>
+
+		<mkdir dir="dist/resources" />
+	    <copy todir="dist/resources">
+	      <fileset dir="../src/org/sil/lingtree/resources">
+	        <include name="**" />
+	      </fileset>
+	    </copy>
+
+		<fx:resources id="appRes">
+			<fx:fileset dir="dist" includes="LingTree.jar" />
+			<fx:fileset dir="dist" includes="doc/**" />
+			<fx:fileset dir="dist" includes="libs/*" />
+			<fx:fileset dir="dist" includes="resources/**" />
+		</fx:resources>
+
+		<fx:application
+			id="fxApplication"
+			name="${appName}"
+			mainClass="org.sil.lingtree.MainApp"
+			version="${version}" />
+
+		<mkdir dir="build/classes/META-INF" />
+
+
+
+		<fx:jar destfile="dist/LingTree.jar">
+			<fx:application refid="fxApplication" />
+			<fileset dir="build/classes">
+			</fileset>
+			<fx:resources refid="appRes" />
+
+			<manifest>
+				<attribute name="Implementation-Vendor" value="sil.org" />
+				<attribute name="Implementation-Title" value="${appName}" />
+				<attribute name="Implementation-Version" value="${version}" />
+				<attribute name="JavaFX-Feature-Proxy" value="None" />
+			</manifest>
+		</fx:jar>
+
+
+		<mkdir dir="deploy" />
+		<echo message="Passing nativeBundles as:${nativeBundles}"/>
+			<!-- Need to use ${basedir} because somehow the ant task is calculating the directory differently -->
+		<fx:deploy
+			embedJNLP="false"
+			extension="false"
+			includeDT="false"
+			offlineAllowed="true"
+			outdir="${basedir}/deploy"
+			outfile="LingTree"
+			nativeBundles="${nativeBundles}"
+			updatemode="background">
+
+			<fx:platform basedir="${java.home}">
+				<fx:jvmarg value="-Xmx1024m" />
+			</fx:platform>
+			<fx:info
+				category="Education"
+				title="LingTree"
+				vendor="SIL International"
+				license="LGPL"
+				copyright="© 2002-2018 SIL International"
+				description="LingTree is a tool that lets you easily describe a linguistic tree and produce a graphic image of it.">
+				<fx:association extension="tre" mimetype="text/x-lingtree" description="LingTree file"/>
+			</fx:info>
+
+			<fx:application refId="fxApplication" />
+			<fx:resources refid="appRes" />
+			<fx:preferences shortcut="true" menu="true" install="true" />
+
+		</fx:deploy>
+
+		<echo message="Renaming from '${basedir}/deploy/bundles/${mainFileName}-${version}.${nativeBundles}' to '${basedir}/deploy/bundles/${mainFileName}${processorType}-${version}.${nativeBundles}'"/>
+		<!-- Note: at least on Windows 10, we have to overtly delete the target file or the move operation fails if it already exists. -->
+		<delete file="${basedir}/deploy/bundles/${mainFileName}${processorType}-${version}.${nativeBundles}"/>
+		<move file="${basedir}/deploy/bundles/${mainFileName}-${version}.${nativeBundles}" toFile="${basedir}/deploy/bundles/${mainFileName}${processorType}-${version}.${nativeBundles}"/>
+
+		</target>
+</project>
