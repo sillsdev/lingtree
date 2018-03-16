@@ -20,7 +20,7 @@ type="tLingTree"
 ><emailAddress
 >lingtree_support@sil.org</emailAddress
 ><date
->March 15, 2018</date
+>March 16, 2018</date
 ><version
 >Version 1.0.0</version
 ><version
@@ -724,7 +724,7 @@ src="resources/EmptyElement.svg"
 ></chart
 ></example
 ><p
->Notice that the empty pronoun and trace nodes are treated as non-terminal nodes..</p
+>Notice that the empty pronoun and trace nodes are treated as non-terminal nodes.</p
 ></section3
 ></section2
 ><section2
@@ -857,7 +857,60 @@ type="tSynTagmeme"
 > or the <object
 type="tSynTagmeme"
 >\E</object
-> is not crucial. Either order will work. You may find that it is easier to read and think about, though, if you key the <object
+> is not crucial. Either order will work. If you key what is in <exampleRef
+letter="xTriangleTL"
+num="xTriangleTL"
+></exampleRef
+>,</p
+><example
+num="xTriangleTL"
+><word
+><langData
+lang="lTreeExample"
+>(NP (\T \L all the King’s men))</langData
+></word
+></example
+><pc
+>it will look like what is in <exampleRef
+letter="xTriangleTLTree"
+num="xTriangleTLTree"
+></exampleRef
+>.</pc
+><example
+num="xTriangleTLTree"
+><chart
+><img
+XeLaTeXSpecial="scaled='1250'"
+src="resources/AllTheKingsMenTriangleTL.svg"
+></img
+></chart
+></example
+><p
+>On the other hand, if you key the <object
+type="tSynTagmeme"
+>\T</object
+> and <object
+type="tSynTagmeme"
+>\L</object
+> in the other order, as in <exampleRef
+letter="xTriangleLT"
+num="xTriangleLT"
+></exampleRef
+>, it will also look exactly like it does in <exampleRef
+letter="xTriangleTLTree"
+num="xTriangleTLTree"
+></exampleRef
+>.</p
+><example
+num="xTriangleLT"
+><word
+><langData
+lang="lTreeExample"
+>(NP (\L \T all the King’s men))</langData
+></word
+></example
+><p
+>You may find that it is easier to read and think about if you key the <object
 type="tSynTagmeme"
 >\T</object
 > first since it has to do with what occurs over the node, while the <object
@@ -867,17 +920,6 @@ type="tSynTagmeme"
 type="tSynTagmeme"
 >\E</object
 > has to do with what is in the node.</p
-><p
->Note that if you use the “Flat” option (see section <sectionRef
-sec="sFlatTree"
-></sectionRef
->) while using triangles, you will need to also use either the <object
-type="tSynTagmeme"
->\L</object
-> or the <object
-type="tSynTagmeme"
->\G</object
-> at the same time. Otherwise, the triangle node may not be at the same level as other “flattened” nodes.</p
 ></section3
 ><section3
 id="sOmitLine"
@@ -900,6 +942,11 @@ contentType="ctKeyColor"
 letter="xOmitLineColor"
 num="xOmitLineColor"
 ></exampleRef
+><endnote
+id="nOForOnset"
+><p
+>In this particular tree diagram, “O” is an abbreviation for “Onset.”</p
+></endnote
 ></p
 ><example
 contentType="ctRegular"
@@ -1042,6 +1089,16 @@ src="resources/TepicSyllableLines.svg"
 ></img
 ></chart
 ></example
+><pc
+>The difference between <exampleRef
+letter="xOmitLineTree"
+num="xOmitLineTree"
+></exampleRef
+> and <exampleRef
+letter="xOmitLineNo"
+num="xOmitLineNo"
+></exampleRef
+> is the unlabeled node at the top.</pc
 ><p
 >You may combine the omit lines command with either a lexical item or an empty element for a given node. The order in which you key the <object
 type="tSynTagmeme"
@@ -1599,7 +1656,7 @@ num="xSubscriptSupercriptItalic"
 ><word
 ><langData
 lang="lTreeExample"
->(NP (N/S'/_j (PP)))</langData
+>(NP (N' (N/S0/_[+wh])))</langData
 ></word
 ></example
 ><example
@@ -1619,16 +1676,7 @@ type="tSynTagmeme"
 > (</object
 ><object
 type="tNonterminal"
->N</object
-><object
-type="tSynTagmeme"
->/S</object
-><object
-type="tNonterminal"
->'</object
-><object
-type="tSynTagmeme"
->/_</object
+>N'</object
 ><object
 type="tNonterminal"
 >j</object
@@ -1637,9 +1685,12 @@ type="tSynTagmeme"
 > (</object
 ><object
 type="tNonterminal"
->PP</object
+>N</object
 ><object
 type="tSynTagmeme"
+>/S0/_[+wh]<object
+type="tNonterminal"
+>'</object
 >)))</object
 ></langData
 ></word
@@ -1733,7 +1784,7 @@ src="resources/Paren.svg"
 letter="xParenNo"
 num="xParenNo"
 ></exampleRef
->.</p
+> because the parentheses are interpreted as a new tree subnode.</p
 ><example
 num="xParenNo"
 ><chart
@@ -1751,7 +1802,7 @@ id="sFormatting"
 ><secTitle
 >Formating a tree</secTitle
 ><p
->One can adjust the positioning of the tree and its nodes as well as choose the fonts, sizes, and colors for the non-terminal, lexical, gloss and empty nodes. One can also set a background color and determine the color and thickness of the lines in the trees. In addition, one can have the tree show all of its lexical and gloss items at the same vertical position (which we refer to as using a “flat” view of the tree).</p
+>You can adjust the positioning of the tree and its nodes as well as choose the fonts, sizes, and colors for the non-terminal, lexical, gloss and empty nodes. You can also set a background color and determine the color and thickness of the lines in the trees. In addition, you can have the tree show all of its lexical and gloss items at the same vertical position (which we refer to as using a “flat” view of the tree).</p
 ><p
 >All of these parameters are available on the <object
 type="tMenuItem"
@@ -1816,7 +1867,7 @@ num="xNJuanKitaNKowatl"
 ><word
 ><langData
 lang="lTreeExample"
->(IP (NP (Det (\L n (\G the))) (N' (N (\L Juan (\G John))))) (I' (I0) (VP (V' (V (\L kita (\G sees))) (NP (Det (\L n (\G the))) (N' (N (\L koatl (\G snake)))))))))</langData
+>(IP (NP (Det (\L n (\G the))) (N' (N (\L Juan (\G John))))) (I' (I/S0) (VP (V' (V (\L kita (\G sees))) (NP (Det (\L n (\G the))) (N' (N (\L koatl (\G snake)))))))))</langData
 ></word
 ></example
 ><pc
@@ -1849,6 +1900,20 @@ src="resources/NJuanKitaNKowatlFlat.svg"
 ></img
 ></chart
 ></example
+><p
+>Note that if you use the “Flat” option while using triangles (see section <sectionRef
+sec="sTriangle"
+></sectionRef
+>), you will need to also use either the <object
+type="tSynTagmeme"
+>\L</object
+> or the <object
+type="tSynTagmeme"
+>\G</object
+> at the same time as using the <object
+type="tSynTagmeme"
+>\T</object
+>. Otherwise, the triangle node may not be at the same level as other “flattened” nodes.</p
 ></section2
 ><section2
 id="sRigtToLeft"
@@ -1869,7 +1934,14 @@ num="xHebrewRTLTree"
 letter="xHebrewRTL"
 num="xHebrewRTL"
 ></exampleRef
->.</p
+> looks like example <exampleRef
+letter="xHebrewRTLTree"
+num="xHebrewRTLTree"
+></exampleRef
+> when the <object
+type="tMenuItem"
+>Draw tree right-to-left</object
+> is checked.</p
 ><example
 num="xHebrewRTL"
 ><word
@@ -1899,19 +1971,6 @@ lang="lHebrew"
 > (\G the earth ) ) )) ) ))</langData
 ></word
 ></example
-><pc
->looks like example <exampleRef
-letter="xHebrewRTLTree"
-num="xHebrewRTLTree"
-></exampleRef
-> when the <object
-type="tMenuItem"
->Draw tree right-to-left</object
-> is checked and example <exampleRef
-letter="xHebrewLTRTree"
-num="xHebrewLTRTree"
-></exampleRef
-> when it is not checked.</pc
 ><example
 num="xHebrewRTLTree"
 ><chart
@@ -1921,6 +1980,15 @@ src="resources/Hebrew.svg"
 ></img
 ></chart
 ></example
+><pc
+>The output looks like example <exampleRef
+letter="xHebrewLTRTree"
+num="xHebrewLTRTree"
+></exampleRef
+> when the <object
+type="tMenuItem"
+>Draw tree right-to-left</object
+>  is left unchecked.</pc
 ><example
 num="xHebrewLTRTree"
 ><chart
@@ -2028,7 +2096,7 @@ width="450"
 ></chart
 ></example
 ><pc
->Each row has a description of the parameter and a box to key a numerical value. You can use negative numbers.</pc
+>Each row has a description of the parameter and a box to key a numerical value. You can use negative numbers, if necessary.  For example, if the difference between the lexical and gloss font is such that there is too much space between the bottom of the lexical items and the top of the gloss items, you can set the “Vertical space between lexical node and gloss node” to a negative value.</pc
 ></section2
 ><section2
 id="sBackgroundLine"
@@ -2212,7 +2280,7 @@ type="tMenuItem"
 > menu item is <object
 type="tMenuItem"
 >Delay to use when showing matching parentheses</object
->. The default delay is 750 milliseconds (i.e., three quarters of a second). You can change the delay value to be shorter or longer by using this menu item. The shortest allowed value is 125 milliseconds (i.e., one eighth of a second) and the longest value allowed is 4000 milliseconds (i.e., 4 seconds).</p
+>. The default delay is 750 milliseconds (i.e., three quarters of a second). Depending on your typing speed, you want to change this value.  Use this menu item to change the delay value to be shorter or longer. The shortest allowed value is 125 milliseconds (i.e., one eighth of a second) and the longest value allowed is 4000 milliseconds (i.e., 4 seconds).</p
 ></section2
 ><section2
 id="sInterfaceLanguage"

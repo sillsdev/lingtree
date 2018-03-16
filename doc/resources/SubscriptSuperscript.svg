@@ -1,14 +1,14 @@
 ﻿<?xml version='1.0' standalone='no'?>
-<svg width='36.669921875' height='100.35546074999999' version='1.1' xmlns='http://www.w3.org/2000/svg' contentScriptType='text/javascript'>
+<svg width='49.407615661621094' height='92.35546875' version='1.1' xmlns='http://www.w3.org/2000/svg' contentScriptType='text/javascript'>
 <script  id="clientEventHandlersJS">
 function OnClickLingTreeNode(node){}
 </script>
 <rect width="100%" height="100%" fill="#ffffff"/>
-<text x="10.0" y="20.0" font-family="Arial" font-size="12.0" fill="#000000">NP</text>
-<text x="12.37158203125" y="53.40625" font-family="Arial" font-size="12.0" fill="#000000">N</text>
-<text x="21.03759765625" y="55.08625" font-family="Arial" font-size="8.399999999999999" font-style="italic" fill="#000000">j</text>
-<text x="21.03759765625" y="49.40629" font-family="Arial" font-size="8.399999999999999" fill="#000000">'</text>
-<line x1="18.3349609375" y1="25.54296875" x2="18.3349609375" y2="39.54296875" stroke="#000000" stroke-width="1.0"/>
-<text x="10.3310546875" y="94.81249199999999" font-family="Arial" font-size="12.0" fill="#000000">PP</text>
-<line x1="18.3349609375" y1="58.94921875" x2="18.3349609375" y2="80.94921074999999" stroke="#000000" stroke-width="1.0"/>
+<text x="16.368846893310547" y="20.0" font-family="Arial" font-size="12.0" fill="#000000">NP</text>
+<text x="19.225292205810547" y="53.40625" font-family="Arial" font-size="12.0" fill="#000000">N'</text>
+<line x1="24.703807830810547" y1="25.54296875" x2="24.703807830810547" y2="39.54296875" stroke="#000000" stroke-width="1.0"/>
+<text x="10.0" y="86.8125" font-family="Arial" font-size="12.0" fill="#000000">N</text>
+<text x="18.666015625" y="88.4925" font-family="Arial" font-size="8.399999999999999" font-style="italic" fill="#000000">[+wh]</text>
+<text x="18.666015625" y="82.81254" font-family="Arial" font-size="8.399999999999999" fill="#000000">0</text>
+<line x1="24.703807830810547" y1="58.94921875" x2="24.703807830810547" y2="72.94921875" stroke="#000000" stroke-width="1.0"/>
 </svg>

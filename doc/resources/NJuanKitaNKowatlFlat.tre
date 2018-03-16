@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <lingTreeTree dbversion="2">
     <backgroundColor>#ffffff</backgroundColor>
-    <description>(IP (NP (Det (\L n (\G the))) (N' (N (\L Juan (\G John))))) (I' (I0) (VP (V' (V (\L kita (\G sees))) (NP (Det (\L n (\G the))) (N' (N (\L koatl (\G snake)))))))))</description>
+    <description>(IP (NP (Det (\L n (\G the))) (N' (N (\L Juan (\G John))))) (I' (I/S0) (VP (V' (V (\L kita (\G sees))) (NP (Det (\L n (\G the))) (N' (N (\L koatl (\G snake)))))))))</description>
     <emptyElementFontInfo>
         <color>#000000</color>
         <fontFamily>Arial</fontFamily>

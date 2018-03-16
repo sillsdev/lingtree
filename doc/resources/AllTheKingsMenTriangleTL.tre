@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <lingTreeTree dbversion="2">
     <backgroundColor>#ffffff</backgroundColor>
-    <description>(NP (N' (N/S0/_[+wh])))</description>
+    <description>(NP (\T \L all the King’s men))</description>
     <emptyElementFontInfo>
         <color>#000000</color>
         <fontFamily>Arial</fontFamily>
@@ -15,7 +15,7 @@
         <fontType>Regular</fontType>
     </glossFontInfo>
     <horizontalGap>20.0</horizontalGap>
-    <horizontalOffset>59.407615661621094</horizontalOffset>
+    <horizontalOffset>124.716796875</horizontalOffset>
     <initialXCoordinate>10.0</initialXCoordinate>
     <initialYCoordinate>20.0</initialYCoordinate>
     <lexGlossGapAdjustment>0.0</lexGlossGapAdjustment>
