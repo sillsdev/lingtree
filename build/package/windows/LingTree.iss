@@ -1,5 +1,4 @@
-
-			;This file will be executed next to the application bundle image
+;This file will be executed next to the application bundle image
 ;I.e. current directory will contain folder LingTree with application files
 [Setup]
 AppId={{fxApplication}}
@@ -23,7 +22,7 @@ DefaultGroupName=SIL International
 ;Optional License
 LicenseFile=
 ;WinXP or above
-MinVersion=0,5.1 
+MinVersion=0,5.1
 OutputBaseFilename=LingTree-1.0.0.0
 Compression=lzma
 SolidCompression=yes
@@ -32,7 +31,7 @@ SetupIconFile=LingTree\LingTree.ico
 UninstallDisplayIcon={app}\LingTree.ico
 UninstallDisplayName=LingTree version 1.0.0.0
 WizardImageStretch=No
-WizardSmallImageFile=LingTree-setup-icon.bmp   
+WizardSmallImageFile=LingTree-setup-icon.bmp
 ArchitecturesInstallIn64BitMode=x64
 ChangesAssociations=yes
 
@@ -78,7 +77,7 @@ begin
 // Possible future improvements:
 //   if version less or same => just launch app
 //   if upgrade => check if same app is running and wait for it to exit
-//   Add pack200/unpack200 support? 
+//   Add pack200/unpack200 support?
   Result := True;
 end;
 	

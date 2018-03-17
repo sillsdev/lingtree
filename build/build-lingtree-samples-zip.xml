@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<project name="LingTree" default="do-zip" basedir="."  xmlns:fx="javafx:com.sun.javafx.tools.ant">
+	<target name="do-zip">
+		<zip destfile="${basedir}/deploy/bundles/lingtreeSamples.zip" basedir="${basedir}/../doc/resources" includes="*.tre" excludes="*.png,*.svg,*.pdf"/>
+	</target>
+</project>
