@@ -41,10 +41,10 @@ public class Constants {
 	public static final String MIGRATION_XSLT_FILE_NAME = "resources/DataMigration";
 
 	// Unit Testing constants
-	public static final String UNIT_TEST_DATA_FILE_NAME = "test/org/sil/lingtree/testData/TestData.";
-	public static final String UNIT_TEST_DATA_FILE = "test/org/sil/lingtree/testData/TestData.tre";
-	public static final String UNIT_TEST_DATA_FILE_VERSION_000 = "test/org/sil/lingtree/testData/TestDataVersion000.tre";
-	public static final String UNIT_TEST_DATA_FILE_VERSION_001 = "test/org/sil/lingtree/testData/TestDataVersion001.tre";
-	public static final String UNIT_TEST_DATA_FILE_VERSION_002 = "test/org/sil/lingtree/testData/TestDataVersion002.tre";
-	public static final String UNIT_TEST_DATA_FILE_VERSION_2 = "test/org/sil/lingtree/testData/TestDataVersion2.tre";
+	public static final String UNIT_TEST_DATA_FILE_NAME = "test/org/sil/lingtree/testdata/TestData.";
+	public static final String UNIT_TEST_DATA_FILE = "test/org/sil/lingtree/testdata/TestData.tre";
+	public static final String UNIT_TEST_DATA_FILE_VERSION_000 = "test/org/sil/lingtree/testdata/TestDataVersion000.tre";
+	public static final String UNIT_TEST_DATA_FILE_VERSION_001 = "test/org/sil/lingtree/testdata/TestDataVersion001.tre";
+	public static final String UNIT_TEST_DATA_FILE_VERSION_002 = "test/org/sil/lingtree/testdata/TestDataVersion002.tre";
+	public static final String UNIT_TEST_DATA_FILE_VERSION_2 = "test/org/sil/lingtree/testdata/TestDataVersion2.tre";
 }
