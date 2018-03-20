@@ -4,10 +4,9 @@
 	<import file="${basedir}/build-init-fx-tasks.xml" as="nested"/>
 	<import file="${basedir}/build-setup-staging-area.xml" as="nested"/>
 	<import file="${basedir}/build-do-compile.xml" as="nested"/>
-	<import file="${basedir}/build-windows-iss-file.xml" as="nested"/>
 
 	<property name="nativeBundles" value="dmg"/>
-	<property name="processorType" value=""/>
+	<property name="processorType" value="-Mac"/>
 	<property name="mainFileName" value="LingTree"/>
 
 	<target name="do-deploy" depends="nested.do-deploy"/>
