@@ -69,9 +69,9 @@ public class XMLBackEndProviderTest {
 		assertEquals("(S (NP (\\L Juan (\\G John))) (VP (V (\\L duerme (\\G sleeps)))))", ltTree.getDescription());
 		assertEquals(20, ltTree.getVerticalGap(), 0.0);
 		assertEquals(30, ltTree.getHorizontalGap(), 0.0);
-		assertEquals(100, ltTree.getInitialXCoordinate(), 0.0);
-		assertEquals(100, ltTree.getInitialYCoordinate(), 0.0);
-		assertEquals(226.275390625, ltTree.getHorizontalOffset(), 0.0);
+		assertEquals(10, ltTree.getInitialXCoordinate(), 0.0);
+		assertEquals(20, ltTree.getInitialYCoordinate(), 0.0);
+		assertEquals(136.275390625, ltTree.getHorizontalOffset(), 0.0);
 		assertEquals(0.0, ltTree.getLexGlossGapAdjustment(), 0.0);
 		assertEquals(true, ltTree.isShowFlatView());
 		FontInfo fontInfo = ltTree.getNonTerminalFontInfo();
@@ -83,7 +83,7 @@ public class XMLBackEndProviderTest {
 		fontInfo = ltTree.getEmptyElementFontInfo();
 		checkFontInfo(fontInfo, "Verdana", 13.5, "Italic", Color.RED);
 		assertEquals(Color.BLACK, ltTree.getLineColor());
-		assertEquals(10, ltTree.getLineWidth(), 0.0);
+		assertEquals(1, ltTree.getLineWidth(), 0.0);
 		assertEquals(Color.WHITE, ltTree.getBackgroundColor());
 	}
 	

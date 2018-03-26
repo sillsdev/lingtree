@@ -5,7 +5,7 @@
 	<import file="${basedir}/build-do-compile.xml" as="nested"/>
 
 	<property name="appName" value="LingTree"/>
-	<property name="version" value="1.0.0.0"/>
+	<property name="version" value="1.1.0.0"/>
 
 	<target name="do-deploy" depends="nested.setup-staging-area, nested.do-compile, nested.init-fx-tasks">
 		<antcall target="build-windows-iss-file"/>
@@ -35,11 +35,18 @@
 	      </fileset>
 	    </copy>
 
+		<copy todir="dist">
+			<fileset dir="package/windows">
+				<include name="LTBatch.bat" />
+			</fileset>
+		</copy>
+
 		<fx:resources id="appRes">
 			<fx:fileset dir="dist" includes="LingTree.jar" />
 			<fx:fileset dir="dist" includes="doc/**" />
 			<fx:fileset dir="dist" includes="libs/*" />
 			<fx:fileset dir="dist" includes="resources/**" />
+			<fx:fileset dir="dist" includes="LTBatch.bat" />
 		</fx:resources>
 
 		<fx:application
@@ -78,6 +85,7 @@
 			outdir="${basedir}/deploy"
 			outfile="LingTree"
 			nativeBundles="${nativeBundles}"
+			verbose="false"
 			updatemode="background">
 
 			<fx:platform basedir="${java.home}">

@@ -6,17 +6,18 @@
 
 package org.sil.lingtree.service;
 
+import java.util.ResourceBundle;
+
 import org.antlr.v4.runtime.BailErrorStrategy;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.ConsoleErrorListener;
-import org.antlr.v4.runtime.DefaultErrorStrategy;
 import org.antlr.v4.runtime.NoViableAltException;
 import org.antlr.v4.runtime.atn.PredictionMode;
 import org.antlr.v4.runtime.misc.ParseCancellationException;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
+import org.sil.lingtree.descriptionparser.DescriptionConstants;
 import org.sil.lingtree.descriptionparser.DescriptionErrorInfo;
 import org.sil.lingtree.descriptionparser.DescriptionErrorListener;
 import org.sil.lingtree.descriptionparser.DescriptionErrorListener.VerboseListener;
@@ -167,5 +168,69 @@ public class TreeBuilder {
 		ltTree.setSaveAsSVG(origTree.isSaveAsSVG());
 		ltTree.setShowFlatView(origTree.isShowFlatView());
 		ltTree.setVerticalGap(origTree.getVerticalGap());
+	}
+
+	public static String buildErrorMessage(ResourceBundle bundle) {
+		String sSyntaxErrorMessage = bundle.getString("descriptionsyntaxerror.unknown");
+
+		switch (TreeBuilder.getErrorMessage()) {
+		case DescriptionConstants.CONTENT_AFTER_COMPLETED_TREE:
+			sSyntaxErrorMessage = bundle
+					.getString("descriptionsyntaxerror.content_after_completed_tree");
+			break;
+
+		case DescriptionConstants.MISSING_CLOSING_PAREN:
+			sSyntaxErrorMessage = bundle.getString("descriptionsyntaxerror.missing_closing_paren");
+			break;
+
+		case DescriptionConstants.MISSING_OPENING_PAREN:
+			sSyntaxErrorMessage = bundle.getString("descriptionsyntaxerror.missing_opening_paren");
+			break;
+
+		case DescriptionConstants.TOO_MANY_CLOSING_PARENS:
+			sSyntaxErrorMessage = bundle.getString("descriptionsyntaxerror.too_many_close_parens");
+			break;
+
+		case DescriptionConstants.TOO_MANY_lINE_TYPES:
+			sSyntaxErrorMessage = bundle.getString("descriptionsyntaxerror.too_many_line_types");
+			break;
+
+		case DescriptionConstants.TOO_MANY_NODE_TYPES:
+			sSyntaxErrorMessage = bundle.getString("descriptionsyntaxerror.too_many_node_types");
+			break;
+
+		case DescriptionConstants.MISSING_CONTENT_AFTER_SUBSCRIPT:
+			sSyntaxErrorMessage = bundle
+					.getString("descriptionsyntaxerror.missing_content_after_subscript");
+			break;
+
+		case DescriptionConstants.MISSING_CONTENT_AFTER_SUPERSCRIPT:
+			sSyntaxErrorMessage = bundle
+					.getString("descriptionsyntaxerror.missing_content_after_superscript");
+			break;
+
+		default:
+			System.out.println("error was: " + TreeBuilder.getErrorMessage());
+			System.out.println("number of errors was: " + TreeBuilder.getNumberOfErrors());
+			System.out.println("line number was: " + TreeBuilder.getLineNumberOfError());
+			System.out.println("character position was: "
+					+ TreeBuilder.getCharacterPositionInLineOfError());
+			break;
+		}
+		return sSyntaxErrorMessage;
+	}
+
+	public static String buildErrorMessagePart1(String sSyntaxErrorMessage, ResourceBundle bundle) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(bundle.getString("descriptionsyntaxerror.errorindescription"));
+		sb.append(sSyntaxErrorMessage);
+		String sMsgDetectedAt = bundle.getString("descriptionsyntaxerror.detectedat");
+		int iLine = TreeBuilder.getLineNumberOfError();
+		int iPos = TreeBuilder.getCharacterPositionInLineOfError();
+		String sMessage = sMsgDetectedAt.replace("{0}", String.valueOf(iLine)).replace("{1}",
+				String.valueOf(iPos));
+		sb.append(sMessage);
+		sb.append("\n\n");
+		return sb.toString();
 	}
 }

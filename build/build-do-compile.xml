@@ -11,9 +11,6 @@
 			<fileset dir="externalLibs">
 				<include name="controlsfx-8.40.12.jar" />
 				<include name="controlsfx-8.40.12license.txt" />
-				<include name="diff-match-patch.jar" />
-				<include name="diff-match-patchCOPYING" />
-				<include name="diff-match-patchREADME.txt" />
 				<include name="antlr-4.7-complete.jar"/>
 				<include name="ANTLR-4-License.txt"/>
 				<include name="flowless-0.6.jar"/>
@@ -22,6 +19,7 @@
 				<include name="undofx-1.3.1.jar"/>
 				<include name="wellbehavedfx-0.3.jar"/>
 				<include name="RichTextFX-0.8.1-License.txt"/>
+				<include name="${java.home}/bin/java.exe"/>
 			</fileset>
 		</copy>
 

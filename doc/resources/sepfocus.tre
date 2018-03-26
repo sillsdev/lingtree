@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<lingTreeTree dbversion="2">
+    <backgroundColor>#ffffff</backgroundColor>
+    <description>(IP (DP/_m (D' (D'/s1 (D (\L le (\G FM)))
+(NP (\T \L xuz noo (\G my father))))
+(IP (\E t/_j))))
+(IP (I' (I/_i (\T \L w-guu (\G C-sow)))
+(VP (VP (DP (\E t/_m))
+(V' (V (\E t/_i)) (DP (\T \L bni (\G seed)))))
+(IP/_j (I' (I/_k (\L y-ra (\G P-all)))
+(QP (DP/s1 (\T \E pro)) (Q' (Q (\E t/_k))
+(DP/s2 (\T \L mee bzaan noo (\G my brothers)))))))))))</description>
+    <emptyElementFontInfo>
+        <color>#000000</color>
+        <fontFamily>Times New Roman</fontFamily>
+        <fontSize>15.0</fontSize>
+        <fontType>Italic</fontType>
+    </emptyElementFontInfo>
+    <glossFontInfo>
+        <color>#6666ff</color>
+        <fontFamily>Times New Roman</fontFamily>
+        <fontSize>15.0</fontSize>
+        <fontType>Regular</fontType>
+    </glossFontInfo>
+    <horizontalGap>6.14</horizontalGap>
+    <horizontalOffset>463.7268749999999</horizontalOffset>
+    <initialXCoordinate>6.14</initialXCoordinate>
+    <initialYCoordinate>15.14</initialYCoordinate>
+    <lexGlossGapAdjustment>0.0</lexGlossGapAdjustment>
+    <lexicalFontInfo>
+        <color>#000000</color>
+        <fontFamily>Charis SIL</fontFamily>
+        <fontSize>15.0</fontSize>
+        <fontType>Regular</fontType>
+    </lexicalFontInfo>
+    <lineColor>#000000</lineColor>
+    <lineWidth>1.54</lineWidth>
+    <nonTerminalFontInfo>
+        <color>#008000</color>
+        <fontFamily>Times New Roman</fontFamily>
+        <fontSize>15.0</fontSize>
+        <fontType>Regular</fontType>
+    </nonTerminalFontInfo>
+    <saveAsPng>true</saveAsPng>
+    <saveAsSVG>true</saveAsSVG>
+    <showFlatView>false</showFlatView>
+    <useRightToLeftOrientation>false</useRightToLeftOrientation>
+    <verticalGap>18.43</verticalGap>
+</lingTreeTree>

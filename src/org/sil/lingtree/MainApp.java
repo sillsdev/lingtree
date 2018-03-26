@@ -17,6 +17,7 @@ import org.sil.lingtree.model.GlossFontInfo;
 import org.sil.lingtree.model.LexFontInfo;
 import org.sil.lingtree.model.LingTreeTree;
 import org.sil.lingtree.model.NonTerminalFontInfo;
+import org.sil.lingtree.service.BatchTreeHandler;
 import org.sil.lingtree.service.DatabaseMigrator;
 import org.sil.lingtree.view.RootLayoutController;
 import org.sil.lingtree.Constants;
@@ -26,6 +27,7 @@ import org.sil.lingtree.ApplicationPreferences;
 import org.sil.lingtree.backendprovider.XMLBackEndProvider;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Screen;
@@ -105,9 +107,34 @@ public class MainApp extends Application {
 		}
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		userArgs = args;
-		launch(args);
+		if (userArgs.length == 0) {
+			launch(args);
+		} else if (userArgs.length == 1 && !userArgs[0].equals("-b")) {
+			launch(args);
+		} else if (userArgs[0].equals("-b") && userArgs.length >= 2) {
+			processAsBatchFile();
+			Platform.exit();
+			return;
+		} else {
+			System.out.println("Usage: -b filename");
+			Platform.exit();
+			return;
+		}
+	}
+
+	public static void processAsBatchFile() throws IOException {
+		ApplicationPreferences prefs = new ApplicationPreferences(new LingTreeTree());
+		Locale locale = new Locale(prefs.getLastLocaleLanguage());
+		ResourceBundle bundle = ResourceBundle.getBundle(Constants.RESOURCE_LOCATION, locale);
+		String sFilePath = userArgs[1];
+		if (!sFilePath.contains(":") && !sFilePath.startsWith("/")) {
+			String sWorkingDirectory = System.getProperty("user.dir");
+			sFilePath = sWorkingDirectory + File.separator + sFilePath;
+		}
+		BatchTreeHandler handler = new BatchTreeHandler(sFilePath, bundle);
+		handler.processTree();
 	}
 
 	/**
@@ -125,16 +152,13 @@ public class MainApp extends Application {
 				adjustMenusForMacOSX();
 			}
 
-			// sNotImplementedYetHeader = bundle.getString("misc.niyheader");
-			// sNotImplementedYetContent = bundle.getString("misc.niycontent");
-
 			// Show the scene containing the root layout.
 			Scene scene = new Scene(rootLayout);
 
 			// Because we see the ALT character in the tree description when the
-			// tree description node has focus (which it normally does), we need to
-			// catch the ALT and put focus on the menu bar. Otherwise, the menu
-			// accelerator keys are ignored.
+			// tree description node has focus (which it normally does), we need
+			// to catch the ALT and put focus on the menu bar. Otherwise, the
+			// menu accelerator keys are ignored.
 			scene.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
 				public void handle(KeyEvent ke) {
 					if (ke.getCode() == KeyCode.ALT) {
@@ -155,7 +179,7 @@ public class MainApp extends Application {
 			controller.getSplitPane().setDividerPosition(0, dividerPosition);
 
 			File file;
-			if (userArgs.length > 0) {
+			if (userArgs != null && userArgs.length > 0) {
 				// User double-clicked on file name
 				// userArgs[0] is the file path
 				file = new File(userArgs[0]);
@@ -203,9 +227,11 @@ public class MainApp extends Application {
 		alert.setHeaderText(bundle.getString("file.initiallynotfound"));
 		alert.setContentText(bundle.getString("file.chooseanoption"));
 		alert.setResizable(true);
-		// Following comes from https://stackoverflow.com/questions/28937392/javafx-alerts-and-their-size
+		// Following comes from
+		// https://stackoverflow.com/questions/28937392/javafx-alerts-and-their-size
 		// It's an attempt to get the buttons' text to show completely
-		alert.getDialogPane().getChildren().stream().filter(node -> node instanceof Label).forEach(node -> ((Label)node).setMinHeight(Region.USE_PREF_SIZE));
+		alert.getDialogPane().getChildren().stream().filter(node -> node instanceof Label)
+				.forEach(node -> ((Label) node).setMinHeight(Region.USE_PREF_SIZE));
 		Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
 		stage.getIcons().add(getNewMainIconImage());
 

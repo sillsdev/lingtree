@@ -24,6 +24,9 @@
 				<include name="antlr-4.7-complete.jar"/>
 				<include name="ANTLR-4-License.txt"/>
 			</fileset>
+			<fileset dir="${java.home}/bin">
+				<include name="java.exe"/>
+			</fileset>
 		</copy>
 
 		<mkdir dir="doc" />

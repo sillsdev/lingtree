@@ -44,6 +44,7 @@ import org.sil.lingtree.model.GlossFontInfo;
 import org.sil.lingtree.model.LexFontInfo;
 import org.sil.lingtree.model.LingTreeTree;
 import org.sil.lingtree.model.NonTerminalFontInfo;
+import org.sil.lingtree.service.GraphicImageSaver;
 import org.sil.lingtree.service.TreeBuilder;
 import org.sil.lingtree.service.TreeDrawer;
 import org.sil.lingtree.view.ControllerUtilities;
@@ -711,59 +712,14 @@ public class RootLayoutController implements Initializable {
 	}
 
 	private void reportErrorInDescriptionMessage() {
-		String sSyntaxErrorMessage = bundle.getString("descriptionsyntaxerror.unknown");
-
-		switch (TreeBuilder.getErrorMessage()) {
-		case DescriptionConstants.CONTENT_AFTER_COMPLETED_TREE:
-			sSyntaxErrorMessage = bundle
-					.getString("descriptionsyntaxerror.content_after_completed_tree");
-			break;
-
-		case DescriptionConstants.MISSING_CLOSING_PAREN:
-			sSyntaxErrorMessage = bundle.getString("descriptionsyntaxerror.missing_closing_paren");
-			break;
-
-		case DescriptionConstants.MISSING_OPENING_PAREN:
-			sSyntaxErrorMessage = bundle.getString("descriptionsyntaxerror.missing_opening_paren");
-			break;
-
-		case DescriptionConstants.TOO_MANY_CLOSING_PARENS:
-			sSyntaxErrorMessage = bundle.getString("descriptionsyntaxerror.too_many_close_parens");
-			break;
-
-		case DescriptionConstants.TOO_MANY_lINE_TYPES:
-			sSyntaxErrorMessage = bundle.getString("descriptionsyntaxerror.too_many_line_types");
-			break;
-
-		case DescriptionConstants.TOO_MANY_NODE_TYPES:
-			sSyntaxErrorMessage = bundle.getString("descriptionsyntaxerror.too_many_node_types");
-			break;
-
-		case DescriptionConstants.MISSING_CONTENT_AFTER_SUBSCRIPT:
-			sSyntaxErrorMessage = bundle
-					.getString("descriptionsyntaxerror.missing_content_after_subscript");
-			break;
-
-		case DescriptionConstants.MISSING_CONTENT_AFTER_SUPERSCRIPT:
-			sSyntaxErrorMessage = bundle
-					.getString("descriptionsyntaxerror.missing_content_after_superscript");
-			break;
-
-		default:
-			System.out.println("error was: " + TreeBuilder.getErrorMessage());
-			System.out.println("number of errors was: " + TreeBuilder.getNumberOfErrors());
-			System.out.println("line number was: " + TreeBuilder.getLineNumberOfError());
-			System.out.println("character position was: "
-					+ TreeBuilder.getCharacterPositionInLineOfError());
-			break;
-		}
+		String sSyntaxErrorMessage = TreeBuilder.buildErrorMessage(bundle);
 		cleanDrawingArea();
 		TextFlow textFlow = buildErrorMessageAsTextFlow(sSyntaxErrorMessage);
 		drawingArea.getChildren().add(textFlow);
 	}
 
 	private TextFlow buildErrorMessageAsTextFlow(String sSyntaxErrorMessage) {
-		Text tPart1 = new Text(buildErrorMessagePart1(sSyntaxErrorMessage));
+		Text tPart1 = new Text(TreeBuilder.buildErrorMessagePart1(sSyntaxErrorMessage, bundle));
 		tPart1.setFill(Color.RED);
 		tPart1.setFont(defaultFont);
 		Text tPart2 = new Text(TreeBuilder.getDescriptionBeforeMark());
@@ -778,20 +734,6 @@ public class RootLayoutController implements Initializable {
 		tPart4.setFont(defaultFont);
 		TextFlow textFlow = new TextFlow(tPart1, tPart2, tPart3, tPart4);
 		return textFlow;
-	}
-
-	private String buildErrorMessagePart1(String sSyntaxErrorMessage) {
-		StringBuilder sb = new StringBuilder();
-		sb.append(bundle.getString("descriptionsyntaxerror.errorindescription"));
-		sb.append(sSyntaxErrorMessage);
-		String sMsgDetectedAt = bundle.getString("descriptionsyntaxerror.detectedat");
-		int iLine = TreeBuilder.getLineNumberOfError();
-		int iPos = TreeBuilder.getCharacterPositionInLineOfError();
-		String sMessage = sMsgDetectedAt.replace("{0}", String.valueOf(iLine)).replace("{1}",
-				String.valueOf(iPos));
-		sb.append(sMessage);
-		sb.append("\n\n");
-		return sb.toString();
 	}
 
 	@FXML
@@ -1094,20 +1036,9 @@ public class RootLayoutController implements Initializable {
 		if (file == null) {
 			return;
 		}
-		String sFilePath = file.getCanonicalPath();
-		if (sFilePath.endsWith("." + Constants.LINGTREE_DATA_FILE_EXTENSION)) {
-			int len = sFilePath.length();
-			sFilePath = sFilePath.substring(0, len - 4);
-		}
-		WritableImage wim = new WritableImage((int) ltTree.getXSize() + 10,
-				(int) (ltTree.getYSize() + 10));
-		drawingArea.snapshot(null, wim);
-		File filePng = new File(sFilePath + ".png");
-		try {
-			BufferedImage bi = SwingFXUtils.fromFXImage(wim, null);
-			ImageIO.write(bi, "png", filePng);
-		} catch (Exception s) {
-		}
+		GraphicImageSaver saver = GraphicImageSaver.getInstance();
+		saver.setFile(file);
+		saver.saveAsPNG(drawingArea, ltTree);
 	}
 
 	private void saveTreeAsSVG() throws IOException {
@@ -1115,22 +1046,10 @@ public class RootLayoutController implements Initializable {
 		if (file == null) {
 			return;
 		}
-		String sFilePath = file.getCanonicalPath();
-		if (sFilePath.endsWith("." + Constants.LINGTREE_DATA_FILE_EXTENSION)) {
-			int len = sFilePath.length();
-			sFilePath = sFilePath.substring(0, len - 4);
-		}
+		GraphicImageSaver saver = GraphicImageSaver.getInstance();
+		saver.setFile(file);
 		TreeDrawer drawer = drawTreePrep();
-		if (drawer != null) {
-			StringBuilder sb = drawer.drawAsSVG();
-			Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(sFilePath
-					+ ".svg"), "UTF-8"));
-			try {
-				out.write(sb.toString());
-			} finally {
-				out.close();
-			}
-		}
+		saver.saveAsSVG(drawer);
 	}
 
 	/**

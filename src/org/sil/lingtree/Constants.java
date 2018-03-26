@@ -10,7 +10,7 @@ package org.sil.lingtree;
  *
  */
 public class Constants {
-	public static final String VERSION_NUMBER = "1.0.0";
+	public static final String VERSION_NUMBER = "1.1.0";
 	public static final int CURRENT_DATABASE_VERSION = 2;
 
 	public static final String SUBSCRIPT = "/s";
@@ -43,6 +43,7 @@ public class Constants {
 	// Unit Testing constants
 	public static final String UNIT_TEST_DATA_FILE_NAME = "test/org/sil/lingtree/testdata/TestData.";
 	public static final String UNIT_TEST_DATA_FILE = "test/org/sil/lingtree/testdata/TestData.tre";
+	public static final String UNIT_TEST_DATA_FILE_BAD_TREE = "test/org/sil/lingtree/testdata/TestDataBadTree.tre";
 	public static final String UNIT_TEST_DATA_FILE_VERSION_000 = "test/org/sil/lingtree/testdata/TestDataVersion000.tre";
 	public static final String UNIT_TEST_DATA_FILE_VERSION_001 = "test/org/sil/lingtree/testdata/TestDataVersion001.tre";
 	public static final String UNIT_TEST_DATA_FILE_VERSION_002 = "test/org/sil/lingtree/testdata/TestDataVersion002.tre";
