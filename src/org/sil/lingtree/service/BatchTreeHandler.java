@@ -61,6 +61,7 @@ public class BatchTreeHandler {
 		}
 		xmlBackEndProvider.loadTreeDataFromFile(treeFile);
 		ltTree = xmlBackEndProvider.getLingTree();
+		ltTree.setFontsAndColors();
 		ltTree = TreeBuilder.parseAString(ltTree.getDescription(), ltTree);
 		if (TreeBuilder.getNumberOfErrors() > 0) {
 			reportErrorMessage();

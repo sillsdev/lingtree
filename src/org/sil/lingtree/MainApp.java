@@ -274,21 +274,10 @@ public class MainApp extends Application {
 		}
 		xmlBackEndProvider.loadTreeDataFromFile(file);
 		ltTree = xmlBackEndProvider.getLingTree();
-		setFontsAndColors();
+		ltTree.setFontsAndColors();
 		applicationPreferences.setLastOpenedFilePath(file);
 		applicationPreferences.setLastOpenedDirectoryPath(file.getParent());
 		updateStageTitle(file);
-	}
-
-	private void setFontsAndColors() {
-		EmptyElementFontInfo.getInstance().setFont(ltTree.getEmptyElementFontInfo().getFont());
-		EmptyElementFontInfo.getInstance().setColor(ltTree.getEmptyElementFontInfo().getColor());
-		GlossFontInfo.getInstance().setFont(ltTree.getGlossFontInfo().getFont());
-		GlossFontInfo.getInstance().setColor(ltTree.getGlossFontInfo().getColor());
-		LexFontInfo.getInstance().setFont(ltTree.getLexicalFontInfo().getFont());
-		LexFontInfo.getInstance().setColor(ltTree.getLexicalFontInfo().getColor());
-		NonTerminalFontInfo.getInstance().setFont(ltTree.getNonTerminalFontInfo().getFont());
-		NonTerminalFontInfo.getInstance().setColor(ltTree.getNonTerminalFontInfo().getColor());
 	}
 
 	protected void adjustMenusForMacOSX() {

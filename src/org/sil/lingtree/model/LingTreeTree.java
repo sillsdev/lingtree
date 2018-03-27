@@ -318,5 +318,15 @@ public class LingTreeTree {
 		version = ltTree.getVersion();
 	}
 
+	public void setFontsAndColors() {
+		EmptyElementFontInfo.getInstance().setFont(getEmptyElementFontInfo().getFont());
+		EmptyElementFontInfo.getInstance().setColor(getEmptyElementFontInfo().getColor());
+		GlossFontInfo.getInstance().setFont(getGlossFontInfo().getFont());
+		GlossFontInfo.getInstance().setColor(getGlossFontInfo().getColor());
+		LexFontInfo.getInstance().setFont(getLexicalFontInfo().getFont());
+		LexFontInfo.getInstance().setColor(getLexicalFontInfo().getColor());
+		NonTerminalFontInfo.getInstance().setFont(getNonTerminalFontInfo().getFont());
+		NonTerminalFontInfo.getInstance().setColor(getNonTerminalFontInfo().getColor());
+	}
 
 }
