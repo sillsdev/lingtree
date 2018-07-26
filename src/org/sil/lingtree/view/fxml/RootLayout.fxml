@@ -20,72 +20,72 @@
 
 <!-- <?import org.controlsfx.control.StatusBar?> -->
 
-<BorderPane prefHeight="660.0" prefWidth="1000.0" stylesheets="@LingTree.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.sil.lingtree.view.RootLayoutController">
+<BorderPane fx:id="mainPane" prefHeight="660.0" prefWidth="1000.0" stylesheets="@LingTree.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.sil.lingtree.view.RootLayoutController">
    <top>
       <VBox prefHeight="75.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
          <children>
             <MenuBar fx:id="menuBar">
               <menus>
-                <Menu mnemonicParsing="true" text="%menu.file">
+                <Menu fx:id="menuFile" mnemonicParsing="true" text="%menu.file">
                   <items>
-                    <MenuItem accelerator="Ctrl+n" mnemonicParsing="true" onAction="#handleNewTree" text="%menu.new" />
-					<MenuItem accelerator="Ctrl+o" mnemonicParsing="true" onAction="#handleOpenTree" text="%menu.open" />
-					<MenuItem accelerator="Ctrl+s" mnemonicParsing="true" onAction="#handleSaveTree" text="%menu.save" />
-					<MenuItem mnemonicParsing="true" onAction="#handleSaveTreeAs" text="%menu.saveas" />
+                    <MenuItem fx:id="menuItemFileNew" accelerator="Ctrl+n" mnemonicParsing="true" onAction="#handleNewTree" text="%menu.new" />
+					<MenuItem fx:id="menuItemFileOpen" accelerator="Ctrl+o" mnemonicParsing="true" onAction="#handleOpenTree" text="%menu.open" />
+					<MenuItem fx:id="menuItemFileSave" accelerator="Ctrl+s" mnemonicParsing="true" onAction="#handleSaveTree" text="%menu.save" />
+					<MenuItem fx:id="menuItemFileSaveAs" mnemonicParsing="true" onAction="#handleSaveTreeAs" text="%menu.saveas" />
 					<SeparatorMenuItem />
 					<CheckMenuItem fx:id="menuItemSaveAsPng" mnemonicParsing="true" onAction="#handleMenuSaveAsPng" text="%menu.saveaspng" />
 					<CheckMenuItem fx:id="menuItemSaveAsSVG" mnemonicParsing="true" onAction="#handleMenuSaveAsSVG" text="%menu.saveassvg" />
                     <SeparatorMenuItem />
-                    <MenuItem mnemonicParsing="true" onAction="#handleExit" text="%menu.exit" />
+                    <MenuItem fx:id="menuItemFileExit" mnemonicParsing="true" onAction="#handleExit" text="%menu.exit" />
                   </items>
                 </Menu>
-                <Menu mnemonicParsing="true" text="%menu.edit" onShown="#handleShowingEditMenu">
+                <Menu fx:id="menuEdit" mnemonicParsing="true" text="%menu.edit" onShown="#handleShowingEditMenu">
                   <items>
-					<MenuItem mnemonicParsing="true" onAction="#handleUndo" text="%menu.undo" fx:id="menuItemEditUndo" accelerator="Ctrl+z" />
-					<MenuItem mnemonicParsing="true" onAction="#handleRedo" text="%menu.redo" fx:id="menuItemEditRedo" accelerator="Ctrl+y" />
+					<MenuItem fx:id="menuItemEditUndo" mnemonicParsing="true" onAction="#handleUndo" text="%menu.undo" accelerator="Ctrl+z" />
+					<MenuItem fx:id="menuItemEditRedo" mnemonicParsing="true" onAction="#handleRedo" text="%menu.redo" accelerator="Ctrl+y" />
 					<SeparatorMenuItem />
-					<MenuItem mnemonicParsing="true" onAction="#handleCut" text="%menu.cut" fx:id="menuItemEditCut" accelerator="ctrl+x" />
-					<MenuItem mnemonicParsing="true" onAction="#handleCopy" text="%menu.copy" fx:id="menuItemEditCopy" accelerator="ctrl+c" />
-					<MenuItem mnemonicParsing="true" onAction="#handlePaste" text="%menu.paste" fx:id="menuItemEditPaste" accelerator="ctrl+v" />
+					<MenuItem fx:id="menuItemEditCut" mnemonicParsing="true" onAction="#handleCut" text="%menu.cut" accelerator="ctrl+x" />
+					<MenuItem fx:id="menuItemEditCopy" mnemonicParsing="true" onAction="#handleCopy" text="%menu.copy" accelerator="ctrl+c" />
+					<MenuItem fx:id="menuItemEditPaste" mnemonicParsing="true" onAction="#handlePaste" text="%menu.paste" accelerator="ctrl+v" />
                   </items>
                 </Menu>
-                <Menu mnemonicParsing="true" text="%menu.tree">
+                <Menu fx:id="menuTree" mnemonicParsing="true" text="%menu.tree">
                   <items>
                     <MenuItem fx:id="menuItemDrawTree" accelerator="ctrl+d" mnemonicParsing="true" onAction="#handleDrawTree" text="%menu.drawtree" />
                   </items>
                 </Menu>
-                <Menu mnemonicParsing="true" text="%menu.format">
+                <Menu fx:id="menuFormat" mnemonicParsing="true" text="%menu.format">
                   <items>
                     <CheckMenuItem fx:id="menuItemUseFlatTree" mnemonicParsing="true" onAction="#handleMenuUseFlatTree" text="%menu.useflattree" />
                     <CheckMenuItem fx:id="menuItemUseRightToLeftOrientation" mnemonicParsing="true" onAction="#handleMenuUseRightToLeftOrientation" text="%menu.userighttoleftorientation" />
 					<SeparatorMenuItem />
-					<MenuItem mnemonicParsing="true" onAction="#handleNonTerminalFontInfo" text="%menu.nonterminalfont" />
-					<MenuItem mnemonicParsing="true" onAction="#handleLexicalFontInfo" text="%menu.lexicalfont" />
-					<MenuItem mnemonicParsing="true" onAction="#handleGlossFontInfo" text="%menu.glossfont" />
-					<MenuItem mnemonicParsing="true" onAction="#handleEmptyElementFontInfo" text="%menu.emptyelementfont" />
+					<MenuItem fx:id="menuItemNonTerminalFont" mnemonicParsing="true" onAction="#handleNonTerminalFontInfo" text="%menu.nonterminalfont" />
+					<MenuItem fx:id="menuItemLexicalFont" mnemonicParsing="true" onAction="#handleLexicalFontInfo" text="%menu.lexicalfont" />
+					<MenuItem fx:id="menuItemGlossFont" mnemonicParsing="true" onAction="#handleGlossFontInfo" text="%menu.glossfont" />
+					<MenuItem fx:id="menuItemEmptyElementFont" mnemonicParsing="true" onAction="#handleEmptyElementFontInfo" text="%menu.emptyelementfont" />
 					<SeparatorMenuItem />
-					<MenuItem mnemonicParsing="true" onAction="#handleTreeSpacingParameters" text="%menu.treespacingparameters" />
-					<MenuItem mnemonicParsing="true" onAction="#handleBackgroundAndLineParameters" text="%menu.backgroundandlineparameters" />
+					<MenuItem fx:id="menuItemTreeSpacingParameter" mnemonicParsing="true" onAction="#handleTreeSpacingParameters" text="%menu.treespacingparameters" />
+					<MenuItem fx:id="menuItemBackgroundAndLineParameters" mnemonicParsing="true" onAction="#handleBackgroundAndLineParameters" text="%menu.backgroundandlineparameters" />
 					<SeparatorMenuItem />
-					<MenuItem mnemonicParsing="true" onAction="#handleSaveTreeParameters" text="%menu.savetreeparameters" />
+					<MenuItem fx:id="menuItemSaveTreeParameters" mnemonicParsing="true" onAction="#handleSaveTreeParameters" text="%menu.savetreeparameters" />
                   </items>
                 </Menu>
-				<Menu mnemonicParsing="true" text="%menu.settings">
+				<Menu fx:id="menuSettings" mnemonicParsing="true" text="%menu.settings">
 				  <items>
-					<MenuItem mnemonicParsing="true" onAction="#handleMenuDescriptionFontSize" text="%menu.descriptionfontsize" />
+					<MenuItem fx:id="menuItemDescriptionFontSize" mnemonicParsing="true" onAction="#handleMenuDescriptionFontSize" text="%menu.descriptionfontsize" />
 					<CheckMenuItem fx:id="menuItemDrawAsType" mnemonicParsing="true" onAction="#handleMenuDrawAsType" text="%menu.drawastype" />
 					<CheckMenuItem fx:id="menuItemShowMatchingParenWithArrowKeys" mnemonicParsing="true" onAction="#handleMenuShowMatchingParenWithArrowKeys" text="%menu.showmatchingparenwitharrowkeys" />
-					<MenuItem mnemonicParsing="true" onAction="#handleMenuShowMatchingParenDelay" text="%menu.showmatchingparendelay" />
+					<MenuItem fx:id="menuItemShowMatchingParenDelay" mnemonicParsing="true" onAction="#handleMenuShowMatchingParenDelay" text="%menu.showmatchingparendelay" />
 					<SeparatorMenuItem />
-					<MenuItem mnemonicParsing="true" onAction="#handleChangeInterfaceLanguage" text="%menu.changeinterfacelanguage" />
+					<MenuItem fx:id="menuItemChangeInterfaceLanguage" mnemonicParsing="true" onAction="#handleChangeInterfaceLanguage" text="%menu.changeinterfacelanguage" />
 				  </items>
 				</Menu>
-                <Menu mnemonicParsing="true" text="%menu.help">
+                <Menu fx:id="menuHelp" mnemonicParsing="true" text="%menu.help">
                   <items>
-                    <MenuItem mnemonicParsing="true" onAction="#handleQuickReferenceGuide" text="%menu.quickreferenceguide" />
-                    <MenuItem mnemonicParsing="true" onAction="#handleUserDocumentation" text="%menu.userdocumentation" />
+                    <MenuItem fx:id="menuItemQuickReferenceGuide" mnemonicParsing="true" onAction="#handleQuickReferenceGuide" text="%menu.quickreferenceguide" />
+                    <MenuItem fx:id="menuItemUserDocumentation" mnemonicParsing="true" onAction="#handleUserDocumentation" text="%menu.userdocumentation" />
                     <SeparatorMenuItem />
-                    <MenuItem mnemonicParsing="true" onAction="#handleAbout" text="%menu.about" />
+                    <MenuItem fx:id="menuItemAbout" mnemonicParsing="true" onAction="#handleAbout" text="%menu.about" />
                   </items>
                 </Menu>
               </menus>

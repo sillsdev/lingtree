@@ -50,6 +50,8 @@ import org.sil.lingtree.service.TreeDrawer;
 import org.sil.lingtree.view.ControllerUtilities;
 import org.sil.lingtree.Constants;
 import org.sil.lingtree.ApplicationPreferences;
+import org.sil.lingtree.service.ValidLocaleCollector;
+import org.sil.lingtree.service.ObservableResourceFactory;
 import org.sil.utility.StringUtilities;
 
 import com.sun.deploy.uitoolkit.impl.fx.HostServicesFactory;
@@ -69,6 +71,7 @@ import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.IndexRange;
 import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SplitPane;
@@ -77,6 +80,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
@@ -86,7 +90,9 @@ import javafx.scene.input.DataFormat;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -121,6 +127,8 @@ public class RootLayoutController implements Initializable {
 	private final String kPressedStyle = "buttonpressed";
 	private final String kUnPressedStyle = "buttonunpressed";
 
+	@FXML
+	BorderPane mainPane;
 	@FXML
 	private Button buttonToolbarFileOpen;
 	@FXML
@@ -172,6 +180,24 @@ public class RootLayoutController implements Initializable {
 	@FXML
 	private MenuBar menuBar;
 	@FXML
+	private Menu menuFile;
+	@FXML
+	private MenuItem menuItemFileNew;
+	@FXML
+	private MenuItem menuItemFileOpen;
+	@FXML
+	private MenuItem menuItemFileSaveAs;
+	@FXML
+	private MenuItem menuItemFileSave;
+	@FXML
+	private CheckMenuItem menuItemSaveAsPng;
+	@FXML
+	private CheckMenuItem menuItemSaveAsSVG;
+	@FXML
+	private MenuItem menuItemFileExit;
+	@FXML
+	private Menu menuEdit;
+	@FXML
 	private MenuItem menuItemEditUndo;
 	@FXML
 	private MenuItem menuItemEditRedo;
@@ -182,19 +208,49 @@ public class RootLayoutController implements Initializable {
 	@FXML
 	private MenuItem menuItemEditPaste;
 	@FXML
+	private Menu menuTree;
+	@FXML
 	private MenuItem menuItemDrawTree;
+	@FXML
+	private Menu menuFormat;
 	@FXML
 	private CheckMenuItem menuItemUseFlatTree;
 	@FXML
 	private CheckMenuItem menuItemUseRightToLeftOrientation;
 	@FXML
-	private CheckMenuItem menuItemSaveAsPng;
+	private MenuItem menuItemNonTerminalFont;
 	@FXML
-	private CheckMenuItem menuItemSaveAsSVG;
+	private MenuItem menuItemLexicalFont;
+	@FXML
+	private MenuItem menuItemGlossFont;
+	@FXML
+	private MenuItem menuItemEmptyElementFont;
+	@FXML
+	private MenuItem menuItemTreeSpacingParameter;
+	@FXML
+	private MenuItem menuItemBackgroundAndLineParameters;
+	@FXML
+	private MenuItem menuItemSaveTreeParameters;
+	@FXML
+	private Menu menuSettings;
+	@FXML
+	private MenuItem menuItemDescriptionFontSize;
 	@FXML
 	private CheckMenuItem menuItemDrawAsType;
 	@FXML
 	private CheckMenuItem menuItemShowMatchingParenWithArrowKeys;
+	@FXML
+	private MenuItem menuItemShowMatchingParenDelay;
+	@FXML
+	private MenuItem menuItemChangeInterfaceLanguage;
+	@FXML
+	private Menu menuHelp;
+	@FXML
+	private MenuItem menuItemQuickReferenceGuide;
+	@FXML
+	private MenuItem menuItemUserDocumentation;
+	@FXML
+	private MenuItem menuItemAbout;
 
 	@FXML
 	private InlineCssTextArea treeDescription;
@@ -207,29 +263,21 @@ public class RootLayoutController implements Initializable {
 
 	private Font defaultFont;
 
+	// following lines from
+	// https://stackoverflow.com/questions/32464974/javafx-change-application-language-on-the-run
+	private static final ObservableResourceFactory RESOURCE_FACTORY = ObservableResourceFactory
+			.getInstance();
+	static {
+		RESOURCE_FACTORY.setResources(ResourceBundle.getBundle(Constants.RESOURCE_LOCATION,
+				new Locale("en")));
+	}
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		bundle = resources;
-		sFileFilterDescription = bundle.getString("file.filterdescription");
+		sFileFilterDescription = RESOURCE_FACTORY.getStringBinding("file.filterdescription").get();
 		createToolbarButtons(bundle);
-
-		toggleButtonUseFlatTree.getStyleClass().add(kUnPressedStyle);
-		tooltipToolbarUseFlatTree = new Tooltip(bundle.getString("tooltip.useflattree"));
-		toggleButtonUseFlatTree.setTooltip(tooltipToolbarUseFlatTree);
-
-		toggleButtonShowMatchingParenWithArrowKeys.getStyleClass().add(kUnPressedStyle);
-		tooltipToolbarShowMatchingParenWithArrowKeys = new Tooltip(
-				bundle.getString("tooltip.showmatchingparenwitharrowkeys"));
-		toggleButtonShowMatchingParenWithArrowKeys
-				.setTooltip(tooltipToolbarShowMatchingParenWithArrowKeys);
-
-		toggleButtonSaveAsPng.getStyleClass().add(kUnPressedStyle);
-		tooltipToolbarSaveAsPng = new Tooltip(bundle.getString("tooltip.saveaspng"));
-		toggleButtonSaveAsPng.setTooltip(tooltipToolbarSaveAsPng);
-
-		toggleButtonSaveAsSVG.getStyleClass().add(kUnPressedStyle);
-		tooltipToolbarSaveAsSVG = new Tooltip(bundle.getString("tooltip.saveassvg"));
-		toggleButtonSaveAsSVG.setTooltip(tooltipToolbarSaveAsSVG);
+		initMenuItemsForLocalization();
 
 		// we use OnKeyTyped because it tells us the character keyed
 		// regardless of the keyboard used
@@ -417,7 +465,61 @@ public class RootLayoutController implements Initializable {
 		});
 	}
 
-	private void computeHighlighting() {
+	private void initMenuItemsForLocalization() {
+		menuFile.textProperty().bind(RESOURCE_FACTORY.getStringBinding("menu.file"));
+		menuItemFileNew.textProperty().bind(RESOURCE_FACTORY.getStringBinding("menu.new"));
+		menuItemFileOpen.textProperty().bind(RESOURCE_FACTORY.getStringBinding("menu.open"));
+		menuItemFileSave.textProperty().bind(RESOURCE_FACTORY.getStringBinding("menu.save"));
+		menuItemFileSaveAs.textProperty().bind(RESOURCE_FACTORY.getStringBinding("menu.saveas"));
+		menuItemSaveAsPng.textProperty().bind(RESOURCE_FACTORY.getStringBinding("menu.saveaspng"));
+		menuItemSaveAsSVG.textProperty().bind(RESOURCE_FACTORY.getStringBinding("menu.saveassvg"));
+		menuItemFileExit.textProperty().bind(RESOURCE_FACTORY.getStringBinding("menu.exit"));
+		menuEdit.textProperty().bind(RESOURCE_FACTORY.getStringBinding("menu.edit"));
+		menuItemEditUndo.textProperty().bind(RESOURCE_FACTORY.getStringBinding("menu.undo"));
+		menuItemEditRedo.textProperty().bind(RESOURCE_FACTORY.getStringBinding("menu.redo"));
+		menuItemEditCut.textProperty().bind(RESOURCE_FACTORY.getStringBinding("menu.cut"));
+		menuItemEditCopy.textProperty().bind(RESOURCE_FACTORY.getStringBinding("menu.copy"));
+		menuItemEditPaste.textProperty().bind(RESOURCE_FACTORY.getStringBinding("menu.paste"));
+		menuTree.textProperty().bind(RESOURCE_FACTORY.getStringBinding("menu.tree"));
+		menuItemDrawTree.textProperty().bind(RESOURCE_FACTORY.getStringBinding("menu.drawtree"));
+		menuFormat.textProperty().bind(RESOURCE_FACTORY.getStringBinding("menu.format"));
+		menuItemUseFlatTree.textProperty().bind(
+				RESOURCE_FACTORY.getStringBinding("menu.useflattree"));
+		menuItemUseRightToLeftOrientation.textProperty().bind(
+				RESOURCE_FACTORY.getStringBinding("menu.userighttoleftorientation"));
+		menuItemNonTerminalFont.textProperty().bind(
+				RESOURCE_FACTORY.getStringBinding("menu.nonterminalfont"));
+		menuItemLexicalFont.textProperty().bind(
+				RESOURCE_FACTORY.getStringBinding("menu.lexicalfont"));
+		menuItemGlossFont.textProperty().bind(RESOURCE_FACTORY.getStringBinding("menu.glossfont"));
+		menuItemEmptyElementFont.textProperty().bind(
+				RESOURCE_FACTORY.getStringBinding("menu.emptyelementfont"));
+		menuItemTreeSpacingParameter.textProperty().bind(
+				RESOURCE_FACTORY.getStringBinding("menu.treespacingparameters"));
+		menuItemBackgroundAndLineParameters.textProperty().bind(
+				RESOURCE_FACTORY.getStringBinding("menu.backgroundandlineparameters"));
+		menuItemSaveTreeParameters.textProperty().bind(
+				RESOURCE_FACTORY.getStringBinding("menu.savetreeparameters"));
+		menuSettings.textProperty().bind(RESOURCE_FACTORY.getStringBinding("menu.settings"));
+		menuItemDescriptionFontSize.textProperty().bind(
+				RESOURCE_FACTORY.getStringBinding("menu.descriptionfontsize"));
+		menuItemDrawAsType.textProperty()
+				.bind(RESOURCE_FACTORY.getStringBinding("menu.drawastype"));
+		menuItemShowMatchingParenWithArrowKeys.textProperty().bind(
+				RESOURCE_FACTORY.getStringBinding("menu.showmatchingparenwitharrowkeys"));
+		menuItemShowMatchingParenDelay.textProperty().bind(
+				RESOURCE_FACTORY.getStringBinding("menu.showmatchingparendelay"));
+		menuItemChangeInterfaceLanguage.textProperty().bind(
+				RESOURCE_FACTORY.getStringBinding("menu.changeinterfacelanguage"));
+		menuHelp.textProperty().bind(RESOURCE_FACTORY.getStringBinding("menu.help"));
+		menuItemQuickReferenceGuide.textProperty().bind(
+				RESOURCE_FACTORY.getStringBinding("menu.quickreferenceguide"));
+		menuItemUserDocumentation.textProperty().bind(
+				RESOURCE_FACTORY.getStringBinding("menu.userdocumentation"));
+		menuItemAbout.textProperty().bind(RESOURCE_FACTORY.getStringBinding("menu.about"));
+	}
+
+	public void computeHighlighting() {
 		CharStream input = CharStreams.fromString(treeDescription.getText());
 		DescriptionLexer lexer = new DescriptionLexer(input);
 		CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -500,7 +602,8 @@ public class RootLayoutController implements Initializable {
 		this.currentLocale = currentLocale;
 		lingTreeFilterDescription = sFileFilterDescription + " ("
 				+ Constants.LINGTREE_DATA_FILE_EXTENSIONS + ")";
-
+		RESOURCE_FACTORY.setResources(ResourceBundle.getBundle(Constants.RESOURCE_LOCATION,
+				currentLocale));
 	}
 
 	public LingTreeTree getTree() {
@@ -553,27 +656,76 @@ public class RootLayoutController implements Initializable {
 	}
 
 	protected void createToolbarButtons(ResourceBundle bundle) {
-		ControllerUtilities.createToolbarButtonWithImage("newAction.png", buttonToolbarFileNew,
-				tooltipToolbarFileNew, bundle.getString("tooltip.new"));
-		ControllerUtilities.createToolbarButtonWithImage("openAction.png", buttonToolbarFileOpen,
-				tooltipToolbarFileOpen, bundle.getString("tooltip.open"));
-		ControllerUtilities.createToolbarButtonWithImage("saveAction.png", buttonToolbarFileSave,
-				tooltipToolbarFileSave, bundle.getString("tooltip.save"));
-		ControllerUtilities.createToolbarButtonWithImage("cutAction.png", buttonToolbarEditCut,
-				tooltipToolbarEditCut, bundle.getString("tooltip.cut"));
-		ControllerUtilities.createToolbarButtonWithImage("copyAction.png", buttonToolbarEditCopy,
-				tooltipToolbarEditCopy, bundle.getString("tooltip.copy"));
-		ControllerUtilities.createToolbarButtonWithImage("pasteAction.png", buttonToolbarEditPaste,
-				tooltipToolbarEditPaste, bundle.getString("tooltip.paste"));
-		ControllerUtilities.createToolbarButtonWithImage("drawTree.png", buttonToolbarDrawTree,
-				tooltipToolbarDrawTree, bundle.getString("tooltip.drawtree"));
+
+		tooltipToolbarFileNew = ControllerUtilities.createToolbarButtonWithImage("newAction.png",
+				buttonToolbarFileNew, tooltipToolbarFileNew, bundle.getString("tooltip.new"));
+		tooltipToolbarFileNew.textProperty().bind(RESOURCE_FACTORY.getStringBinding("tooltip.new"));
+		tooltipToolbarFileOpen = ControllerUtilities.createToolbarButtonWithImage("openAction.png",
+				buttonToolbarFileOpen, tooltipToolbarFileOpen, bundle.getString("tooltip.open"));
+		tooltipToolbarFileOpen.textProperty().bind(
+				RESOURCE_FACTORY.getStringBinding("tooltip.open"));
+		tooltipToolbarFileSave = ControllerUtilities.createToolbarButtonWithImage("saveAction.png",
+				buttonToolbarFileSave, tooltipToolbarFileSave, bundle.getString("tooltip.save"));
+		tooltipToolbarFileSave.textProperty().bind(
+				RESOURCE_FACTORY.getStringBinding("tooltip.save"));
+		tooltipToolbarEditCut = ControllerUtilities.createToolbarButtonWithImage("cutAction.png",
+				buttonToolbarEditCut, tooltipToolbarEditCut, bundle.getString("tooltip.cut"));
+		tooltipToolbarEditCut.textProperty().bind(RESOURCE_FACTORY.getStringBinding("tooltip.cut"));
+		tooltipToolbarEditCopy = ControllerUtilities.createToolbarButtonWithImage("copyAction.png",
+				buttonToolbarEditCopy, tooltipToolbarEditCopy, bundle.getString("tooltip.copy"));
+		tooltipToolbarEditCopy.textProperty().bind(
+				RESOURCE_FACTORY.getStringBinding("tooltip.copy"));
+		tooltipToolbarEditPaste = ControllerUtilities.createToolbarButtonWithImage(
+				"pasteAction.png", buttonToolbarEditPaste, tooltipToolbarEditPaste,
+				bundle.getString("tooltip.paste"));
+		tooltipToolbarEditPaste.textProperty().bind(
+				RESOURCE_FACTORY.getStringBinding("tooltip.paste"));
+		tooltipToolbarDrawTree = ControllerUtilities
+				.createToolbarButtonWithImage("drawTree.png", buttonToolbarDrawTree,
+						tooltipToolbarDrawTree, bundle.getString("tooltip.drawtree"));
+		tooltipToolbarDrawTree.textProperty().bind(
+				RESOURCE_FACTORY.getStringBinding("tooltip.drawtree"));
+
+		toggleButtonUseFlatTree.getStyleClass().add(kUnPressedStyle);
+		tooltipToolbarUseFlatTree = new Tooltip(bundle.getString("tooltip.useflattree"));
+		toggleButtonUseFlatTree.setTooltip(tooltipToolbarUseFlatTree);
+		tooltipToolbarUseFlatTree.textProperty().bind(
+				RESOURCE_FACTORY.getStringBinding("tooltip.useflattree"));
+		toggleButtonUseFlatTree.textProperty().bind(
+				RESOURCE_FACTORY.getStringBinding("label.useflattree"));
+
+		toggleButtonShowMatchingParenWithArrowKeys.getStyleClass().add(kUnPressedStyle);
+		tooltipToolbarShowMatchingParenWithArrowKeys = new Tooltip(RESOURCE_FACTORY
+				.getStringBinding("tooltip.showmatchingparenwitharrowkeys").get());
+		tooltipToolbarShowMatchingParenWithArrowKeys.textProperty().bind(
+				RESOURCE_FACTORY.getStringBinding("tooltip.showmatchingparenwitharrowkeys"));
+		toggleButtonShowMatchingParenWithArrowKeys
+				.setTooltip(tooltipToolbarShowMatchingParenWithArrowKeys);
+
+		toggleButtonSaveAsPng.getStyleClass().add(kUnPressedStyle);
+		tooltipToolbarSaveAsPng = new Tooltip(RESOURCE_FACTORY
+				.getStringBinding("tooltip.saveaspng").get());
+		tooltipToolbarSaveAsPng.textProperty().bind(
+				RESOURCE_FACTORY.getStringBinding("tooltip.saveaspng"));
+		toggleButtonSaveAsPng.setTooltip(tooltipToolbarSaveAsPng);
+
+		toggleButtonSaveAsSVG.getStyleClass().add(kUnPressedStyle);
+		tooltipToolbarSaveAsSVG = new Tooltip(RESOURCE_FACTORY
+				.getStringBinding("tooltip.saveassvg").get());
+		tooltipToolbarSaveAsSVG.textProperty().bind(
+				RESOURCE_FACTORY.getStringBinding("tooltip.saveassvg"));
+		toggleButtonSaveAsSVG.setTooltip(tooltipToolbarSaveAsSVG);
+
 	}
 
 	public void askAboutSaving() {
-		Alert alert = new Alert(AlertType.CONFIRMATION, "", ButtonType.YES, ButtonType.NO);
+		Alert alert = new Alert(AlertType.CONFIRMATION, "");
 		alert.setTitle(MainApp.kApplicationTitle);
-		alert.setHeaderText(bundle.getString("file.asktosaveheader"));
-		alert.setContentText(bundle.getString("file.asktosavecontent"));
+		alert.setHeaderText(RESOURCE_FACTORY.getStringBinding("file.asktosaveheader").get());
+		alert.setContentText(RESOURCE_FACTORY.getStringBinding("file.asktosavecontent").get());
+		ButtonType buttonYes = new ButtonType(bundle.getString("label.yes"), ButtonData.YES);
+		ButtonType buttonNo = new ButtonType(bundle.getString("label.no"), ButtonData.NO);
+		alert.getButtonTypes().setAll(buttonYes, buttonNo);
 
 		Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
 		stage.getIcons().add(mainApp.getNewMainIconImage());
@@ -595,11 +747,11 @@ public class RootLayoutController implements Initializable {
 	 */
 	@FXML
 	private void handleAbout() {
-		sAboutHeader = bundle.getString("about.header");
+		sAboutHeader = RESOURCE_FACTORY.getStringBinding("about.header").get();
 		Object[] args = { Constants.VERSION_NUMBER };
 		MessageFormat msgFormatter = new MessageFormat("");
 		msgFormatter.setLocale(currentLocale);
-		msgFormatter.applyPattern(bundle.getString("about.content"));
+		msgFormatter.applyPattern(RESOURCE_FACTORY.getStringBinding("about.content").get());
 		sAboutContent = msgFormatter.format(args);
 		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle(sAboutHeader);
@@ -725,7 +877,8 @@ public class RootLayoutController implements Initializable {
 		Text tPart2 = new Text(TreeBuilder.getDescriptionBeforeMark());
 		tPart2.setFill(Color.RED);
 		tPart2.setFont(defaultFont);
-		Text tPart3 = new Text(" " + bundle.getString("descriptionsyntaxerror.here"));
+		Text tPart3 = new Text(" "
+				+ RESOURCE_FACTORY.getStringBinding("descriptionsyntaxerror.here").get());
 		tPart3.setFill(Color.BLACK);
 		tPart3.setStyle("-fx-font-weight:bold;");
 		tPart3.setFont(defaultFont);
@@ -744,9 +897,9 @@ public class RootLayoutController implements Initializable {
 				46d, 47d, 48d, 49d, 50d, 51d, 52d, 53d, 54d, 55d, 56d, 57d, 58d, 59d, 60d, 61d,
 				62d, 63d, 64d, 65d, 66d, 67d, 68d, 69d, 70d, 71d, 72d };
 		ChoiceDialog<Double> dialog = new ChoiceDialog<>(12d, fontSizes);
-		dialog.setTitle(bundle.getString("descriptionfontsize.header"));
-		dialog.setHeaderText(bundle.getString("descriptionfontsize.content"));
-		dialog.setContentText(bundle.getString("descriptionfontsize.choose"));
+		dialog.setTitle(RESOURCE_FACTORY.getStringBinding("descriptionfontsize.header").get());
+		dialog.setHeaderText(RESOURCE_FACTORY.getStringBinding("descriptionfontsize.content").get());
+		dialog.setContentText(RESOURCE_FACTORY.getStringBinding("descriptionfontsize.choose").get());
 		dialog.setSelectedItem(applicationPreferences.getTreeDescriptionFontSize());
 		Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
 		stage.getIcons().add(mainApp.getNewMainIconImage());
@@ -764,9 +917,11 @@ public class RootLayoutController implements Initializable {
 				1125d, 1250d, 1375d, 1500d, 1625d, 1750d, 1875d, 2000d, 2125d, 2250d, 2375d, 2500d,
 				2625d, 2750d, 2875d, 3000d, 3125d, 3250d, 3375d, 3500d, 3625d, 3750d, 3875d, 4000d };
 		ChoiceDialog<Double> dialog = new ChoiceDialog<>(750d, fontSizes);
-		dialog.setTitle(bundle.getString("showmatchingparendelay.header"));
-		dialog.setHeaderText(bundle.getString("showmatchingparendelay.content"));
-		dialog.setContentText(bundle.getString("showmatchingparendelay.choose"));
+		dialog.setTitle(RESOURCE_FACTORY.getStringBinding("showmatchingparendelay.header").get());
+		dialog.setHeaderText(RESOURCE_FACTORY.getStringBinding("showmatchingparendelay.content")
+				.get());
+		dialog.setContentText(RESOURCE_FACTORY.getStringBinding("showmatchingparendelay.choose")
+				.get());
 		dialog.setSelectedItem(applicationPreferences.getShowMatchingParenDelay());
 		Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
 		stage.getIcons().add(mainApp.getNewMainIconImage());
@@ -903,7 +1058,7 @@ public class RootLayoutController implements Initializable {
 		}
 		applicationPreferences.setLastOpenedDirectoryPath(sDirectoryPath);
 		File fileCreated = ControllerUtilities.doFileSaveAs(mainApp, currentLocale, false,
-				lingTreeFilterDescription, bundle.getString("file.new"));
+				lingTreeFilterDescription, RESOURCE_FACTORY.getStringBinding("file.new").get());
 		if (fileCreated != null) {
 			final String initialDescription = "( )";
 			ltTree = new LingTreeTree();
@@ -955,7 +1110,7 @@ public class RootLayoutController implements Initializable {
 			// Load the fxml file and create a new stage for the popup.
 			Stage dialogStage = new Stage();
 			String resource = "fxml/QuickReferenceGuide.fxml";
-			String title = bundle.getString("quick.title");
+			String title = RESOURCE_FACTORY.getStringBinding("quick.title").get();
 			FXMLLoader loader = ControllerUtilities.getLoader(mainApp, currentLocale, dialogStage,
 					resource, title);
 
@@ -986,7 +1141,7 @@ public class RootLayoutController implements Initializable {
 		handleDrawTree();
 	}
 
-	public void doFileOpen(Boolean fCloseIfCanceled) {
+	public File doFileOpen(Boolean fCloseIfCanceled) {
 		File file = ControllerUtilities.getFileToOpen(mainApp, lingTreeFilterDescription,
 				Constants.LINGTREE_DATA_FILE_EXTENSIONS);
 		if (file != null) {
@@ -998,6 +1153,7 @@ public class RootLayoutController implements Initializable {
 			// but then canceled. We quit.
 			System.exit(0);
 		}
+		return file;
 	}
 
 	/**
@@ -1084,17 +1240,32 @@ public class RootLayoutController implements Initializable {
 			askAboutSaving();
 		}
 
-		Map<String, ResourceBundle> validLocales = new TreeMap<String, ResourceBundle>();
-		getListOfValidLocales(validLocales);
-
+		ValidLocaleCollector collector = new ValidLocaleCollector(currentLocale);
+		collector.collectValidLocales();
+		Map<String, ResourceBundle> validLocales = collector.getValidLocales();
 		ChoiceDialog<String> dialog = new ChoiceDialog<>(
 				currentLocale.getDisplayLanguage(currentLocale), validLocales.keySet());
-		dialog.setTitle(bundle.getString("menu.changeinterfacelanguage"));
-		dialog.setHeaderText(bundle.getString("dialog.chooseinterfacelanguage"));
-		dialog.setContentText(bundle.getString("dialog.chooselanguage"));
-
+		dialog.setTitle(RESOURCE_FACTORY.getStringBinding("dialog.chooseinterfacelanguage").get());
+		dialog.setHeaderText(RESOURCE_FACTORY.getStringBinding("dialog.chooseinterfacelanguage")
+				.get());
+		dialog.setContentText(RESOURCE_FACTORY.getStringBinding("dialog.chooselanguage").get());
 		Optional<String> result = dialog.showAndWait();
-		result.ifPresent(locale -> mainApp.setLocale(validLocales.get(locale).getLocale()));
+		result.ifPresent(locale -> {
+			Locale selectedLocale = validLocales.get(locale).getLocale();
+			bundle = validLocales.get(locale);
+			if (!currentLocale.equals(selectedLocale)) {
+				mainApp.setLocale(selectedLocale);
+				RESOURCE_FACTORY.setResources(ResourceBundle.getBundle(Constants.RESOURCE_LOCATION,
+						selectedLocale));
+				if (mainApp.getOperatingSystem().equals(Constants.MAC_OS_X)) {
+					VBox vbox = (VBox) mainPane.getChildren().get(0);
+					MenuBar menuBar = (MenuBar) vbox.getChildren().get(0);
+					menuBar.useSystemMenuBarProperty().set(false);
+					menuBar.useSystemMenuBarProperty().set(true);
+				}
+				currentLocale = selectedLocale;
+			}
+		});
 	}
 
 	private void getListOfValidLocales(Map<String, ResourceBundle> choices) {
@@ -1220,7 +1391,7 @@ public class RootLayoutController implements Initializable {
 			// Load the fxml file and create a new stage for the popup.
 			Stage dialogStage = new Stage();
 			String resource = "fxml/TreeSpacingParametersChooser.fxml";
-			String title = bundle.getString("spacingdialog.title");
+			String title = RESOURCE_FACTORY.getStringBinding("spacingdialog.title").get();
 			FXMLLoader loader = ControllerUtilities.getLoader(mainApp, currentLocale, dialogStage,
 					resource, title);
 
@@ -1244,7 +1415,7 @@ public class RootLayoutController implements Initializable {
 			// Load the fxml file and create a new stage for the popup.
 			Stage dialogStage = new Stage();
 			String resource = "fxml/BackgroundAndLineParametersChooser.fxml";
-			String title = bundle.getString("backlinedialog.title");
+			String title = RESOURCE_FACTORY.getStringBinding("backlinedialog.title").get();
 			FXMLLoader loader = ControllerUtilities.getLoader(mainApp, currentLocale, dialogStage,
 					resource, title);
 

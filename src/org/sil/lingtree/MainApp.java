@@ -34,6 +34,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
@@ -148,7 +149,7 @@ public class MainApp extends Application {
 			ResourceBundle bundle = ResourceBundle.getBundle(Constants.RESOURCE_LOCATION, locale);
 			loader.setResources(bundle);
 			rootLayout = (BorderPane) loader.load();
-			if (getOperatingSystem().equals("Mac OS X")) {
+			if (getOperatingSystem().equals(Constants.MAC_OS_X)) {
 				adjustMenusForMacOSX();
 			}
 
@@ -235,13 +236,16 @@ public class MainApp extends Application {
 		Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
 		stage.getIcons().add(getNewMainIconImage());
 
-		ButtonType buttonCreateNewTree = new ButtonType(bundle.getString("label.createnewtree"));
+		ButtonType buttonCreateNewTree = new ButtonType(bundle.getString("label.createnewtree"), ButtonData.OK_DONE);
 		ButtonType buttonOpenExistingTree = new ButtonType(
 				bundle.getString("label.openexistingtree"));
 		ButtonType buttonCancel = new ButtonType(bundle.getString("label.cancel"),
 				ButtonData.CANCEL_CLOSE);
 
 		alert.getButtonTypes().setAll(buttonCreateNewTree, buttonOpenExistingTree, buttonCancel);
+		((Button)alert.getDialogPane().lookupButton(buttonCreateNewTree)).setPrefWidth(250);
+		((Button)alert.getDialogPane().lookupButton(buttonOpenExistingTree)).setPrefWidth(250);
+		((Button)alert.getDialogPane().lookupButton(buttonCancel)).setPrefWidth(Region.USE_PREF_SIZE);
 
 		boolean fSucceeded = true;
 		Optional<ButtonType> result = alert.showAndWait();
@@ -252,8 +256,10 @@ public class MainApp extends Application {
 				fSucceeded = false;
 			}
 		} else if (result.get() == buttonOpenExistingTree) {
-			controller.doFileOpen(true);
+			File file = controller.doFileOpen(true);
+			loadTreeData(file);
 			controller.setTree(ltTree);
+			controller.computeHighlighting();
 			controller.handleDrawTree();
 
 		} else {
@@ -339,9 +345,6 @@ public class MainApp extends Application {
 
 	public void setLocale(Locale locale) {
 		this.locale = locale;
-		initRootLayout();
-		primaryStage.hide();
-		primaryStage.show();
 	}
 
 	public LingTreeTree getTree() {
