@@ -251,6 +251,8 @@ public class RootLayoutController implements Initializable {
 	private MenuItem menuItemUserDocumentation;
 	@FXML
 	private MenuItem menuItemAbout;
+	@FXML
+	private Text statusBarKey;
 
 	@FXML
 	private InlineCssTextArea treeDescription;
@@ -278,6 +280,7 @@ public class RootLayoutController implements Initializable {
 		sFileFilterDescription = RESOURCE_FACTORY.getStringBinding("file.filterdescription").get();
 		createToolbarButtons(bundle);
 		initMenuItemsForLocalization();
+		statusBarKey.textProperty().bind(RESOURCE_FACTORY.getStringBinding("label.key"));
 
 		// we use OnKeyTyped because it tells us the character keyed
 		// regardless of the keyboard used

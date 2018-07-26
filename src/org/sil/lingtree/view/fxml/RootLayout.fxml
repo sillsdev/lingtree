@@ -116,7 +116,7 @@
    <bottom>
       <VBox prefHeight="21.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
          <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="%label.key" />
+            <Text fx:id="statusBarKey" strokeType="OUTSIDE" strokeWidth="0.0" text="%label.key" />
          </children>
       </VBox>
    </bottom>
