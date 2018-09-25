@@ -20,9 +20,9 @@ type="tLingTree"
 ><emailAddress
 >lingtree_support@sil.org</emailAddress
 ><date
->March 16, 2018</date
+>September 24, 2018</date
 ><version
->Version 1.0.0</version
+>Version 1.1.0</version
 ><version
 >Copyright © 2002-2018 SIL International</version
 ><contents
@@ -1988,7 +1988,7 @@ num="xHebrewLTRTree"
 > when the <object
 type="tMenuItem"
 >Draw tree right-to-left</object
->  is left unchecked.</pc
+> is left unchecked.</pc
 ><example
 num="xHebrewLTRTree"
 ><chart
@@ -2096,7 +2096,7 @@ width="450"
 ></chart
 ></example
 ><pc
->Each row has a description of the parameter and a box to key a numerical value. You can use negative numbers, if necessary.  For example, if the difference between the lexical and gloss font is such that there is too much space between the bottom of the lexical items and the top of the gloss items, you can set the “Vertical space between lexical node and gloss node” to a negative value.</pc
+>Each row has a description of the parameter and a box to key a numerical value. You can use negative numbers, if necessary. For example, if the difference between the lexical and gloss font is such that there is too much space between the bottom of the lexical items and the top of the gloss items, you can set the “Vertical space between lexical node and gloss node” to a negative value.</pc
 ></section2
 ><section2
 id="sBackgroundLine"
@@ -2136,7 +2136,7 @@ type="tMenuItem"
 >Format</object
 > menu item is <object
 type="tMenuItem"
->Save the current tree settings to use for new tree diagrams</object
+>Save the current tree parameters to use for new tree diagrams</object
 >. When you select this menu item, the set of tree formatting values used for the current tree are remembered for any new tree diagrams in the future.</p
 ></section2
 ></section1
@@ -2280,7 +2280,7 @@ type="tMenuItem"
 > menu item is <object
 type="tMenuItem"
 >Delay to use when showing matching parentheses</object
->. The default delay is 750 milliseconds (i.e., three quarters of a second). Depending on your typing speed, you want to change this value.  Use this menu item to change the delay value to be shorter or longer. The shortest allowed value is 125 milliseconds (i.e., one eighth of a second) and the longest value allowed is 4000 milliseconds (i.e., 4 seconds).</p
+>. The default delay is 750 milliseconds (i.e., three quarters of a second). Depending on your typing speed, you want to change this value. Use this menu item to change the delay value to be shorter or longer. The shortest allowed value is 125 milliseconds (i.e., one eighth of a second) and the longest value allowed is 4000 milliseconds (i.e., 4 seconds).</p
 ></section2
 ><section2
 id="sInterfaceLanguage"
