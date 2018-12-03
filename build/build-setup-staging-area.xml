@@ -12,6 +12,9 @@
 				<include name="controlsfx-8.40.12.jar" />
 				<include name="controlsfx-8.40.12license.txt" />
 			</fileset>
+			<fileset dir="../LibJavaDev">
+				<include name="libjavadev-1.0.0.jar" />
+			</fileset>
 			<fileset dir="../Richtextfx">
 				<include name="flowless-0.6.jar"/>
 				<include name="reactfx-2.0-M5.jar"/>

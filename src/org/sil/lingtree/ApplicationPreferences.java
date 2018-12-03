@@ -15,7 +15,7 @@ import javafx.scene.control.SplitPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-public class ApplicationPreferences {
+public class ApplicationPreferences extends ApplicationPreferencesUtilities {
 
 	static final String LAST_OPENED_FILE_PATH = "lastOpenedFilePath";
 	static final String LAST_OPENED_DIRECTORY_PATH = "lastOpenedDirectoryPath";
@@ -110,10 +110,12 @@ public class ApplicationPreferences {
 		}
 	}
 
+	@Override
 	public String getLastOpenedDirectoryPath() {
 		return prefs.get(LAST_OPENED_DIRECTORY_PATH, "");
 	}
 
+	@Override
 	public void setLastOpenedDirectoryPath(String directoryPath) {
 		setPreferencesKey(LAST_OPENED_DIRECTORY_PATH, directoryPath);
 	}

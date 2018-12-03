@@ -12,19 +12,16 @@ import java.util.ResourceBundle;
 
 import org.fxmisc.flowless.VirtualizedScrollPane;
 import org.fxmisc.richtext.InlineCssTextArea;
-import org.sil.lingtree.model.EmptyElementFontInfo;
-import org.sil.lingtree.model.GlossFontInfo;
-import org.sil.lingtree.model.LexFontInfo;
 import org.sil.lingtree.model.LingTreeTree;
-import org.sil.lingtree.model.NonTerminalFontInfo;
 import org.sil.lingtree.service.BatchTreeHandler;
 import org.sil.lingtree.service.DatabaseMigrator;
 import org.sil.lingtree.view.RootLayoutController;
 import org.sil.lingtree.Constants;
 import org.sil.lingtree.MainApp;
-import org.sil.lingtree.view.ControllerUtilities;
 import org.sil.lingtree.ApplicationPreferences;
 import org.sil.lingtree.backendprovider.XMLBackEndProvider;
+import org.sil.utility.MainAppUtilities;
+import org.sil.utility.view.ControllerUtilities;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -49,7 +46,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
-public class MainApp extends Application {
+public class MainApp extends Application implements MainAppUtilities {
 	private static final String kApplicationIconResource = "file:resources/images/LingTree128x128.png";
 	private Stage primaryStage;
 	private BorderPane rootLayout;
@@ -236,16 +233,18 @@ public class MainApp extends Application {
 		Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
 		stage.getIcons().add(getNewMainIconImage());
 
-		ButtonType buttonCreateNewTree = new ButtonType(bundle.getString("label.createnewtree"), ButtonData.OK_DONE);
+		ButtonType buttonCreateNewTree = new ButtonType(bundle.getString("label.createnewtree"),
+				ButtonData.OK_DONE);
 		ButtonType buttonOpenExistingTree = new ButtonType(
 				bundle.getString("label.openexistingtree"));
 		ButtonType buttonCancel = new ButtonType(bundle.getString("label.cancel"),
 				ButtonData.CANCEL_CLOSE);
 
 		alert.getButtonTypes().setAll(buttonCreateNewTree, buttonOpenExistingTree, buttonCancel);
-		((Button)alert.getDialogPane().lookupButton(buttonCreateNewTree)).setPrefWidth(250);
-		((Button)alert.getDialogPane().lookupButton(buttonOpenExistingTree)).setPrefWidth(250);
-		((Button)alert.getDialogPane().lookupButton(buttonCancel)).setPrefWidth(Region.USE_PREF_SIZE);
+		((Button) alert.getDialogPane().lookupButton(buttonCreateNewTree)).setPrefWidth(250);
+		((Button) alert.getDialogPane().lookupButton(buttonOpenExistingTree)).setPrefWidth(250);
+		((Button) alert.getDialogPane().lookupButton(buttonCancel))
+				.setPrefWidth(Region.USE_PREF_SIZE);
 
 		boolean fSucceeded = true;
 		Optional<ButtonType> result = alert.showAndWait();
@@ -301,8 +300,16 @@ public class MainApp extends Application {
 	 * @return the mainIconImage
 	 */
 	public Image getNewMainIconImage() {
-		Image img = ControllerUtilities.getIconImageFromURL(kApplicationIconResource);
+		Image img = ControllerUtilities.getIconImageFromURL(kApplicationIconResource,
+				Constants.RESOURCE_SOURCE_LOCATION);
 		return img;
+	}
+
+	/**
+	 * Needed by MainAppUtitlities
+	 */
+	public void saveFile(File file) {
+		saveTreeData(file);
 	}
 
 	public void saveTreeData(File file) {

@@ -47,12 +47,12 @@ import org.sil.lingtree.model.NonTerminalFontInfo;
 import org.sil.lingtree.service.GraphicImageSaver;
 import org.sil.lingtree.service.TreeBuilder;
 import org.sil.lingtree.service.TreeDrawer;
-import org.sil.lingtree.view.ControllerUtilities;
 import org.sil.lingtree.Constants;
 import org.sil.lingtree.ApplicationPreferences;
 import org.sil.lingtree.service.ValidLocaleCollector;
-import org.sil.lingtree.service.ObservableResourceFactory;
 import org.sil.utility.StringUtilities;
+import org.sil.utility.view.ControllerUtilities;
+import org.sil.utility.view.ObservableResourceFactory;
 
 import com.sun.deploy.uitoolkit.impl.fx.HostServicesFactory;
 import com.sun.javafx.application.HostServicesDelegate;
@@ -659,33 +659,37 @@ public class RootLayoutController implements Initializable {
 	}
 
 	protected void createToolbarButtons(ResourceBundle bundle) {
-
 		tooltipToolbarFileNew = ControllerUtilities.createToolbarButtonWithImage("newAction.png",
-				buttonToolbarFileNew, tooltipToolbarFileNew, bundle.getString("tooltip.new"));
+				buttonToolbarFileNew, tooltipToolbarFileNew, bundle.getString("tooltip.new"),
+				Constants.RESOURCE_SOURCE_LOCATION);
 		tooltipToolbarFileNew.textProperty().bind(RESOURCE_FACTORY.getStringBinding("tooltip.new"));
 		tooltipToolbarFileOpen = ControllerUtilities.createToolbarButtonWithImage("openAction.png",
-				buttonToolbarFileOpen, tooltipToolbarFileOpen, bundle.getString("tooltip.open"));
+				buttonToolbarFileOpen, tooltipToolbarFileOpen, bundle.getString("tooltip.open"),
+				Constants.RESOURCE_SOURCE_LOCATION);
 		tooltipToolbarFileOpen.textProperty().bind(
 				RESOURCE_FACTORY.getStringBinding("tooltip.open"));
 		tooltipToolbarFileSave = ControllerUtilities.createToolbarButtonWithImage("saveAction.png",
-				buttonToolbarFileSave, tooltipToolbarFileSave, bundle.getString("tooltip.save"));
+				buttonToolbarFileSave, tooltipToolbarFileSave, bundle.getString("tooltip.save"),
+				Constants.RESOURCE_SOURCE_LOCATION);
 		tooltipToolbarFileSave.textProperty().bind(
 				RESOURCE_FACTORY.getStringBinding("tooltip.save"));
 		tooltipToolbarEditCut = ControllerUtilities.createToolbarButtonWithImage("cutAction.png",
-				buttonToolbarEditCut, tooltipToolbarEditCut, bundle.getString("tooltip.cut"));
+				buttonToolbarEditCut, tooltipToolbarEditCut, bundle.getString("tooltip.cut"),
+				Constants.RESOURCE_SOURCE_LOCATION);
 		tooltipToolbarEditCut.textProperty().bind(RESOURCE_FACTORY.getStringBinding("tooltip.cut"));
 		tooltipToolbarEditCopy = ControllerUtilities.createToolbarButtonWithImage("copyAction.png",
-				buttonToolbarEditCopy, tooltipToolbarEditCopy, bundle.getString("tooltip.copy"));
+				buttonToolbarEditCopy, tooltipToolbarEditCopy, bundle.getString("tooltip.copy"),
+				Constants.RESOURCE_SOURCE_LOCATION);
 		tooltipToolbarEditCopy.textProperty().bind(
 				RESOURCE_FACTORY.getStringBinding("tooltip.copy"));
 		tooltipToolbarEditPaste = ControllerUtilities.createToolbarButtonWithImage(
 				"pasteAction.png", buttonToolbarEditPaste, tooltipToolbarEditPaste,
-				bundle.getString("tooltip.paste"));
+				bundle.getString("tooltip.paste"), Constants.RESOURCE_SOURCE_LOCATION);
 		tooltipToolbarEditPaste.textProperty().bind(
 				RESOURCE_FACTORY.getStringBinding("tooltip.paste"));
-		tooltipToolbarDrawTree = ControllerUtilities
-				.createToolbarButtonWithImage("drawTree.png", buttonToolbarDrawTree,
-						tooltipToolbarDrawTree, bundle.getString("tooltip.drawtree"));
+		tooltipToolbarDrawTree = ControllerUtilities.createToolbarButtonWithImage("drawTree.png",
+				buttonToolbarDrawTree, tooltipToolbarDrawTree,
+				bundle.getString("tooltip.drawtree"), Constants.RESOURCE_SOURCE_LOCATION);
 		tooltipToolbarDrawTree.textProperty().bind(
 				RESOURCE_FACTORY.getStringBinding("tooltip.drawtree"));
 
@@ -760,8 +764,8 @@ public class RootLayoutController implements Initializable {
 		alert.setTitle(sAboutHeader);
 		alert.setHeaderText(null);
 		alert.setContentText(sAboutContent);
-		Image silLogo = ControllerUtilities
-				.getIconImageFromURL("file:resources/images/SILLogo.png");
+		Image silLogo = ControllerUtilities.getIconImageFromURL(
+				"file:resources/images/SILLogo.png", Constants.RESOURCE_SOURCE_LOCATION);
 		alert.setGraphic(new ImageView(silLogo));
 		Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
 		stage.getIcons().add(mainApp.getNewMainIconImage());
@@ -1061,7 +1065,9 @@ public class RootLayoutController implements Initializable {
 		}
 		applicationPreferences.setLastOpenedDirectoryPath(sDirectoryPath);
 		File fileCreated = ControllerUtilities.doFileSaveAs(mainApp, currentLocale, false,
-				lingTreeFilterDescription, RESOURCE_FACTORY.getStringBinding("file.new").get());
+				lingTreeFilterDescription, RESOURCE_FACTORY.getStringBinding("file.new").get(),
+				Constants.LINGTREE_DATA_FILE_EXTENSION, Constants.LINGTREE_DATA_FILE_EXTENSIONS,
+				Constants.RESOURCE_LOCATION);
 		if (fileCreated != null) {
 			final String initialDescription = "( )";
 			ltTree = new LingTreeTree();
@@ -1115,7 +1121,8 @@ public class RootLayoutController implements Initializable {
 			String resource = "fxml/QuickReferenceGuide.fxml";
 			String title = RESOURCE_FACTORY.getStringBinding("quick.title").get();
 			FXMLLoader loader = ControllerUtilities.getLoader(mainApp, currentLocale, dialogStage,
-					resource, title);
+					title, RootLayoutController.class.getResource(resource),
+					Constants.RESOURCE_LOCATION);
 
 			QuickReferenceGuideController controller = loader.getController();
 			controller.setDialogStage(dialogStage);
@@ -1217,7 +1224,8 @@ public class RootLayoutController implements Initializable {
 	@FXML
 	private void handleSaveTreeAs() {
 		ControllerUtilities.doFileSaveAs(mainApp, currentLocale, false, lingTreeFilterDescription,
-				null);
+				null, Constants.LINGTREE_DATA_FILE_EXTENSION,
+				Constants.LINGTREE_DATA_FILE_EXTENSIONS, Constants.RESOURCE_LOCATION);
 		// TODO: make sure we know what the new file path is
 		markAsClean();
 	}
@@ -1396,7 +1404,8 @@ public class RootLayoutController implements Initializable {
 			String resource = "fxml/TreeSpacingParametersChooser.fxml";
 			String title = RESOURCE_FACTORY.getStringBinding("spacingdialog.title").get();
 			FXMLLoader loader = ControllerUtilities.getLoader(mainApp, currentLocale, dialogStage,
-					resource, title);
+					title, RootLayoutController.class.getResource(resource),
+					Constants.RESOURCE_LOCATION);
 
 			TreeSpacingParametersController controller = loader.getController();
 			controller.setDialogStage(dialogStage);
@@ -1420,7 +1429,8 @@ public class RootLayoutController implements Initializable {
 			String resource = "fxml/BackgroundAndLineParametersChooser.fxml";
 			String title = RESOURCE_FACTORY.getStringBinding("backlinedialog.title").get();
 			FXMLLoader loader = ControllerUtilities.getLoader(mainApp, currentLocale, dialogStage,
-					resource, title);
+					title, RootLayoutController.class.getResource(resource),
+					Constants.RESOURCE_LOCATION);
 
 			BackgroundAndLineParametersController controller = loader.getController();
 			controller.setDialogStage(dialogStage);
