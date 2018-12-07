@@ -146,9 +146,7 @@ public class MainApp extends Application implements MainAppUtilities {
 			ResourceBundle bundle = ResourceBundle.getBundle(Constants.RESOURCE_LOCATION, locale);
 			loader.setResources(bundle);
 			rootLayout = (BorderPane) loader.load();
-			if (getOperatingSystem().equals(Constants.MAC_OS_X)) {
-				adjustMenusForMacOSX();
-			}
+			ControllerUtilities.adjustMenusIfNeeded(sOperatingSystem, rootLayout);
 
 			// Show the scene containing the root layout.
 			Scene scene = new Scene(rootLayout);
@@ -283,12 +281,6 @@ public class MainApp extends Application implements MainAppUtilities {
 		applicationPreferences.setLastOpenedFilePath(file);
 		applicationPreferences.setLastOpenedDirectoryPath(file.getParent());
 		updateStageTitle(file);
-	}
-
-	protected void adjustMenusForMacOSX() {
-		VBox vbox = (VBox) rootLayout.getChildren().get(0);
-		MenuBar menuBar = (MenuBar) vbox.getChildren().get(0);
-		menuBar.useSystemMenuBarProperty().set(true);
 	}
 
 	private void restoreWindowSettings() {

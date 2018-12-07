@@ -1,4 +1,4 @@
-// Copyright (c) 2016-2017 SIL International
+// Copyright (c) 2016-2018 SIL International
 // This software is licensed under the LGPL, version 2.1 or later
 // (http://www.gnu.org/licenses/lgpl-2.1.html)
 /**
@@ -12,7 +12,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
 
-import javafx.collections.ObservableList;
 import javafx.scene.paint.Color;
 
 import org.junit.After;
@@ -23,8 +22,7 @@ import org.sil.lingtree.Constants;
 import org.sil.lingtree.backendprovider.XMLBackEndProvider;
 import org.sil.lingtree.model.FontInfo;
 import org.sil.lingtree.model.LingTreeTree;
-import org.sil.lingtree.model.LingTreeNode;
-import org.sil.lingtree.view.JavaFXThreadingRule;
+import org.sil.utility.view.JavaFXThreadingRule;
 
 /**
  * @author Andy Black

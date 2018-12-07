@@ -6,12 +6,10 @@
 
 package org.sil.lingtree.service;
 
-import static org.junit.Assert.*;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
-import org.sil.lingtree.view.JavaFXThreadingRule;
+import org.sil.utility.view.JavaFXThreadingRule;
 
 /**
  * @author Andy Black

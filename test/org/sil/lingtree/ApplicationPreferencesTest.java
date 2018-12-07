@@ -8,18 +8,8 @@ import static org.junit.Assert.*;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Locale;
-import java.util.ResourceBundle;
 
-import javafx.fxml.FXMLLoader;
-import javafx.geometry.Orientation;
-import javafx.scene.Scene;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.SplitPane;
-import javafx.scene.control.TextArea;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import org.junit.After;
@@ -30,9 +20,7 @@ import org.sil.lingtree.ApplicationPreferences;
 import org.sil.lingtree.model.ColorXmlAdaptor;
 import org.sil.lingtree.model.FontInfo;
 import org.sil.lingtree.model.LingTreeTree;
-import org.sil.lingtree.view.JavaFXThreadingRule;
-
-import com.sun.javafx.collections.SetListenerHelper;
+import org.sil.utility.view.JavaFXThreadingRule;
 
 public class ApplicationPreferencesTest {
 

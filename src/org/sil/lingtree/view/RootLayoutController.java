@@ -49,7 +49,6 @@ import org.sil.lingtree.service.TreeBuilder;
 import org.sil.lingtree.service.TreeDrawer;
 import org.sil.lingtree.Constants;
 import org.sil.lingtree.ApplicationPreferences;
-import org.sil.lingtree.service.ValidLocaleCollector;
 import org.sil.utility.StringUtilities;
 import org.sil.utility.view.ControllerUtilities;
 import org.sil.utility.view.ObservableResourceFactory;
@@ -1251,9 +1250,8 @@ public class RootLayoutController implements Initializable {
 			askAboutSaving();
 		}
 
-		ValidLocaleCollector collector = new ValidLocaleCollector(currentLocale);
-		collector.collectValidLocales();
-		Map<String, ResourceBundle> validLocales = collector.getValidLocales();
+		Map<String, ResourceBundle> validLocales = ControllerUtilities.getValidLocales(
+				currentLocale, Constants.RESOURCE_LOCATION);
 		ChoiceDialog<String> dialog = new ChoiceDialog<>(
 				currentLocale.getDisplayLanguage(currentLocale), validLocales.keySet());
 		dialog.setTitle(RESOURCE_FACTORY.getStringBinding("dialog.chooseinterfacelanguage").get());
@@ -1268,29 +1266,10 @@ public class RootLayoutController implements Initializable {
 				mainApp.setLocale(selectedLocale);
 				RESOURCE_FACTORY.setResources(ResourceBundle.getBundle(Constants.RESOURCE_LOCATION,
 						selectedLocale));
-				if (mainApp.getOperatingSystem().equals(Constants.MAC_OS_X)) {
-					VBox vbox = (VBox) mainPane.getChildren().get(0);
-					MenuBar menuBar = (MenuBar) vbox.getChildren().get(0);
-					menuBar.useSystemMenuBarProperty().set(false);
-					menuBar.useSystemMenuBarProperty().set(true);
-				}
+				ControllerUtilities.adjustMenusIfNeeded(mainApp.getOperatingSystem(), mainPane);
 				currentLocale = selectedLocale;
 			}
 		});
-	}
-
-	private void getListOfValidLocales(Map<String, ResourceBundle> choices) {
-		Locale[] locales = Locale.getAvailableLocales();
-		for (Locale locale : locales) {
-			ResourceBundle rb = ResourceBundle.getBundle("org.sil.lingtree.resources.LingTree",
-					locale);
-			if (rb != null) {
-				String localeName = rb.getLocale().getDisplayName(currentLocale);
-				if (!StringUtilities.isNullOrEmpty(localeName)) {
-					choices.putIfAbsent(localeName, rb);
-				}
-			}
-		}
 	}
 
 	private void insertMatchingClosingParenthesis() {

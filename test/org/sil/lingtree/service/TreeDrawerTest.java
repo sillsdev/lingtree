@@ -10,13 +10,9 @@ import static org.junit.Assert.*;
 
 import java.util.HashMap;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.sil.lingtree.model.LingTreeNode;
 import org.sil.lingtree.model.LingTreeTree;
-import org.sil.lingtree.view.JavaFXThreadingRule;
 
 /**
  * @author Andy Black

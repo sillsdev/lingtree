@@ -13,22 +13,13 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
-import org.antlr.v4.runtime.CharStream;
-import org.antlr.v4.runtime.CharStreams;
-import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.tree.ParseTree;
-import org.antlr.v4.runtime.tree.ParseTreeWalker;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.sil.lingtree.descriptionparser.DescriptionConstants;
-import org.sil.lingtree.descriptionparser.antlr4generated.DescriptionLexer;
-import org.sil.lingtree.descriptionparser.antlr4generated.DescriptionParser;
 import org.sil.lingtree.model.LingTreeNode;
 import org.sil.lingtree.model.LingTreeTree;
 import org.sil.lingtree.model.NodeType;
-import org.sil.lingtree.view.JavaFXThreadingRule;
+import org.sil.utility.view.JavaFXThreadingRule;
 
 /**
  * @author Andy Black

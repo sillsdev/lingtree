@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2017 SIL International
+ * Copyright (c) 2016-2018 SIL International
  * This software is licensed under the LGPL, version 2.1 or later
  * (http://www.gnu.org/licenses/lgpl-2.1.html)
  */
@@ -12,7 +12,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.sil.lingtree.view.JavaFXThreadingRule;
+import org.sil.utility.view.JavaFXThreadingRule;
 
 /**
  * @author Andy Black
