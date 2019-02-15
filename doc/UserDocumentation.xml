@@ -20,11 +20,11 @@ type="tLingTree"
 ><emailAddress
 >lingtree_support@sil.org</emailAddress
 ><date
->September 24, 2018</date
+>February 15, 2019</date
 ><version
->Version 1.1.0</version
+>Version 1.2.0</version
 ><version
->Copyright © 2002-2018 SIL International</version
+>Copyright © 2002-2019 SIL International</version
 ><contents
 ></contents
 ></frontMatter
@@ -2292,7 +2292,7 @@ type="tMenuItem"
 >Settings / Change the interface language</object
 > menu item. This brings up a dialog box showing the current interface language in a drop down chooser. Click on the chooser's drop down button to see other interface language choices. The choices given use the name of the language in the current interface language (so if the current interface language is English, then it will show “Spanish” as an option; if the current interface language is Spanish, it will show English as “inglés”).</p
 ><p
->The current version has English and a rough, most likely often inaccurate version of Spanish. Any corrections to the Spanish are welcome.</p
+>The current version has English, French and a rough, most likely often inaccurate version of Spanish. Any corrections to the Spanish are welcome.</p
 ></section2
 ><section2
 id="sQuicReferenceGuide"
