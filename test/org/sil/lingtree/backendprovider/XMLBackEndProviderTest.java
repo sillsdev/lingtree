@@ -1,4 +1,4 @@
-// Copyright (c) 2016-2018 SIL International
+// Copyright (c) 2016-2020 SIL International
 // This software is licensed under the LGPL, version 2.1 or later
 // (http://www.gnu.org/licenses/lgpl-2.1.html)
 /**
@@ -64,7 +64,7 @@ public class XMLBackEndProviderTest {
 		ltTree = xmlBackEndProvider.getLingTree();
 		assertNotNull(ltTree);
 		assertEquals(2, ltTree.getVersion());
-		assertEquals("(S (NP (\\L Juan (\\G John))) (VP (V (\\L duerme (\\G sleeps)))))", ltTree.getDescription());
+		assertEquals("(S (NP (\\L Juan (\\G John))) (VP (V <agt> (\\L duerme (\\G sleeps)))))", ltTree.getDescription());
 		assertEquals(20, ltTree.getVerticalGap(), 0.0);
 		assertEquals(30, ltTree.getHorizontalGap(), 0.0);
 		assertEquals(10, ltTree.getInitialXCoordinate(), 0.0);

@@ -1,4 +1,4 @@
-// Copyright (c) 2016-2018 SIL International
+// Copyright (c) 2016-2020 SIL International
 // This software is licensed under the LGPL, version 2.1 or later
 // (http://www.gnu.org/licenses/lgpl-2.1.html)
 /**
@@ -9,6 +9,7 @@ package org.sil.lingtree.service;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
@@ -142,5 +143,58 @@ public class DatabaseMigratorTest {
 		assertEquals(fontFamily, font.getFamily());
 		assertEquals(fontSize, font.getSize(), 0.0);
 		assertEquals(fontStyle, font.getStyle());
+	}
+	@Test
+	public void testMigratorWedgesInDescription() throws IOException {
+		Files.copy(Paths.get(Constants.UNIT_TEST_DATA_FILE_WITH_WEDGES_IN_DESCRIPTION_VERSION_000),
+				Paths.get(Constants.UNIT_TEST_DATA_FILE_WITH_WEDGES_IN_DESCRIPTION_VERSION_001),
+				StandardCopyOption.REPLACE_EXISTING);
+		databaseFile = new File(Constants.UNIT_TEST_DATA_FILE_WITH_WEDGES_IN_DESCRIPTION_VERSION_001);
+		migrator = new DatabaseMigrator(databaseFile);
+		int version = migrator.getVersion();
+		assertEquals(1, version);
+		migrator.setDpi(96);
+		migrator.doMigration();
+		version = migrator.getVersion();
+		assertEquals(2, version);
+		ltTree = new LingTreeTree();
+		Locale locale = new Locale("en");
+		XMLBackEndProvider xmlBackEndProvider = new XMLBackEndProvider(ltTree, locale);
+		xmlBackEndProvider.loadTreeDataFromFile(databaseFile);
+		ltTree = xmlBackEndProvider.getLingTree();
+		assertEquals(Constants.CURRENT_DATABASE_VERSION, ltTree.getVersion());
+		String sColorHexCode = StringUtilities.toRGBCode(ltTree.getBackgroundColor());
+		assertEquals("#ffffff", sColorHexCode);
+		assertEquals(
+				"(6. S (V (\\L co/S1 (\\G will play (<agt> (Subj))  )))(NP/s[SUBJ] (N (\\L tsih/S2 "
+				+ "(\\G child ))))(S' (COMP (\\L na/S3 (\\G when )))(S (V (\\L ca guah/S1 (\\G ate (<agt, (Subj)) (pat> "
+				+ "(\\(Obj\\)))  )))(NP/s[Subj] (N (\\L tsih/S2 (\\G child )))))))",
+				ltTree.getDescription());
+		FontInfo fontInfo = ltTree.getEmptyElementFontInfo();
+		checkFontInfo(fontInfo, "Charis SIL", 12.0, "Regular", Color.web("#0000ff"));
+		fontInfo = ltTree.getGlossFontInfo();
+		checkFontInfo(fontInfo, "Times New Roman", 12.0, "Regular", Color.web("#008000ff"));
+		double value = ltTree.getHorizontalGap();
+		assertEquals(3.78, value, 0.0);
+		value = ltTree.getHorizontalOffset();
+		assertEquals(10310.0, value, 0.0);
+		value = ltTree.getInitialXCoordinate();
+		assertEquals(3.78, value, 0.0);
+		value = ltTree.getInitialYCoordinate();
+		assertEquals(12.78, value, 0.0);
+		value = ltTree.getLexGlossGapAdjustment();
+		assertEquals(3.78, value, 0.0);
+		fontInfo = ltTree.getLexicalFontInfo();
+		checkFontInfo(fontInfo, "Charis SIL", 12.0, "Regular", Color.web("#0000ffff"));
+		assertEquals(Color.BLACK, ltTree.getLineColor());
+		value = ltTree.getLineWidth();
+		assertEquals(0.94, value, 0.0);
+		fontInfo = ltTree.getNonTerminalFontInfo();
+		checkFontInfo(fontInfo, "Times New Roman", 12.0, "Regular", Color.web("#ff0000ff"));
+		assertEquals(true, ltTree.isSaveAsPng());
+		assertEquals(true, ltTree.isSaveAsSVG());
+		assertEquals(false, ltTree.isShowFlatView());
+		value = ltTree.getVerticalGap();
+		assertEquals(11.34, value, 0.0);
 	}
 }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2018 SIL International
+ * Copyright (c) 2016-2020 SIL International
  * This software is licensed under the LGPL, version 2.1 or later
  * (http://www.gnu.org/licenses/lgpl-2.1.html)
  */
@@ -10,7 +10,7 @@ package org.sil.lingtree;
  *
  */
 public class Constants {
-	public static final String VERSION_NUMBER = "1.2.1";
+	public static final String VERSION_NUMBER = "1.2.2";
 	public static final int CURRENT_DATABASE_VERSION = 2;
 
 	public static final String SUBSCRIPT = "/s";
@@ -49,4 +49,7 @@ public class Constants {
 	public static final String UNIT_TEST_DATA_FILE_VERSION_001 = "test/org/sil/lingtree/testdata/TestDataVersion001.tre";
 	public static final String UNIT_TEST_DATA_FILE_VERSION_002 = "test/org/sil/lingtree/testdata/TestDataVersion002.tre";
 	public static final String UNIT_TEST_DATA_FILE_VERSION_2 = "test/org/sil/lingtree/testdata/TestDataVersion2.tre";
+	public static final String UNIT_TEST_DATA_FILE_WITH_WEDGES_IN_DESCRIPTION_VERSION_000 = "test/org/sil/lingtree/testdata/TestDataWedgesInDescriptionVersion000.tre";
+	public static final String UNIT_TEST_DATA_FILE_WITH_WEDGES_IN_DESCRIPTION_VERSION_001 = "test/org/sil/lingtree/testdata/TestDataWedgesInDescriptionVersion001.tre";
+	public static final String UNIT_TEST_DATA_FILE_WITH_WEDGES_IN_DESCRIPTION_VERSION_002 = "test/org/sil/lingtree/testdata/TestDataWedgesInDescriptionVersion002.tre";
 }

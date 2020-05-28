@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?><lingTreeTree dbversion="2">
+  
+  <description>(6. S (V (\L co/S1 (\G will play (&lt;agt&gt; (Subj))  )))(NP/s[SUBJ] (N (\L tsih/S2 (\G child ))))(S' (COMP (\L na/S3 (\G when )))(S (V (\L ca guah/S1 (\G ate (&lt;agt, (Subj)) (pat&gt; (\(Obj\)))  )))(NP/s[Subj] (N (\L tsih/S2 (\G child )))))))</description>
+  <verticalGap>11.34</verticalGap>
+  <horizontalGap>3.78</horizontalGap>
+  <initialXCoordinate>3.78</initialXCoordinate>
+  <initialYCoordinate>12.78</initialYCoordinate>
+  <horizontalOffset>10310</horizontalOffset>
+  <lexGlossGapAdjustment>3.78</lexGlossGapAdjustment>
+  
+  
+  <showFlatView>false</showFlatView>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <lineColor>#000000</lineColor>
+  <backgroundColor>#ffffff</backgroundColor>
+  <lineWidth>0.94</lineWidth><saveAsPng>true</saveAsPng><saveAsSVG>true</saveAsSVG>
+  
+<emptyElementFontInfo><color>#0000ff</color><fontFamily>Charis SIL</fontFamily><fontSize>12</fontSize><fontType>Regular</fontType></emptyElementFontInfo><glossFontInfo><color>#008000</color><fontFamily>Times New Roman</fontFamily><fontSize>12</fontSize><fontType>Regular</fontType></glossFontInfo><lexicalFontInfo><color>#0000ff</color><fontFamily>Charis SIL</fontFamily><fontSize>12</fontSize><fontType>Regular</fontType></lexicalFontInfo><nonTerminalFontInfo><color>#ff0000</color><fontFamily>Times New Roman</fontFamily><fontSize>12</fontSize><fontType>Regular</fontType></nonTerminalFontInfo></lingTreeTree>
