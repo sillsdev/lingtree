@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2018 SIL International
+ * Copyright (c) 2016-2020 SIL International
  * This software is licensed under the LGPL, version 2.1 or later
  * (http://www.gnu.org/licenses/lgpl-2.1.html)
  */
@@ -403,7 +403,7 @@ public class TreeDrawer {
 		sb.append("\" fill=\"");
 		sb.append(StringUtilities.toRGBCode(fontInfo.getColor()));
 		sb.append("\">");
-		sb.append(tb.getText());
+		sb.append(tb.getText().replace("<", "&lt;").replace(">", "&gt;"));
 		sb.append("</text>\n");
 	}
 
