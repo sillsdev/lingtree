@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2017 SIL International
+ * Copyright (c) 2016-2020 SIL International
  * This software is licensed under the LGPL, version 2.1 or later
  * (http://www.gnu.org/licenses/lgpl-2.1.html)
  */
@@ -15,6 +15,7 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.sil.lingtree.Constants;
+import org.sil.utility.StringUtilities;
 
 @XmlRootElement(name = "lingTreeTree")
 public class LingTreeTree {
@@ -329,4 +330,13 @@ public class LingTreeTree {
 		NonTerminalFontInfo.getInstance().setColor(getNonTerminalFontInfo().getColor());
 	}
 
+	public boolean canUseFlatTree() {
+		if (StringUtilities.isNullOrEmpty(description)) {
+			return false;
+		}
+		String[] itemsAroundLexicalNodes = description.split("\\([ \t]*\\\\L");
+		if (itemsAroundLexicalNodes.length <= 1)
+			return false;
+		return true;
+	}
 }

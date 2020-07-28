@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2018 SIL International
+ * Copyright (c) 2016-2020 SIL International
  * This software is licensed under the LGPL, version 2.1 or later
  * (http://www.gnu.org/licenses/lgpl-2.1.html)
  */
@@ -7,27 +7,16 @@
 package org.sil.lingtree.view;
 
 import java.awt.Desktop;
-import java.awt.image.BufferedImage;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
 import java.net.URL;
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.TreeMap;
-import java.util.regex.Matcher;
-
-import javax.imageio.ImageIO;
 
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
@@ -36,7 +25,6 @@ import org.antlr.v4.runtime.Token;
 import org.controlsfx.dialog.FontSelectorDialogWithColor;
 import org.fxmisc.richtext.InlineCssTextArea;
 import org.sil.lingtree.MainApp;
-import org.sil.lingtree.descriptionparser.DescriptionConstants;
 import org.sil.lingtree.descriptionparser.antlr4generated.DescriptionLexer;
 import org.sil.lingtree.model.EmptyElementFontInfo;
 import org.sil.lingtree.model.FontInfo;
@@ -57,8 +45,6 @@ import com.sun.deploy.uitoolkit.impl.fx.HostServicesFactory;
 import com.sun.javafx.application.HostServicesDelegate;
 
 import javafx.application.Platform;
-import javafx.concurrent.Task;
-import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -68,30 +54,20 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.ChoiceDialog;
-import javafx.scene.control.IndexRange;
-import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SplitPane;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.image.WritableImage;
 import javafx.scene.input.Clipboard;
-import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.DataFormat;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -940,18 +916,29 @@ public class RootLayoutController implements Initializable {
 	@FXML
 	private void handleMenuUseFlatTree() {
 		toggleButtonUseFlatTree = setToggleButtonStyle(menuItemUseFlatTree, toggleButtonUseFlatTree);
-		ltTree.setShowFlatView(menuItemUseFlatTree.isSelected());
-		handleDrawTree();
-		markAsDirty();
+		processUseFlatTreeChange();
 	}
 
 	@FXML
 	private void handleUseFlatTree() {
 		menuItemUseFlatTree.setSelected(!menuItemUseFlatTree.isSelected());
 		toggleButtonUseFlatTree = setToggleButtonStyle(menuItemUseFlatTree, toggleButtonUseFlatTree);
+		processUseFlatTreeChange();
+	}
+
+	protected void processUseFlatTreeChange() {
 		ltTree.setShowFlatView(menuItemUseFlatTree.isSelected());
 		handleDrawTree();
 		markAsDirty();
+		if (ltTree.isShowFlatView() && !ltTree.canUseFlatTree()) {
+			String sTitle = RESOURCE_FACTORY.getStringBinding("flattree.title").get();
+			String sContent = RESOURCE_FACTORY.getStringBinding("flattree.cannotuse").get();
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle(sTitle);
+			alert.setHeaderText(null);
+			alert.setContentText(sContent);
+			alert.showAndWait();
+		}
 		treeDescription.requestFocus();
 	}
 

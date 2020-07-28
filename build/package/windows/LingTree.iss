@@ -3,8 +3,8 @@
 [Setup]
 AppId={{fxApplication}}
 AppName=LingTree
-AppVersion=1.2.2.0
-AppVerName=LingTree version 1.2.2.0
+AppVersion=1.2.3.0
+AppVerName=LingTree version 1.2.3.0
 AppPublisher=SIL International
 AppComments=LingTree
 AppCopyright=Copyright © 2018 SIL International
@@ -23,13 +23,13 @@ DefaultGroupName=SIL International
 LicenseFile=
 ;WinXP or above
 MinVersion=0,5.1
-OutputBaseFilename=LingTree-1.2.2.0
+OutputBaseFilename=LingTree-1.2.3.0
 Compression=lzma
 SolidCompression=yes
 PrivilegesRequired=admin
 SetupIconFile=LingTree\LingTree.ico
 UninstallDisplayIcon={app}\LingTree.ico
-UninstallDisplayName=LingTree version 1.2.2.0
+UninstallDisplayName=LingTree version 1.2.3.0
 WizardImageStretch=No
 WizardSmallImageFile=LingTree-setup-icon.bmp
 ArchitecturesInstallIn64BitMode=x64
