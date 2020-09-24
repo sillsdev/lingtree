@@ -37,9 +37,11 @@ import org.sil.lingtree.service.TreeBuilder;
 import org.sil.lingtree.service.TreeDrawer;
 import org.sil.lingtree.Constants;
 import org.sil.lingtree.ApplicationPreferences;
+import org.sil.utility.ClipboardUtilities;
 import org.sil.utility.StringUtilities;
 import org.sil.utility.view.ControllerUtilities;
 import org.sil.utility.view.ObservableResourceFactory;
+import org.sil.utility.view.FilteringEventDispatcher;
 
 import com.sun.deploy.uitoolkit.impl.fx.HostServicesFactory;
 import com.sun.javafx.application.HostServicesDelegate;
@@ -433,6 +435,14 @@ public class RootLayoutController implements Initializable {
 
 		treeDescription.setWrapText(true);
 
+		// catch control-V for fixing nulls in clipboard
+		// This comes from https://stackoverflow.com/questions/61072150/how-to-overwrite-system-default-keyboard-shortcuts-like-ctrlc-ctrlv-by-using
+		// accessed on 23 September 2020.
+		// It explains that the TextArea catches the control-V event and prevents it from bubbling up to the scene where
+		// we have our menu item catch it.  This custom filter blocks the TextArea from seeing the control-V event.
+		treeDescription.setEventDispatcher(
+		        new FilteringEventDispatcher(treeDescription.getEventDispatcher(), menuItemEditPaste.getAccelerator()));
+
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
@@ -782,10 +792,8 @@ public class RootLayoutController implements Initializable {
 
 	@FXML
 	protected void handlePaste() {
-		// if (!systemClipboard.hasContent(DataFormat.PLAIN_TEXT)) {
-		// adjustForEmptyClipboard();
-		// return;
-		// }
+		ClipboardUtilities.removeAnyFinalNullFromStringOnClipboard();
+		// now our possibly adjusted string is on the clipboard; do a paste
 		treeDescription.paste();
 		computeHighlighting();
 		treeDescription.requestFocus();
