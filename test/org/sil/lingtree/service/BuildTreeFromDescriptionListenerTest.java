@@ -58,6 +58,14 @@ public class BuildTreeFromDescriptionListenerTest extends ServiceBaseTest {
 		checkFontInfo(node, node.getContentTextBox(), "Times New Roman", 12.0, "Regular",
 				Color.BLACK);
 		checkFontInfo(node, node.getSuperscriptTextBox(), "Times New Roman", 8.3999996, "Regular", Color.BLACK);
+
+		// right-to-left
+		origTree.setUseRightToLeftOrientation(false);
+		ltTree = TreeBuilder.parseAString("(NP/si (N/S'))", origTree);
+		assertFalse(ltTree.isUseRightToLeftOrientation());
+		origTree.setUseRightToLeftOrientation(true);
+		ltTree = TreeBuilder.parseAString("(NP/si (N/S'))", origTree);
+		assertTrue(ltTree.isUseRightToLeftOrientation());
 	}
 
 	private void checkFontInfo(LingTreeNode node, Text textBox, String fontFamily, double fontSize,

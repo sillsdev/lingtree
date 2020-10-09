@@ -168,6 +168,7 @@ public class TreeBuilder {
 		ltTree.setSaveAsSVG(origTree.isSaveAsSVG());
 		ltTree.setShowFlatView(origTree.isShowFlatView());
 		ltTree.setVerticalGap(origTree.getVerticalGap());
+		ltTree.setUseRightToLeftOrientation(origTree.isUseRightToLeftOrientation());
 	}
 
 	public static String buildErrorMessage(ResourceBundle bundle) {

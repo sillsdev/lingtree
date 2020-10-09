@@ -10,7 +10,7 @@ package org.sil.lingtree;
  *
  */
 public class Constants {
-	public static final String VERSION_NUMBER = "1.2.4";
+	public static final String VERSION_NUMBER = "1.2.5";
 	public static final int CURRENT_DATABASE_VERSION = 2;
 
 	public static final String SUBSCRIPT = "/s";
