@@ -760,17 +760,12 @@ public class RootLayoutController implements Initializable {
 	}
 
 	protected void showFileToUser(String sFileToShow) {
-		if (!mainApp.getOperatingSystem().equals("Mac OS X")) {
-//			HostServicesDelegate hostServices = HostServicesFactory.getInstance(mainApp);
-//			hostServices.showDocument("file:" + sFileToShow);
-		} else {
-			if (Desktop.isDesktopSupported()) {
-				try {
-					File myFile = new File(sFileToShow);
-					Desktop.getDesktop().open(myFile);
-				} catch (IOException ex) {
-					// no application registered for PDFs
-				}
+		if (Desktop.isDesktopSupported()) {
+			try {
+				File myFile = new File(sFileToShow);
+				Desktop.getDesktop().open(myFile);
+			} catch (IOException ex) {
+				// no application registered for PDFs
 			}
 		}
 	}
