@@ -43,9 +43,6 @@ import org.sil.utility.view.ControllerUtilities;
 import org.sil.utility.view.ObservableResourceFactory;
 import org.sil.utility.view.FilteringEventDispatcher;
 
-import com.sun.deploy.uitoolkit.impl.fx.HostServicesFactory;
-import com.sun.javafx.application.HostServicesDelegate;
-
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -764,8 +761,8 @@ public class RootLayoutController implements Initializable {
 
 	protected void showFileToUser(String sFileToShow) {
 		if (!mainApp.getOperatingSystem().equals("Mac OS X")) {
-			HostServicesDelegate hostServices = HostServicesFactory.getInstance(mainApp);
-			hostServices.showDocument("file:" + sFileToShow);
+//			HostServicesDelegate hostServices = HostServicesFactory.getInstance(mainApp);
+//			hostServices.showDocument("file:" + sFileToShow);
 		} else {
 			if (Desktop.isDesktopSupported()) {
 				try {

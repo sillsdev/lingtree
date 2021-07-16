@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2020 SIL International
+// Copyright (c) 2018-2021 SIL International
 // This software is licensed under the LGPL, version 2.1 or later 
 // (http://www.gnu.org/licenses/lgpl-2.1.html) 
 /**
@@ -17,7 +17,6 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -170,6 +169,7 @@ public class DatabaseMigrator {
 	// Some old versions output < and > in the Description element which breaks XML parsing
 	public File fixDescriptionXML(File file) throws IOException {
 		String sContents = "";
+		@SuppressWarnings("resource")
 		Stream<String> lines = Files.lines(file.toPath());
 		sContents = lines.collect(Collectors.joining(System.lineSeparator()));
 		int descBegin = sContents.indexOf("<Description>") + 13;

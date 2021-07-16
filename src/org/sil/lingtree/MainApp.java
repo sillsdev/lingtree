@@ -1,4 +1,4 @@
-// Copyright (c) 2017-2018 SIL International
+// Copyright (c) 2017-2021 SIL International
 // This software is licensed under the LGPL, version 2.1 or later
 // (http://www.gnu.org/licenses/lgpl-2.1.html)
 
@@ -16,9 +16,7 @@ import org.sil.lingtree.model.LingTreeTree;
 import org.sil.lingtree.service.BatchTreeHandler;
 import org.sil.lingtree.service.DatabaseMigrator;
 import org.sil.lingtree.view.RootLayoutController;
-import org.sil.lingtree.Constants;
 import org.sil.lingtree.MainApp;
-import org.sil.lingtree.ApplicationPreferences;
 import org.sil.lingtree.backendprovider.XMLBackEndProvider;
 import org.sil.utility.MainAppUtilities;
 import org.sil.utility.view.ControllerUtilities;
@@ -34,7 +32,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
-import javafx.scene.control.MenuBar;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.SplitPane;

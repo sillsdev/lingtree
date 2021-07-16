@@ -1,4 +1,4 @@
-// Copyright (c) 2016-2017 SIL International 
+// Copyright (c) 2016-2012 SIL International 
 // This software is licensed under the LGPL, version 2.1 or later 
 // (http://www.gnu.org/licenses/lgpl-2.1.html) 
 /**
@@ -16,9 +16,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.antlr.v4.runtime.*;
-import org.sil.lingtree.descriptionparser.DescriptionConstants;
-import org.sil.lingtree.descriptionparser.DescriptionErrorInfo;
-import org.sil.lingtree.descriptionparser.DescriptionErrorListener;
 import org.sil.lingtree.descriptionparser.DescriptionErrorListener.VerboseListener;
 import org.sil.lingtree.descriptionparser.antlr4generated.DescriptionLexer;
 import org.sil.lingtree.descriptionparser.antlr4generated.DescriptionParser;

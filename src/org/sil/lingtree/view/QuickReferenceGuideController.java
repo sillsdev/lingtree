@@ -1,4 +1,4 @@
-// Copyright (c) 2018 SIL International 
+// Copyright (c) 2021 SIL International 
 // This software is licensed under the LGPL, version 2.1 or later 
 // (http://www.gnu.org/licenses/lgpl-2.1.html) 
 /**
@@ -7,7 +7,6 @@
 package org.sil.lingtree.view;
 
 import java.net.URL;
-import java.util.Locale;
 import java.util.ResourceBundle;
 
 import org.sil.lingtree.MainApp;
@@ -34,7 +33,6 @@ public class QuickReferenceGuideController implements Initializable {
 	MainApp mainApp;
 	Stage dialogStage;
 	private ResourceBundle bundle;
-	private Locale locale;
 	private ApplicationPreferences preferences;
 
 	/**

@@ -1,4 +1,4 @@
-// Copyright (c) 2016-2020 SIL International
+// Copyright (c) 2016-2021 SIL International
 // This software is licensed under the LGPL, version 2.1 or later
 // (http://www.gnu.org/licenses/lgpl-2.1.html)
 /**
@@ -26,7 +26,6 @@ import org.sil.lingtree.model.FontInfo;
 import org.sil.lingtree.model.LingTreeTree;
 import org.sil.lingtree.Constants;
 import org.sil.lingtree.backendprovider.XMLBackEndProvider;
-import org.sil.lingtree.service.DatabaseMigrator;
 import org.sil.utility.view.JavaFXThreadingRule;
 import org.sil.utility.StringUtilities;
 

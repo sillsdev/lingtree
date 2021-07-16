@@ -1,4 +1,4 @@
-// Copyright (c) 2017-2018 SIL International
+// Copyright (c) 2017-2021 SIL International
 // This software is licensed under the LGPL, version 2.1 or later
 // (http://www.gnu.org/licenses/lgpl-2.1.html)
 package org.sil.lingtree;
@@ -11,7 +11,6 @@ import org.sil.lingtree.model.FontInfo;
 import org.sil.lingtree.model.LingTreeTree;
 import org.sil.utility.*;
 
-import javafx.scene.control.SplitPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
