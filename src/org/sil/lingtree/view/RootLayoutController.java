@@ -22,7 +22,6 @@ import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.Token;
-import org.controlsfx.dialog.FontSelectorDialogWithColor;
 import org.fxmisc.richtext.InlineCssTextArea;
 import org.sil.lingtree.MainApp;
 import org.sil.lingtree.descriptionparser.antlr4generated.DescriptionLexer;

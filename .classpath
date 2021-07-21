@@ -1,23 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="test"/>
+	<classpathentry kind="lib" path="Richtextfx/richtextfx-fat-0.10.6.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.fx.ide.jdt.core.JAVAFX_CONTAINER"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="lib" path="ANTLR/antlr-4.7-complete.jar"/>
-	<classpathentry kind="lib" path="ControlsFX/controlsfx-8.40.12.jar"/>
-	<classpathentry kind="lib" path="LibJavaDev/libjavadev-1.3.0.jar" sourcepath="/libjavadev"/>
-	<classpathentry kind="lib" path="JAXB/jakarta.activation.jar"/>
-	<classpathentry kind="lib" path="JAXB/jakarta.xml.bind-api.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="ANTLR/antlr-4.7-complete.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="ControlsFX/controlsfx-8.40.12.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="LibJavaDev/libjavadev-1.3.0.jar" sourcepath="/libjavadev">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="JAXB/jakarta.activation.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="JAXB/jakarta.xml.bind-api.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="lib" path="JAXB/jaxb-core.jar"/>
 	<classpathentry kind="lib" path="JAXB/jaxb-impl.jar"/>
 	<classpathentry kind="lib" path="JAXB/jaxb-jxc.jar"/>
 	<classpathentry kind="lib" path="JAXB/jaxb-xjc.jar"/>
-	<classpathentry kind="lib" path="Richtextfx/richtextfx-fat-0.10.6.jar"/>
-	<classpathentry kind="output" path="bin"/>
+	<classpathentry kind="output" path="mods"/>
 </classpath>

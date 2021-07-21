@@ -38,3 +38,4 @@ resources/images
 *.bak
 *.xso
 *.properties~
+/mods/

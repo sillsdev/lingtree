@@ -5,7 +5,7 @@
 	<import file="${basedir}/build-do-compile.xml" as="nested"/>
 
 	<property name="appName" value="LingTree"/>
-	<property name="version" value="1.2.6.0"/>
+	<property name="version" value="1.2.7.0"/>
 
 	<target name="do-deploy" depends="nested.setup-staging-area, nested.do-compile, nested.init-fx-tasks">
 		<antcall target="build-windows-iss-file"/>
@@ -96,7 +96,7 @@
 				title="LingTree"
 				vendor="SIL International"
 				license="LGPL"
-				copyright="© 2002-2020 SIL International"
+				copyright="© 2002-2021 SIL International"
 				description="LingTree is a tool that lets you easily describe a linguistic tree and produce a graphic image of it.">
 				<fx:association extension="tre" mimetype="text/x-lingtree" description="LingTree file"/>
 			</fx:info>
