@@ -20,7 +20,7 @@
 
 <!-- <?import org.controlsfx.control.StatusBar?> -->
 
-<BorderPane fx:id="mainPane" prefHeight="660.0" prefWidth="1000.0" stylesheets="@LingTree.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.sil.lingtree.view.RootLayoutController">
+<BorderPane fx:id="mainPane" prefHeight="660.0" prefWidth="1000.0" stylesheets="@LingTree.css" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="org.sil.lingtree.view.RootLayoutController">
    <top>
       <VBox prefHeight="75.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
          <children>

@@ -91,8 +91,9 @@ public class FontSelectorDialogWithColor extends Dialog<Font> {
 		setTitle(dialogTitle);
 		dialogPane.setHeaderText(dialogHeaderText);
 		dialogPane.getStyleClass().add("font-selector-dialog");
-		dialogPane.getStylesheets().add(
-				FontSelectorDialogWithColor.class.getResource("dialogs.css").toExternalForm());
+		// Ignoring this for now.
+//		dialogPane.getStylesheets().add(
+//				FontSelectorDialogWithColor.class.getResource("dialogs.css").toExternalForm());
 		dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
 		dialogPane.setContent(fontPanel);
 	}
