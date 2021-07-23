@@ -1,4 +1,4 @@
-module LingTree {
+open module LingTree {
 	// Exports
 	exports org.sil.lingtree;
 

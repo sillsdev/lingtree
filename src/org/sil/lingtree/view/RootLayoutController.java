@@ -1107,7 +1107,7 @@ public class RootLayoutController implements Initializable {
 			String resource = "fxml/QuickReferenceGuide.fxml";
 			String title = RESOURCE_FACTORY.getStringBinding("quick.title").get();
 			FXMLLoader loader = ControllerUtilities.getLoader(mainApp, currentLocale, dialogStage,
-					title, RootLayoutController.class.getResource(resource), bundle);
+					title, RootLayoutController.class.getResource(resource), Constants.RESOURCE_LOCATION);
 
 			QuickReferenceGuideController controller = loader.getController();
 			controller.setDialogStage(dialogStage);
@@ -1235,9 +1235,8 @@ public class RootLayoutController implements Initializable {
 		if (fIsDirty) {
 			askAboutSaving();
 		}
-
 		Map<String, ResourceBundle> validLocales = ControllerUtilities.getValidLocales(
-				currentLocale, bundle);
+				currentLocale, Constants.RESOURCE_LOCATION);
 		ChoiceDialog<String> dialog = new ChoiceDialog<>(
 				currentLocale.getDisplayLanguage(currentLocale), validLocales.keySet());
 		dialog.setTitle(RESOURCE_FACTORY.getStringBinding("dialog.chooseinterfacelanguage").get());
@@ -1369,7 +1368,7 @@ public class RootLayoutController implements Initializable {
 			String resource = "fxml/TreeSpacingParametersChooser.fxml";
 			String title = RESOURCE_FACTORY.getStringBinding("spacingdialog.title").get();
 			FXMLLoader loader = ControllerUtilities.getLoader(mainApp, currentLocale, dialogStage,
-					title, RootLayoutController.class.getResource(resource), bundle);
+					title, RootLayoutController.class.getResource(resource), Constants.RESOURCE_LOCATION);
 
 			TreeSpacingParametersController controller = loader.getController();
 			controller.setDialogStage(dialogStage);
@@ -1393,7 +1392,7 @@ public class RootLayoutController implements Initializable {
 			String resource = "fxml/BackgroundAndLineParametersChooser.fxml";
 			String title = RESOURCE_FACTORY.getStringBinding("backlinedialog.title").get();
 			FXMLLoader loader = ControllerUtilities.getLoader(mainApp, currentLocale, dialogStage,
-					title, RootLayoutController.class.getResource(resource), bundle);
+					title, RootLayoutController.class.getResource(resource), Constants.RESOURCE_LOCATION);
 
 			BackgroundAndLineParametersController controller = loader.getController();
 			controller.setDialogStage(dialogStage);
