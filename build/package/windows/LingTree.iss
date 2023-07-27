@@ -1,7 +1,7 @@
 ;This file will be executed next to the application bundle image
 ;I.e. current directory will contain folder LingTree with application files
 [Setup]
-AppId={{fxApplication}}
+AppId={{2FFB0A36-E5AC-40A6-A398-5987B4BEEF3D}
 AppName=LingTree
 AppVersion=1.2.7.0
 AppVerName=LingTree version 1.2.7.0
