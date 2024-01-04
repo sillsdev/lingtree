@@ -3,11 +3,11 @@
 [Setup]
 AppId={{2FFB0A36-E5AC-40A6-A398-5987B4BEEF3D}
 AppName=LingTree
-AppVersion=1.2.7.0
-AppVerName=LingTree version 1.2.7.0
+AppVersion=1.2.7.1
+AppVerName=LingTree version 1.2.7.1
 AppPublisher=SIL International
 AppComments=LingTree
-AppCopyright=Copyright © 2018 SIL International
+AppCopyright=Copyright © 2018-2024 SIL International
 ;AppPublisherURL=http://java.com/
 ;AppSupportURL=http://java.com/
 ;AppUpdatesURL=http://java.com/
@@ -23,13 +23,13 @@ DefaultGroupName=SIL International
 LicenseFile=
 ;WinXP or above
 MinVersion=0,5.1
-OutputBaseFilename=LingTree-1.2.7.0
+OutputBaseFilename=LingTree-1.2.7.1
 Compression=lzma
 SolidCompression=yes
 PrivilegesRequired=admin
 SetupIconFile=LingTree\LingTree.ico
 UninstallDisplayIcon={app}\LingTree.ico
-UninstallDisplayName=LingTree version 1.2.7.0
+UninstallDisplayName=LingTree version 1.2.7.1
 WizardImageStretch=No
 WizardSmallImageFile=LingTree-setup-icon.bmp
 ArchitecturesInstallIn64BitMode=x64
@@ -47,6 +47,8 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 [Files]
 Source: "LingTree\LingTree.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "LingTree\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+;it does not find it; sigh Source: "..\..\externalLibs\java.exe"; DestDir: "{app}\runtime\bin"; Flags: ignoreversion
+Source: "C:\Users\Andy Black\Documents\Eclipse4.4Workspace\lingtree\build\externalLibs\java.exe"; DestDir: "{app}\runtime\bin"; Flags: ignoreversion
 
 [Icons]
 Name: "{group}\LingTree"; Filename: "{app}\LingTree.exe"; IconFilename: "{app}\LingTree.ico"; Check: returnTrue()

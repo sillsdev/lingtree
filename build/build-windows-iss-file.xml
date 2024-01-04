@@ -18,7 +18,7 @@ AppVersion=${version}
 AppVerName=LingTree version ${version}
 AppPublisher=SIL International
 AppComments=LingTree
-AppCopyright=Copyright © 2018 SIL International
+AppCopyright=Copyright © 2018-2024 SIL International
 ;AppPublisherURL=http://java.com/
 ;AppSupportURL=http://java.com/
 ;AppUpdatesURL=http://java.com/
@@ -58,6 +58,8 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 [Files]
 Source: "LingTree\LingTree.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "LingTree\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+;it does not find it; sigh Source: "..\..\externalLibs\java.exe"; DestDir: "{app}\runtime\bin"; Flags: ignoreversion
+Source: "C:\Users\Andy Black\Documents\Eclipse4.4Workspace\lingtree\build\externalLibs\java.exe"; DestDir: "{app}\runtime\bin"; Flags: ignoreversion
 
 [Icons]
 Name: "{group}\LingTree"; Filename: "{app}\LingTree.exe"; IconFilename: "{app}\LingTree.ico"; Check: returnTrue()
