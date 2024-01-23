@@ -109,4 +109,24 @@ public interface DescriptionListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitSuperscript(DescriptionParser.SuperscriptContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link DescriptionParser#abbreviation}.
+	 * @param ctx the parse tree
+	 */
+	void enterAbbreviation(DescriptionParser.AbbreviationContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link DescriptionParser#abbreviation}.
+	 * @param ctx the parse tree
+	 */
+	void exitAbbreviation(DescriptionParser.AbbreviationContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link DescriptionParser#abbreviationWithText}.
+	 * @param ctx the parse tree
+	 */
+	void enterAbbreviationWithText(DescriptionParser.AbbreviationWithTextContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link DescriptionParser#abbreviationWithText}.
+	 * @param ctx the parse tree
+	 */
+	void exitAbbreviationWithText(DescriptionParser.AbbreviationWithTextContext ctx);
 }

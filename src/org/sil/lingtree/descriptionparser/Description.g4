@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------
-// Copyright (c) 2017-2018 SIL International
+// Copyright (c) 2017-2024 SIL International
 // This software is licensed under the LGPL, version 2.1 or later
 // (http://www.gnu.org/licenses/lgpl-2.1.html)
 //
@@ -67,6 +67,9 @@ content : (TEXT | TEXTWITHSPACES | BACKSLASH | SLASH)+ subscript superscript
         | superscript subscript
         | subscript
         | superscript
+        | abbreviationWithText+ (TEXT | TEXTWITHSPACES | BACKSLASH | SLASH)+ abbreviationWithText+
+        | abbreviationWithText+ (TEXT | TEXTWITHSPACES | BACKSLASH | SLASH)+
+        | (TEXT | TEXTWITHSPACES | BACKSLASH | SLASH)+ abbreviationWithText+
         ;
 
 subscript : SUBSCRIPT       (TEXT | TEXTWITHSPACES | BACKSLASH | SLASH)+
@@ -81,6 +84,15 @@ superscript : SUPERSCRIPT       (TEXT | TEXTWITHSPACES | BACKSLASH | SLASH)+
 		    | SUPERSCRIPTITALIC {notifyErrorListeners("missingContentAfterSuperscript");}
 		    ;
 
+abbreviation : ABBREVIATIONBEGIN (TEXT | TEXTWITHSPACES | BACKSLASH | SLASH)+ ABBREVIATIONEND
+          | ABBREVIATIONBEGIN (TEXT | TEXTWITHSPACES | BACKSLASH | SLASH)+ {notifyErrorListeners("missingAbbreviationEnd");}
+          | ABBREVIATIONBEGIN ABBREVIATIONEND {notifyErrorListeners("missingContentAfterAbbreviationBegin");}
+          ;
+
+abbreviationWithText : abbreviation (TEXT | TEXTWITHSPACES | BACKSLASH | SLASH)+
+                     | abbreviation
+                     ;
+
 OMIT : '\\O';
 TRIANGLE : '\\T';
 
@@ -92,6 +104,9 @@ SUBSCRIPT : '/s' ;
 SUBSCRIPTITALIC : '/_' ;
 SUPERSCRIPT : '/S' ;
 SUPERSCRIPTITALIC : '/^' ;
+
+ABBREVIATIONBEGIN : '/a';
+ABBREVIATIONEND : '/A';
 
 // Node text content, with exception of backslash or forward slash sequences.
 // Those are handled via BACKSLASH and SLASH

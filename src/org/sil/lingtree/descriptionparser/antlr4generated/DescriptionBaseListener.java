@@ -133,6 +133,30 @@ public class DescriptionBaseListener implements DescriptionListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitSuperscript(DescriptionParser.SuperscriptContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterAbbreviation(DescriptionParser.AbbreviationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitAbbreviation(DescriptionParser.AbbreviationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterAbbreviationWithText(DescriptionParser.AbbreviationWithTextContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitAbbreviationWithText(DescriptionParser.AbbreviationWithTextContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

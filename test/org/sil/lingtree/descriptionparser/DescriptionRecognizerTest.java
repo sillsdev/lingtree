@@ -1,4 +1,4 @@
-// Copyright (c) 2016-2017 SIL International 
+// Copyright (c) 2016-2024 SIL International 
 // This software is licensed under the LGPL, version 2.1 or later 
 // (http://www.gnu.org/licenses/lgpl-2.1.html) 
 /**
@@ -10,6 +10,7 @@ package org.sil.lingtree.descriptionparser;
 
 import static org.junit.Assert.*;
 
+import org.antlr.v4.runtime.ANTLRErrorListener;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.junit.After;
@@ -84,6 +85,16 @@ public class DescriptionRecognizerTest {
 		checkValidDescription(
 				"(IP (DP) (I'))",
 				"(description (node (openParen () (content IP) (node (openParen () (content DP) (closeParen ))) (node (openParen () (content I') (closeParen ))) (closeParen ))) <EOF>)");
+		// abbreviations
+		checkValidDescription(
+				"(S (NP (\\L Juan (\\G John))) (VP (V (\\L duerme (\\G /a3/Asleep/asg.prs/A)))))",
+				"(description (node (openParen () (content S) (node (openParen () (content NP) (node (openParen () (type (nodeType \\L)) (content Juan) (node (openParen () (type (nodeType \\G)) (content John) (closeParen ))) (closeParen ))) (closeParen ))) (node (openParen () (content VP) (node (openParen () (content V) (node (openParen () (type (nodeType \\L)) (content duerme) (node (openParen () (type (nodeType \\G)) (content (abbreviationWithText (abbreviation /a 3 /A)) sleep (abbreviationWithText (abbreviation /a sg.prs /A))) (closeParen ))) (closeParen ))) (closeParen ))) (closeParen ))) (closeParen ))) <EOF>)");
+		checkValidDescription(
+				"(S (NP (\\L Juan (\\G John))) (VP (V (\\L duerme (\\G /a 3/A-sleep-/a sg.prs/A)))))",
+				"(description (node (openParen () (content S) (node (openParen () (content NP) (node (openParen () (type (nodeType \\L)) (content Juan) (node (openParen () (type (nodeType \\G)) (content John) (closeParen ))) (closeParen ))) (closeParen ))) (node (openParen () (content VP) (node (openParen () (content V) (node (openParen () (type (nodeType \\L)) (content duerme) (node (openParen () (type (nodeType \\G)) (content (abbreviationWithText (abbreviation /a 3 /A)) -sleep- (abbreviationWithText (abbreviation /a sg.prs /A))) (closeParen ))) (closeParen ))) (closeParen ))) (closeParen ))) (closeParen ))) <EOF>)");
+		checkValidDescription(
+				"(S (NP (\\L Juan (\\G John))) (VP (V (\\L duerme (\\G /a 3/A-sleep-/a sg/A-/aprs/A)))))",
+				"(description (node (openParen () (content S) (node (openParen () (content NP) (node (openParen () (type (nodeType \\L)) (content Juan) (node (openParen () (type (nodeType \\G)) (content John) (closeParen ))) (closeParen ))) (closeParen ))) (node (openParen () (content VP) (node (openParen () (content V) (node (openParen () (type (nodeType \\L)) (content duerme) (node (openParen () (type (nodeType \\G)) (content (abbreviationWithText (abbreviation /a 3 /A) -sleep-) (abbreviationWithText (abbreviation /a sg /A)) - (abbreviationWithText (abbreviation /a prs /A))) (closeParen ))) (closeParen ))) (closeParen ))) (closeParen ))) (closeParen ))) <EOF>)");
 
 		// need examples with both \T and \L, in both orders, etc.
 		checkValidDescription(
@@ -221,6 +232,8 @@ public class DescriptionRecognizerTest {
 		checkInvalidDescription("(NP/^)", DescriptionConstants.MISSING_CONTENT_AFTER_SUPERSCRIPT, 5, 1);
 		checkInvalidDescription("(NP/S/sb)", DescriptionConstants.MISSING_CONTENT_AFTER_SUPERSCRIPT, 5, 1);
 		checkInvalidDescription("(NP/^/_a)", DescriptionConstants.MISSING_CONTENT_AFTER_SUPERSCRIPT, 5, 1);
+		checkInvalidDescription("(NP (\\L a(\\Gno/a/A)))", DescriptionConstants.MISSING_CONTENT_AFTER_ABBREVIATION_BEGIN, 18, 1);
+		checkInvalidDescription("(NP (\\L a (\\Gno/aun)))", DescriptionConstants.MISSING_ABBREVIATION_END, 19, 1);
 	}
 
 	private void checkInvalidDescription(String sDescription, String sFailedPortion, int iPos,
