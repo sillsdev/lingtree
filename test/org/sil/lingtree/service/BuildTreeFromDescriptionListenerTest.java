@@ -531,6 +531,23 @@ public class BuildTreeFromDescriptionListenerTest extends ServiceBaseTest {
 		assertTrue(node1.getContentsAsList().get(1).toString().contains("AbbreviationText"));
 		assertTrue(node1.getContentsAsList().get(2).toString().contains("NodeText"));
 		assertTrue(node1.getContentsAsList().get(3).toString().contains("AbbreviationText"));
+
+		ltTree = TreeBuilder.parseAString(
+				"(-/a1.poss/A- book -/a pl /A)", origTree);
+		rootNode = ltTree.getRootNode();
+		checkNodeResult(rootNode, "", "", "", false, false, NodeType.NonTerminal, 1, 0);
+		assertNull(rootNode.getMother());
+		assertNull(rootNode.getRightSister());
+		assertTrue(rootNode.hasAbbreviation());
+		assertEquals(4, rootNode.getContentsAsList().size());
+		assertEquals("-", rootNode.getContentsAsList().get(0).getText());
+		assertEquals("1.poss", rootNode.getContentsAsList().get(1).getText());
+		assertEquals("- book -", rootNode.getContentsAsList().get(2).getText());
+		assertEquals("pl", rootNode.getContentsAsList().get(3).getText());
+		assertTrue(rootNode.getContentsAsList().get(0).toString().contains("NodeText"));
+		assertTrue(rootNode.getContentsAsList().get(1).toString().contains("AbbreviationText"));
+		assertTrue(rootNode.getContentsAsList().get(2).toString().contains("NodeText"));
+		assertTrue(rootNode.getContentsAsList().get(3).toString().contains("AbbreviationText"));
 	}
 
 	private void checkNodeResult(LingTreeNode node, String sContent, String sSubscript,
