@@ -113,33 +113,42 @@ public class BuildTreeFromDescriptionListener extends DescriptionBaseListener {
 		DescriptionParser.NodeContext parentCtx = (NodeContext) ctx.getParent();
 		LingTreeNode node = nodeMap.get(parentCtx.hashCode());
 		String sContent = ctx.getText().trim();
+		sContent = adjustTextContent(sContent);
+		int iEndOfText = getEndOfTextIndex(sContent);
+		node.setContent(sContent.substring(0, iEndOfText));
+		node.setHasAbbreviation(false);
+	}
+
+	@Override
+	public void exitAbbreviationWithText(DescriptionParser.AbbreviationWithTextContext ctx) {
+		DescriptionParser.NodeContext parentCtx = (NodeContext) ctx.getParent();
+		LingTreeNode node = nodeMap.get(parentCtx.hashCode());
+		String sContent = ctx.getText().trim();
 		int iAbbrBegin = sContent.indexOf(Constants.ABBREVIATION_BEGIN);
-		if (iAbbrBegin < 0) {
-			sContent = adjustTextContent(sContent);
-			int iEndOfText = getEndOfTextIndex(sContent);
-			node.setContent(sContent.substring(0, iEndOfText));
-			node.setHasAbbreviation(false);
-		} else {
-			node.setHasAbbreviation(true);
-			String sText = sContent;
-			while (iAbbrBegin > -1) {
-				if (iAbbrBegin > 0) {
-					NodeText nodetext = new NodeText(node);
+		node.setHasAbbreviation(true);
+		String sText = sContent;
+		while (sText.length() > 0) {
+			if (iAbbrBegin == 0 ) {
+				int iAbbrEnd = sText.indexOf(Constants.ABBREVIATION_END);
+				String sAbbr = sText.substring(iAbbrBegin + Constants.ABBREVIATION_BEGIN.length(),
+						iAbbrEnd);
+				sAbbreviationText = adjustTextContent(sAbbr);
+				AbbreviationText abbrNodeText = new AbbreviationText(node);
+				abbrNodeText.setText(sAbbreviationText);
+				node.getContentsAsList().add(abbrNodeText);
+				sText = sText.substring(iAbbrEnd + Constants.ABBREVIATION_END.length());
+			} else {
+				NodeText nodetext = new NodeText(node);
+				if (iAbbrBegin > -1) {
 					nodetext.setText(sText.substring(0, iAbbrBegin));
-					node.getContentsAsList().add(nodetext);
 					sText = sText.substring(iAbbrBegin);
 				} else {
-					int iAbbrEnd = sText.indexOf(Constants.ABBREVIATION_END);
-					String sAbbr = sText.substring(iAbbrBegin + Constants.ABBREVIATION_BEGIN.length(),
-							iAbbrEnd);
-					sAbbreviationText = adjustTextContent(sAbbr);
-					AbbreviationText abbrNodeText = new AbbreviationText(node);
-					abbrNodeText.setText(sAbbreviationText);
-					node.getContentsAsList().add(abbrNodeText);
-					sText = sText.substring(iAbbrEnd + Constants.ABBREVIATION_END.length());
+					nodetext.setText(sText.substring(0));
+					sText = "";
 				}
-				iAbbrBegin = sText.indexOf(Constants.ABBREVIATION_BEGIN);
+				node.getContentsAsList().add(nodetext);
 			}
+			iAbbrBegin = sText.indexOf(Constants.ABBREVIATION_BEGIN);
 		}
 	}
 

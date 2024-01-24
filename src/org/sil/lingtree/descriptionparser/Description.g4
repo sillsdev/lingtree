@@ -28,6 +28,7 @@ description  : node EOF
 
 // we allow empty nodes that just have parens (hence, both type and content are optional)
 node : openParen type? content? node* closeParen
+	 | openParen type? abbreviationWithText+ closeParen
 	 | openParen type? content? node* closeParen {notifyErrorListeners("missingOpeningParen");} content
      | openParen type? content? node*             {notifyErrorListeners("missingClosingParen");}
      |           type  content?                   {notifyErrorListeners("missingOpeningParen");}
@@ -67,10 +68,7 @@ content : (TEXT | TEXTWITHSPACES | BACKSLASH | SLASH)+ subscript superscript
         | superscript subscript
         | subscript
         | superscript
-        | abbreviationWithText+ (TEXT | TEXTWITHSPACES | BACKSLASH | SLASH)+ abbreviationWithText+
-        | abbreviationWithText+ (TEXT | TEXTWITHSPACES | BACKSLASH | SLASH)+
-        | (TEXT | TEXTWITHSPACES | BACKSLASH | SLASH)+ abbreviationWithText+
-        ;
+		;
 
 subscript : SUBSCRIPT       (TEXT | TEXTWITHSPACES | BACKSLASH | SLASH)+
 		  | SUBSCRIPTITALIC (TEXT | TEXTWITHSPACES | BACKSLASH | SLASH)+
@@ -84,12 +82,14 @@ superscript : SUPERSCRIPT       (TEXT | TEXTWITHSPACES | BACKSLASH | SLASH)+
 		    | SUPERSCRIPTITALIC {notifyErrorListeners("missingContentAfterSuperscript");}
 		    ;
 
-abbreviation : ABBREVIATIONBEGIN (TEXT | TEXTWITHSPACES | BACKSLASH | SLASH)+ ABBREVIATIONEND
-          | ABBREVIATIONBEGIN (TEXT | TEXTWITHSPACES | BACKSLASH | SLASH)+ {notifyErrorListeners("missingAbbreviationEnd");}
-          | ABBREVIATIONBEGIN ABBREVIATIONEND {notifyErrorListeners("missingContentAfterAbbreviationBegin");}
-          ;
+abbreviation : ABBREVIATIONBEGIN (TEXT | TEXTWITHSPACES)+ ABBREVIATIONEND
+             | ABBREVIATIONBEGIN (TEXT | TEXTWITHSPACES)+ {notifyErrorListeners("missingAbbreviationEnd");}
+             | ABBREVIATIONBEGIN ABBREVIATIONEND {notifyErrorListeners("missingContentAfterAbbreviationBegin");}
+             ;
 
-abbreviationWithText : abbreviation (TEXT | TEXTWITHSPACES | BACKSLASH | SLASH)+
+abbreviationWithText : (TEXT | TEXTWITHSPACES)+ abbreviation (TEXT | TEXTWITHSPACES)+
+                     | abbreviation (TEXT | TEXTWITHSPACES)+
+                     | (TEXT | TEXTWITHSPACES)+ abbreviation
                      | abbreviation
                      ;
 
