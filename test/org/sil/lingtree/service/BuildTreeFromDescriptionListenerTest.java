@@ -506,7 +506,6 @@ public class BuildTreeFromDescriptionListenerTest extends ServiceBaseTest {
 		node3 = daughters.get(0);
 		checkNodeResult(node3, "cats", "", "", false, false, NodeType.NonTerminal, 5, 0);
 		// abbreviations
-		System.out.println("");
 		ltTree = TreeBuilder.parseAString(
 				"(NP (N (\\L mi libros (\\G -/a1.poss/A- book -/a pl /A))))", origTree);
 		rootNode = ltTree.getRootNode();
