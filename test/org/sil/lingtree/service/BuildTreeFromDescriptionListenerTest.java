@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2018 SIL International
+ * Copyright (c) 2016-2024 SIL International
  * This software is licensed under the LGPL, version 2.1 or later
  * (http://www.gnu.org/licenses/lgpl-2.1.html)
  */
@@ -505,7 +505,33 @@ public class BuildTreeFromDescriptionListenerTest extends ServiceBaseTest {
 		daughters = node3.getDaughters();
 		node3 = daughters.get(0);
 		checkNodeResult(node3, "cats", "", "", false, false, NodeType.NonTerminal, 5, 0);
-
+		// abbreviations
+		System.out.println("");
+		ltTree = TreeBuilder.parseAString(
+				"(NP (N (\\L mi libros (\\G -/a1.poss/A- book -/a pl /A))))", origTree);
+		rootNode = ltTree.getRootNode();
+		checkNodeResult(rootNode, "NP", "", "", false, false, NodeType.NonTerminal, 1, 1);
+		assertNull(rootNode.getMother());
+		assertNull(rootNode.getRightSister());
+		daughters = rootNode.getDaughters();
+		node1 = daughters.get(0);
+		checkNodeResult(node1, "N", "", "", false, false, NodeType.NonTerminal, 2, 1);
+		assertFalse(node1.hasAbbreviation());
+		node1 = node1.getDaughters().get(0);
+		checkNodeResult(node1, "mi libros", "", "", false, false, NodeType.Lex, 3, 1);
+		assertFalse(node1.hasAbbreviation());
+		node1 = node1.getDaughters().get(0);
+		checkNodeResult(node1, "", "", "", false, false, NodeType.Gloss, 4, 0);
+		assertTrue(node1.hasAbbreviation());
+		assertEquals(4, node1.getContentsAsList().size());
+		assertEquals("-", node1.getContentsAsList().get(0).getText());
+		assertEquals("1.poss", node1.getContentsAsList().get(1).getText());
+		assertEquals("- book -", node1.getContentsAsList().get(2).getText());
+		assertEquals("pl", node1.getContentsAsList().get(3).getText());
+		assertTrue(node1.getContentsAsList().get(0).toString().contains("NodeText"));
+		assertTrue(node1.getContentsAsList().get(1).toString().contains("AbbreviationText"));
+		assertTrue(node1.getContentsAsList().get(2).toString().contains("NodeText"));
+		assertTrue(node1.getContentsAsList().get(3).toString().contains("AbbreviationText"));
 	}
 
 	private void checkNodeResult(LingTreeNode node, String sContent, String sSubscript,

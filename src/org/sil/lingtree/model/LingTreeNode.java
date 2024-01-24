@@ -1,10 +1,13 @@
 /**
- * Copyright (c) 2016-2017 SIL International
+ * Copyright (c) 2016-2024 SIL International
  * This software is licensed under the LGPL, version 2.1 or later
  * (http://www.gnu.org/licenses/lgpl-2.1.html)
  */
 
 package org.sil.lingtree.model;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.sil.lingtree.Constants;
 import org.sil.lingtree.model.LingTreeNode;
@@ -64,6 +67,21 @@ public class LingTreeNode {
 	private double dYUpperMid;
 	// id of the node (used, e.g., by PcPatrBrowser to refer to a rule id)
 	private String id;
+
+	List<NodeText> contentsAsList = new ArrayList<NodeText>();
+	private boolean hasAbbreviation;
+
+	public List<NodeText> getContentsAsList() {
+		return contentsAsList;
+	}
+
+	public boolean hasAbbreviation() {
+		return hasAbbreviation;
+	}
+
+	public void setHasAbbreviation(boolean hasAbbreviation) {
+		this.hasAbbreviation = hasAbbreviation;
+	}
 
 	public String getContent() {
 		return contentTextBox.getText();

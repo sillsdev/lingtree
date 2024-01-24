@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2017 SIL International
+ * Copyright (c) 2016-2024 SIL International
  * This software is licensed under the LGPL, version 2.1 or later
  * (http://www.gnu.org/licenses/lgpl-2.1.html)
  */
@@ -10,11 +10,14 @@ import java.util.HashMap;
 import org.sil.lingtree.Constants;
 import org.sil.lingtree.descriptionparser.antlr4generated.DescriptionBaseListener;
 import org.sil.lingtree.descriptionparser.antlr4generated.DescriptionParser;
+import org.sil.lingtree.descriptionparser.antlr4generated.DescriptionParser.AbbreviationContext;
 import org.sil.lingtree.descriptionparser.antlr4generated.DescriptionParser.ContentContext;
 import org.sil.lingtree.descriptionparser.antlr4generated.DescriptionParser.NodeContext;
 import org.sil.lingtree.descriptionparser.antlr4generated.DescriptionParser.TypeContext;
+import org.sil.lingtree.model.AbbreviationText;
 import org.sil.lingtree.model.LingTreeNode;
 import org.sil.lingtree.model.LingTreeTree;
+import org.sil.lingtree.model.NodeText;
 import org.sil.lingtree.model.NodeType;
 
 /**
@@ -25,6 +28,7 @@ public class BuildTreeFromDescriptionListener extends DescriptionBaseListener {
 
 	private LingTreeTree tree;
 	private HashMap<Integer, LingTreeNode> nodeMap = new HashMap<Integer, LingTreeNode>();
+	private String sAbbreviationText = "";
 
 	public BuildTreeFromDescriptionListener(DescriptionParser parser) {
 		super();
@@ -66,6 +70,15 @@ public class BuildTreeFromDescriptionListener extends DescriptionBaseListener {
 	}
 
 	@Override
+	public void exitNode(NodeContext ctx) {
+		LingTreeNode node = nodeMap.get(ctx.hashCode());
+		System.out.println("exitNode: size of list=" + node.getContentsAsList().size());
+		for (NodeText nt : node.getContentsAsList()) {
+			System.out.println("\tnt='" + nt.getText() + "'");
+		}
+	}
+
+	@Override
 	public void exitLineType(DescriptionParser.LineTypeContext ctx) {
 		DescriptionParser.TypeContext typeCtx = (TypeContext) ctx.getParent();
 		DescriptionParser.NodeContext parentCtx = (NodeContext) typeCtx.getParent();
@@ -102,6 +115,7 @@ public class BuildTreeFromDescriptionListener extends DescriptionBaseListener {
 			break;
 		}
 		node.setNodeType(nodeType);
+		System.out.println("exitNodeType:" + nodeType);
 	}
 
 	@Override
@@ -109,11 +123,47 @@ public class BuildTreeFromDescriptionListener extends DescriptionBaseListener {
 		DescriptionParser.NodeContext parentCtx = (NodeContext) ctx.getParent();
 		LingTreeNode node = nodeMap.get(parentCtx.hashCode());
 		String sContent = ctx.getText().trim();
+		System.out.println("exitContent: content='" + sContent + "'");
+		int iAbbrBegin = sContent.indexOf(Constants.ABBREVIATION_BEGIN);
+		if (iAbbrBegin < 0) {
+			sContent = adjustTextContent(sContent);
+			int iEndOfText = getEndOfTextIndex(sContent);
+			node.setContent(sContent.substring(0, iEndOfText));
+			node.setHasAbbreviation(false);
+			System.out.println("\tcontent='" + node.getContent() + "'");
+		} else {
+			node.setHasAbbreviation(true);
+			String sText = sContent;
+			System.out.println("\tparsing '" + sText + "'");
+			while (iAbbrBegin > -1) {
+				System.out.println("\t\tparsing '" + sText + "'; iAbbrBegin=" + iAbbrBegin);
+				if (iAbbrBegin > 0) {
+					NodeText nodetext = new NodeText(node);
+					nodetext.setText(sText.substring(0, iAbbrBegin));
+					node.getContentsAsList().add(nodetext);
+					sText = sText.substring(iAbbrBegin);
+					System.out.println("\t\t\tplain text='" + nodetext.getText() + "'");
+				} else {
+					int iAbbrEnd = sText.indexOf(Constants.ABBREVIATION_END);
+					String sAbbr = sText.substring(iAbbrBegin + Constants.ABBREVIATION_BEGIN.length(),
+							iAbbrEnd);
+					sAbbreviationText = adjustTextContent(sAbbr);
+					AbbreviationText abbrNodeText = new AbbreviationText(node);
+					abbrNodeText.setText(sAbbreviationText);
+					node.getContentsAsList().add(abbrNodeText);
+					sText = sText.substring(iAbbrEnd + Constants.ABBREVIATION_END.length());
+					System.out.println("\t\t\tAbbreviation: text='" + sAbbreviationText + "'");
+				}
+				iAbbrBegin = sText.indexOf(Constants.ABBREVIATION_BEGIN);
+			}
+		}
+	}
+
+	protected String adjustTextContent(String sContent) {
 		// Note: in regular expressions, to quote a single backslash we need
 		// \\\\ and to quote a paren we need \\(
 		sContent = sContent.replaceAll("\\\\\\(", "(").replaceAll("\\\\\\)", ")");
-		int iEndOfText = getEndOfTextIndex(sContent);
-		node.setContent(sContent.substring(0, iEndOfText).trim());
+		return sContent;
 	}
 
 	private int getEndOfTextIndex(String sContent) {
@@ -142,6 +192,42 @@ public class BuildTreeFromDescriptionListener extends DescriptionBaseListener {
 		}
 		return iEndOfText;
 	}
+
+//	@Override
+//	public void exitAbbreviation(DescriptionParser.AbbreviationContext ctx) {
+//		String sText = ctx.getText().trim();
+//		int iAbbrBegin = sText.indexOf(Constants.ABBREVIATION_BEGIN);
+//		int iAbbrEnd = sText.indexOf(Constants.ABBREVIATION_END);
+//		sText = sText.substring(iAbbrBegin+2, iAbbrEnd).trim();
+//		sAbbreviationText = adjustTextContent(sText);
+//		System.out.println("exitAbbreviation: text='" + sAbbreviationText + "'");
+//	}
+//
+//	@Override
+//	public void exitAbbreviationWithText(DescriptionParser.AbbreviationWithTextContext ctx) {
+//		DescriptionParser.ContentContext parentCtx = (ContentContext) ctx.getParent();
+//		DescriptionParser.NodeContext parentsParentCtx = (NodeContext) parentCtx.getParent();
+//		LingTreeNode node = nodeMap.get(parentsParentCtx.hashCode());
+//		AbbreviationText abbrText = new AbbreviationText(node);
+//		abbrText.setText(sAbbreviationText);
+//		node.getContentsAsList().add(abbrText);
+//		System.out.println("exit AbbrWText: ctx text='" + ctx.getText() + "'");
+//		for (NodeText nt : node.getContentsAsList()) {
+//			System.out.println("\tnt='" + nt.getText() + "'");
+//		}
+//		String sText = ctx.getText().trim();
+//		int iAbbrEnd = sText.indexOf(Constants.ABBREVIATION_END);
+//		sText = sText.substring(iAbbrEnd + 2);
+//		if (sText.length() > 0) {
+//			System.out.println("\ttext='" + sText + "'");
+//			NodeText nodetext = new NodeText(node);
+//			nodetext.setText(sText);
+//			node.getContentsAsList().add(nodetext);
+//			for (NodeText nt : node.getContentsAsList()) {
+//				System.out.println("\tnt='" + nt.getText() + "'");
+//			}
+//		}
+//	}
 
 	@Override
 	public void exitSubscript(DescriptionParser.SubscriptContext ctx) {

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2021 SIL International
+ * Copyright (c) 2016-2024 SIL International
  * This software is licensed under the LGPL, version 2.1 or later
  * (http://www.gnu.org/licenses/lgpl-2.1.html)
  */
@@ -13,6 +13,8 @@ public class Constants {
 	public static final String VERSION_NUMBER = "1.2.7.1";
 	public static final int CURRENT_DATABASE_VERSION = 2;
 
+	public static final String ABBREVIATION_BEGIN = "/a";
+	public static final String ABBREVIATION_END = "/A";
 	public static final String SUBSCRIPT = "/s";
 	public static final String SUBSCRIPTITALIC = "/_";
 	public static final String SUPERSCRIPT = "/S";
