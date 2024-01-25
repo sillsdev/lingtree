@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2018 SIL International
+ * Copyright (c) 2016-2024 SIL International
  * This software is licensed under the LGPL, version 2.1 or later
  * (http://www.gnu.org/licenses/lgpl-2.1.html)
  */
@@ -180,8 +180,16 @@ public class TreeBuilder {
 					.getString("descriptionsyntaxerror.content_after_completed_tree");
 			break;
 
+		case DescriptionConstants.MISSING_ABBREVIATION_END:
+			sSyntaxErrorMessage = bundle.getString("descriptionsyntaxerror.missing_abbreviation_end");
+			break;
+
 		case DescriptionConstants.MISSING_CLOSING_PAREN:
 			sSyntaxErrorMessage = bundle.getString("descriptionsyntaxerror.missing_closing_paren");
+			break;
+
+		case DescriptionConstants.MISSING_CONTENT_AFTER_ABBREVIATION_BEGIN:
+			sSyntaxErrorMessage = bundle.getString("descriptionsyntaxerror.missing_content_after_abbreviation_begin");
 			break;
 
 		case DescriptionConstants.MISSING_OPENING_PAREN:
