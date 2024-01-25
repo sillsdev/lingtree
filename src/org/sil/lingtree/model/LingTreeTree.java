@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2020 SIL International
+ * Copyright (c) 2016-2024 SIL International
  * This software is licensed under the LGPL, version 2.1 or later
  * (http://www.gnu.org/licenses/lgpl-2.1.html)
  */
@@ -40,6 +40,7 @@ public class LingTreeTree {
 	FontInfo nonTerminalFontInfo;
 	FontInfo lexicalFontInfo;
 	FontInfo glossFontInfo;
+	FontInfo abbreviationFontInfo;
 	FontInfo emptyElementFontInfo;
 
 	Color backgroundColor;
@@ -66,6 +67,7 @@ public class LingTreeTree {
 		nonTerminalFontInfo = NonTerminalFontInfo.getInstance();
 		lexicalFontInfo = LexFontInfo.getInstance();
 		glossFontInfo = GlossFontInfo.getInstance();
+		abbreviationFontInfo = AbbreviationFontInfo.getInstance();
 		emptyElementFontInfo = EmptyElementFontInfo.getInstance();
 		lineWidth = 10;
 		lineColor = Color.BLACK;
@@ -244,6 +246,15 @@ public class LingTreeTree {
 		this.glossFontInfo = glossFontInfo;
 	}
 
+	@XmlElement(name = "abbreviationFontInfo")
+	public FontInfo getAbbreviationFontInfo() {
+		return abbreviationFontInfo;
+	}
+
+	public void setAbbreviationFontInfo(FontInfo abbreviationFontInfo) {
+		this.abbreviationFontInfo = abbreviationFontInfo;
+	}
+
 	@XmlElement(name = "emptyElementFontInfo")
 	public FontInfo getEmptyElementFontInfo() {
 		return emptyElementFontInfo;
@@ -320,6 +331,8 @@ public class LingTreeTree {
 	}
 
 	public void setFontsAndColors() {
+		AbbreviationFontInfo.getInstance().setFont(getAbbreviationFontInfo().getFont());
+		AbbreviationFontInfo.getInstance().setColor(getAbbreviationFontInfo().getColor());
 		EmptyElementFontInfo.getInstance().setFont(getEmptyElementFontInfo().getFont());
 		EmptyElementFontInfo.getInstance().setColor(getEmptyElementFontInfo().getColor());
 		GlossFontInfo.getInstance().setFont(getGlossFontInfo().getFont());

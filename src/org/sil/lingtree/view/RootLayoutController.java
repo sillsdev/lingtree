@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2021 SIL International
+ * Copyright (c) 2016-2024 SIL International
  * This software is licensed under the LGPL, version 2.1 or later
  * (http://www.gnu.org/licenses/lgpl-2.1.html)
  */
@@ -26,6 +26,7 @@ import org.controlsfx.dialog.FontSelectorDialogWithColor;
 import org.fxmisc.richtext.InlineCssTextArea;
 import org.sil.lingtree.MainApp;
 import org.sil.lingtree.descriptionparser.antlr4generated.DescriptionLexer;
+import org.sil.lingtree.model.AbbreviationFontInfo;
 import org.sil.lingtree.model.EmptyElementFontInfo;
 import org.sil.lingtree.model.FontInfo;
 import org.sil.lingtree.model.GlossFontInfo;
@@ -200,6 +201,8 @@ public class RootLayoutController implements Initializable {
 	private MenuItem menuItemLexicalFont;
 	@FXML
 	private MenuItem menuItemGlossFont;
+	@FXML
+	private MenuItem menuItemAbbreviationFont;
 	@FXML
 	private MenuItem menuItemEmptyElementFont;
 	@FXML
@@ -480,6 +483,8 @@ public class RootLayoutController implements Initializable {
 		menuItemLexicalFont.textProperty().bind(
 				RESOURCE_FACTORY.getStringBinding("menu.lexicalfont"));
 		menuItemGlossFont.textProperty().bind(RESOURCE_FACTORY.getStringBinding("menu.glossfont"));
+		menuItemAbbreviationFont.textProperty().bind(
+				RESOURCE_FACTORY.getStringBinding("menu.abbreviationfont"));
 		menuItemEmptyElementFont.textProperty().bind(
 				RESOURCE_FACTORY.getStringBinding("menu.emptyelementfont"));
 		menuItemTreeSpacingParameter.textProperty().bind(
@@ -518,7 +523,6 @@ public class RootLayoutController implements Initializable {
 		String nonterminal = NonTerminalFontInfo.getInstance().getCss();
 		String gloss = GlossFontInfo.getInstance().getCss();
 		String empty = EmptyElementFontInfo.getInstance().getCss();
-		;
 		String lexical = LexFontInfo.getInstance().getCss();
 
 		String cssStyleClass = syntagmeme;
@@ -547,8 +551,8 @@ public class RootLayoutController implements Initializable {
 				cssStyleClass = syntagmeme;
 				textClassToUse = empty;
 				break;
-			case 12: // text
-			case 13: // text with spaces
+			case 14: // text
+			case 15: // text with spaces
 				cssStyleClass = textClassToUse;
 				break;
 			default:
@@ -1095,6 +1099,7 @@ public class RootLayoutController implements Initializable {
 	}
 
 	private void updateAllFontInfos() {
+		updateFontInfoValues(AbbreviationFontInfo.getInstance(), ltTree.getAbbreviationFontInfo());
 		updateFontInfoValues(EmptyElementFontInfo.getInstance(), ltTree.getEmptyElementFontInfo());
 		updateFontInfoValues(GlossFontInfo.getInstance(), ltTree.getGlossFontInfo());
 		updateFontInfoValues(LexFontInfo.getInstance(), ltTree.getLexicalFontInfo());
@@ -1307,6 +1312,17 @@ public class RootLayoutController implements Initializable {
 			sDirectoryPath = "";
 		}
 		return sDirectoryPath;
+	}
+
+	@FXML
+	public void handleAbbreviationFontInfo() {
+		FontInfo fontInfo = showFontInfo(mainApp.getPrimaryStage(), ltTree.getAbbreviationFontInfo());
+		ltTree.setAbbreviationFontInfo(fontInfo);
+		AbbreviationFontInfo.getInstance().setFont(fontInfo.getFont());
+		AbbreviationFontInfo.getInstance().setColor(fontInfo.getColor());
+		computeHighlighting();
+		handleDrawTree();
+		markAsDirty();
 	}
 
 	@FXML

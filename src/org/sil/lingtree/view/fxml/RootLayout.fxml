@@ -62,6 +62,7 @@
 					<MenuItem fx:id="menuItemNonTerminalFont" mnemonicParsing="true" onAction="#handleNonTerminalFontInfo" text="%menu.nonterminalfont" />
 					<MenuItem fx:id="menuItemLexicalFont" mnemonicParsing="true" onAction="#handleLexicalFontInfo" text="%menu.lexicalfont" />
 					<MenuItem fx:id="menuItemGlossFont" mnemonicParsing="true" onAction="#handleGlossFontInfo" text="%menu.glossfont" />
+					<MenuItem fx:id="menuItemAbbreviationFont" mnemonicParsing="true" onAction="#handleAbbreviationFontInfo" text="%menu.abbreviationfont" />
 					<MenuItem fx:id="menuItemEmptyElementFont" mnemonicParsing="true" onAction="#handleEmptyElementFontInfo" text="%menu.emptyelementfont" />
 					<SeparatorMenuItem />
 					<MenuItem fx:id="menuItemTreeSpacingParameter" mnemonicParsing="true" onAction="#handleTreeSpacingParameters" text="%menu.treespacingparameters" />
