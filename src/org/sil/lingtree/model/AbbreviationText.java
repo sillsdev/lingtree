@@ -15,4 +15,12 @@ public class AbbreviationText extends NodeText {
 	public AbbreviationText(LingTreeNode node) {
 		super(node);
 	}
+
+	@Override
+	public void setText(String text) {
+		textBox.setText(text);
+		fontInfo = AbbreviationFontInfo.getInstance();
+		textBox.setFont(fontInfo.getFont());
+		textBox.setFill(fontInfo.getColor());
+	}
 }

@@ -47,6 +47,17 @@ public class TreeDrawerTest extends ServiceBaseTest {
 		assertEquals(19.62890625, maxHeightPerLevel.get(5), 0.0);
 		assertEquals(13.40625, maxHeightPerLevel.get(6), 0.0);
 		assertNull(maxHeightPerLevel.get(7));
+
+		// abbreviations
+		ltTree = TreeBuilder.parseAString("(NP (N (\\L mi libros (\\G -/a1.poss/A- book -/a pl /A))))", origTree);
+		drawer = new TreeDrawer(ltTree);
+		drawer.calculateMaxHeightPerLevel();
+		maxHeightPerLevel = drawer.getMaxHeightPerLevel();
+		assertEquals(13.2890625, maxHeightPerLevel.get(1), 0.0);
+		assertEquals(13.2890625, maxHeightPerLevel.get(2), 0.0);
+		assertEquals(19.62890625, maxHeightPerLevel.get(3), 0.0);
+		assertEquals(13.40625, maxHeightPerLevel.get(4), 0.0);
+		assertNull(maxHeightPerLevel.get(5));
 	}
 
 	@Test
@@ -128,7 +139,7 @@ public class TreeDrawerTest extends ServiceBaseTest {
 		assertEquals(214.97265625, node2.getYUpperMid(), 0.0);
 		assertEquals(228.37890625, node2.getYLowerMid(), 0.0);
 
-		// with subscript and superescript
+		// with subscript and superscript
 		ltTree = TreeBuilder.parseAString("(S (NP/Ssuper (\\L Juan (\\G John))) (VP (V/ssub (\\L duerme (\\G sleeps)))))", origTree);
 		ltTree.setShowFlatView(false);
 		drawer = new TreeDrawer(ltTree);
@@ -166,6 +177,51 @@ public class TreeDrawerTest extends ServiceBaseTest {
 		assertEquals(229.8359335, node2.getYCoordinate(), 0.0);
 		assertEquals(215.97265225, node2.getYUpperMid(), 0.0);
 		assertEquals(235.37890225, node2.getYLowerMid(), 0.0);
+
+		// abbreviations
+		ltTree = TreeBuilder.parseAString("(NP (N (\\L mi libros (\\G -/a1.poss/A- book -/a pl /A))))", origTree);
+		drawer = new TreeDrawer(ltTree);
+		drawer.calculateMaxHeightPerLevel();
+		drawer.calculateYCoordinateOfEveryNode();
+		node = ltTree.getRootNode();
+		assertEquals(100.0, node.getYCoordinate(), 0.0);
+		assertEquals(86.306640625, node.getYUpperMid(), 0.0);
+		assertEquals(105.595703125, node.getYLowerMid(), 0.0);
+		node1 = node.getDaughters().get(0);
+		assertEquals(133.2890625, node1.getYCoordinate(), 0.0);
+		assertEquals(119.595703125, node1.getYUpperMid(), 0.0);
+		assertEquals(138.884765625, node1.getYLowerMid(), 0.0);
+		node1 = node1.getDaughters().get(0);
+		assertEquals(166.578125, node1.getYCoordinate(), 0.0);
+		assertEquals(149.22265625, node1.getYUpperMid(), 0.0);
+		assertEquals(174.8515625, node1.getYLowerMid(), 0.0);
+		node1 = node1.getDaughters().get(0);
+		assertEquals(186.20703125, node1.getYCoordinate(), 0.0);
+		assertEquals(172.34375, node1.getYUpperMid(), 0.0);
+		assertEquals(191.75, node1.getYLowerMid(), 0.0);
+
+		ltTree = TreeBuilder.parseAString("(NP (N (\\L mi libros (\\G -/a1.poss/A- book -/a pl /A))))", origTree);
+		drawer = new TreeDrawer(ltTree);
+		ltTree.setLexGlossGapAdjustment(20.0);
+		drawer.calculateMaxHeightPerLevel();
+		drawer.calculateYCoordinateOfEveryNode();
+		node = ltTree.getRootNode();
+		assertEquals(100.0, node.getYCoordinate(), 0.0);
+		assertEquals(86.306640625, node.getYUpperMid(), 0.0);
+		assertEquals(105.595703125, node.getYLowerMid(), 0.0);
+		node1 = node.getDaughters().get(0);
+		assertEquals(133.2890625, node1.getYCoordinate(), 0.0);
+		assertEquals(119.595703125, node1.getYUpperMid(), 0.0);
+		assertEquals(138.884765625, node1.getYLowerMid(), 0.0);
+		node1 = node1.getDaughters().get(0);
+		assertEquals(166.578125, node1.getYCoordinate(), 0.0);
+		assertEquals(149.22265625, node1.getYUpperMid(), 0.0);
+		assertEquals(174.8515625, node1.getYLowerMid(), 0.0);
+		node1 = node1.getDaughters().get(0);
+		assertEquals(186.578125, node1.getYCoordinate(), 0.0);
+		assertEquals(172.71484375, node1.getYUpperMid(), 0.0);
+		assertEquals(192.12109375, node1.getYLowerMid(), 0.0);
+
 	}
 
 	@Test
@@ -217,5 +273,20 @@ public class TreeDrawerTest extends ServiceBaseTest {
 		node2 = node2.getDaughters().get(0);
 		assertEquals(166.52910041809082, node2.getXCoordinate(), 0.0);
 
+		// abbreviations
+		origTree = new LingTreeTree();
+		ltTree = TreeBuilder.parseAString("(NP (N (\\L mi libros (\\G -/a1.poss/A- book -/a pl /A))))", origTree);
+		drawer = new TreeDrawer(ltTree);
+		drawer.calculateMaxHeightPerLevel();
+		drawer.calculateYCoordinateOfEveryNode();
+		drawer.calculateXCoordinateOfEveryNode();
+		node = ltTree.getRootNode();
+		assertEquals(136.9375, node.getXCoordinate(), 0.0);
+		node1 = node.getDaughters().get(0);
+		assertEquals(140.2744140625, node1.getXCoordinate(), 0.0);
+		node1 = node1.getDaughters().get(0);
+		assertEquals(121.0791015625, node1.getXCoordinate(), 0.0);
+		node1 = node1.getDaughters().get(0);
+		assertEquals(100, node1.getXCoordinate(), 0.0);
 	}
 }

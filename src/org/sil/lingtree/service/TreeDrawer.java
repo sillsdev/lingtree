@@ -18,6 +18,7 @@ import org.sil.lingtree.Constants;
 import org.sil.lingtree.model.FontInfo;
 import org.sil.lingtree.model.LingTreeNode;
 import org.sil.lingtree.model.LingTreeTree;
+import org.sil.lingtree.model.NodeText;
 import org.sil.lingtree.model.NodeType;
 import org.sil.utility.StringUtilities;
 
@@ -96,6 +97,9 @@ public class TreeDrawer {
 			if (daughterNode.getNodeType() != NodeType.Gloss) {
 				dDaughterYCoordinate += ltTree.getVerticalGap();
 			} else {
+				if (ltTree.getLexGlossGapAdjustment() > 0.0) {
+					dDaughterYCoordinate = node.getYCoordinate();
+				}
 				dDaughterYCoordinate += ltTree.getLexGlossGapAdjustment();
 			}
 			calculateYCoordinateOfANode(daughterNode, dDaughterYCoordinate);
@@ -226,7 +230,13 @@ public class TreeDrawer {
 	}
 
 	private void drawNodes(LingTreeNode node, Pane pane) {
-		pane.getChildren().add(node.getContentTextBox());
+		if (node.hasAbbreviation()) {
+			for (NodeText nt : node.getContentsAsList()) {
+				pane.getChildren().add(nt.getTextBox());
+			}
+		} else {
+			pane.getChildren().add(node.getContentTextBox());
+		}
 		if (node.hasSubscript()) {
 			pane.getChildren().add(node.getSubscriptTextBox());
 		}
@@ -326,7 +336,13 @@ public class TreeDrawer {
 	}
 
 	private void drawNodesAsSVG(LingTreeNode node, StringBuilder sb) {
-		createTextAsSVG(node.getContentTextBox(), node.getFontInfoFromNodeType(), sb);
+		if (node.hasAbbreviation()) {
+			for (NodeText nt : node.getContentsAsList()) {
+				createTextAsSVG(nt.getTextBox(), nt.getFontInfo(), sb);
+			}
+		} else {
+			createTextAsSVG(node.getContentTextBox(), node.getFontInfoFromNodeType(), sb);
+		}
 		if (node.hasSubscript()) {
 			FontInfo fontInfo = node.getFontInfoForSubscript();
 			createTextAsSVG(node.getSubscriptTextBox(), fontInfo, sb);

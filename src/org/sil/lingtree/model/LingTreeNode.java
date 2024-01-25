@@ -230,9 +230,27 @@ public class LingTreeNode {
 	}
 
 	public double getHeight() {
+		if (hasAbbreviation()) {
+			getHeightOfNodeWithAbbreviation();
+		} else {
+			getHeightOfRegularNode();
+		}
+	return dHeight;
+	}
+
+	protected void getHeightOfNodeWithAbbreviation() {
+		dHeight = 0.0;
+		for (NodeText nt : getContentsAsList()) {
+			double dNtHeight = nt.getTextBox().getBoundsInLocal().getHeight();
+			if (dNtHeight > dHeight) {
+				dHeight = dNtHeight;
+			}
+		}
+	}
+
+	protected void getHeightOfRegularNode() {
 		final double dSubscriptPercentage = 0.333333;
 		final double dSuperscriptPercentage = 0.333333;
-		// dHeight = contentTextBox.getBoundsInLocal().getHeight();
 		FontInfo fontInfo = getFontInfoFromNodeType();
 		double dContentFontSize = fontInfo.getFontSize();
 		double dSubscriptHeightAdjust = (subscriptTextBox.getText().length() > 0) ? dSubscriptPercentage
@@ -243,14 +261,25 @@ public class LingTreeNode {
 				: 0.0;
 		dHeight = contentTextBox.getBoundsInLocal().getHeight() + dSubscriptHeightAdjust
 				+ dSuperscriptHeightAdjust;
-
-		// double d = contentTextBox.getLayoutBounds().getHeight();
-		// System.out.println("bounds in loc height=" + dHeight);
-		// System.out.println("layout bounds height=" + d);
-		return dHeight;
 	}
 
 	public double getWidth() {
+		if (hasAbbreviation()) {
+			getWidthOfNodeWithAbbreviation();
+		} else {
+			getWidthOfRegularNode();
+		}
+		return dWidth;
+	}
+
+	protected void getWidthOfNodeWithAbbreviation() {
+		dWidth = 0.0;
+		for (NodeText nt : getContentsAsList()) {
+			dWidth += nt.getTextBox().getBoundsInLocal().getWidth();
+		}
+	}
+
+	protected double getWidthOfRegularNode() {
 		double dSubscript = subscriptTextBox.getBoundsInLocal().getWidth();
 		double dSuperscript = superscriptTextBox.getBoundsInLocal().getWidth();
 		double dAdjust = Math.max(dSubscript, dSuperscript);
@@ -296,13 +325,21 @@ public class LingTreeNode {
 
 	public void setXCoordinate(double dXCoordinate) {
 		this.dXCoordinate = dXCoordinate;
-		contentTextBox.setX(dXCoordinate);
-		double dContentWidth = contentTextBox.getBoundsInLocal().getWidth();
-		if (hasSubscript()) {
-			subscriptTextBox.setX(dXCoordinate + dContentWidth);
-		}
-		if (hasSuperscript()) {
-			superscriptTextBox.setX(dXCoordinate + dContentWidth);
+		if (hasAbbreviation()) {
+			double dX = dXCoordinate;
+			for (NodeText nt : getContentsAsList()) {
+				nt.getTextBox().setX(dX);
+				dX += nt.getTextBox().getBoundsInLocal().getWidth();
+			}
+		} else {
+			contentTextBox.setX(dXCoordinate);
+			double dContentWidth = contentTextBox.getBoundsInLocal().getWidth();
+			if (hasSubscript()) {
+				subscriptTextBox.setX(dXCoordinate + dContentWidth);
+			}
+			if (hasSuperscript()) {
+				superscriptTextBox.setX(dXCoordinate + dContentWidth);
+			}
 		}
 	}
 
@@ -321,17 +358,27 @@ public class LingTreeNode {
 	public void setYCoordinate(double dYCoordinate) {
 		// the baseline y coordinate
 		this.dYCoordinate = dYCoordinate;
-		contentTextBox.setY(dYCoordinate);
-		if (hasSubscript()) {
-			subscriptTextBox.setY(dYCoordinate + adjustHeightForSubscript());
+		if (hasAbbreviation()) {
+			dYUpperMid = 100000.0;
+			dYLowerMid = 0.0;
+			for (NodeText nt : getContentsAsList()) {
+				nt.getTextBox().setY(dYCoordinate);
+				dYUpperMid = Math.min(dYUpperMid, nt.getTextBox().getLayoutBounds().getMinY());
+				dYLowerMid = Math.max(dYLowerMid, nt.getTextBox().getLayoutBounds().getMaxY());
+			}
+		} else {
+			contentTextBox.setY(dYCoordinate);
+			if (hasSubscript()) {
+				subscriptTextBox.setY(dYCoordinate + adjustHeightForSubscript());
+			}
+			if (hasSuperscript()) {
+				superscriptTextBox.setY(dYCoordinate - adjustHeightForSuperscript());
+			}
+			// TODO: fix subscript and superscript text boxes
+			// set y upper mid and lower mid (top of box and bottom of box)
+			dYUpperMid = contentTextBox.getLayoutBounds().getMinY();
+			dYLowerMid = contentTextBox.getLayoutBounds().getMaxY();
 		}
-		if (hasSuperscript()) {
-			superscriptTextBox.setY(dYCoordinate - adjustHeightForSuperscript());
-		}
-		// TODO: fix subscript and superscript text boxes
-		// set y upper mid and lower mid (top of box and bottom of box)
-		dYUpperMid = contentTextBox.getLayoutBounds().getMinY();
-		dYLowerMid = contentTextBox.getLayoutBounds().getMaxY();
 	}
 
 	public double getYLowerMid() {

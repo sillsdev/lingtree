@@ -15,6 +15,15 @@ import javafx.scene.text.Text;
 public class NodeText {
 	protected Text textBox = new Text(0, 0, "");
 	protected LingTreeNode node = new LingTreeNode();
+	protected FontInfo fontInfo;
+
+	public Text getTextBox() {
+		return textBox;
+	}
+
+	public void setTextBox(Text textBox) {
+		this.textBox = textBox;
+	}
 
 	public NodeText(LingTreeNode node) {
 		this.node = node;
@@ -26,8 +35,16 @@ public class NodeText {
 
 	public void setText(String text) {
 		textBox.setText(text);
-		FontInfo fontInfo = node.getFontInfoFromNodeType();
+		fontInfo = node.getFontInfoFromNodeType();
 		textBox.setFont(fontInfo.getFont());
 		textBox.setFill(fontInfo.getColor());
+	}
+
+	public FontInfo getFontInfo() {
+		return fontInfo;
+	}
+
+	public void setFontInfo(FontInfo fontInfo) {
+		this.fontInfo = fontInfo;
 	}
 }
