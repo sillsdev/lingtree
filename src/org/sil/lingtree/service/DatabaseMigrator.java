@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2020 SIL International
+// Copyright (c) 2018-2024 SIL International
 // This software is licensed under the LGPL, version 2.1 or later 
 // (http://www.gnu.org/licenses/lgpl-2.1.html) 
 /**
@@ -72,7 +72,8 @@ public class DatabaseMigrator {
 					Constants.UTF8_ENCODING);
 			BufferedReader bufr = new BufferedReader(reader);
 			String line = bufr.readLine();
-			while (line != null && !line.contains("<lingTreeTree") && !line.contains("<LingTreeTree")) {
+			while (line != null && !line.contains("<lingTreeTree")
+					&& !line.contains("<LingTreeTree")) {
 				line = bufr.readLine();
 			}
 			int i = line.indexOf("dbversion=");
@@ -99,6 +100,22 @@ public class DatabaseMigrator {
 	public void doMigration() {
 		try {
 			int version = getVersion();
+			File file = databaseFile;
+			while (version < Constants.CURRENT_DATABASE_VERSION) {
+				doMigrationOn(version);
+				version++;
+			}
+			Files.copy(Paths.get(file.getPath()), Paths.get(databaseFile.getPath()),
+					StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.COPY_ATTRIBUTES);
+			// TODO: delete the temp files
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public void doMigrationOn(int version) {
+		try {
 			// make a backup of the database file just in case
 			String sFile = databaseFile.getPath();
 			int i = sFile.lastIndexOf(Constants.LINGTREE_DATA_FILE_EXTENSION);
@@ -107,16 +124,13 @@ public class DatabaseMigrator {
 					StandardCopyOption.REPLACE_EXISTING);
 
 			File file = databaseFile;
-			while (version < Constants.CURRENT_DATABASE_VERSION) {
-				List<XsltParameter> params = new ArrayList<XsltParameter>();
-				if (version == 1) {
-					params.add(new XsltParameter("dpi", dpi));
-				}
-				file = applyMigrationTransformToFile(version, file, params);
-				if (version == 1) {
-					file = convertArgbToHexNotation(file);
-				}
-				version++;
+			List<XsltParameter> params = new ArrayList<XsltParameter>();
+			if (version == 1) {
+				params.add(new XsltParameter("dpi", dpi));
+			}
+			file = applyMigrationTransformToFile(version, file, params);
+			if (version == 1) {
+				file = convertArgbToHexNotation(file);
 			}
 			Files.copy(Paths.get(file.getPath()), Paths.get(databaseFile.getPath()),
 					StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.COPY_ATTRIBUTES);
@@ -142,7 +156,9 @@ public class DatabaseMigrator {
 			if (!xslt.exists()) {
 				throw new DataMigrationException(xslt.getPath());
 			}
-			file = fixDescriptionXML(file);
+			if (version == 1) {
+				file = fixDescriptionXML(file);
+			}
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder builder = factory.newDocumentBuilder();
 			Document document = builder.parse(file);
@@ -167,7 +183,8 @@ public class DatabaseMigrator {
 		return tempSaveFile;
 	}
 
-	// Some old versions output < and > in the Description element which breaks XML parsing
+	// Some old versions output < and > in the Description element which breaks
+	// XML parsing
 	public File fixDescriptionXML(File file) throws IOException {
 		String sContents = "";
 		Stream<String> lines = Files.lines(file.toPath());
@@ -197,13 +214,14 @@ public class DatabaseMigrator {
 			// change it
 			StringBuilder sb = new StringBuilder();
 			int lastIndex = convertColorToHex(sConverted, "lineColor", 0, sb);
-			lastIndex = convertColorToHex(sConverted.substring(lastIndex), "backgroundColor", lastIndex, sb);
+			lastIndex = convertColorToHex(sConverted.substring(lastIndex), "backgroundColor",
+					lastIndex, sb);
 			lastIndex = convertColorToHex(sConverted.substring(lastIndex), "color", lastIndex, sb);
 			lastIndex = convertColorToHex(sConverted.substring(lastIndex), "color", lastIndex, sb);
 			lastIndex = convertColorToHex(sConverted.substring(lastIndex), "color", lastIndex, sb);
 			lastIndex = convertColorToHex(sConverted.substring(lastIndex), "color", lastIndex, sb);
 			sb.append(sConverted.substring(lastIndex));
-			
+
 			fileWithHexColors = saveFileWithHexColors(version2File, sb.toString());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -213,8 +231,7 @@ public class DatabaseMigrator {
 		return fileWithHexColors;
 	}
 
-	private int convertColorToHex(String sRest, String sElementName, int lastIndex,
-			StringBuilder sb) {
+	private int convertColorToHex(String sRest, String sElementName, int lastIndex, StringBuilder sb) {
 		int iBeg = sRest.indexOf("<" + sElementName + ">") + sElementName.length() + 2;
 		int iEnd = sRest.substring(iBeg).indexOf("</" + sElementName + ">") + iBeg;
 		sb.append(sRest.substring(0, iBeg));

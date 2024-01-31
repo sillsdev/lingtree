@@ -10,7 +10,6 @@ import java.util.HashMap;
 import org.sil.lingtree.Constants;
 import org.sil.lingtree.descriptionparser.antlr4generated.DescriptionBaseListener;
 import org.sil.lingtree.descriptionparser.antlr4generated.DescriptionParser;
-import org.sil.lingtree.descriptionparser.antlr4generated.DescriptionParser.AbbreviationContext;
 import org.sil.lingtree.descriptionparser.antlr4generated.DescriptionParser.ContentContext;
 import org.sil.lingtree.descriptionparser.antlr4generated.DescriptionParser.NodeContext;
 import org.sil.lingtree.descriptionparser.antlr4generated.DescriptionParser.TypeContext;

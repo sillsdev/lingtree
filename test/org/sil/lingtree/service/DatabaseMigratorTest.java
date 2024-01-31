@@ -1,4 +1,4 @@
-// Copyright (c) 2016-2020 SIL International
+// Copyright (c) 2016-2024 SIL International
 // This software is licensed under the LGPL, version 2.1 or later
 // (http://www.gnu.org/licenses/lgpl-2.1.html)
 /**
@@ -65,17 +65,46 @@ public class DatabaseMigratorTest {
 		Files.copy(Paths.get(Constants.UNIT_TEST_DATA_FILE_VERSION_000),
 				Paths.get(Constants.UNIT_TEST_DATA_FILE_VERSION_001),
 				StandardCopyOption.REPLACE_EXISTING);
+		Files.copy(Paths.get(Constants.UNIT_TEST_DATA_FILE_WITH_WEDGES_IN_DESCRIPTION_VERSION_000),
+				Paths.get(Constants.UNIT_TEST_DATA_FILE_WITH_WEDGES_IN_DESCRIPTION_VERSION_001),
+				StandardCopyOption.REPLACE_EXISTING);
 	}
 
 	@Test
 	public void testGetVersion() {
 		int version = migrator.getVersion();
 		assertEquals(1, version);
-		File version2Database = new File(Constants.UNIT_TEST_DATA_FILE_VERSION_2);
-		DatabaseMigrator migrator2 = new DatabaseMigrator(version2Database);
-		migrator2.doMigration();
-		version = migrator2.getVersion();
+		migrator.doMigrationOn(1);
+		version = migrator.getVersion();
 		assertEquals(2, version);
+		migrator.doMigrationOn(2);
+		version = migrator.getVersion();
+		assertEquals(3, version);
+	}
+
+	@Test
+	public void testMigratorStepbyStep() {
+		int version = migrator.getVersion();
+		assertEquals(1, version);
+		migrator.setDpi(96);
+		migrator.doMigrationOn(1);
+		version = migrator.getVersion();
+		assertEquals(2, version);
+		ltTree = new LingTreeTree();
+		Locale locale = new Locale("en");
+		XMLBackEndProvider xmlBackEndProvider = new XMLBackEndProvider(ltTree, locale);
+		xmlBackEndProvider.loadTreeDataFromFile(databaseFile);
+		ltTree = xmlBackEndProvider.getLingTree();
+		assertEquals(2, ltTree.getVersion());
+		FontInfo fontInfo;
+		checkContentsForVersion2();
+
+		migrator.doMigrationOn(2);
+		xmlBackEndProvider.loadTreeDataFromFile(databaseFile);
+		ltTree = xmlBackEndProvider.getLingTree();
+		assertEquals(3, ltTree.getVersion());
+		fontInfo = ltTree.getAbbreviationFontInfo();
+		checkFontInfo(fontInfo, "Arial", 11.0, "Regular", Color.web("#6666ff"));
 	}
 
 	@Test
@@ -85,13 +114,20 @@ public class DatabaseMigratorTest {
 		migrator.setDpi(96);
 		migrator.doMigration();
 		version = migrator.getVersion();
-		assertEquals(2, version);
+		assertEquals(3, version);
 		ltTree = new LingTreeTree();
 		Locale locale = new Locale("en");
 		XMLBackEndProvider xmlBackEndProvider = new XMLBackEndProvider(ltTree, locale);
 		xmlBackEndProvider.loadTreeDataFromFile(databaseFile);
 		ltTree = xmlBackEndProvider.getLingTree();
-		assertEquals(Constants.CURRENT_DATABASE_VERSION, ltTree.getVersion());
+		assertEquals(3, ltTree.getVersion());
+		FontInfo fontInfo;
+		checkContentsForVersion2();
+		fontInfo = ltTree.getAbbreviationFontInfo();
+		checkFontInfo(fontInfo, "Arial", 11.0, "Regular", Color.web("#6666ff"));
+	}
+
+	protected void checkContentsForVersion2() {
 		String sColorHexCode = StringUtilities.toRGBCode(ltTree.getBackgroundColor());
 		assertEquals("#ffffff", sColorHexCode);
 		assertEquals(
@@ -156,7 +192,7 @@ public class DatabaseMigratorTest {
 		migrator.setDpi(96);
 		migrator.doMigration();
 		version = migrator.getVersion();
-		assertEquals(2, version);
+		assertEquals(3, version);
 		ltTree = new LingTreeTree();
 		Locale locale = new Locale("en");
 		XMLBackEndProvider xmlBackEndProvider = new XMLBackEndProvider(ltTree, locale);
