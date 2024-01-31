@@ -727,7 +727,7 @@ public class RootLayoutController implements Initializable {
 		stage.getIcons().add(mainApp.getNewMainIconImage());
 
 		Optional<ButtonType> result = alert.showAndWait();
-		if (result.get() == ButtonType.YES) {
+		if (result.get().getButtonData() == ButtonData.YES) {
 			try {
 				handleDrawTree();
 				handleSaveTree();
