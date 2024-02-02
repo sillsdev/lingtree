@@ -28,6 +28,7 @@ description  : node EOF
 
 // we allow empty nodes that just have parens (hence, both type and content are optional)
 node : openParen type? content? node* closeParen
+	 | openParen type? abbreviationWithText+ node* closeParen
 	 | openParen type? abbreviationWithText+ closeParen
 	 | openParen type? content? node* closeParen {notifyErrorListeners("missingOpeningParen");} content
      | openParen type? content? node*             {notifyErrorListeners("missingClosingParen");}
