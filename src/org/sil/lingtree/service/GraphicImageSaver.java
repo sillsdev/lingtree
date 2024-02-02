@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2018 SIL International
+ * Copyright (c) 2016-2024 SIL International
  * This software is licensed under the LGPL, version 2.1 or later
  * (http://www.gnu.org/licenses/lgpl-2.1.html)
  */
@@ -9,11 +9,9 @@ package org.sil.lingtree.service;
 import java.awt.image.BufferedImage;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 
 import javafx.embed.swing.SwingFXUtils;
@@ -52,16 +50,19 @@ public class GraphicImageSaver {
         return instance;
     }
     
-    public void saveAsSVG(TreeDrawer drawer) throws IOException {
+	public void saveAsSVG(TreeDrawer drawer) throws IOException {
+		if (drawer == null) {
+			return;
+		}
 		StringBuilder sb = drawer.drawAsSVG();
-		Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(
-				sFilePath + ".svg"), "UTF-8"));
+		Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(sFilePath
+				+ ".svg"), "UTF-8"));
 		try {
 			out.write(sb.toString());
 		} finally {
 			out.close();
 		}
-    }
+	}
     
     public void saveAsPNG(Pane drawingArea, LingTreeTree ltTree) {
 		WritableImage wim = new WritableImage((int) ltTree.getXSize() + 10,
