@@ -1,4 +1,4 @@
-// Copyright (c) 2017-2018 SIL International
+// Copyright (c) 2017-2024 SIL International
 // This software is licensed under the LGPL, version 2.1 or later
 // (http://www.gnu.org/licenses/lgpl-2.1.html)
 package org.sil.lingtree;
@@ -11,7 +11,6 @@ import org.sil.lingtree.model.FontInfo;
 import org.sil.lingtree.model.LingTreeTree;
 import org.sil.utility.*;
 
-import javafx.scene.control.SplitPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -39,6 +38,10 @@ public class ApplicationPreferences extends ApplicationPreferencesUtilities {
 
 	// Tree parameters to remember
 	static final String BACKGROUND_COLOR = "backgroundColor";
+	static final String ABBREVIATION_FONT_COLOR = "abbreviationFontColor";
+	static final String ABBREVIATION_FONT_FAMILY = "abbreviationFontFamily";
+	static final String ABBREVIATION_FONT_SIZE = "abbreviationFontSize";
+	static final String ABBREVIATION_FONT_TYPE = "abbreviationFontType";
 	static final String EMPTY_ELEMENT_FONT_COLOR = "emptyElementFontColor";
 	static final String EMPTY_ELEMENT_FONT_FAMILY = "emptyElementFontFamily";
 	static final String EMPTY_ELEMENT_FONT_SIZE = "emptyElementFontSize";
@@ -204,7 +207,11 @@ public class ApplicationPreferences extends ApplicationPreferencesUtilities {
 		final String sDefaultFamily = "Arial";
 		final String sDefaultType = "Regular";
 		final String sDefaultColor = "#000000";
-		FontInfo fontInfo = new FontInfo(prefs.get(EMPTY_ELEMENT_FONT_FAMILY, sDefaultFamily), prefs.getDouble(
+		FontInfo fontInfo = new FontInfo(prefs.get(ABBREVIATION_FONT_FAMILY, sDefaultFamily), prefs.getDouble(
+				ABBREVIATION_FONT_SIZE, 12), prefs.get(ABBREVIATION_FONT_TYPE, "Italic"));
+		fontInfo.setColor(Color.web(prefs.get(ABBREVIATION_FONT_COLOR, sDefaultColor)));
+		ltTree.setAbbreviationFontInfo(fontInfo);
+		fontInfo = new FontInfo(prefs.get(EMPTY_ELEMENT_FONT_FAMILY, sDefaultFamily), prefs.getDouble(
 				EMPTY_ELEMENT_FONT_SIZE, 12), prefs.get(EMPTY_ELEMENT_FONT_TYPE, "Italic"));
 		fontInfo.setColor(Color.web(prefs.get(EMPTY_ELEMENT_FONT_COLOR, sDefaultColor)));
 		ltTree.setEmptyElementFontInfo(fontInfo);
@@ -241,7 +248,12 @@ public class ApplicationPreferences extends ApplicationPreferencesUtilities {
 
 		setPreferencesKey(BACKGROUND_COLOR, ltTree.getBackgroundColor());
 		setPreferencesKey(LINE_COLOR, ltTree.getLineColor());
-		FontInfo fontInfo = ltTree.getEmptyElementFontInfo();
+		FontInfo fontInfo = ltTree.getAbbreviationFontInfo();
+		setPreferencesKey(ABBREVIATION_FONT_COLOR, fontInfo.getColor());
+		setPreferencesKey(ABBREVIATION_FONT_FAMILY, fontInfo.getFontFamily());
+		setPreferencesKey(ABBREVIATION_FONT_SIZE, fontInfo.getFontSize());
+		setPreferencesKey(ABBREVIATION_FONT_TYPE, fontInfo.getFontType());
+		fontInfo = ltTree.getEmptyElementFontInfo();
 		setPreferencesKey(EMPTY_ELEMENT_FONT_COLOR, fontInfo.getColor());
 		setPreferencesKey(EMPTY_ELEMENT_FONT_FAMILY, fontInfo.getFontFamily());
 		setPreferencesKey(EMPTY_ELEMENT_FONT_SIZE, fontInfo.getFontSize());

@@ -1,4 +1,4 @@
-// Copyright (c) 2016-2018 SIL International 
+// Copyright (c) 2016-2024 SIL International 
 // This software is licensed under the LGPL, version 2.1 or later 
 // (http://www.gnu.org/licenses/lgpl-2.1.html) 
 
@@ -183,6 +183,12 @@ public class ApplicationPreferencesTest {
 		boolean showFlatView = true;
 		Color backgroundColor = Color.ALICEBLUE;
 		Color lineColor = Color.NAVY;
+		Color abbreviationFontColor = Color.CORNSILK;
+		String abbreviationFontFamily = "Charis SIL SmallCaps";
+		double abbreviationFontSize = 8.0;
+		String abbreviationFontType = "Italic";
+		FontInfo abbreviationFontInfo = new FontInfo(abbreviationFontFamily, abbreviationFontSize, abbreviationFontType);
+		abbreviationFontInfo.setColor(abbreviationFontColor);
 		Color emptyElementFontColor = Color.CHARTREUSE;
 		String emptyElementFontFamily = "Verdana";
 		double emptyElementFontSize = 13.0;
@@ -222,6 +228,7 @@ public class ApplicationPreferencesTest {
 		ltTree.setShowFlatView(showFlatView);
 		ltTree.setBackgroundColor(backgroundColor);
 		ltTree.setLineColor(lineColor);
+		ltTree.setAbbreviationFontInfo(abbreviationFontInfo);
 		ltTree.setEmptyElementFontInfo(emptyElementFontInfo);
 		ltTree.setGlossFontInfo(glossFontInfo);
 		ltTree.setLexicalFontInfo(lexicalFontInfo);
@@ -247,7 +254,12 @@ public class ApplicationPreferencesTest {
 		assertEquals(showFlatView, ltRetrieved.isShowFlatView());
 		assertEquals(backgroundColor, ltRetrieved.getBackgroundColor());
 		assertEquals(lineColor, ltRetrieved.getLineColor());
-		FontInfo fontInfo = ltRetrieved.getEmptyElementFontInfo();
+		FontInfo fontInfo = ltRetrieved.getAbbreviationFontInfo();
+		assertEquals(abbreviationFontColor, fontInfo.getColor());
+		assertEquals(abbreviationFontFamily, fontInfo.getFontFamily());
+		assertEquals(abbreviationFontSize, fontInfo.getFontSize(), 0.0);
+		assertEquals(abbreviationFontType, fontInfo.getFontType());
+		fontInfo = ltRetrieved.getEmptyElementFontInfo();
 		assertEquals(emptyElementFontColor, fontInfo.getColor());
 		assertEquals(emptyElementFontFamily, fontInfo.getFontFamily());
 		assertEquals(emptyElementFontSize, fontInfo.getFontSize(), 0.0);
