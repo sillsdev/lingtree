@@ -115,6 +115,8 @@ public class QuickReferenceGuideController implements Initializable {
 		formatTableRow(sb, "/_", "quick.subscriptitalic");
 		formatTableRow(sb, "/S", "quick.superscript");
 		formatTableRow(sb, "/^", "quick.superscriptitalic");
+		formatTableRow(sb, "/a", "quick.abbreviationbegin");
+		formatTableRow(sb, "/A", "quick.abbreviationend");
 		formatTableRow(sb, "\\(", "quick.openparenthesis");
 		formatTableRow(sb, "\\)", "quick.closeparenthesis");
 		sb.append("</table>\n");

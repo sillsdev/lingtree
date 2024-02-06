@@ -1,0 +1,35 @@
+﻿<?xml version='1.0' standalone='no'?>
+<svg width='320.697265625' height='175.8984375' version='1.1' xmlns='http://www.w3.org/2000/svg' contentScriptType='text/javascript'>
+<script  id="clientEventHandlersJS">
+function OnClickLingTreeNode(node){}
+</script>
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="94.3829345703125" y="20.0" font-family="Arial" font-size="12.0" fill="#000000">S</text>
+<text x="14.67578125" y="53.40625" font-family="Arial" font-size="12.0" fill="#000000">NP</text>
+<line x1="98.3848876953125" y1="25.54296875" x2="23.0107421875" y2="39.54296875" stroke="#000000" stroke-width="1.0"/>
+<text x="10.0" y="86.8125" font-family="Arial" font-size="12.0" fill="#ff0000">Juan</text>
+<line x1="23.0107421875" y1="58.94921875" x2="23.0107421875" y2="72.94921875" stroke="#000000" stroke-width="1.0"/>
+<text x="10.0" y="100.8125" font-family="Arial" font-size="12.0" fill="#0000ff">John</text>
+<text x="165.755126953125" y="53.40625" font-family="Arial" font-size="12.0" fill="#000000">VP</text>
+<line x1="98.3848876953125" y1="25.54296875" x2="173.759033203125" y2="39.54296875" stroke="#000000" stroke-width="1.0"/>
+<text x="98.5869140625" y="86.8125" font-family="Arial" font-size="12.0" fill="#000000">V</text>
+<line x1="173.759033203125" y1="58.94921875" x2="102.5888671875" y2="72.94921875" stroke="#000000" stroke-width="1.0"/>
+<text x="71.560546875" y="120.21875" font-family="Arial" font-size="12.0" fill="#ff0000">desbloquea</text>
+<line x1="102.5888671875" y1="92.35546875" x2="102.5888671875" y2="106.35546875" stroke="#000000" stroke-width="1.0"/>
+<text x="56.021484375" y="134.21875" font-family="Charis SIL Small Caps" font-size="12.0" fill="#0000ff">rev</text>
+<text x="76.974609375" y="134.21875" font-family="Arial" font-size="12.0" fill="#0000ff">-lock-</text>
+<text x="106.306640625" y="134.21875" font-family="Charis SIL Small Caps" font-size="12.0" fill="#0000ff">3sg.prs</text>
+<text x="236.59423828125" y="86.8125" font-family="Arial" font-size="12.0" fill="#000000">NP</text>
+<line x1="173.759033203125" y1="58.94921875" x2="244.92919921875" y2="72.94921875" stroke="#000000" stroke-width="1.0"/>
+<text x="195.20703125" y="120.21875" font-family="Arial" font-size="12.0" fill="#000000">Det</text>
+<line x1="244.92919921875" y1="92.35546875" x2="204.5439453125" y2="106.35546875" stroke="#000000" stroke-width="1.0"/>
+<text x="199.8740234375" y="153.625" font-family="Arial" font-size="12.0" fill="#ff0000">la</text>
+<line x1="204.5439453125" y1="125.76171875" x2="204.5439453125" y2="139.76171875" stroke="#000000" stroke-width="1.0"/>
+<text x="169.15625" y="167.625" font-family="Charis SIL Small Caps" font-size="12.0" fill="#0000ff">def.art.f.sg</text>
+<text x="280.9814453125" y="120.21875" font-family="Arial" font-size="12.0" fill="#000000">N</text>
+<line x1="244.92919921875" y1="92.35546875" x2="285.314453125" y2="106.35546875" stroke="#000000" stroke-width="1.0"/>
+<text x="268.3017578125" y="153.625" font-family="Arial" font-size="12.0" fill="#ff0000">puerta</text>
+<line x1="285.314453125" y1="125.76171875" x2="285.314453125" y2="139.76171875" stroke="#000000" stroke-width="1.0"/>
+<text x="259.931640625" y="167.625" font-family="Arial" font-size="12.0" fill="#0000ff">door-</text>
+<text x="287.9453125" y="167.625" font-family="Charis SIL Small Caps" font-size="12.0" fill="#0000ff">f.sg</text>
+</svg>

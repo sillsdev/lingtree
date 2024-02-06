@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<lingTreeTree dbversion="3">
+    <abbreviationFontInfo>
+        <color>#0000ff</color>
+        <fontFamily>Charis SIL Small Caps</fontFamily>
+        <fontSize>12.0</fontSize>
+        <fontType>Regular</fontType>
+    </abbreviationFontInfo>
+    <backgroundColor>#ffffff</backgroundColor>
+    <description>(S (NP (\L Juan (\G John)))
+ (VP (V (\L desbloquea (\G /arev/A-lock-/a3sg.prs/A)))
+ (NP (Det (\L la (\G /adef.art.f.sg/A ) ) )
+      (N (\L puerta (\G door-/af.sg/A ) ) ) )))</description>
+    <emptyElementFontInfo>
+        <color>#000000</color>
+        <fontFamily>Arial</fontFamily>
+        <fontSize>12.0</fontSize>
+        <fontType>Regular</fontType>
+    </emptyElementFontInfo>
+    <glossFontInfo>
+        <color>#0000ff</color>
+        <fontFamily>Arial</fontFamily>
+        <fontSize>12.0</fontSize>
+        <fontType>Regular</fontType>
+    </glossFontInfo>
+    <horizontalGap>20.0</horizontalGap>
+    <horizontalOffset>330.697265625</horizontalOffset>
+    <initialXCoordinate>10.0</initialXCoordinate>
+    <initialYCoordinate>20.0</initialYCoordinate>
+    <lexGlossGapAdjustment>14.0</lexGlossGapAdjustment>
+    <lexicalFontInfo>
+        <color>#ff0000</color>
+        <fontFamily>Arial</fontFamily>
+        <fontSize>12.0</fontSize>
+        <fontType>Regular</fontType>
+    </lexicalFontInfo>
+    <lineColor>#000000</lineColor>
+    <lineWidth>1.0</lineWidth>
+    <nonTerminalFontInfo>
+        <color>#000000</color>
+        <fontFamily>Arial</fontFamily>
+        <fontSize>12.0</fontSize>
+        <fontType>Regular</fontType>
+    </nonTerminalFontInfo>
+    <saveAsPng>false</saveAsPng>
+    <saveAsSVG>true</saveAsSVG>
+    <showFlatView>false</showFlatView>
+    <useRightToLeftOrientation>false</useRightToLeftOrientation>
+    <verticalGap>20.0</verticalGap>
+</lingTreeTree>
