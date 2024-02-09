@@ -32,14 +32,21 @@ import org.sil.lingtree.model.FontInfo;
 import org.sil.lingtree.model.GlossFontInfo;
 import org.sil.lingtree.model.LexFontInfo;
 import org.sil.lingtree.model.LingTreeTree;
+import org.sil.lingtree.model.NodeType;
 import org.sil.lingtree.model.NonTerminalFontInfo;
 import org.sil.lingtree.service.GraphicImageSaver;
+import org.sil.lingtree.service.NodeTypeDeterminer;
 import org.sil.lingtree.service.TreeBuilder;
 import org.sil.lingtree.service.TreeDrawer;
 import org.sil.lingtree.Constants;
 import org.sil.lingtree.ApplicationPreferences;
 import org.sil.utility.ClipboardUtilities;
 import org.sil.utility.StringUtilities;
+import org.sil.utility.service.keyboards.KeyboardHandler;
+import org.sil.utility.service.keyboards.KeyboardInfo;
+import org.sil.utility.service.keyboards.LinuxKeyboardHandler;
+import org.sil.utility.service.keyboards.MacOSXKeyboardHandler;
+import org.sil.utility.service.keyboards.WindowsKeyboardHandler;
 import org.sil.utility.view.ControllerUtilities;
 import org.sil.utility.view.ObservableResourceFactory;
 import org.sil.utility.view.FilteringEventDispatcher;
@@ -86,6 +93,12 @@ public class RootLayoutController implements Initializable {
 
 	MainApp mainApp;
 	private Locale currentLocale;
+	KeyboardHandler keyboardHandler = new KeyboardHandler();
+	LinuxKeyboardHandler linuxHandler = new LinuxKeyboardHandler();
+	MacOSXKeyboardHandler macHandler = new MacOSXKeyboardHandler();
+	WindowsKeyboardHandler winHandler = new WindowsKeyboardHandler();
+	List<KeyboardInfo> activeKeyboards = new ArrayList<KeyboardInfo>();
+	int numberOfKeyboards = 0;
 	ResourceBundle bundle;
 	LingTreeTree ltTree;
 	String sDescription;
@@ -261,6 +274,29 @@ public class RootLayoutController implements Initializable {
 		createToolbarButtons(bundle);
 		initMenuItemsForLocalization();
 		statusBarKey.textProperty().bind(RESOURCE_FACTORY.getStringBinding("label.key"));
+
+		initKeyboardHandler();
+		treeDescription.caretPositionProperty().addListener((observable, oldValue, newValue) -> {
+			String sPrevious = treeDescription.getText(0, newValue);
+			NodeType ntype = NodeTypeDeterminer.determineNodeTypeFrom(sPrevious);
+			switch (ntype) {
+			case NonTerminal:
+				tryToChangeKeyboard(activeKeyboards, 0, numberOfKeyboards, "English", mainApp.getPrimaryStage());
+				break;
+			case Lex:
+				tryToChangeKeyboard(activeKeyboards, 3, numberOfKeyboards, "IPA", mainApp.getPrimaryStage());
+				break;
+			case Gloss:
+				tryToChangeKeyboard(activeKeyboards, 1, numberOfKeyboards, "Spanish", mainApp.getPrimaryStage());
+				break;
+			case EmptyElement:
+				tryToChangeKeyboard(activeKeyboards, 2, numberOfKeyboards, "Hebrew", mainApp.getPrimaryStage());
+				break;
+			case Syntagmeme:
+				tryToChangeKeyboard(activeKeyboards, 0, numberOfKeyboards, "English", mainApp.getPrimaryStage());
+				break;
+			}
+		});
 
 		// we use OnKeyTyped because it tells us the character keyed
 		// regardless of the keyboard used
@@ -1507,5 +1543,26 @@ public class RootLayoutController implements Initializable {
 			return true;
 		}
 		return false;
+	}
+
+	void initKeyboardHandler() {
+		String os = System.getProperty("os.name");
+		if (os.toLowerCase().contains("windows")) {
+			keyboardHandler = winHandler;
+		} else if (os.toLowerCase().contains("mac")) {
+			keyboardHandler = macHandler;
+		} else {
+			keyboardHandler = linuxHandler;
+		}
+		activeKeyboards = keyboardHandler.getAvailableKeyboards();
+		numberOfKeyboards = activeKeyboards.size();
+	}
+
+	void tryToChangeKeyboard(List<KeyboardInfo> activeKeyboards, int index, int numberOfKeyboards, String language, Stage primaryStage) {
+		boolean result = false;
+		if (numberOfKeyboards > index) {
+			result = winHandler.changeToKeyboard(activeKeyboards.get(index), primaryStage);
+		}
+		System.out.println("changed to " + language + ": " + result);
 	}
 }
