@@ -30,6 +30,7 @@ import org.sil.lingtree.model.AbbreviationFontInfo;
 import org.sil.lingtree.model.EmptyElementFontInfo;
 import org.sil.lingtree.model.FontInfo;
 import org.sil.lingtree.model.GlossFontInfo;
+import org.sil.lingtree.model.Keyboard;
 import org.sil.lingtree.model.LexFontInfo;
 import org.sil.lingtree.model.LingTreeTree;
 import org.sil.lingtree.model.NodeType;
@@ -235,6 +236,8 @@ public class RootLayoutController implements Initializable {
 	@FXML
 	private MenuItem menuItemShowMatchingParenDelay;
 	@FXML
+	private MenuItem menuItemKeyboards;
+	@FXML
 	private MenuItem menuItemChangeInterfaceLanguage;
 	@FXML
 	private Menu menuHelp;
@@ -281,19 +284,19 @@ public class RootLayoutController implements Initializable {
 			NodeType ntype = NodeTypeDeterminer.determineNodeTypeFrom(sPrevious);
 			switch (ntype) {
 			case NonTerminal:
-				tryToChangeKeyboard(activeKeyboards, 0, numberOfKeyboards, "English", mainApp.getPrimaryStage());
+				tryToChangeKeyboardTo(ltTree.getNonTerminalKeyboard());
 				break;
 			case Lex:
-				tryToChangeKeyboard(activeKeyboards, 3, numberOfKeyboards, "IPA", mainApp.getPrimaryStage());
+				tryToChangeKeyboardTo(ltTree.getLexicalKeyboard());
 				break;
 			case Gloss:
-				tryToChangeKeyboard(activeKeyboards, 1, numberOfKeyboards, "Spanish", mainApp.getPrimaryStage());
+				tryToChangeKeyboardTo(ltTree.getGlossKeyboard());
 				break;
 			case EmptyElement:
-				tryToChangeKeyboard(activeKeyboards, 2, numberOfKeyboards, "Hebrew", mainApp.getPrimaryStage());
+				tryToChangeKeyboardTo(ltTree.getEmptyElementKeyboard());
 				break;
 			case Syntagmeme:
-				tryToChangeKeyboard(activeKeyboards, 0, numberOfKeyboards, "English", mainApp.getPrimaryStage());
+				tryToChangeKeyboardTo(ltTree.getSyntagmemeKeyboard());
 				break;
 			}
 		});
@@ -538,6 +541,8 @@ public class RootLayoutController implements Initializable {
 				RESOURCE_FACTORY.getStringBinding("menu.showmatchingparenwitharrowkeys"));
 		menuItemShowMatchingParenDelay.textProperty().bind(
 				RESOURCE_FACTORY.getStringBinding("menu.showmatchingparendelay"));
+		menuItemKeyboards.textProperty().bind(
+				RESOURCE_FACTORY.getStringBinding("menu.keyboards"));
 		menuItemChangeInterfaceLanguage.textProperty().bind(
 				RESOURCE_FACTORY.getStringBinding("menu.changeinterfacelanguage"));
 		menuHelp.textProperty().bind(RESOURCE_FACTORY.getStringBinding("menu.help"));
@@ -1276,6 +1281,32 @@ public class RootLayoutController implements Initializable {
 		applicationPreferences.setSavedTreeParameters(ltTree);
 	}
 
+	@FXML
+	private void handleKeyboards() {
+		try {
+			// Load the fxml file and create a new stage for the popup.
+			Stage dialogStage = new Stage();
+			String resource = "fxml/KeyboardChooser.fxml";
+			String title = RESOURCE_FACTORY.getStringBinding("keyboarddialog.title").get();
+			FXMLLoader loader = ControllerUtilities.getLoader(mainApp, currentLocale, dialogStage,
+					title, RootLayoutController.class.getResource(resource),
+					Constants.RESOURCE_LOCATION);
+
+			KeyboardChooserController controller = loader.getController();
+			controller.setDialogStage(dialogStage);
+			controller.setMainApp(mainApp);
+			controller.setData(ltTree);
+			dialogStage.setResizable(false);
+			dialogStage.showAndWait();
+			if (controller.isOkClicked()) {
+//				handleDrawTree();
+				markAsDirty();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
 	/**
 	 * Change interface language.
 	 */
@@ -1558,11 +1589,12 @@ public class RootLayoutController implements Initializable {
 		numberOfKeyboards = activeKeyboards.size();
 	}
 
-	void tryToChangeKeyboard(List<KeyboardInfo> activeKeyboards, int index, int numberOfKeyboards, String language, Stage primaryStage) {
-		boolean result = false;
-		if (numberOfKeyboards > index) {
-			result = winHandler.changeToKeyboard(activeKeyboards.get(index), primaryStage);
+	void tryToChangeKeyboardTo(Keyboard kb) {
+		KeyboardInfo ki = new KeyboardInfo(new Locale(kb.getLocale()),
+				kb.getDescription(), kb.getWindowsLangID());
+		boolean result = winHandler.changeToKeyboard(ki, mainApp.getPrimaryStage());
+		if (!result) {
+			System.out.println("Could not change keyboard to " + kb.getDescription() + "; id=" + kb.getWindowsLangID());
 		}
-		System.out.println("changed to " + language + ": " + result);
 	}
 }

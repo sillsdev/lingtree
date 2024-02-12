@@ -155,18 +155,23 @@ public class TreeBuilder {
 	private static void restoreTreeParameters(LingTreeTree origTree, LingTreeTree ltTree) {
 		ltTree.setBackgroundColor(origTree.getBackgroundColor());
 		ltTree.setEmptyElementFontInfo(origTree.getEmptyElementFontInfo());
+		ltTree.setEmptyElementKeyboard(origTree.getEmptyElementKeyboard());
 		ltTree.setGlossFontInfo(origTree.getGlossFontInfo());
+		ltTree.setGlossKeyboard(origTree.getGlossKeyboard());
 		ltTree.setHorizontalGap(origTree.getHorizontalGap());
 		ltTree.setInitialXCoordinate(origTree.getInitialXCoordinate());
 		ltTree.setInitialYCoordinate(origTree.getInitialYCoordinate());
 		ltTree.setLexGlossGapAdjustment(origTree.getLexGlossGapAdjustment());
 		ltTree.setLexicalFontInfo(origTree.getLexicalFontInfo());
+		ltTree.setLexicalKeyboard(origTree.getLexicalKeyboard());
 		ltTree.setLineColor(origTree.getLineColor());
 		ltTree.setLineWidth(origTree.getLineWidth());
 		ltTree.setNonTerminalFontInfo(origTree.getNonTerminalFontInfo());
+		ltTree.setNonTerminalKeyboard(origTree.getNonTerminalKeyboard());
 		ltTree.setSaveAsPng(origTree.isSaveAsPng());
 		ltTree.setSaveAsSVG(origTree.isSaveAsSVG());
 		ltTree.setShowFlatView(origTree.isShowFlatView());
+		ltTree.setSyntagmemeKeyboard(origTree.getSyntagmemeKeyboard());
 		ltTree.setVerticalGap(origTree.getVerticalGap());
 		ltTree.setUseRightToLeftOrientation(origTree.isUseRightToLeftOrientation());
 	}

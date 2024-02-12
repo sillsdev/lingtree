@@ -78,6 +78,8 @@
 					<CheckMenuItem fx:id="menuItemShowMatchingParenWithArrowKeys" mnemonicParsing="true" onAction="#handleMenuShowMatchingParenWithArrowKeys" text="%menu.showmatchingparenwitharrowkeys" />
 					<MenuItem fx:id="menuItemShowMatchingParenDelay" mnemonicParsing="true" onAction="#handleMenuShowMatchingParenDelay" text="%menu.showmatchingparendelay" />
 					<SeparatorMenuItem />
+					<MenuItem fx:id="menuItemKeyboards" mnemonicParsing="true" onAction="#handleKeyboards" text="%menu.keyboards" />
+					<SeparatorMenuItem />
 					<MenuItem fx:id="menuItemChangeInterfaceLanguage" mnemonicParsing="true" onAction="#handleChangeInterfaceLanguage" text="%menu.changeinterfacelanguage" />
 				  </items>
 				</Menu>
