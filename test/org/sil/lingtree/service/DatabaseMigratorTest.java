@@ -23,6 +23,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.sil.lingtree.model.FontInfo;
+import org.sil.lingtree.model.Keyboard;
 import org.sil.lingtree.model.LingTreeTree;
 import org.sil.lingtree.Constants;
 import org.sil.lingtree.backendprovider.XMLBackEndProvider;
@@ -80,6 +81,9 @@ public class DatabaseMigratorTest {
 		migrator.doMigrationOn(2);
 		version = migrator.getVersion();
 		assertEquals(3, version);
+		migrator.doMigrationOn(3);
+		version = migrator.getVersion();
+		assertEquals(4, version);
 	}
 
 	@Test
@@ -105,8 +109,22 @@ public class DatabaseMigratorTest {
 		assertEquals(3, ltTree.getVersion());
 		fontInfo = ltTree.getAbbreviationFontInfo();
 		checkFontInfo(fontInfo, "Arial", 11.0, "Regular", Color.web("#6666ff"));
-	}
 
+		migrator.doMigrationOn(3);
+		xmlBackEndProvider.loadTreeDataFromFile(databaseFile);
+		ltTree = xmlBackEndProvider.getLingTree();
+		assertEquals(4, ltTree.getVersion());
+		Keyboard kb = ltTree.getEmptyElementKeyboard();
+		checkKeyboardInfo(kb, "English", "en", 0);
+		kb = ltTree.getGlossKeyboard();
+		checkKeyboardInfo(kb, "English", "en", 0);
+		kb = ltTree.getLexicalKeyboard();
+		checkKeyboardInfo(kb, "English", "en", 0);
+		kb = ltTree.getNonTerminalKeyboard();
+		checkKeyboardInfo(kb, "English", "en", 0);
+		kb = ltTree.getSyntagmemeKeyboard();
+		checkKeyboardInfo(kb, "English", "en", 0);
+	}
 	@Test
 	public void testMigrator() {
 		int version = migrator.getVersion();
@@ -114,13 +132,13 @@ public class DatabaseMigratorTest {
 		migrator.setDpi(96);
 		migrator.doMigration();
 		version = migrator.getVersion();
-		assertEquals(3, version);
+		assertEquals(4, version);
 		ltTree = new LingTreeTree();
 		Locale locale = new Locale("en");
 		XMLBackEndProvider xmlBackEndProvider = new XMLBackEndProvider(ltTree, locale);
 		xmlBackEndProvider.loadTreeDataFromFile(databaseFile);
 		ltTree = xmlBackEndProvider.getLingTree();
-		assertEquals(3, ltTree.getVersion());
+		assertEquals(4, ltTree.getVersion());
 		FontInfo fontInfo;
 		checkContentsForVersion2();
 		fontInfo = ltTree.getAbbreviationFontInfo();
@@ -180,6 +198,13 @@ public class DatabaseMigratorTest {
 		assertEquals(fontSize, font.getSize(), 0.0);
 		assertEquals(fontStyle, font.getStyle());
 	}
+
+	private void checkKeyboardInfo(Keyboard kb, String description, String locale, int winID) {
+		assertEquals(description, kb.getDescription());
+		assertEquals(locale, kb.getLocale());
+		assertEquals(winID, kb.getWindowsLangID());
+	}
+
 	@Test
 	public void testMigratorWedgesInDescription() throws IOException {
 		Files.copy(Paths.get(Constants.UNIT_TEST_DATA_FILE_WITH_WEDGES_IN_DESCRIPTION_VERSION_000),
@@ -192,7 +217,7 @@ public class DatabaseMigratorTest {
 		migrator.setDpi(96);
 		migrator.doMigration();
 		version = migrator.getVersion();
-		assertEquals(3, version);
+		assertEquals(4, version);
 		ltTree = new LingTreeTree();
 		Locale locale = new Locale("en");
 		XMLBackEndProvider xmlBackEndProvider = new XMLBackEndProvider(ltTree, locale);
