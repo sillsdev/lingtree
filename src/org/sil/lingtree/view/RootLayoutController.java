@@ -1590,11 +1590,22 @@ public class RootLayoutController implements Initializable {
 	}
 
 	void tryToChangeKeyboardTo(Keyboard kb) {
-		KeyboardInfo ki = new KeyboardInfo(new Locale(kb.getLocale()),
-				kb.getDescription(), kb.getWindowsLangID());
-		boolean result = winHandler.changeToKeyboard(ki, mainApp.getPrimaryStage());
-		if (!result) {
-			System.out.println("Could not change keyboard to " + kb.getDescription() + "; id=" + kb.getWindowsLangID());
+		if (keyboardHandler == winHandler) {
+			if (activeKeyboards.size() == 0) {
+				return;  // nothing to do
+			}
+			KeyboardInfo ki;
+			if (kb.getWindowsLangID() == 0) {
+				// always use the first keyboard if the ID is zero
+				ki = activeKeyboards.get(0);
+			} else {
+				ki = new KeyboardInfo(new Locale(kb.getLocale()),
+						kb.getDescription(), kb.getWindowsLangID());
+			}
+			boolean result = winHandler.changeToKeyboard(ki, mainApp.getPrimaryStage());
+			if (!result) {
+				System.out.println("Could not change keyboard to " + kb.getDescription() + "; id=" + kb.getWindowsLangID());
+			}
 		}
 	}
 }
