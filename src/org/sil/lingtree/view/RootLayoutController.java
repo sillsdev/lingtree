@@ -115,6 +115,7 @@ public class RootLayoutController implements Initializable {
 	private String sAboutContent;
 	private String sFileFilterDescription;
 	private String lingTreeFilterDescription;
+	private String sOperatingSystem;
 
 	private final String kPressedStyle = "buttonpressed";
 	private final String kUnPressedStyle = "buttonunpressed";
@@ -614,6 +615,12 @@ public class RootLayoutController implements Initializable {
 
 	public void setMainApp(MainApp mainApp) {
 		this.mainApp = mainApp;
+		sOperatingSystem = mainApp.getOperatingSystem();
+		if (sOperatingSystem.toLowerCase().contains("windows")) {
+			menuItemKeyboards.setDisable(false);
+		} else {
+			menuItemKeyboards.setDisable(true);
+		}
 		this.applicationPreferences = mainApp.getApplicationPreferences();
 		menuItemDrawAsType.setSelected(applicationPreferences.getDrawAsType());
 		menuItemShowMatchingParenWithArrowKeys.setSelected(applicationPreferences
@@ -1294,12 +1301,10 @@ public class RootLayoutController implements Initializable {
 
 			KeyboardChooserController controller = loader.getController();
 			controller.setDialogStage(dialogStage);
-			controller.setMainApp(mainApp);
 			controller.setData(ltTree);
 			dialogStage.setResizable(false);
 			dialogStage.showAndWait();
 			if (controller.isOkClicked()) {
-//				handleDrawTree();
 				markAsDirty();
 			}
 		} catch (IOException e) {
@@ -1467,7 +1472,6 @@ public class RootLayoutController implements Initializable {
 
 			TreeSpacingParametersController controller = loader.getController();
 			controller.setDialogStage(dialogStage);
-			controller.setMainApp(mainApp);
 			controller.setData(ltTree);
 			dialogStage.setResizable(false);
 			dialogStage.showAndWait();
@@ -1492,7 +1496,6 @@ public class RootLayoutController implements Initializable {
 
 			BackgroundAndLineParametersController controller = loader.getController();
 			controller.setDialogStage(dialogStage);
-			controller.setMainApp(mainApp);
 			controller.setData(ltTree);
 			dialogStage.setResizable(false);
 			dialogStage.showAndWait();
@@ -1577,10 +1580,10 @@ public class RootLayoutController implements Initializable {
 	}
 
 	void initKeyboardHandler() {
-		String os = System.getProperty("os.name");
-		if (os.toLowerCase().contains("windows")) {
+		sOperatingSystem = System.getProperty("os.name");
+		if (sOperatingSystem.toLowerCase().contains("windows")) {
 			keyboardHandler = winHandler;
-		} else if (os.toLowerCase().contains("mac")) {
+		} else if (sOperatingSystem.toLowerCase().contains("mac")) {
 			keyboardHandler = macHandler;
 		} else {
 			keyboardHandler = linuxHandler;
