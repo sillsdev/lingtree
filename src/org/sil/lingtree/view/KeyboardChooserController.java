@@ -7,19 +7,10 @@
 package org.sil.lingtree.view;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
-import java.util.function.UnaryOperator;
 
-
-
-
-
-import org.sil.lingtree.MainApp;
 import org.sil.lingtree.model.Keyboard;
-import org.sil.lingtree.model.LexicalKeyboard;
 import org.sil.lingtree.model.LingTreeTree;
 import org.sil.utility.service.keyboards.KeyboardHandler;
 import org.sil.utility.service.keyboards.KeyboardInfo;
@@ -27,18 +18,12 @@ import org.sil.utility.service.keyboards.LinuxKeyboardHandler;
 import org.sil.utility.service.keyboards.MacOSXKeyboardHandler;
 import org.sil.utility.service.keyboards.WindowsKeyboardHandler;
 
-
-
-
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
@@ -76,9 +61,7 @@ public class KeyboardChooserController implements Initializable {
 	
 	Stage dialogStage;
 	private boolean okClicked = false;
-	private MainApp mainApp;
 	private LingTreeTree ltTree;
-	private UnaryOperator<TextFormatter.Change> filter;
 	KeyboardHandler keyboardHandler = new KeyboardHandler();
 	LinuxKeyboardHandler linuxHandler = new LinuxKeyboardHandler();
 	MacOSXKeyboardHandler macHandler = new MacOSXKeyboardHandler();
@@ -220,36 +203,6 @@ public class KeyboardChooserController implements Initializable {
 	public boolean isOkClicked() {
 		return okClicked;
 	}
-	
-	@FXML
-	private void handleSyntagmeme() {
-//		syntagmeme.getItems().addAll(activeKeyboards);
-//		syntagmeme.setItems(activeKeyboards);
-//		syntagmeme.setValue(activeKeyboards.get(0));
-//		System.out.println("handle syntagmeme");
-	}
-
-	@FXML
-	private void handleNonterminal() {
-//		nonterminal.getItems().addAll(activeKeyboards);
-	}
-
-	@FXML
-	private void handleLexical() {
-//		lexical.getItems().addAll(activeKeyboards);
-	}
-
-	@FXML
-	private void handleGloss() {
-//		gloss.getItems().addAll(activeKeyboards);
-	}
-
-	@FXML
-	private void handleEmptyElement() {
-//		emptyelement.getItems().addAll(activeKeyboards);
-	}
-
-
 
 	/**
 	 * Called when the user clicks OK.
@@ -273,18 +226,6 @@ public class KeyboardChooserController implements Initializable {
 		dialogStage.close();
 	}
 
-	public void setMainApp(MainApp mainApp) {
-		this.mainApp = mainApp;
-	}
-
-	/**
-	 * Called when the user clicks help.
-	 */
-	@FXML
-	private void handleHelp() {
-		// TODO: write custom (English) documentation for this, showing examples
-		//mainApp.showNotImplementedYet();
-	}
 	void initKeyboardHandler() {
 		String os = System.getProperty("os.name");
 		if (os.toLowerCase().contains("windows")) {
@@ -296,9 +237,6 @@ public class KeyboardChooserController implements Initializable {
 		}
 		activeKeyboards = FXCollections.observableArrayList(keyboardHandler.getAvailableKeyboards());
 		numberOfKeyboards = activeKeyboards.size();
-		for (KeyboardInfo ki : activeKeyboards) {
-			System.out.println("ki=" + ki);
-		}
 	}
 
 }

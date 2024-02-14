@@ -15,7 +15,6 @@
         <buttons>
           <Button defaultButton="true" mnemonicParsing="true" onAction="#handleOk" text="%label.ok" />
             <Button cancelButton="true" mnemonicParsing="true" onAction="#handleCancel" text="%label.cancel" />
-            <Button mnemonicParsing="true" onAction="#handleHelp" text="%label.help" />
         </buttons>
       </ButtonBar>
       <GridPane layoutX="14.0" layoutY="51.0" prefHeight="120.0" prefWidth="482.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="20.0">
@@ -37,11 +36,11 @@
             <Label text="%keyboarddialog.nonterminal" wrapText="true" GridPane.rowIndex="3" />
             <Label text="%keyboarddialog.emptyelement" wrapText="true" GridPane.rowIndex="4" />
             <Label text="%keyboarddialog.syntagmeme" wrapText="true" GridPane.rowIndex="5" />
-            <ComboBox fx:id="lexical" onAction="#handleLexical" prefWidth="209.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <ComboBox fx:id="gloss" onAction="#handleGloss" prefWidth="209.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <ComboBox fx:id="nonterminal" onAction="#handleNonterminal" prefWidth="209.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <ComboBox fx:id="emptyelement" onAction="#handleEmptyElement" prefWidth="209.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <ComboBox fx:id="syntagmeme" onAction="#handleSyntagmeme" prefWidth="209.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <ComboBox fx:id="lexical" prefWidth="209.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <ComboBox fx:id="gloss" prefWidth="209.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <ComboBox fx:id="nonterminal" prefWidth="209.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <ComboBox fx:id="emptyelement" prefWidth="209.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <ComboBox fx:id="syntagmeme" prefWidth="209.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
          </children>
       </GridPane>
    </children>
