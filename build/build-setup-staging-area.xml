@@ -13,7 +13,16 @@
 				<include name="controlsfx-8.40.12license.txt" />
 			</fileset>
 			<fileset dir="../LibJavaDev">
-				<include name="libjavadev-1.3.0.jar" />
+				<include name="libjavadev-1.6.0.jar" />
+			</fileset>
+			<fileset dir="../LibJavaDev/jna">
+				<include name="jna-*.jar" />
+				<include name="jna-license.txt" />
+				<include name="jna-platform-*.jar" />
+			</fileset>
+			<fileset dir="../LibJavaDev/json">
+				<include name="json-simple-*.jar" />
+				<include name="LICENSE-2..txt" />
 			</fileset>
 			<fileset dir="../Richtextfx">
 				<include name="flowless-0.6.jar"/>

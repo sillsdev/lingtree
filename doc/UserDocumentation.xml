@@ -20,9 +20,9 @@ type="tLingTree"
 ><emailAddress
 >lingtree_support@sil.org</emailAddress
 ><date
->February 6, 2024</date
+>February 14, 2024</date
 ><version
->Version 1.3.0</version
+>Version 1.4.0</version
 ><version
 >Copyright © 2002-2024 SIL International</version
 ><contents
@@ -2482,7 +2482,7 @@ width="450"
 ></chart
 ></example
 ><pc
->Each row has a description of the parameter and a box to key a numerical value. Each value is in terms of screen pixels.  The items are:</pc
+>Each row has a description of the parameter and a box to key a numerical value. Each value is in terms of screen pixels. The items are:</pc
 ><ul
 ><li
 ><indexedItem
@@ -2560,7 +2560,7 @@ width="450"
 ></chart
 ></example
 ><pc
->You can set the color of the tree background and the width and color of the lines.  The width is in terms of screen pixels.</pc
+>You can set the color of the tree background and the width and color of the lines. The width is in terms of screen pixels.</pc
 ></section2
 ><section2
 id="sSaveForNew"
@@ -2738,6 +2738,40 @@ type="tMenuItem"
 type="tMenuItem"
 >Delay to use when showing matching parentheses</object
 >. The default delay is 750 milliseconds (i.e., three quarters of a second). Depending on your typing speed, you may want to change this value. Use this menu item to change the delay value to be shorter or longer. The shortest allowed value is 125 milliseconds (i.e., one eighth of a second) and the longest value allowed is 4000 milliseconds (i.e., 4 seconds).</p
+></section2
+><section2
+id="sKeyboardsfifth"
+><secTitle
+>Set keyboards</secTitle
+><p
+><indexedItem
+term="iKeyboards"
+></indexedItem
+><indexedItem
+term="iWindows"
+></indexedItem
+>The fifth item under the main <object
+type="tMenuItem"
+>Settings</object
+> menu item is <object
+type="tMenuItem"
+>Set keyboards</object
+>. This is only available on Windows currently. When you select this menu item, it brings up a dialog that looks like what is in <exampleRef
+letter="xSetKeyboards"
+num="xSetKeyboards"
+></exampleRef
+>.</p
+><example
+num="xSetKeyboards"
+><chart
+><img
+src="resources/SetKeyboards.png"
+width="450"
+></img
+></chart
+></example
+><pc
+>You can control which keyboard is to be used with the various kinds of items in the tree description.  Click on the drop-down arrow to select one of the available keyboards on your computer.</pc
 ></section2
 ><section2
 id="sInterfaceLanguage"
@@ -3543,11 +3577,6 @@ see="iFlatTree"
 ><term
 >Flat tree</term
 ></indexTerm
-><indexTerm
-id="i"
-><term
-></term
-></indexTerm
 ></indexTerms
 ></indexTerm
 ><indexTerm
@@ -3567,6 +3596,11 @@ id="iInkscape"
 type="tTool"
 >Inkscape</object
 ></term
+></indexTerm
+><indexTerm
+id="iKeyboards"
+><term
+>Keyboards</term
 ></indexTerm
 ><indexTerm
 id="iLanguage"
@@ -3834,6 +3868,11 @@ see="iSpacing"
 id="iTriangle"
 ><term
 >Triangle line type</term
+></indexTerm
+><indexTerm
+id="iWindows"
+><term
+>Windows operating system</term
 ></indexTerm
 ><indexTerm
 id="iXnConvert"
