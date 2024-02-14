@@ -1,4 +1,4 @@
-// Copyright (c) 2018 SIL International 
+// Copyright (c) 2018-2024 SIL International 
 // This software is licensed under the LGPL, version 2.1 or later 
 // (http://www.gnu.org/licenses/lgpl-2.1.html) 
 /**
@@ -10,7 +10,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.function.UnaryOperator;
 
-import org.sil.lingtree.MainApp;
 import org.sil.lingtree.model.LingTreeTree;
 
 import javafx.fxml.FXML;
@@ -38,7 +37,6 @@ public class BackgroundAndLineParametersController implements Initializable {
 
 	Stage dialogStage;
 	private boolean okClicked = false;
-	private MainApp mainApp;
 	private LingTreeTree ltTree;
 	private UnaryOperator<TextFormatter.Change> filter;
 
@@ -108,18 +106,4 @@ public class BackgroundAndLineParametersController implements Initializable {
 	private void handleCancel() {
 		dialogStage.close();
 	}
-
-	public void setMainApp(MainApp mainApp) {
-		this.mainApp = mainApp;
-	}
-
-	/**
-	 * Called when the user clicks help.
-	 */
-	@FXML
-	private void handleHelp() {
-		// TODO: write custom (English) documentation for this, showing examples
-		//mainApp.showNotImplementedYet();
-	}
-
 }

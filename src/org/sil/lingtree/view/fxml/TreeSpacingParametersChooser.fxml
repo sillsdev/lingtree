@@ -16,7 +16,6 @@
         <buttons>
           <Button defaultButton="true" mnemonicParsing="true" onAction="#handleOk" text="%label.ok" />
             <Button cancelButton="true" mnemonicParsing="true" onAction="#handleCancel" text="%label.cancel" />
-            <Button mnemonicParsing="true" onAction="#handleHelp" text="%label.help" />
         </buttons>
       </ButtonBar>
       <GridPane layoutX="14.0" layoutY="51.0" prefHeight="120.0" prefWidth="482.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="20.0">
