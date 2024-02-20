@@ -23,11 +23,11 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.sil.lingtree.model.FontInfo;
-import org.sil.lingtree.model.Keyboard;
 import org.sil.lingtree.model.LingTreeTree;
 import org.sil.lingtree.Constants;
 import org.sil.lingtree.backendprovider.XMLBackEndProvider;
 import org.sil.lingtree.service.DatabaseMigrator;
+import org.sil.utility.service.keyboards.KeyboardInfo;
 import org.sil.utility.view.JavaFXThreadingRule;
 import org.sil.utility.StringUtilities;
 
@@ -114,7 +114,7 @@ public class DatabaseMigratorTest {
 		xmlBackEndProvider.loadTreeDataFromFile(databaseFile);
 		ltTree = xmlBackEndProvider.getLingTree();
 		assertEquals(4, ltTree.getVersion());
-		Keyboard kb = ltTree.getEmptyElementKeyboard();
+		KeyboardInfo kb = ltTree.getEmptyElementKeyboard();
 		checkKeyboardInfo(kb, "English", "en", 0);
 		kb = ltTree.getGlossKeyboard();
 		checkKeyboardInfo(kb, "English", "en", 0);
@@ -199,9 +199,9 @@ public class DatabaseMigratorTest {
 		assertEquals(fontStyle, font.getStyle());
 	}
 
-	private void checkKeyboardInfo(Keyboard kb, String description, String locale, int winID) {
+	private void checkKeyboardInfo(KeyboardInfo kb, String description, String locale, int winID) {
 		assertEquals(description, kb.getDescription());
-		assertEquals(locale, kb.getLocale());
+		assertEquals(locale, kb.getSLocale());
 		assertEquals(winID, kb.getWindowsLangID());
 	}
 

@@ -10,7 +10,6 @@ import java.net.URL;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import org.sil.lingtree.model.Keyboard;
 import org.sil.lingtree.model.LingTreeTree;
 import org.sil.utility.service.keyboards.KeyboardHandler;
 import org.sil.utility.service.keyboards.KeyboardInfo;
@@ -47,15 +46,10 @@ public class KeyboardChooserController implements Initializable {
 	@FXML
 	private ComboBox<KeyboardInfo> emptyelement = new ComboBox<KeyboardInfo>();
 
-	Keyboard lexicalKeyboard = new Keyboard();
 	KeyboardInfo lexicalKeyboardInfo = new KeyboardInfo(new Locale("en"), "English"); 
-	Keyboard glossKeyboard = new Keyboard();
 	KeyboardInfo glossKeyboardInfo = new KeyboardInfo(new Locale("en"), "English"); 
-	Keyboard nonTerminalKeyboard = new Keyboard();
 	KeyboardInfo nonTerminalKeyboardInfo = new KeyboardInfo(new Locale("en"), "English"); 
-	Keyboard emptyElementKeyboard = new Keyboard();
 	KeyboardInfo emptyElementKeyboardInfo = new KeyboardInfo(new Locale("en"), "English"); 
-	Keyboard syntagmemeKeyboard = new Keyboard();
 	KeyboardInfo syntagmemeKeyboardInfo = new KeyboardInfo(new Locale("en"), "English"); 
 	private Text keyboardText = new Text();
 	
@@ -90,7 +84,6 @@ public class KeyboardChooserController implements Initializable {
 		lexical.valueProperty().addListener((observable, oldValue, newValue) -> {			
 			keyboardText.setText(newValue.getDescription());
 			lexicalKeyboardInfo = newValue;
-			lexicalKeyboard = new Keyboard(newValue);
 		});
 
 		gloss.setItems(activeKeyboards);
@@ -107,7 +100,6 @@ public class KeyboardChooserController implements Initializable {
 		gloss.valueProperty().addListener((observable, oldValue, newValue) -> {			
 			keyboardText.setText(newValue.getDescription());
 			glossKeyboardInfo = newValue;
-			glossKeyboard = new Keyboard(newValue);
 		});
 
 		nonterminal.setItems(activeKeyboards);
@@ -124,7 +116,6 @@ public class KeyboardChooserController implements Initializable {
 		nonterminal.valueProperty().addListener((observable, oldValue, newValue) -> {			
 			keyboardText.setText(newValue.getDescription());
 			nonTerminalKeyboardInfo = newValue;
-			nonTerminalKeyboard = new Keyboard(newValue);
 		});
 
 		emptyelement.setItems(activeKeyboards);
@@ -141,7 +132,6 @@ public class KeyboardChooserController implements Initializable {
 		emptyelement.valueProperty().addListener((observable, oldValue, newValue) -> {			
 			keyboardText.setText(newValue.getDescription());
 			emptyElementKeyboardInfo = newValue;
-			emptyElementKeyboard = new Keyboard(newValue);
 		});
 
 		syntagmeme.setItems(activeKeyboards);
@@ -158,7 +148,6 @@ public class KeyboardChooserController implements Initializable {
 		syntagmeme.valueProperty().addListener((observable, oldValue, newValue) -> {			
 			keyboardText.setText(newValue.getDescription());
 			syntagmemeKeyboardInfo = newValue;
-			syntagmemeKeyboard = new Keyboard(newValue);
 		});
 	}
 
@@ -173,26 +162,16 @@ public class KeyboardChooserController implements Initializable {
 
 	public void setData(LingTreeTree ltTree) {
 		this.ltTree = ltTree;
-		lexicalKeyboard = ltTree.getLexicalKeyboard();
-		KeyboardInfo ki = new KeyboardInfo(new Locale(lexicalKeyboard.getLocale()),
-				lexicalKeyboard.getDescription(), lexicalKeyboard.getWindowsLangID());
-		lexical.setValue(ki);
-		glossKeyboard = ltTree.getGlossKeyboard();
-		ki = new KeyboardInfo(new Locale(glossKeyboard.getLocale()),
-				glossKeyboard.getDescription(), glossKeyboard.getWindowsLangID());
-		gloss.setValue(ki);
-		nonTerminalKeyboard = ltTree.getNonTerminalKeyboard();
-		ki = new KeyboardInfo(new Locale(nonTerminalKeyboard.getLocale()),
-				nonTerminalKeyboard.getDescription(), nonTerminalKeyboard.getWindowsLangID());
-		nonterminal.setValue(ki);
-		emptyElementKeyboard = ltTree.getEmptyElementKeyboard();
-		ki = new KeyboardInfo(new Locale(emptyElementKeyboard.getLocale()),
-				emptyElementKeyboard.getDescription(), emptyElementKeyboard.getWindowsLangID());
-		emptyelement.setValue(ki);
-		syntagmemeKeyboard = ltTree.getSyntagmemeKeyboard();
-		ki = new KeyboardInfo(new Locale(syntagmemeKeyboard.getLocale()),
-				syntagmemeKeyboard.getDescription(), syntagmemeKeyboard.getWindowsLangID());
-		syntagmeme.setValue(ki);
+		lexicalKeyboardInfo = ltTree.getLexicalKeyboard();
+		lexical.setValue(lexicalKeyboardInfo);
+		glossKeyboardInfo = ltTree.getGlossKeyboard();
+		gloss.setValue(glossKeyboardInfo);
+		nonTerminalKeyboardInfo = ltTree.getNonTerminalKeyboard();
+		nonterminal.setValue(nonTerminalKeyboardInfo);
+		emptyElementKeyboardInfo = ltTree.getEmptyElementKeyboard();
+		emptyelement.setValue(emptyElementKeyboardInfo);
+		syntagmemeKeyboardInfo = ltTree.getSyntagmemeKeyboard();
+		syntagmeme.setValue(syntagmemeKeyboardInfo);
 	}
 
 	/**
@@ -209,11 +188,11 @@ public class KeyboardChooserController implements Initializable {
 	 */
 	@FXML
 	private void handleOk() {
-		ltTree.setLexicalKeyboard(lexicalKeyboard);
-		ltTree.setGlossKeyboard(glossKeyboard);
-		ltTree.setNonTerminalKeyboard(nonTerminalKeyboard);
-		ltTree.setEmptyElementKeyboard(emptyElementKeyboard);
-		ltTree.setSyntagmemeKeyboard(syntagmemeKeyboard);
+		ltTree.setLexicalKeyboard(lexicalKeyboardInfo);
+		ltTree.setGlossKeyboard(glossKeyboardInfo);
+		ltTree.setNonTerminalKeyboard(nonTerminalKeyboardInfo);
+		ltTree.setEmptyElementKeyboard(emptyElementKeyboardInfo);
+		ltTree.setSyntagmemeKeyboard(syntagmemeKeyboardInfo);
 		okClicked = true;
 		dialogStage.close();
 	}

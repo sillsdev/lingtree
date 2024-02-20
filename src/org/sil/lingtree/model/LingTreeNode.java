@@ -13,15 +13,8 @@ import org.sil.lingtree.Constants;
 import org.sil.lingtree.model.LingTreeNode;
 import org.sil.lingtree.model.NodeType;
 
-import com.sun.javafx.geom.BaseBounds;
-import com.sun.javafx.geom.transform.BaseTransform;
-import com.sun.javafx.jmx.MXNodeAlgorithm;
-import com.sun.javafx.jmx.MXNodeAlgorithmContext;
-import com.sun.javafx.sg.prism.NGNode;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.Node;
 import javafx.scene.text.Text;
 
 public class LingTreeNode {

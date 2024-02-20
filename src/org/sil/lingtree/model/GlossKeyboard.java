@@ -6,17 +6,21 @@
 
 package org.sil.lingtree.model;
 
+import java.util.Locale;
+
+import org.sil.utility.service.keyboards.KeyboardInfo;
+
 /**
  * @author Andy Black
- * Singleton pattern for font information for gloss keyboard
+ * Singleton pattern for keyboard information for gloss keyboard
  *
  */
-public class GlossKeyboard extends Keyboard {
+public class GlossKeyboard extends KeyboardInfo {
 
     private static GlossKeyboard instance;
     
     private GlossKeyboard(){
-    	super("en", "English", 0);
+    	super(new Locale("en"), "English", 0);
     }
     
     public static GlossKeyboard getInstance(){

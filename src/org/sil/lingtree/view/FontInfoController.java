@@ -1,4 +1,4 @@
-// Copyright (c) 2016 SIL International 
+// Copyright (c) 2016-2024 SIL International 
 // This software is licensed under the LGPL, version 2.1 or later 
 // (http://www.gnu.org/licenses/lgpl-2.1.html) 
 /**
@@ -7,19 +7,13 @@
 
 package org.sil.lingtree.view;
 
-import javax.xml.bind.annotation.*;
-
 import org.controlsfx.dialog.FontSelectorDialog;
 import org.sil.lingtree.model.FontInfo;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.ColorPicker;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontPosture;
-import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 /**

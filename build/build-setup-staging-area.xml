@@ -13,7 +13,7 @@
 				<include name="controlsfx-8.40.12license.txt" />
 			</fileset>
 			<fileset dir="../LibJavaDev">
-				<include name="libjavadev-1.6.0.jar" />
+				<include name="libjavadev-1.6.1.jar" />
 			</fileset>
 			<fileset dir="../LibJavaDev/jna">
 				<include name="jna-*.jar" />

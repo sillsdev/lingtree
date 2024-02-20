@@ -17,7 +17,6 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -189,6 +188,7 @@ public class DatabaseMigrator {
 		String sContents = "";
 		Stream<String> lines = Files.lines(file.toPath());
 		sContents = lines.collect(Collectors.joining(System.lineSeparator()));
+		lines.close();
 		int descBegin = sContents.indexOf("<Description>") + 13;
 		int descEnd = sContents.indexOf("</Description>");
 		String description = sContents.substring(descBegin, descEnd);

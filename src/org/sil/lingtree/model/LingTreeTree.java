@@ -16,6 +16,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.sil.lingtree.Constants;
 import org.sil.utility.StringUtilities;
+import org.sil.utility.service.keyboards.KeyboardInfo;
 
 @XmlRootElement(name = "lingTreeTree")
 public class LingTreeTree {
@@ -43,11 +44,11 @@ public class LingTreeTree {
 	FontInfo abbreviationFontInfo;
 	FontInfo emptyElementFontInfo;
 
-	Keyboard lexicalKeyboard;
-	Keyboard glossKeyboard;
-	Keyboard nonTerminalKeyboard;
-	Keyboard emptyElementKeyboard;
-	Keyboard syntagmemeKeyboard;
+	KeyboardInfo lexicalKeyboard;
+	KeyboardInfo glossKeyboard;
+	KeyboardInfo nonTerminalKeyboard;
+	KeyboardInfo emptyElementKeyboard;
+	KeyboardInfo syntagmemeKeyboard;
 
 	Color backgroundColor;
 	Color lineColor;
@@ -327,47 +328,47 @@ public class LingTreeTree {
 	}
 
 	@XmlElement(name = "lexicalKeyboard")
-	public Keyboard getLexicalKeyboard() {
+	public KeyboardInfo getLexicalKeyboard() {
 		return lexicalKeyboard;
 	}
 
-	public void setLexicalKeyboard(Keyboard lexicalKeyboard) {
+	public void setLexicalKeyboard(KeyboardInfo lexicalKeyboard) {
 		this.lexicalKeyboard = lexicalKeyboard;
 	}
 
 	@XmlElement(name = "glossKeyboard")
-	public Keyboard getGlossKeyboard() {
+	public KeyboardInfo getGlossKeyboard() {
 		return glossKeyboard;
 	}
 
-	public void setGlossKeyboard(Keyboard glossKeyboard) {
+	public void setGlossKeyboard(KeyboardInfo glossKeyboard) {
 		this.glossKeyboard = glossKeyboard;
 	}
 
 	@XmlElement(name = "nonTerminalKeyboard")
-	public Keyboard getNonTerminalKeyboard() {
+	public KeyboardInfo getNonTerminalKeyboard() {
 		return nonTerminalKeyboard;
 	}
 
-	public void setNonTerminalKeyboard(Keyboard nonTerminalKeyboard) {
+	public void setNonTerminalKeyboard(KeyboardInfo nonTerminalKeyboard) {
 		this.nonTerminalKeyboard = nonTerminalKeyboard;
 	}
 
 	@XmlElement(name = "emptyElementKeyboard")
-	public Keyboard getEmptyElementKeyboard() {
+	public KeyboardInfo getEmptyElementKeyboard() {
 		return emptyElementKeyboard;
 	}
 
-	public void setEmptyElementKeyboard(Keyboard emptyElementKeyboard) {
+	public void setEmptyElementKeyboard(KeyboardInfo emptyElementKeyboard) {
 		this.emptyElementKeyboard = emptyElementKeyboard;
 	}
 
 	@XmlElement(name = "synTagmemeKeyboard")
-	public Keyboard getSyntagmemeKeyboard() {
+	public KeyboardInfo getSyntagmemeKeyboard() {
 		return syntagmemeKeyboard;
 	}
 
-	public void setSyntagmemeKeyboard(Keyboard syntagmemeKeyboard) {
+	public void setSyntagmemeKeyboard(KeyboardInfo syntagmemeKeyboard) {
 		this.syntagmemeKeyboard = syntagmemeKeyboard;
 	}
 

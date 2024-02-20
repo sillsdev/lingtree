@@ -30,7 +30,6 @@ import org.sil.lingtree.model.AbbreviationFontInfo;
 import org.sil.lingtree.model.EmptyElementFontInfo;
 import org.sil.lingtree.model.FontInfo;
 import org.sil.lingtree.model.GlossFontInfo;
-import org.sil.lingtree.model.Keyboard;
 import org.sil.lingtree.model.LexFontInfo;
 import org.sil.lingtree.model.LingTreeTree;
 import org.sil.lingtree.model.NodeType;
@@ -1592,22 +1591,21 @@ public class RootLayoutController implements Initializable {
 		numberOfKeyboards = activeKeyboards.size();
 	}
 
-	void tryToChangeKeyboardTo(Keyboard kb) {
+	void tryToChangeKeyboardTo(KeyboardInfo ki) {
 		if (keyboardHandler == winHandler) {
 			if (activeKeyboards.size() == 0) {
 				return;  // nothing to do
 			}
-			KeyboardInfo ki;
-			if (kb.getWindowsLangID() == 0) {
+			if (ki.getWindowsLangID() == 0) {
 				// always use the first keyboard if the ID is zero
 				ki = activeKeyboards.get(0);
 			} else {
-				ki = new KeyboardInfo(new Locale(kb.getLocale()),
-						kb.getDescription(), kb.getWindowsLangID());
+				ki = new KeyboardInfo(ki.getLocale(),
+						ki.getDescription(), ki.getWindowsLangID());
 			}
 			boolean result = winHandler.changeToKeyboard(ki, mainApp.getPrimaryStage());
 			if (!result) {
-				System.out.println("Could not change keyboard to " + kb.getDescription() + "; id=" + kb.getWindowsLangID());
+				System.out.println("Could not change keyboard to " + ki.getDescription() + "; id=" + ki.getWindowsLangID());
 			}
 		}
 	}

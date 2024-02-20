@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2020 SIL International
+ * Copyright (c) 2016-2024 SIL International
  * This software is licensed under the LGPL, version 2.1 or later
  * (http://www.gnu.org/licenses/lgpl-2.1.html)
  */
@@ -8,11 +8,9 @@ package org.sil.lingtree.service;
 
 import java.util.HashMap;
 
-import javafx.scene.Parent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
-import javafx.stage.Screen;
 
 import org.sil.lingtree.Constants;
 import org.sil.lingtree.model.FontInfo;
@@ -436,18 +434,4 @@ public class TreeDrawer {
 		// bottom part of line
 		createLineAsSVG(dLeftmostX, dBottomY, dRightmostX, dBottomY, sb);
 	}
-
-	private double pixelsToInches(double pixels) {
-		double dpi = Screen.getPrimary().getDpi();
-		return pixels * dpi;
-	}
-
-	private double pixelsToMM(double pixels) {
-		double dpi = Screen.getPrimary().getDpi();
-		// int res = Toolkit.getDefaultToolkit().getScreenResolution();
-		// NB: Toolkit is awt. We want FX
-		double inches = pixels / dpi;
-		return inches * 25.4; // there are 2.54 cm per inch so 25.4 mm per inch
-	}
-
 }

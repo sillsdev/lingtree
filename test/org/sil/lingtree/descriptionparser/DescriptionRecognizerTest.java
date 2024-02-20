@@ -10,7 +10,6 @@ package org.sil.lingtree.descriptionparser;
 
 import static org.junit.Assert.*;
 
-import org.antlr.v4.runtime.ANTLRErrorListener;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.junit.After;

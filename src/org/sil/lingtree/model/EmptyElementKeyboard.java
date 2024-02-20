@@ -6,12 +6,14 @@
 
 package org.sil.lingtree.model;
 
+import org.sil.utility.service.keyboards.KeyboardInfo;
+
 /**
  * @author Andy Black
- * Singleton pattern for font information for gloss keyboard
+ * Singleton pattern for keyboard information for gloss keyboard
  *
  */
-public class EmptyElementKeyboard extends Keyboard {
+public class EmptyElementKeyboard extends KeyboardInfo {
 
     private static EmptyElementKeyboard instance;
     
