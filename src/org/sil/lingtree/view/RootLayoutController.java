@@ -42,11 +42,7 @@ import org.sil.lingtree.Constants;
 import org.sil.lingtree.ApplicationPreferences;
 import org.sil.utility.ClipboardUtilities;
 import org.sil.utility.StringUtilities;
-import org.sil.utility.service.keyboards.KeyboardHandler;
-import org.sil.utility.service.keyboards.KeyboardInfo;
-import org.sil.utility.service.keyboards.LinuxKeyboardHandler;
-import org.sil.utility.service.keyboards.MacOSXKeyboardHandler;
-import org.sil.utility.service.keyboards.WindowsKeyboardHandler;
+import org.sil.utility.service.keyboards.KeyboardChanger;
 import org.sil.utility.view.ControllerUtilities;
 import org.sil.utility.view.ObservableResourceFactory;
 import org.sil.utility.view.FilteringEventDispatcher;
@@ -93,12 +89,7 @@ public class RootLayoutController implements Initializable {
 
 	MainApp mainApp;
 	private Locale currentLocale;
-	KeyboardHandler keyboardHandler = new KeyboardHandler();
-	LinuxKeyboardHandler linuxHandler = new LinuxKeyboardHandler();
-	MacOSXKeyboardHandler macHandler = new MacOSXKeyboardHandler();
-	WindowsKeyboardHandler winHandler = new WindowsKeyboardHandler();
-	List<KeyboardInfo> activeKeyboards = new ArrayList<KeyboardInfo>();
-	int numberOfKeyboards = 0;
+	KeyboardChanger keyboardChanger;
 	ResourceBundle bundle;
 	LingTreeTree ltTree;
 	String sDescription;
@@ -278,25 +269,26 @@ public class RootLayoutController implements Initializable {
 		initMenuItemsForLocalization();
 		statusBarKey.textProperty().bind(RESOURCE_FACTORY.getStringBinding("label.key"));
 
-		initKeyboardHandler();
+		keyboardChanger = KeyboardChanger.getInstance();
+		keyboardChanger.initKeyboardHandler();
 		treeDescription.caretPositionProperty().addListener((observable, oldValue, newValue) -> {
 			String sPrevious = treeDescription.getText(0, newValue);
 			NodeType ntype = NodeTypeDeterminer.determineNodeTypeFrom(sPrevious);
 			switch (ntype) {
 			case NonTerminal:
-				tryToChangeKeyboardTo(ltTree.getNonTerminalKeyboard());
+				keyboardChanger.tryToChangeKeyboardTo(ltTree.getNonTerminalKeyboard());
 				break;
 			case Lex:
-				tryToChangeKeyboardTo(ltTree.getLexicalKeyboard());
+				keyboardChanger.tryToChangeKeyboardTo(ltTree.getLexicalKeyboard());
 				break;
 			case Gloss:
-				tryToChangeKeyboardTo(ltTree.getGlossKeyboard());
+				keyboardChanger.tryToChangeKeyboardTo(ltTree.getGlossKeyboard());
 				break;
 			case EmptyElement:
-				tryToChangeKeyboardTo(ltTree.getEmptyElementKeyboard());
+				keyboardChanger.tryToChangeKeyboardTo(ltTree.getEmptyElementKeyboard());
 				break;
 			case Syntagmeme:
-				tryToChangeKeyboardTo(ltTree.getSyntagmemeKeyboard());
+				keyboardChanger.tryToChangeKeyboardTo(ltTree.getSyntagmemeKeyboard());
 				break;
 			}
 		});
@@ -614,6 +606,7 @@ public class RootLayoutController implements Initializable {
 
 	public void setMainApp(MainApp mainApp) {
 		this.mainApp = mainApp;
+		keyboardChanger.setStage(mainApp.getPrimaryStage());
 		sOperatingSystem = mainApp.getOperatingSystem();
 		if (sOperatingSystem.toLowerCase().contains("windows")) {
 			menuItemKeyboards.setDisable(false);
@@ -1576,37 +1569,5 @@ public class RootLayoutController implements Initializable {
 			return true;
 		}
 		return false;
-	}
-
-	void initKeyboardHandler() {
-		sOperatingSystem = System.getProperty("os.name");
-		if (sOperatingSystem.toLowerCase().contains("windows")) {
-			keyboardHandler = winHandler;
-		} else if (sOperatingSystem.toLowerCase().contains("mac")) {
-			keyboardHandler = macHandler;
-		} else {
-			keyboardHandler = linuxHandler;
-		}
-		activeKeyboards = keyboardHandler.getAvailableKeyboards();
-		numberOfKeyboards = activeKeyboards.size();
-	}
-
-	void tryToChangeKeyboardTo(KeyboardInfo ki) {
-		if (keyboardHandler == winHandler) {
-			if (activeKeyboards.size() == 0) {
-				return;  // nothing to do
-			}
-			if (ki.getWindowsLangID() == 0) {
-				// always use the first keyboard if the ID is zero
-				ki = activeKeyboards.get(0);
-			} else {
-				ki = new KeyboardInfo(ki.getLocale(),
-						ki.getDescription(), ki.getWindowsLangID());
-			}
-			boolean result = winHandler.changeToKeyboard(ki, mainApp.getPrimaryStage());
-			if (!result) {
-				System.out.println("Could not change keyboard to " + ki.getDescription() + "; id=" + ki.getWindowsLangID());
-			}
-		}
 	}
 }
