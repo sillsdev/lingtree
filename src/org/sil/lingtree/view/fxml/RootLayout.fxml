@@ -65,6 +65,8 @@
 					<MenuItem fx:id="menuItemAbbreviationFont" mnemonicParsing="true" onAction="#handleAbbreviationFontInfo" text="%menu.abbreviationfont" />
 					<MenuItem fx:id="menuItemEmptyElementFont" mnemonicParsing="true" onAction="#handleEmptyElementFontInfo" text="%menu.emptyelementfont" />
 					<SeparatorMenuItem />
+					<MenuItem fx:id="menuItemKeyboards" mnemonicParsing="true" onAction="#handleKeyboards" text="%menu.keyboards" />
+					<SeparatorMenuItem />
 					<MenuItem fx:id="menuItemTreeSpacingParameter" mnemonicParsing="true" onAction="#handleTreeSpacingParameters" text="%menu.treespacingparameters" />
 					<MenuItem fx:id="menuItemBackgroundAndLineParameters" mnemonicParsing="true" onAction="#handleBackgroundAndLineParameters" text="%menu.backgroundandlineparameters" />
 					<SeparatorMenuItem />
@@ -77,8 +79,7 @@
 					<CheckMenuItem fx:id="menuItemDrawAsType" mnemonicParsing="true" onAction="#handleMenuDrawAsType" text="%menu.drawastype" />
 					<CheckMenuItem fx:id="menuItemShowMatchingParenWithArrowKeys" mnemonicParsing="true" onAction="#handleMenuShowMatchingParenWithArrowKeys" text="%menu.showmatchingparenwitharrowkeys" />
 					<MenuItem fx:id="menuItemShowMatchingParenDelay" mnemonicParsing="true" onAction="#handleMenuShowMatchingParenDelay" text="%menu.showmatchingparendelay" />
-					<SeparatorMenuItem />
-					<MenuItem fx:id="menuItemKeyboards" mnemonicParsing="true" onAction="#handleKeyboards" text="%menu.keyboards" />
+					<CheckMenuItem fx:id="menuItemShowFullFilePath" mnemonicParsing="true" onAction="#handleMenuShowFullFilePath" text="%menu.showfullfilepath" />
 					<SeparatorMenuItem />
 					<MenuItem fx:id="menuItemChangeInterfaceLanguage" mnemonicParsing="true" onAction="#handleChangeInterfaceLanguage" text="%menu.changeinterfacelanguage" />
 				  </items>

@@ -20,7 +20,7 @@ type="tLingTree"
 ><emailAddress
 >lingtree_support@sil.org</emailAddress
 ><date
->February 14, 2024</date
+>February 21, 2024</date
 ><version
 >Version 1.4.0</version
 ><version
@@ -59,7 +59,18 @@ width="450"
 ><indexedItem
 term="iFileName"
 ></indexedItem
->The file name where the tree information is stored is shown in the upper left part of the window. You key the description in the top pane, process the description, and then the tree appears in the bottom pane. See section <sectionRef
+>The file name where the tree information is stored is shown in the upper left part of the window.<endnote
+id="nFileName"
+><p
+>You can have <object
+type="tLingTree"
+></object
+> show the full path of the file name.  See section <sectionRef
+sec="sShowFullFilePath"
+></sectionRef
+>.</p
+></endnote
+> You key the description in the top pane, process the description, and then the tree appears in the bottom pane. See section <sectionRef
 sec="sEditDescription"
 ></sectionRef
 > for information on keying a tree description and processing a tree.</p
@@ -2454,6 +2465,40 @@ href="https://www.w3schools.com/cssref/css_colors.asp"
 >When you click on the main dialog's OK button, the tree description and tree diagram will reflect the new font and color information.</p
 ></section2
 ><section2
+id="sKeyboards"
+><secTitle
+>Set keyboards</secTitle
+><p
+><indexedItem
+term="iKeyboards"
+></indexedItem
+><indexedItem
+term="iWindows"
+></indexedItem
+>The next item under the main <object
+type="tMenuItem"
+>Format</object
+> menu item is <object
+type="tMenuItem"
+>Set keyboards</object
+>. This is only available on Windows currently. When you select this menu item, it brings up a dialog that looks like what is in <exampleRef
+letter="xSetKeyboards"
+num="xSetKeyboards"
+></exampleRef
+>.</p
+><example
+num="xSetKeyboards"
+><chart
+><img
+src="resources/SetKeyboards.png"
+width="450"
+></img
+></chart
+></example
+><pc
+>You can control which keyboard is to be used with the various kinds of items in the tree description. Click on the drop-down arrow to select one of the available keyboards on your computer.</pc
+></section2
+><section2
 id="sTreeSpacing"
 ><secTitle
 >Tree spacing parameters</secTitle
@@ -2740,38 +2785,24 @@ type="tMenuItem"
 >. The default delay is 750 milliseconds (i.e., three quarters of a second). Depending on your typing speed, you may want to change this value. Use this menu item to change the delay value to be shorter or longer. The shortest allowed value is 125 milliseconds (i.e., one eighth of a second) and the longest value allowed is 4000 milliseconds (i.e., 4 seconds).</p
 ></section2
 ><section2
-id="sKeyboardsfifth"
+id="sShowFullFilePath"
 ><secTitle
->Set keyboards</secTitle
+>Show full file path</secTitle
 ><p
 ><indexedItem
-term="iKeyboards"
-></indexedItem
-><indexedItem
-term="iWindows"
+main="yes"
+term="iFileName"
 ></indexedItem
 >The fifth item under the main <object
 type="tMenuItem"
 >Settings</object
 > menu item is <object
 type="tMenuItem"
->Set keyboards</object
->. This is only available on Windows currently. When you select this menu item, it brings up a dialog that looks like what is in <exampleRef
-letter="xSetKeyboards"
-num="xSetKeyboards"
-></exampleRef
->.</p
-><example
-num="xSetKeyboards"
-><chart
-><img
-src="resources/SetKeyboards.png"
-width="450"
-></img
-></chart
-></example
-><pc
->You can control which keyboard is to be used with the various kinds of items in the tree description.  Click on the drop-down arrow to select one of the available keyboards on your computer.</pc
+>Show full file path</object
+>. When this menu item has a check mark before it, the file name at the top of the <object
+type="tLingTree"
+></object
+> window will include the full file location information.  When it does not have a check mark before it, just the file name will appear at the top.</p
 ></section2
 ><section2
 id="sInterfaceLanguage"
@@ -3312,7 +3343,7 @@ href="https://software.sil.org/lingtree/"
 >In this index, when more than one page number is given, the one in bold indicates the main place to look.</p
 ><p
 > <comment
->Add vertical space between the paragraph above and the first row of the index.</comment
+>Adds vertical space between the paragraph above and the first row of the index.</comment
 ></p
 ></index
 ></backMatter

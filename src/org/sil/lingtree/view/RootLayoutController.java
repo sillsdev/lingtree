@@ -227,6 +227,8 @@ public class RootLayoutController implements Initializable {
 	@FXML
 	private MenuItem menuItemShowMatchingParenDelay;
 	@FXML
+	private CheckMenuItem menuItemShowFullFilePath;
+	@FXML
 	private MenuItem menuItemKeyboards;
 	@FXML
 	private MenuItem menuItemChangeInterfaceLanguage;
@@ -533,6 +535,8 @@ public class RootLayoutController implements Initializable {
 				RESOURCE_FACTORY.getStringBinding("menu.showmatchingparenwitharrowkeys"));
 		menuItemShowMatchingParenDelay.textProperty().bind(
 				RESOURCE_FACTORY.getStringBinding("menu.showmatchingparendelay"));
+		menuItemShowFullFilePath.textProperty().bind(
+				RESOURCE_FACTORY.getStringBinding("menu.showfullfilepath"));
 		menuItemKeyboards.textProperty().bind(
 				RESOURCE_FACTORY.getStringBinding("menu.keyboards"));
 		menuItemChangeInterfaceLanguage.textProperty().bind(
@@ -615,6 +619,7 @@ public class RootLayoutController implements Initializable {
 		}
 		this.applicationPreferences = mainApp.getApplicationPreferences();
 		menuItemDrawAsType.setSelected(applicationPreferences.getDrawAsType());
+		menuItemShowFullFilePath.setSelected(applicationPreferences.getShowFullFilePath());
 		menuItemShowMatchingParenWithArrowKeys.setSelected(applicationPreferences
 				.getShowMatchingParenWithArrowKeys());
 		toggleButtonShowMatchingParenWithArrowKeys = setToggleButtonStyle(
@@ -668,6 +673,10 @@ public class RootLayoutController implements Initializable {
 
 	public boolean isDirty() {
 		return fIsDirty;
+	}
+
+	public boolean isShowFullFilePath() {
+		return menuItemShowFullFilePath.isSelected();
 	}
 
 	private void markAsClean() {
@@ -1076,6 +1085,13 @@ public class RootLayoutController implements Initializable {
 						.isSelected());
 		treeDescription.requestFocus();
 	}
+
+	@FXML
+	private void handleMenuShowFullFilePath() {
+		applicationPreferences.setShowFullFilePath(menuItemShowFullFilePath.isSelected());
+		mainApp.updateStageTitle(mainApp.getTreeDataFile());
+	}
+
 
 	/**
 	 * Closes the application.

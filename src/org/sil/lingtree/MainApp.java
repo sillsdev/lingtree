@@ -323,7 +323,10 @@ public class MainApp extends Application implements MainAppUtilities {
 
 	public void updateStageTitle(File file) {
 		if (file != null) {
-			String sFileNameToUse = file.getAbsolutePath();
+			String sFileNameToUse = file.getName();
+			if (controller.isShowFullFilePath()) {
+				sFileNameToUse = file.getAbsolutePath();
+			}
 			if (controller.isDirty()) {
 				sFileNameToUse += "*";
 			}

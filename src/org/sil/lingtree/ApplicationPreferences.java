@@ -10,6 +10,7 @@ import org.sil.lingtree.model.ColorXmlAdaptor;
 import org.sil.lingtree.model.FontInfo;
 import org.sil.lingtree.model.LingTreeTree;
 import org.sil.utility.*;
+import org.sil.utility.service.keyboards.KeyboardInfo;
 
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -22,6 +23,7 @@ public class ApplicationPreferences extends ApplicationPreferencesUtilities {
 	static final String DRAW_AS_TYPE = "drawastype";
 	static final String SHOW_MATCHING_PAREN_DELAY = "showmatchingparendelay";
 	static final String SHOW_MATCHING_PAREN_WITH_ARROW_KEYS = "showmatchingparenwitharrowkeys";
+	static final String SHOW_FULL_FILE_PATH = "showfullfilepath";
 	static final String TREE_DESCRIPTION_FONT_SIZE = "treedescriptionfontsize";
 	// Not trying to be anglo-centric, but we have to start with something...
 	static final String DEFAULT_LOCALE_LANGUAGE = "en";
@@ -46,10 +48,16 @@ public class ApplicationPreferences extends ApplicationPreferencesUtilities {
 	static final String EMPTY_ELEMENT_FONT_FAMILY = "emptyElementFontFamily";
 	static final String EMPTY_ELEMENT_FONT_SIZE = "emptyElementFontSize";
 	static final String EMPTY_ELEMENT_FONT_TYPE = "emptyElementFontType";
+	static final String EMPTY_ELEMENT_KEYBOARD_LOCALE = "emptyElementKeyboardLocale";
+	static final String EMPTY_ELEMENT_KEYBOARD_DESCRIPTION = "emptyElementKeyboardDescription";
+	static final String EMPTY_ELEMENT_KEYBOARD_WINDOWS_LANG_ID = "emptyElementKeyboardWindowsLangId";
 	static final String GLOSS_FONT_COLOR = "glossFontColor";
 	static final String GLOSS_FONT_FAMILY = "glossFontFamily";
 	static final String GLOSS_FONT_SIZE = "glossFontSize";
 	static final String GLOSS_FONT_TYPE = "glossFontType";
+	static final String GLOSS_KEYBOARD_LOCALE = "glossKeyboardLocale";
+	static final String GLOSS_KEYBOARD_DESCRIPTION = "glossKeyboardDescription";
+	static final String GLOSS_KEYBOARD_WINDOWS_LANG_ID = "glossKeyboardWindowsLangId";
 	static final String HORIZONTAL_GAP = "horizontalGap";
 	static final String HORIZONTAL_OFFSET = "horizontalOffset";
 	static final String INITIAL_X_COORDINATE = "initialXCoordinate";
@@ -60,15 +68,24 @@ public class ApplicationPreferences extends ApplicationPreferencesUtilities {
 	static final String LEXICAL_FONT_FAMILY = "lexicalFontFamily";
 	static final String LEXICAL_FONT_SIZE = "lexicalFontSize";
 	static final String LEXICAL_FONT_TYPE = "lexicalFontType";
+	static final String LEXICAL_KEYBOARD_LOCALE = "lexicalKeyboardLocale";
+	static final String LEXICAL_KEYBOARD_DESCRIPTION = "lexicalKeyboardDescription";
+	static final String LEXICAL_KEYBOARD_WINDOWS_LANG_ID = "lexicalKeyboardWindowsLangId";
 	static final String LINE_COLOR = "lineColor";
 	static final String LINE_WIDTH = "lineWidth";
 	static final String NON_TERMINAL_FONT_COLOR = "nonTerminalFontColor";
 	static final String NON_TERMINAL_FONT_FAMILY = "nonTerminalFontFamily";
 	static final String NON_TERMINAL_FONT_SIZE = "nonTerminalFontSize";
 	static final String NON_TERMINAL_FONT_TYPE = "nonTerminalFontType";
+	static final String NON_TERMINAL_KEYBOARD_LOCALE = "nonTerminalKeyboardLocale";
+	static final String NON_TERMINAL_KEYBOARD_DESCRIPTION = "nonTerminalKeyboardDescription";
+	static final String NON_TERMINAL_KEYBOARD_WINDOWS_LANG_ID = "nonTerminalKeyboardWindowsLangId";
 	static final String SAVE_AS_PNG = "saveAsPng";
 	static final String SAVE_AS_SVG = "saveAsSVG";
 	static final String SHOW_FLAT_VIEW = "showFlatView";
+	static final String SYNTAGMEME_KEYBOARD_LOCALE = "syntagmemeKeyboardLocale";
+	static final String SYNTAGMEME_KEYBOARD_DESCRIPTION = "syntagmemeKeyboardDescription";
+	static final String SYNTAGMEME_KEYBOARD_WINDOWS_LANG_ID = "syntagmemeKeyboardWindowsLangId";
 	static final String VERTICAL_GAP = "verticalGap";
 
 	Preferences prefs;
@@ -129,6 +146,14 @@ public class ApplicationPreferences extends ApplicationPreferencesUtilities {
 
 	public void setDrawAsType(boolean fDrawAsType) {
 		setPreferencesKey(DRAW_AS_TYPE, fDrawAsType);
+	}
+
+	public boolean getShowFullFilePath() {
+		return prefs.getBoolean(SHOW_FULL_FILE_PATH, false);
+	}
+
+	public void setShowFullFilePath(boolean fShowFullFilePath) {
+		setPreferencesKey(SHOW_FULL_FILE_PATH, fShowFullFilePath);
 	}
 
 	public double getShowMatchingParenDelay() {
@@ -219,8 +244,8 @@ public class ApplicationPreferences extends ApplicationPreferencesUtilities {
 		fontInfo = new FontInfo(prefs.get(GLOSS_FONT_FAMILY, sDefaultFamily),
 				prefs.getDouble(GLOSS_FONT_SIZE, 12), prefs.get(GLOSS_FONT_TYPE, sDefaultType));
 		fontInfo.setColor(Color.web(prefs.get(GLOSS_FONT_COLOR, "#008000")));
-
 		ltTree.setGlossFontInfo(fontInfo);
+
 		fontInfo = new FontInfo(prefs.get(LEXICAL_FONT_FAMILY, sDefaultFamily), prefs.getDouble(
 				LEXICAL_FONT_SIZE, 12), prefs.get(LEXICAL_FONT_TYPE, "Bold"));
 		fontInfo.setColor(Color.web(prefs.get(LEXICAL_FONT_COLOR, "#0000ff")));
@@ -232,6 +257,33 @@ public class ApplicationPreferences extends ApplicationPreferencesUtilities {
 		fontInfo.setColor(Color.web(prefs.get(NON_TERMINAL_FONT_COLOR, sDefaultColor)));
 		ltTree.setNonTerminalFontInfo(fontInfo);
 
+		final String sDefaultLocale = "en";
+		final String sDefaultDescription = "English";
+		final int defaultWindowsLangId = 0;
+		KeyboardInfo ki = new KeyboardInfo(prefs.get(GLOSS_KEYBOARD_LOCALE, sDefaultLocale),
+				prefs.get(GLOSS_KEYBOARD_DESCRIPTION, sDefaultDescription), prefs.getInt(
+						GLOSS_KEYBOARD_WINDOWS_LANG_ID, defaultWindowsLangId));
+		ltTree.setGlossKeyboard(ki);
+
+		ki = new KeyboardInfo(prefs.get(EMPTY_ELEMENT_KEYBOARD_LOCALE, sDefaultLocale),
+				prefs.get(EMPTY_ELEMENT_KEYBOARD_DESCRIPTION, sDefaultDescription), prefs.getInt(
+						EMPTY_ELEMENT_KEYBOARD_WINDOWS_LANG_ID, defaultWindowsLangId));
+		ltTree.setEmptyElementKeyboard(ki);
+
+		ki = new KeyboardInfo(prefs.get(LEXICAL_KEYBOARD_LOCALE, sDefaultLocale),
+				prefs.get(LEXICAL_KEYBOARD_DESCRIPTION, sDefaultDescription), prefs.getInt(
+						LEXICAL_KEYBOARD_WINDOWS_LANG_ID, defaultWindowsLangId));
+		ltTree.setLexicalKeyboard(ki);
+
+		ki = new KeyboardInfo(prefs.get(NON_TERMINAL_KEYBOARD_LOCALE, sDefaultLocale),
+				prefs.get(NON_TERMINAL_KEYBOARD_DESCRIPTION, sDefaultDescription), prefs.getInt(
+						NON_TERMINAL_KEYBOARD_WINDOWS_LANG_ID, defaultWindowsLangId));
+		ltTree.setNonTerminalKeyboard(ki);
+
+		ki = new KeyboardInfo(prefs.get(SYNTAGMEME_KEYBOARD_LOCALE, sDefaultLocale),
+				prefs.get(SYNTAGMEME_KEYBOARD_DESCRIPTION, sDefaultDescription), prefs.getInt(
+						SYNTAGMEME_KEYBOARD_WINDOWS_LANG_ID, defaultWindowsLangId));
+		ltTree.setSyntagmemeKeyboard(ki);
 	}
 
 	public void setSavedTreeParameters(LingTreeTree ltTree) throws Exception {
@@ -273,7 +325,28 @@ public class ApplicationPreferences extends ApplicationPreferencesUtilities {
 		setPreferencesKey(NON_TERMINAL_FONT_FAMILY, fontInfo.getFontFamily());
 		setPreferencesKey(NON_TERMINAL_FONT_SIZE, fontInfo.getFontSize());
 		setPreferencesKey(NON_TERMINAL_FONT_TYPE, fontInfo.getFontType());
-	}
+		
+		KeyboardInfo ki = ltTree.getGlossKeyboard();
+		setPreferencesKey(GLOSS_KEYBOARD_LOCALE, ki.getSLocale());
+		setPreferencesKey(GLOSS_KEYBOARD_DESCRIPTION, ki.getDescription());
+		setPreferencesKey(GLOSS_KEYBOARD_WINDOWS_LANG_ID, ki.getWindowsLangID());
+		ki = ltTree.getEmptyElementKeyboard();
+		setPreferencesKey(EMPTY_ELEMENT_KEYBOARD_LOCALE, ki.getSLocale());
+		setPreferencesKey(EMPTY_ELEMENT_KEYBOARD_DESCRIPTION, ki.getDescription());
+		setPreferencesKey(EMPTY_ELEMENT_KEYBOARD_WINDOWS_LANG_ID, ki.getWindowsLangID());
+		ki = ltTree.getLexicalKeyboard();
+		setPreferencesKey(LEXICAL_KEYBOARD_LOCALE, ki.getSLocale());
+		setPreferencesKey(LEXICAL_KEYBOARD_DESCRIPTION, ki.getDescription());
+		setPreferencesKey(LEXICAL_KEYBOARD_WINDOWS_LANG_ID, ki.getWindowsLangID());
+		ki = ltTree.getNonTerminalKeyboard();
+		setPreferencesKey(NON_TERMINAL_KEYBOARD_LOCALE, ki.getSLocale());
+		setPreferencesKey(NON_TERMINAL_KEYBOARD_DESCRIPTION, ki.getDescription());
+		setPreferencesKey(NON_TERMINAL_KEYBOARD_WINDOWS_LANG_ID, ki.getWindowsLangID());
+		ki = ltTree.getSyntagmemeKeyboard();
+		setPreferencesKey(SYNTAGMEME_KEYBOARD_LOCALE, ki.getSLocale());
+		setPreferencesKey(SYNTAGMEME_KEYBOARD_DESCRIPTION, ki.getDescription());
+		setPreferencesKey(SYNTAGMEME_KEYBOARD_WINDOWS_LANG_ID, ki.getWindowsLangID());
+}
 
 	private void setPreferencesKey(String key, boolean value) {
 		if (!StringUtilities.isNullOrEmpty(key)) {
@@ -302,6 +375,17 @@ public class ApplicationPreferences extends ApplicationPreferencesUtilities {
 		if (!StringUtilities.isNullOrEmpty(key)) {
 			if (key != null && value != null) {
 				prefs.putDouble(key, value);
+
+			} else {
+				prefs.remove(key);
+			}
+		}
+	}
+
+	private void setPreferencesKey(String key, int value) {
+		if (!StringUtilities.isNullOrEmpty(key)) {
+			if (key != null) {
+				prefs.putInt(key, value);
 
 			} else {
 				prefs.remove(key);

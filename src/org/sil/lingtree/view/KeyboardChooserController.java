@@ -11,6 +11,7 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 import org.sil.lingtree.model.LingTreeTree;
+import org.sil.utility.service.keyboards.KeyboardChanger;
 import org.sil.utility.service.keyboards.KeyboardHandler;
 import org.sil.utility.service.keyboards.KeyboardInfo;
 import org.sil.utility.service.keyboards.LinuxKeyboardHandler;
@@ -56,20 +57,18 @@ public class KeyboardChooserController implements Initializable {
 	Stage dialogStage;
 	private boolean okClicked = false;
 	private LingTreeTree ltTree;
-	KeyboardHandler keyboardHandler = new KeyboardHandler();
-	LinuxKeyboardHandler linuxHandler = new LinuxKeyboardHandler();
-	MacOSXKeyboardHandler macHandler = new MacOSXKeyboardHandler();
-	WindowsKeyboardHandler winHandler = new WindowsKeyboardHandler();
-	ObservableList<KeyboardInfo> activeKeyboards = FXCollections.observableArrayList();
-	int numberOfKeyboards = 0;
+	KeyboardChanger keyboardChanger;
 
 	/**
 	 * Initializes the controller class. This method is automatically called
 	 * after the fxml file has been loaded.
 	 */
 	public void initialize(URL location, ResourceBundle resources) {
-		initKeyboardHandler();
+		keyboardChanger = KeyboardChanger.getInstance();
+		keyboardChanger.initKeyboardHandler();
 		
+		ObservableList<KeyboardInfo> activeKeyboards = FXCollections
+				.observableArrayList(keyboardChanger.getActiveKeyboards());
 		lexical.setItems(activeKeyboards);
 		lexical.setConverter(new StringConverter<KeyboardInfo>() {
 			@Override
@@ -204,18 +203,4 @@ public class KeyboardChooserController implements Initializable {
 	private void handleCancel() {
 		dialogStage.close();
 	}
-
-	void initKeyboardHandler() {
-		String os = System.getProperty("os.name");
-		if (os.toLowerCase().contains("windows")) {
-			keyboardHandler = winHandler;
-		} else if (os.toLowerCase().contains("mac")) {
-			keyboardHandler = macHandler;
-		} else {
-			keyboardHandler = linuxHandler;
-		}
-		activeKeyboards = FXCollections.observableArrayList(keyboardHandler.getAvailableKeyboards());
-		numberOfKeyboards = activeKeyboards.size();
-	}
-
 }

@@ -32,6 +32,7 @@ public class ApplicationPreferencesTest {
 	String languageLastUsed;
 	Stage windowStageLastUsed;
 	boolean drawAsTypeLastUsed;
+	boolean showFullFilePath;
 	boolean showMatchingParenWithArrowKeysLastUsed;
 	double treeDescriptionFontSizeLastUsed;
 	double showMatchingParenDelayLastUsed;
@@ -47,6 +48,7 @@ public class ApplicationPreferencesTest {
 		fileLastUsed = applicationPreferences.getLastOpenedFile();
 		languageLastUsed = applicationPreferences.getLastLocaleLanguage();
 		drawAsTypeLastUsed = applicationPreferences.getDrawAsType();
+		showFullFilePath = applicationPreferences.getShowFullFilePath();
 		showMatchingParenWithArrowKeysLastUsed = applicationPreferences.getShowMatchingParenWithArrowKeys();
 		showMatchingParenDelayLastUsed = applicationPreferences.getShowMatchingParenDelay();
 		splitPaneDividerPositionLastUsed = applicationPreferences.getLastSplitPaneDividerPosition();
@@ -60,6 +62,7 @@ public class ApplicationPreferencesTest {
 		applicationPreferences.getSavedTreeParameters(ltTreeLastUsed);
 		applicationPreferences.setTreeDescriptionFontSize(12.0);
 		applicationPreferences.setDrawAsType(false);
+		applicationPreferences.setShowFullFilePath(false);
 		applicationPreferences.setShowMatchingParenWithArrowKeys(false);
 		applicationPreferences.setShowMatchingParenDelay(750.0);
 		applicationPreferences.setLastSplitPaneDividerPosition(0.48);
@@ -70,6 +73,7 @@ public class ApplicationPreferencesTest {
 		applicationPreferences.setLastOpenedFilePath(fileLastUsed);
 		applicationPreferences.setLastLocaleLanguage(languageLastUsed);
 		applicationPreferences.setDrawAsType(drawAsTypeLastUsed);
+		applicationPreferences.setShowFullFilePath(showFullFilePath);
 		applicationPreferences.setShowMatchingParenWithArrowKeys(showMatchingParenWithArrowKeysLastUsed);
 		applicationPreferences.setShowMatchingParenDelay(showMatchingParenDelayLastUsed);
 		applicationPreferences.setLastSplitPaneDividerPosition(splitPaneDividerPositionLastUsed);
@@ -107,6 +111,13 @@ public class ApplicationPreferencesTest {
 		assertEquals("draw as type", false, applicationPreferences.getDrawAsType());
 		applicationPreferences.setDrawAsType(true);
 		assertEquals("draw as type", true, applicationPreferences.getDrawAsType());
+	}
+
+	@Test
+	public void showFullFilePath() {
+		assertEquals("show full file path", false, applicationPreferences.getShowFullFilePath());
+		applicationPreferences.setShowFullFilePath(true);
+		assertEquals("show full file path", true, applicationPreferences.getShowFullFilePath());
 	}
 
 	@Test
