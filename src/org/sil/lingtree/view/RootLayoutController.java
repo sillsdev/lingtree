@@ -612,7 +612,7 @@ public class RootLayoutController implements Initializable {
 		this.mainApp = mainApp;
 		keyboardChanger.setStage(mainApp.getPrimaryStage());
 		sOperatingSystem = mainApp.getOperatingSystem();
-		if (sOperatingSystem.toLowerCase().contains("windows")) {
+		if (sOperatingSystem.toLowerCase().contains("windows") || sOperatingSystem.toLowerCase().contains("mac")) {
 			menuItemKeyboards.setDisable(false);
 		} else {
 			menuItemKeyboards.setDisable(true);
