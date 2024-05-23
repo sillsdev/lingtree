@@ -20,9 +20,9 @@ type="tLingTree"
 ><emailAddress
 >lingtree_support@sil.org</emailAddress
 ><date
->February 21, 2024</date
+>May 23, 2024</date
 ><version
->Version 1.4.0</version
+>Version 1.5.0</version
 ><version
 >Copyright © 2002-2024 SIL International</version
 ><contents
@@ -65,7 +65,7 @@ id="nFileName"
 >You can have <object
 type="tLingTree"
 ></object
-> show the full path of the file name.  See section <sectionRef
+> show the full path of the file name. See section <sectionRef
 sec="sShowFullFilePath"
 ></sectionRef
 >.</p
@@ -2481,7 +2481,7 @@ type="tMenuItem"
 > menu item is <object
 type="tMenuItem"
 >Set keyboards</object
->. This is only available on Windows currently. When you select this menu item, it brings up a dialog that looks like what is in <exampleRef
+>. This is only available on Windows and Mac OS X currently. When you select this menu item, it brings up a dialog that looks like what is in <exampleRef
 letter="xSetKeyboards"
 num="xSetKeyboards"
 ></exampleRef
@@ -2497,6 +2497,20 @@ width="450"
 ></example
 ><pc
 >You can control which keyboard is to be used with the various kinds of items in the tree description. Click on the drop-down arrow to select one of the available keyboards on your computer.</pc
+><p
+><indexedItem
+term="iMac"
+></indexedItem
+>For Mac OS X, please note that due to a bug in <object
+type="tTool"
+>Java</object
+>, the programming language <object
+type="tLingTree"
+></object
+> is written in, no <object
+type="tTool"
+>Keyman</object
+> keyboards are recognized. A fix for this problem is in process.</p
 ></section2
 ><section2
 id="sTreeSpacing"
@@ -2802,7 +2816,7 @@ type="tMenuItem"
 >. When this menu item has a check mark before it, the file name at the top of the <object
 type="tLingTree"
 ></object
-> window will include the full file location information.  When it does not have a check mark before it, just the file name will appear at the top.</p
+> window will include the full file location information. When it does not have a check mark before it, just the file name will appear at the top.</p
 ></section2
 ><section2
 id="sInterfaceLanguage"
@@ -3312,6 +3326,17 @@ type="tLingTree"
 type="tLingTree"
 ></object
 > is written in.</li
+><li
+><indexedItem
+term="iMac"
+></indexedItem
+>On Mac OS X, <object
+type="tTool"
+>Keyman</object
+> keyboards do not work (yet) in <object
+type="tLingTree"
+></object
+>.</li
 ></ul
 ></section1
 ><section1
