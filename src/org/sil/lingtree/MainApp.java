@@ -101,9 +101,7 @@ public class MainApp extends Application implements MainAppUtilities {
 				primaryStage);
 		applicationPreferences.setLastSplitPaneDividerPosition(dividerPosition);
 		applicationPreferences.setLastLocaleLanguage(locale.getLanguage());
-		if (controller.isDirty()) {
-			controller.askAboutSaving();
-		}
+		controller.handleExit();
 	}
 
 	public static void main(String[] args) throws IOException {
