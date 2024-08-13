@@ -64,6 +64,8 @@ public class ApplicationPreferences extends ApplicationPreferencesUtilities {
 	static final String INITIAL_Y_COORDINATE = "initialYCoordinate";
 	public static final String LAST_QUICK_REFERENCE_GUIDE = "lastQuickReferenceGuide";
 	static final String LEX_GLOSS_GAP_ADJUSTMENT = "lexGlossGapAdjustment";
+	static final String MINIMUM_X_GAP_FOR_EXTRA_VERTICAL_SPACING = "minimumXGapForExtraVerticalSpacing";
+	static final String VERTICAL_ADJUSTMENT_FOR_EXTRA_VERTICAL_SPACING = "verticalAdjustmentForExtraVerticalSpacing";
 	static final String LEXICAL_FONT_COLOR = "lexicalFontColor";
 	static final String LEXICAL_FONT_FAMILY = "lexicalFontFamily";
 	static final String LEXICAL_FONT_SIZE = "lexicalFontSize";
@@ -220,6 +222,8 @@ public class ApplicationPreferences extends ApplicationPreferencesUtilities {
 		ltTree.setInitialXCoordinate(prefs.getDouble(INITIAL_X_COORDINATE, 10));
 		ltTree.setInitialYCoordinate(prefs.getDouble(INITIAL_Y_COORDINATE, 20));
 		ltTree.setLexGlossGapAdjustment(prefs.getDouble(LEX_GLOSS_GAP_ADJUSTMENT, 0));
+		ltTree.setMinimumXGapForExtraVerticalSpacing(prefs.getDouble(MINIMUM_X_GAP_FOR_EXTRA_VERTICAL_SPACING, 500));
+		ltTree.setVerticalAdjustmentForExtraVerticalSpacing(prefs.getDouble(VERTICAL_ADJUSTMENT_FOR_EXTRA_VERTICAL_SPACING, 75));
 		ltTree.setLineWidth(prefs.getDouble(LINE_WIDTH, 1));
 		ltTree.setSaveAsPng(prefs.getBoolean(SAVE_AS_PNG, false));
 		ltTree.setSaveAsSVG(prefs.getBoolean(SAVE_AS_SVG, true));
@@ -292,6 +296,8 @@ public class ApplicationPreferences extends ApplicationPreferencesUtilities {
 		setPreferencesKey(INITIAL_X_COORDINATE, ltTree.getInitialXCoordinate());
 		setPreferencesKey(INITIAL_Y_COORDINATE, ltTree.getInitialYCoordinate());
 		setPreferencesKey(LEX_GLOSS_GAP_ADJUSTMENT, ltTree.getLexGlossGapAdjustment());
+		setPreferencesKey(MINIMUM_X_GAP_FOR_EXTRA_VERTICAL_SPACING, ltTree.getMinimumXGapForExtraVerticalSpacing());
+		setPreferencesKey(VERTICAL_ADJUSTMENT_FOR_EXTRA_VERTICAL_SPACING, ltTree.getVerticalAdjustmentForExtraVerticalSpacing());
 		setPreferencesKey(LINE_WIDTH, ltTree.getLineWidth());
 		setPreferencesKey(SAVE_AS_PNG, ltTree.isSaveAsPng());
 		setPreferencesKey(SAVE_AS_SVG, ltTree.isSaveAsSVG());
@@ -325,7 +331,7 @@ public class ApplicationPreferences extends ApplicationPreferencesUtilities {
 		setPreferencesKey(NON_TERMINAL_FONT_FAMILY, fontInfo.getFontFamily());
 		setPreferencesKey(NON_TERMINAL_FONT_SIZE, fontInfo.getFontSize());
 		setPreferencesKey(NON_TERMINAL_FONT_TYPE, fontInfo.getFontType());
-		
+
 		KeyboardInfo ki = ltTree.getGlossKeyboard();
 		setPreferencesKey(GLOSS_KEYBOARD_LOCALE, ki.getSLocale());
 		setPreferencesKey(GLOSS_KEYBOARD_DESCRIPTION, ki.getDescription());

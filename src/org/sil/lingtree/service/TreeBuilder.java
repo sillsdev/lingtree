@@ -162,6 +162,8 @@ public class TreeBuilder {
 		ltTree.setInitialXCoordinate(origTree.getInitialXCoordinate());
 		ltTree.setInitialYCoordinate(origTree.getInitialYCoordinate());
 		ltTree.setLexGlossGapAdjustment(origTree.getLexGlossGapAdjustment());
+		ltTree.setMinimumXGapForExtraVerticalSpacing(origTree.getMinimumXGapForExtraVerticalSpacing());
+		ltTree.setVerticalAdjustmentForExtraVerticalSpacing(origTree.getVerticalAdjustmentForExtraVerticalSpacing());
 		ltTree.setLexicalFontInfo(origTree.getLexicalFontInfo());
 		ltTree.setLexicalKeyboard(origTree.getLexicalKeyboard());
 		ltTree.setLineColor(origTree.getLineColor());

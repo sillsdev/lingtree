@@ -1,4 +1,4 @@
-// Copyright (c) 2016-2020 SIL International
+// Copyright (c) 2016-2024 SIL International
 // This software is licensed under the LGPL, version 2.1 or later
 // (http://www.gnu.org/licenses/lgpl-2.1.html)
 /**
@@ -71,6 +71,8 @@ public class XMLBackEndProviderTest {
 		assertEquals(20, ltTree.getInitialYCoordinate(), 0.0);
 		assertEquals(136.275390625, ltTree.getHorizontalOffset(), 0.0);
 		assertEquals(0.0, ltTree.getLexGlossGapAdjustment(), 0.0);
+		assertEquals(500.0, ltTree.getMinimumXGapForExtraVerticalSpacing(), 0.0);
+		assertEquals(75.0, ltTree.getVerticalAdjustmentForExtraVerticalSpacing(), 0.0);
 		assertEquals(true, ltTree.isShowFlatView());
 		FontInfo fontInfo = ltTree.getNonTerminalFontInfo();
 		checkFontInfo(fontInfo, "Times New Roman", 12.0, "Regular", Color.BLACK);
@@ -84,7 +86,7 @@ public class XMLBackEndProviderTest {
 		assertEquals(1, ltTree.getLineWidth(), 0.0);
 		assertEquals(Color.WHITE, ltTree.getBackgroundColor());
 	}
-	
+
 	private void checkFontInfo(FontInfo fontInfo, String family, double size, String type, Color color) {
 		assertEquals(family, fontInfo.getFontFamily());
 		assertEquals(size, fontInfo.getFontSize(), 0.0);

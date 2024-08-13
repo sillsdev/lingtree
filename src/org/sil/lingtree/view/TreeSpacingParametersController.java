@@ -37,6 +37,10 @@ public class TreeSpacingParametersController implements Initializable {
 	private TextField verticalGap;
 	@FXML
 	private TextField lexGlossGapAdjustment;
+	@FXML
+	private TextField minimumXGapForExtraVerticalSpacing;
+	@FXML
+	private TextField verticalAdjustmentForExtraVerticalSpacing;
 
 	Stage dialogStage;
 	private boolean okClicked = false;
@@ -65,6 +69,8 @@ public class TreeSpacingParametersController implements Initializable {
 		horizontalGap.setTextFormatter(new TextFormatter<String>(filter));
 		verticalGap.setTextFormatter(new TextFormatter<String>(filter));
 		lexGlossGapAdjustment.setTextFormatter(new TextFormatter<String>(filter));
+		minimumXGapForExtraVerticalSpacing.setTextFormatter(new TextFormatter<String>(filter));
+		verticalAdjustmentForExtraVerticalSpacing.setTextFormatter(new TextFormatter<String>(filter));
 	}
 
 	/**
@@ -83,6 +89,8 @@ public class TreeSpacingParametersController implements Initializable {
 		horizontalGap.setText(String.valueOf(ltTree.getHorizontalGap()));
 		verticalGap.setText(String.valueOf(ltTree.getVerticalGap()));
 		lexGlossGapAdjustment.setText(String.valueOf(ltTree.getLexGlossGapAdjustment()));
+		minimumXGapForExtraVerticalSpacing.setText(String.valueOf(ltTree.getMinimumXGapForExtraVerticalSpacing()));
+		verticalAdjustmentForExtraVerticalSpacing.setText(String.valueOf(ltTree.getVerticalAdjustmentForExtraVerticalSpacing()));
 	}
 
 	/**
@@ -113,6 +121,12 @@ public class TreeSpacingParametersController implements Initializable {
 		}
 		if (lexGlossGapAdjustment.getText().length() > 0) {
 			ltTree.setLexGlossGapAdjustment(Double.valueOf(lexGlossGapAdjustment.getText()));
+		}
+		if (minimumXGapForExtraVerticalSpacing.getText().length() > 0) {
+			ltTree.setMinimumXGapForExtraVerticalSpacing(Double.valueOf(minimumXGapForExtraVerticalSpacing.getText()));
+		}
+		if (verticalAdjustmentForExtraVerticalSpacing.getText().length() > 0) {
+			ltTree.setVerticalAdjustmentForExtraVerticalSpacing(Double.valueOf(verticalAdjustmentForExtraVerticalSpacing.getText()));
 		}
 		okClicked = true;
 		dialogStage.close();

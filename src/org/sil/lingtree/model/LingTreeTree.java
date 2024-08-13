@@ -38,6 +38,9 @@ public class LingTreeTree {
 	double dLexBottomYUpperMid; // lowest Lex Y upper mid (for "flat" view)
 	double dLexGlossGapAdjustment; // extra gap adjustment between lex and gloss
 
+	double dMinimumXGapForExtraVerticalSpacing = 500.0; // when X space between sisters is above this value
+	double dVerticalAdjustmentForExtraVerticalSpacing = 75.0; // add this extra vertical space between rows so lines appear better
+
 	FontInfo nonTerminalFontInfo;
 	FontInfo lexicalFontInfo;
 	FontInfo glossFontInfo;
@@ -166,6 +169,25 @@ public class LingTreeTree {
 
 	public void setLexGlossGapAdjustment(double dLexGlossGapAdjustment) {
 		this.dLexGlossGapAdjustment = dLexGlossGapAdjustment;
+	}
+
+	@XmlElement(name = "minimumXGapForExtraVerticalSpacing")
+	public double getMinimumXGapForExtraVerticalSpacing() {
+		return dMinimumXGapForExtraVerticalSpacing;
+	}
+
+	public void setMinimumXGapForExtraVerticalSpacing(double dMinimumXGapForExtraVerticalSpacing) {
+		this.dMinimumXGapForExtraVerticalSpacing = dMinimumXGapForExtraVerticalSpacing;
+	}
+
+	@XmlElement(name = "verticalAdjustmentForExtraVerticalSpacing")
+	public double getVerticalAdjustmentForExtraVerticalSpacing() {
+		return dVerticalAdjustmentForExtraVerticalSpacing;
+	}
+
+	public void setVerticalAdjustmentForExtraVerticalSpacing(
+			double dVerticalAdjustmentForExtraVerticalSpacing) {
+		this.dVerticalAdjustmentForExtraVerticalSpacing = dVerticalAdjustmentForExtraVerticalSpacing;
 	}
 
 	@XmlElement(name = "verticalGap")

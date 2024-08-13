@@ -66,6 +66,20 @@ public class TreeDrawer {
 
 	// Determine Y-axis coordinates for this node
 	private void calculateYCoordinateOfANode(LingTreeNode node, double dVerticalOffset) {
+		if (node.hasMother()) {
+			double maxXSpan = 0.0;
+			for (LingTreeNode sister : node.getMother().getDaughters()) {
+				LingTreeNode rightSister = sister.getRightSister();
+				if (rightSister != null) {
+					double xSpan = rightSister.getXCoordinate() - sister.getXCoordinate();
+					maxXSpan = Math.max(xSpan, maxXSpan);
+				}
+			}
+			if (maxXSpan > ltTree.getMinimumXGapForExtraVerticalSpacing()) {
+				double offset = ltTree.getVerticalAdjustmentForExtraVerticalSpacing();
+				dVerticalOffset += offset;
+			}
+		}
 		node.setYCoordinate(dVerticalOffset);
 		node.setYLowerMid(node.getYLowerMid() + dYCoordAdjustment);
 		node.setYUpperMid(node.getYUpperMid() - dYCoordAdjustment);
@@ -299,6 +313,7 @@ public class TreeDrawer {
 	}
 
 	private void recalculateValues() {
+		calculateXCoordinateOfEveryNode();
 		calculateMaxHeightPerLevel();
 		calculateYCoordinateOfEveryNode();
 		if (ltTree.isShowFlatView()
@@ -312,7 +327,6 @@ public class TreeDrawer {
 				ltTree.setYSize(dNewGlossBottom);
 			}
 		}
-		calculateXCoordinateOfEveryNode();
 		if (ltTree.isUseRightToLeftOrientation()) {
 			adjustForRightToLeftOrientation();
 		}

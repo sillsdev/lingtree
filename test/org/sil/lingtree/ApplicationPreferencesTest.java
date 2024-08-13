@@ -105,7 +105,7 @@ public class ApplicationPreferencesTest {
 		applicationPreferences.setLastLocaleLanguage("es");
 		assertEquals("locale language", "es", applicationPreferences.getLastLocaleLanguage());
 	}
-	
+
 	@Test
 	public void drawAsType() {
 		assertEquals("draw as type", false, applicationPreferences.getDrawAsType());
@@ -187,6 +187,8 @@ public class ApplicationPreferencesTest {
 		double initialXCoordinate = 100;
 		double initialYCoordinate = 104;
 		double lexGlossGapAdjustment = 7;
+		double minimumXGapForExtraVerticalSpacing = 7.0;
+		double verticalAdjustmentForExtraVerticalSpacing = 7.0;
 		double lineWidth = 10;
 		double verticalGap = 25;
 		boolean saveAsPng = true;
@@ -232,6 +234,8 @@ public class ApplicationPreferencesTest {
 		ltTree.setInitialXCoordinate(initialXCoordinate);
 		ltTree.setInitialYCoordinate(initialYCoordinate);
 		ltTree.setLexGlossGapAdjustment(lexGlossGapAdjustment);
+		ltTree.setMinimumXGapForExtraVerticalSpacing(minimumXGapForExtraVerticalSpacing);;
+		ltTree.setVerticalAdjustmentForExtraVerticalSpacing(verticalAdjustmentForExtraVerticalSpacing);
 		ltTree.setLineWidth(lineWidth);
 		ltTree.setVerticalGap(verticalGap);
 		ltTree.setSaveAsPng(saveAsPng);
@@ -258,6 +262,8 @@ public class ApplicationPreferencesTest {
 		assertEquals(initialXCoordinate, ltRetrieved.getInitialXCoordinate(), 0.0);
 		assertEquals(initialYCoordinate, ltRetrieved.getInitialYCoordinate(), 0.0);
 		assertEquals(lexGlossGapAdjustment, ltRetrieved.getLexGlossGapAdjustment(), 0.0);
+		assertEquals(minimumXGapForExtraVerticalSpacing, ltRetrieved.getMinimumXGapForExtraVerticalSpacing(), 0.0);
+		assertEquals(verticalAdjustmentForExtraVerticalSpacing, ltRetrieved.getVerticalAdjustmentForExtraVerticalSpacing(), 0.0);
 		assertEquals(lineWidth, ltRetrieved.getLineWidth(), 0.0);
 		assertEquals(verticalGap, ltRetrieved.getVerticalGap(), 0.0);
 		assertEquals(saveAsPng, ltRetrieved.isSaveAsPng());

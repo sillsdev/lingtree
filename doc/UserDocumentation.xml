@@ -20,9 +20,9 @@ type="tLingTree"
 ><emailAddress
 >lingtree_support@sil.org</emailAddress
 ><date
->February 21, 2024</date
+>August 13, 2024</date
 ><version
->Version 1.4.0</version
+>Version 1.5.0</version
 ><version
 >Copyright © 2002-2024 SIL International</version
 ><contents
@@ -65,7 +65,7 @@ id="nFileName"
 >You can have <object
 type="tLingTree"
 ></object
-> show the full path of the file name.  See section <sectionRef
+> show the full path of the file name. See section <sectionRef
 sec="sShowFullFilePath"
 ></sectionRef
 >.</p
@@ -2528,7 +2528,7 @@ width="450"
 ></example
 ><pc
 >Each row has a description of the parameter and a box to key a numerical value. Each value is in terms of screen pixels. The items are:</pc
-><ul
+><ol
 ><li
 ><indexedItem
 term="iBetweenTopAndTop"
@@ -2554,7 +2554,16 @@ term="iBetweenLeafNodes"
 term="iSpaceLexGloss"
 ></indexedItem
 >Vertical space between lexical node and gloss node</li
-></ul
+><li
+>Minimum horizontal space between sister nodes before adjusting vertical space for tight lines</li
+><li
+>Adjusting vertical space between rows so lines appear better</li
+></ol
+><p
+><indexedItem
+term="iOverlap"
+></indexedItem
+>The last two are for cases with a very wide tree where some rows have several nodes and the lines between these nodes are not clearly visible.  The idea is that when there is at least the minimum horizontal space between two nodes in the same row (item 6), then add the vertical space adjustment given by the value in item 7.  By using these values, you can seek to improve how the lines appear.</p
 ><p
 >You can use negative numbers, if necessary. For example, if the difference between the lexical and gloss font is such that there is too much space between the bottom of the lexical items and the top of the gloss items, you can set the “Vertical space between lexical node and gloss node” to a negative value.</p
 ><p
@@ -2802,7 +2811,7 @@ type="tMenuItem"
 >. When this menu item has a check mark before it, the file name at the top of the <object
 type="tLingTree"
 ></object
-> window will include the full file location information.  When it does not have a check mark before it, just the file name will appear at the top.</p
+> window will include the full file location information. When it does not have a check mark before it, just the file name will appear at the top.</p
 ></section2
 ><section2
 id="sInterfaceLanguage"
@@ -3652,6 +3661,11 @@ id="iLines"
 id="iOmit"
 ><term
 >Omit a line</term
+></indexTerm
+><indexTerm
+id="iOverlap"
+><term
+>Overlapping or tight lines</term
 ></indexTerm
 ><indexTerm
 id="iRegular"
