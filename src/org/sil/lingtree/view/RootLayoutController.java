@@ -22,7 +22,7 @@ import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.Token;
-import org.controlsfx.dialog.FontSelectorDialogWithColor;
+//import org.controlsfx.dialog.FontSelectorDialogWithColor;
 import org.fxmisc.richtext.InlineCssTextArea;
 import org.sil.lingtree.MainApp;
 import org.sil.lingtree.descriptionparser.antlr4generated.DescriptionLexer;
@@ -46,9 +46,6 @@ import org.sil.utility.service.keyboards.KeyboardChanger;
 import org.sil.utility.view.ControllerUtilities;
 import org.sil.utility.view.ObservableResourceFactory;
 import org.sil.utility.view.FilteringEventDispatcher;
-
-import com.sun.deploy.uitoolkit.impl.fx.HostServicesFactory;
-import com.sun.javafx.application.HostServicesDelegate;
 
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -109,6 +106,7 @@ public class RootLayoutController implements Initializable {
 
 	private final String kPressedStyle = "buttonpressed";
 	private final String kUnPressedStyle = "buttonunpressed";
+	private final String kMacOSInstallDirectory = "/Applications/LingTree.app/Contents/app/";
 
 	@FXML
 	BorderPane mainPane;
@@ -271,29 +269,29 @@ public class RootLayoutController implements Initializable {
 		initMenuItemsForLocalization();
 		statusBarKey.textProperty().bind(RESOURCE_FACTORY.getStringBinding("label.key"));
 
-		keyboardChanger = KeyboardChanger.getInstance();
-		keyboardChanger.initKeyboardHandler();
-		treeDescription.caretPositionProperty().addListener((observable, oldValue, newValue) -> {
-			String sPrevious = treeDescription.getText(0, newValue);
-			NodeType ntype = NodeTypeDeterminer.determineNodeTypeFrom(sPrevious);
-			switch (ntype) {
-			case NonTerminal:
-				keyboardChanger.tryToChangeKeyboardTo(ltTree.getNonTerminalKeyboard());
-				break;
-			case Lex:
-				keyboardChanger.tryToChangeKeyboardTo(ltTree.getLexicalKeyboard());
-				break;
-			case Gloss:
-				keyboardChanger.tryToChangeKeyboardTo(ltTree.getGlossKeyboard());
-				break;
-			case EmptyElement:
-				keyboardChanger.tryToChangeKeyboardTo(ltTree.getEmptyElementKeyboard());
-				break;
-			case Syntagmeme:
-				keyboardChanger.tryToChangeKeyboardTo(ltTree.getSyntagmemeKeyboard());
-				break;
-			}
-		});
+//		keyboardChanger = KeyboardChanger.getInstance();
+//		keyboardChanger.initKeyboardHandler();
+//		treeDescription.caretPositionProperty().addListener((observable, oldValue, newValue) -> {
+//			String sPrevious = treeDescription.getText(0, newValue);
+//			NodeType ntype = NodeTypeDeterminer.determineNodeTypeFrom(sPrevious);
+//			switch (ntype) {
+//			case NonTerminal:
+//				keyboardChanger.tryToChangeKeyboardTo(ltTree.getNonTerminalKeyboard());
+//				break;
+//			case Lex:
+//				keyboardChanger.tryToChangeKeyboardTo(ltTree.getLexicalKeyboard());
+//				break;
+//			case Gloss:
+//				keyboardChanger.tryToChangeKeyboardTo(ltTree.getGlossKeyboard());
+//				break;
+//			case EmptyElement:
+//				keyboardChanger.tryToChangeKeyboardTo(ltTree.getEmptyElementKeyboard());
+//				break;
+//			case Syntagmeme:
+//				keyboardChanger.tryToChangeKeyboardTo(ltTree.getSyntagmemeKeyboard());
+//				break;
+//			}
+//		});
 
 		// we use OnKeyTyped because it tells us the character keyed
 		// regardless of the keyboard used
@@ -610,7 +608,7 @@ public class RootLayoutController implements Initializable {
 
 	public void setMainApp(MainApp mainApp) {
 		this.mainApp = mainApp;
-		keyboardChanger.setStage(mainApp.getPrimaryStage());
+//		keyboardChanger.setStage(mainApp.getPrimaryStage());
 		sOperatingSystem = mainApp.getOperatingSystem();
 		if (sOperatingSystem.toLowerCase().contains("windows")) {
 			menuItemKeyboards.setDisable(false);
@@ -816,20 +814,30 @@ public class RootLayoutController implements Initializable {
 	}
 
 	protected void showFileToUser(String sFileToShow) {
-		if (!mainApp.getOperatingSystem().equals("Mac OS X")) {
-			HostServicesDelegate hostServices = HostServicesFactory.getInstance(mainApp);
-			hostServices.showDocument("file:" + sFileToShow);
-		} else {
-			if (Desktop.isDesktopSupported()) {
-				try {
-					File myFile = new File(sFileToShow);
+		if (Desktop.isDesktopSupported()) {
+			try {
+				File myFile = new File(sFileToShow);
+				String sOS = mainApp.getOperatingSystem().toLowerCase();
+				if (sOS.contains("linux")) {
+					Runtime.getRuntime().exec(new String[] { "xdg-open", myFile.getAbsolutePath() });
+				} else if (sOS.contains("mac")) {
+					if (!myFile.exists()) {
+						String sFullPath = kMacOSInstallDirectory + sFileToShow;
+						System.out
+								.println("File '" + sFileToShow + "' does not exist; trying it as '" + sFullPath + "'");
+						myFile = new File(sFullPath);
+					}
 					Desktop.getDesktop().open(myFile);
-				} catch (IOException ex) {
-					// no application registered for PDFs
+				} else {
+					Desktop.getDesktop().open(myFile);
 				}
+			} catch (IOException ex) {
+				// no application registered for PDFs
+				MainApp.reportException(ex, null);
 			}
 		}
 	}
+
 
 	@FXML
 	protected void handleCopy() {
@@ -1298,26 +1306,26 @@ public class RootLayoutController implements Initializable {
 
 	@FXML
 	private void handleKeyboards() {
-		try {
-			// Load the fxml file and create a new stage for the popup.
-			Stage dialogStage = new Stage();
-			String resource = "fxml/KeyboardChooser.fxml";
-			String title = RESOURCE_FACTORY.getStringBinding("keyboarddialog.title").get();
-			FXMLLoader loader = ControllerUtilities.getLoader(mainApp, currentLocale, dialogStage,
-					title, RootLayoutController.class.getResource(resource),
-					Constants.RESOURCE_LOCATION);
-
-			KeyboardChooserController controller = loader.getController();
-			controller.setDialogStage(dialogStage);
-			controller.setData(ltTree);
-			dialogStage.setResizable(false);
-			dialogStage.showAndWait();
-			if (controller.isOkClicked()) {
-				markAsDirty();
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+//		try {
+//			// Load the fxml file and create a new stage for the popup.
+//			Stage dialogStage = new Stage();
+//			String resource = "fxml/KeyboardChooser.fxml";
+//			String title = RESOURCE_FACTORY.getStringBinding("keyboarddialog.title").get();
+//			FXMLLoader loader = ControllerUtilities.getLoader(mainApp, currentLocale, dialogStage,
+//					title, RootLayoutController.class.getResource(resource),
+//					Constants.RESOURCE_LOCATION);
+//
+//			KeyboardChooserController controller = loader.getController();
+//			controller.setDialogStage(dialogStage);
+//			controller.setData(ltTree);
+//			dialogStage.setResizable(false);
+//			dialogStage.showAndWait();
+//			if (controller.isOkClicked()) {
+//				markAsDirty();
+//			}
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
 
 	}
 	/**
@@ -1451,20 +1459,20 @@ public class RootLayoutController implements Initializable {
 	}
 
 	public FontInfo showFontInfo(Stage stage, FontInfo fontInfo) {
-		// TODO: improve the font selector dialog so that one can type the font
-		// family name
-		// Can we improve the color picker to use color names, too?
-		FontSelectorDialogWithColor dlg = new FontSelectorDialogWithColor(fontInfo.getFont(),
-				fontInfo.getColor(), bundle);
-		dlg.initOwner(stage);
-		dlg.showAndWait();
-		Font chosenFont = dlg.getResult();
-		if (chosenFont != null) {
-			fontInfo.setFont(chosenFont);
-			Color color = dlg.getColor();
-			fontInfo.setColor(color);
-			markAsDirty();
-		}
+//		// TODO: improve the font selector dialog so that one can type the font
+//		// family name
+//		// Can we improve the color picker to use color names, too?
+//		FontSelectorDialogWithColor dlg = new FontSelectorDialogWithColor(fontInfo.getFont(),
+//				fontInfo.getColor(), bundle);
+//		dlg.initOwner(stage);
+//		dlg.showAndWait();
+//		Font chosenFont = dlg.getResult();
+//		if (chosenFont != null) {
+//			fontInfo.setFont(chosenFont);
+//			Color color = dlg.getColor();
+//			fontInfo.setColor(color);
+//			markAsDirty();
+//		}
 		return fontInfo;
 	}
 

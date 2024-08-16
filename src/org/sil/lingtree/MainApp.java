@@ -368,4 +368,19 @@ public class MainApp extends Application implements MainAppUtilities {
 		return xmlBackEndProvider;
 	}
 
+	public static void reportException(Exception ex, ResourceBundle bundle) {
+		String sTitle = "Error Found!";
+		String sHeader = "A serious error happened.";
+		String sContent = "Please copy the exception information below, email it to blackhandrew@gmail.com along with a description of what you were doing.";
+		String sLabel = "The exception stacktrace was:";
+		if (bundle != null) {
+			sTitle = bundle.getString("exception.title");
+			sHeader = bundle.getString("exception.header");
+			sContent = bundle.getString("exception.content");
+			sLabel = bundle.getString("exception.label");
+		}
+		ControllerUtilities.showExceptionInErrorDialog(ex, sTitle, sHeader, sContent, sLabel);
+		System.exit(1);
+	}
+
 }
