@@ -269,29 +269,29 @@ public class RootLayoutController implements Initializable {
 		initMenuItemsForLocalization();
 		statusBarKey.textProperty().bind(RESOURCE_FACTORY.getStringBinding("label.key"));
 
-//		keyboardChanger = KeyboardChanger.getInstance();
-//		keyboardChanger.initKeyboardHandler();
-//		treeDescription.caretPositionProperty().addListener((observable, oldValue, newValue) -> {
-//			String sPrevious = treeDescription.getText(0, newValue);
-//			NodeType ntype = NodeTypeDeterminer.determineNodeTypeFrom(sPrevious);
-//			switch (ntype) {
-//			case NonTerminal:
-//				keyboardChanger.tryToChangeKeyboardTo(ltTree.getNonTerminalKeyboard());
-//				break;
-//			case Lex:
-//				keyboardChanger.tryToChangeKeyboardTo(ltTree.getLexicalKeyboard());
-//				break;
-//			case Gloss:
-//				keyboardChanger.tryToChangeKeyboardTo(ltTree.getGlossKeyboard());
-//				break;
-//			case EmptyElement:
-//				keyboardChanger.tryToChangeKeyboardTo(ltTree.getEmptyElementKeyboard());
-//				break;
-//			case Syntagmeme:
-//				keyboardChanger.tryToChangeKeyboardTo(ltTree.getSyntagmemeKeyboard());
-//				break;
-//			}
-//		});
+		keyboardChanger = KeyboardChanger.getInstance();
+		keyboardChanger.initKeyboardHandler();
+		treeDescription.caretPositionProperty().addListener((observable, oldValue, newValue) -> {
+			String sPrevious = treeDescription.getText(0, newValue);
+			NodeType ntype = NodeTypeDeterminer.determineNodeTypeFrom(sPrevious);
+			switch (ntype) {
+			case NonTerminal:
+				keyboardChanger.tryToChangeKeyboardTo(ltTree.getNonTerminalKeyboard());
+				break;
+			case Lex:
+				keyboardChanger.tryToChangeKeyboardTo(ltTree.getLexicalKeyboard());
+				break;
+			case Gloss:
+				keyboardChanger.tryToChangeKeyboardTo(ltTree.getGlossKeyboard());
+				break;
+			case EmptyElement:
+				keyboardChanger.tryToChangeKeyboardTo(ltTree.getEmptyElementKeyboard());
+				break;
+			case Syntagmeme:
+				keyboardChanger.tryToChangeKeyboardTo(ltTree.getSyntagmemeKeyboard());
+				break;
+			}
+		});
 
 		// we use OnKeyTyped because it tells us the character keyed
 		// regardless of the keyboard used
@@ -608,7 +608,7 @@ public class RootLayoutController implements Initializable {
 
 	public void setMainApp(MainApp mainApp) {
 		this.mainApp = mainApp;
-//		keyboardChanger.setStage(mainApp.getPrimaryStage());
+		keyboardChanger.setStage(mainApp.getPrimaryStage());
 		sOperatingSystem = mainApp.getOperatingSystem();
 		if (sOperatingSystem.toLowerCase().contains("windows")) {
 			menuItemKeyboards.setDisable(false);

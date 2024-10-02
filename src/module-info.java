@@ -30,13 +30,11 @@ module org.sil.lingtree {
 
 	// Other modules/libraries
 	requires antlr;
-	requires transitive libjavadev;
+//	requires transitive libjavadev;
 	requires transitive org.controlsfx.controls;
-//	requires transitive org.controlsfx.dialog;
-//	requires transitive richtextfx.fat;
 	requires javafx.base;
 	requires javafx.media;
 	requires java.base;
 	requires richtextfx.fat;
-//	requires controlsfx;
+//	requires org.sil.utility;
 }

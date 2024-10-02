@@ -17,11 +17,6 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="LibJavaDev/libjavadev-1.6.1.jar">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
 		<attributes>
 			<attribute name="module" value="true"/>
@@ -63,6 +58,26 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="C:/Users/Andy Black/Documents/eclipse-workspace/lingtree/ControlsFX/controlsfx-11.0.2.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/Andy Black/Documents/eclipse-workspace/lingtree/jna/jna-5.11.0.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/Andy Black/Documents/eclipse-workspace/lingtree/jna/jna-platform-5.11.0.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/Andy Black/Documents/eclipse-workspace/lingtree/json/json-simple-1.1.1.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/Andy Black/Documents/eclipse-workspace/lingtree/LibJavaDev/libjavadev-1.6.2.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
