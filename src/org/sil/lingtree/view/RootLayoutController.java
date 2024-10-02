@@ -46,6 +46,7 @@ import org.sil.utility.service.keyboards.KeyboardChanger;
 import org.sil.utility.view.ControllerUtilities;
 import org.sil.utility.view.ObservableResourceFactory;
 import org.sil.utility.view.FilteringEventDispatcher;
+import org.sil.utility.view.FontSelectorDialogWithColor;
 
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -1306,26 +1307,26 @@ public class RootLayoutController implements Initializable {
 
 	@FXML
 	private void handleKeyboards() {
-//		try {
-//			// Load the fxml file and create a new stage for the popup.
-//			Stage dialogStage = new Stage();
-//			String resource = "fxml/KeyboardChooser.fxml";
-//			String title = RESOURCE_FACTORY.getStringBinding("keyboarddialog.title").get();
-//			FXMLLoader loader = ControllerUtilities.getLoader(mainApp, currentLocale, dialogStage,
-//					title, RootLayoutController.class.getResource(resource),
-//					Constants.RESOURCE_LOCATION);
-//
-//			KeyboardChooserController controller = loader.getController();
-//			controller.setDialogStage(dialogStage);
-//			controller.setData(ltTree);
-//			dialogStage.setResizable(false);
-//			dialogStage.showAndWait();
-//			if (controller.isOkClicked()) {
-//				markAsDirty();
-//			}
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
+		try {
+			// Load the fxml file and create a new stage for the popup.
+			Stage dialogStage = new Stage();
+			String resource = "fxml/KeyboardChooser.fxml";
+			String title = RESOURCE_FACTORY.getStringBinding("keyboarddialog.title").get();
+			FXMLLoader loader = ControllerUtilities.getLoader(mainApp, currentLocale, dialogStage,
+					title, RootLayoutController.class.getResource(resource),
+					Constants.RESOURCE_LOCATION);
+
+			KeyboardChooserController controller = loader.getController();
+			controller.setDialogStage(dialogStage);
+			controller.setData(ltTree);
+			dialogStage.setResizable(false);
+			dialogStage.showAndWait();
+			if (controller.isOkClicked()) {
+				markAsDirty();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 	}
 	/**
@@ -1462,17 +1463,17 @@ public class RootLayoutController implements Initializable {
 //		// TODO: improve the font selector dialog so that one can type the font
 //		// family name
 //		// Can we improve the color picker to use color names, too?
-//		FontSelectorDialogWithColor dlg = new FontSelectorDialogWithColor(fontInfo.getFont(),
-//				fontInfo.getColor(), bundle);
-//		dlg.initOwner(stage);
-//		dlg.showAndWait();
-//		Font chosenFont = dlg.getResult();
-//		if (chosenFont != null) {
-//			fontInfo.setFont(chosenFont);
-//			Color color = dlg.getColor();
-//			fontInfo.setColor(color);
-//			markAsDirty();
-//		}
+		FontSelectorDialogWithColor dlg = new FontSelectorDialogWithColor(fontInfo.getFont(),
+				fontInfo.getColor(), bundle);
+		dlg.initOwner(stage);
+		dlg.showAndWait();
+		Font chosenFont = dlg.getResult();
+		if (chosenFont != null) {
+			fontInfo.setFont(chosenFont);
+			Color color = dlg.getColor();
+			fontInfo.setColor(color);
+			markAsDirty();
+		}
 		return fontInfo;
 	}
 

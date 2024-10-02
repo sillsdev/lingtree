@@ -6,6 +6,11 @@ module org.sil.lingtree {
 	exports org.sil.lingtree.descriptionparser.antlr4generated;
 	exports org.sil.lingtree.service;
 	exports org.sil.lingtree.view;
+	exports org.sil.utility;
+	exports org.sil.utility.service;
+	exports org.sil.utility.service.keyboards;
+	exports org.sil.utility.view;
+	exports org.sil.utility.xml;
 
 	opens org.sil.lingtree.view to javafx.fxml;
 //	opens org.sil.lingtree.view.fxml to richtextfx.fat;
@@ -25,6 +30,11 @@ module org.sil.lingtree {
 	requires jakarta.activation;
 	opens org.sil.lingtree.model;
 
+	// JNA
+	requires com.sun.jna;
+	requires com.sun.jna.platform;
+
+	
 	// JUnit
 	requires junit;
 
@@ -36,5 +46,6 @@ module org.sil.lingtree {
 	requires javafx.media;
 	requires java.base;
 	requires richtextfx.fat;
+	requires json.simple;
 //	requires org.sil.utility;
 }
