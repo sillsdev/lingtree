@@ -38,4 +38,11 @@ resources/images
 *.bak
 *.xso
 *.properties~
-installer
+installer/windows/input
+installer/windows/output
+installer/windows/installtemp
+installer/windows/META-INF
+installer/windows/*.exe
+
+installer/linux
+installer/macos
