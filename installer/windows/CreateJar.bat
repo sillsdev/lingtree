@@ -1,5 +1,5 @@
 @echo off
-cd ..\..\bin
+cd ..\..\binc
 REM jar cmf META-INF\MANIFEST.MF pcpatreditor.jar .
 REM echo java_path=%1
 %1\bin\jar cf lingtree.jar .

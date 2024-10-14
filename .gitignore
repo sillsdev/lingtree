@@ -23,6 +23,7 @@ hs_err_pid*
 
 # Others
 /bin/
+/binc/
 XLingPaperPDFTemp
 *.xml~
 /.settings/
