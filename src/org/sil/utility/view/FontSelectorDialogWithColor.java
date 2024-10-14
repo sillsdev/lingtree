@@ -379,11 +379,14 @@ public class FontSelectorDialogWithColor extends Dialog<Font> {
 			add(sampleStack, 0, 3, 1, 3);
 			
 			 ColorPicker colorPicker = new ColorPicker(defaultColor);
-			 colorPicker.setOnAction(new EventHandler() {
-			     public void handle(Event t) {
+			 colorPicker.setOnAction(e -> {
 			         color = colorPicker.getValue();
-			     }
 			 });
+//			 colorPicker.setOnAction(new EventHandler() {
+//			     public void handle(Event t) {
+//			         color = colorPicker.getValue();
+//			     }
+//			 });
 			 colorPicker.setMinHeight(25);
 			 colorPicker.setPrefWidth(100);
 			 add(colorPicker, 0, 4, 4, 4);
