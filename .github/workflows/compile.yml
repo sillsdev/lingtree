@@ -8,7 +8,8 @@ on:
     branches: [ "Java17" ]
   pull_request:
     branches: [ "Java17" ]
-  workflow_dispatch
+  workflow_dispatch:
+    branches: [ "Java17" ]
 
 jobs:
   build:
@@ -22,6 +23,6 @@ jobs:
       with:
         java-version: '17'
         distribution: 'zulu'
-	java-package: 'jdk+fx'
+	java-package: ''jdk+fx'
     - name: Build with Ant
       run: ant -noinput -buildfile build.xml
