@@ -23,6 +23,6 @@ jobs:
       with:
         java-version: '17'
         distribution: 'zulu'
-	java-package: ''jdk+fx'
+	java-package: jdk+fx
     - name: Build with Ant
       run: ant -noinput -buildfile build.xml
