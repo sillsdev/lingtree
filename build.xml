@@ -14,9 +14,9 @@
         <pathelement location="../../../Downloads/Java/AzulZulu/zulu17.30.15-ca-fx-jdk17.0.1-win_x64/bin/javac"/>
     </path>
     <path id="JUnit 4.libraryclasspath">
-        <pathelement location="../../../.p2/pool/plugins/org.junit_4.13.2.v20230809-1000.jar"/>
-        <pathelement location="../../../.p2/pool/plugins/org.hamcrest_2.2.0.jar"/>
-        <pathelement location="../../../.p2/pool/plugins/org.hamcrest.core_2.2.0.v20230809-1000.jar"/>
+        <pathelement location="libs/JUnit/org.junit_4.13.2.v20230809-1000.jar"/>
+        <pathelement location="libs/JUnit/org.hamcrest_2.2.0.jar"/>
+        <pathelement location="libs/JUnit/org.hamcrest.core_2.2.0.v20230809-1000.jar"/>
     </path>
     <path id="lingtree.classpath">
         <pathelement location="bin"/>
