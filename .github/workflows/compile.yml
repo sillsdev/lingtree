@@ -8,7 +8,8 @@ on:
     branches: [ "Java17" ]
   pull_request:
     branches: [ "Java17" ]
-  workflow_dispatch
+  workflow_dispatch:
+    branches: [ "Java17" ]
 
 jobs:
   build:
