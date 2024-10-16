@@ -9,7 +9,6 @@ on:
   pull_request:
     branches: [ "Java17" ]
   workflow_dispatch:
-    branches: [ "Java17" ]
 
 jobs:
   build:
