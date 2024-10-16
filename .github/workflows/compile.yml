@@ -4,11 +4,11 @@
 name: Java CI
 
 on:
+  workflow_dispatch:
   push:
     branches: [ "Java17" ]
   pull_request:
     branches: [ "Java17" ]
-  workflow_dispatch:
 
 jobs:
   build:
