@@ -26,20 +26,20 @@ jobs:
     needs: build
     runs-on: windows-latest
     steps:
-#    - uses: actions/checkout@v4
+    - uses: actions/checkout@v4
     - name: Set up JDK 17
       uses: actions/setup-java@v4
       with:
         java-version: '17'
         distribution: 'zulu'
         java-package: 'jdk+fx'
-      - name: Run the Script_Test_Manager
-        run: |
+    - name: Run the Script_Test_Manager
+      run: |
           pwd
           ls
           dir ..
           cd installer/windows
           pwd
           BuildWin.bat
-        shell: cmd
-  
+      shell: cmd
+
