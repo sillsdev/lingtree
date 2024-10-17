@@ -28,7 +28,9 @@ jobs:
     steps:
       - name: Run the Script_Test_Manager
         run: |
+          pwd
           cd installer\windows
+          pwd
           BuildWin.bat
         shell: cmd
   
