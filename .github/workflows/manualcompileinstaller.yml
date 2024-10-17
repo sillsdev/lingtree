@@ -27,6 +27,8 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: Run the Script_Test_Manager
-        run: ./installer/windows/BuildWin.bat
+        run: |
+          cd ./installer/windows
+          ./BuildWin.bat
         shell: cmd
   
