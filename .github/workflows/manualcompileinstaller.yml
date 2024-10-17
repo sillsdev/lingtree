@@ -30,7 +30,7 @@ jobs:
         run: |
           pwd
           ls
-          dir
+          dir ..
           cd installer/windows
           pwd
           BuildWin.bat
