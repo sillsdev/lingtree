@@ -1,4 +1,4 @@
-@echo off
+REM @echo off
 cd ../../binc
 REM jar cmf META-INF\MANIFEST.MF pcpatreditor.jar .
 REM echo java_path=%1
