@@ -1,4 +1,5 @@
 @echo off
+pwd
 echo before cd to bin
 cd ..\..\bin
 REM jar cmf META-INF\MANIFEST.MF pcpatreditor.jar .
