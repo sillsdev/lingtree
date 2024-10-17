@@ -1,7 +1,7 @@
 @echo off
 if exist installtemp rmdir installtemp /S /q
 echo 	invoking jpackage, pass 2
-%1\bin\jpackage --type exe ^
+jpackage --type exe ^
 	--copyright "2017-2024 SIL International" ^
 	--description "Linguistic Tree Editor" ^
 	--name LingTree ^

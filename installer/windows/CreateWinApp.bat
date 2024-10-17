@@ -3,7 +3,7 @@ if exist output rmdir output /S /q
 REM if exist apptemp rmdir apptemp /S /q
 echo 	invoking jpackage, pass 1
 REM use --verbose to see more
-%1\bin\jpackage --type app-image ^
+jpackage --type app-image ^
 	--input input ^
 	--dest output ^
 	--name LingTree ^
