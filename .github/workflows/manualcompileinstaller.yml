@@ -20,7 +20,9 @@ jobs:
         distribution: 'zulu'
         java-package: 'jdk+fx'
     - name: Build with Ant
-      run: ant -noinput -buildfile build.xml
+      run: |
+        ant -noinput -buildfile build.xml
+	pwd
   build_installer:
     name: Build Windows Installer
     needs: build
