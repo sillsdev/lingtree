@@ -11,6 +11,7 @@ echo 	invoking jpackage, pass 2
 	--win-menu ^
 	--win-shortcut ^
 	--license-file License.txt ^
+	--icon input/LingTree.ico ^
 	--temp installtemp ^
 	--vendor "SIL International" ^
 	--app-version 1.5.0
