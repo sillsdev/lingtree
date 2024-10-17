@@ -35,11 +35,7 @@ jobs:
         java-package: 'jdk+fx'
     - name: Run the Script_Test_Manager
       run: |
-#          pwd
-#          ls
-#          dir ..
           cd installer/windows
-#          pwd
           BuildWin.bat
       shell: cmd
 
