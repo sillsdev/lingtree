@@ -10,7 +10,7 @@ jpackage --type app-image ^
 	--main-jar lingtree.jar ^
 	--main-class org.sil.lingtree.MainApp ^
 	--icon input/LingTree.ico ^
-	--module-path %1\jmods ^
+	--module-path jmods ^
 	--vendor "SIL International"
 echo 	MoveResources
 call MoveResources.bat
