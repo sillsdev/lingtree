@@ -40,9 +40,14 @@ jobs:
         java-version: '17'
         distribution: 'zulu'
         java-package: 'jdk+fx'
-    - name: Run the Script_Test_Manager
+    - name: Look for bin directory created by ant
+      run: |
+        pwd
+        ls -l
+	ls -l bin
+      shell: bash
+    - name: Run the Windows installer batch file
       run: |
           cd installer/windows
           BuildWin.bat
       shell: cmd
-
