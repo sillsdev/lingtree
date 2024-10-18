@@ -46,7 +46,7 @@ jobs:
         distribution: 'zulu'
         java-package: 'jdk+fx'
     - name: Download bin directory
-    - uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v4
       with:
        name: bindir
     - name: Look for bin directory created by ant
