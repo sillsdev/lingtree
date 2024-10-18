@@ -23,10 +23,11 @@ jobs:
     - name: Build with Ant
       run: |
         pwd
-        ls -l
         ant -noinput -buildfile build.xml
         pwd
         ls -l
+      shell: bash
+
   build_installer:
     name: Build Windows Installer
     needs: build
