@@ -4,6 +4,7 @@
 name: Manual Compile and Build Installer
 
 on:
+  push:
   workflow_dispatch:
 
 jobs:
@@ -21,8 +22,11 @@ jobs:
         java-package: 'jdk+fx'
     - name: Build with Ant
       run: |
+        pwd
+        ls -l
         ant -noinput -buildfile build.xml
         pwd
+        ls -l
   build_installer:
     name: Build Windows Installer
     needs: build
