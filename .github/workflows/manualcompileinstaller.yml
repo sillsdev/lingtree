@@ -53,7 +53,7 @@ jobs:
       run: |
         pwd
         ls -l
-        find /d/a/lingtree -name bin
+        find /d/a/lingtree -type d -name bin
       shell: bash
     - name: Run the Windows installer batch file
       run: |
