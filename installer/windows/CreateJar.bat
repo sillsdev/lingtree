@@ -11,7 +11,8 @@ REM echo java_path=%1
 echo before jar
 jar cf lingtree.jar .
 echo copy
-copy lingtree.jar ../installer/windows/input > nul
+copy lingtree.jar ..\installer\windows\input > nul
+dir ..\installer\windows\input
 echo del
 del lingtree.jar > nul
 echo cd to installer windows
