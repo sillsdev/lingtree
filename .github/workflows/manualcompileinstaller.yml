@@ -44,7 +44,7 @@ jobs:
       run: |
         pwd
         ls -l
-	ls -l bin
+        ls -l bin
       shell: bash
     - name: Run the Windows installer batch file
       run: |
