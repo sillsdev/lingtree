@@ -38,17 +38,20 @@ jobs:
     needs: build
     runs-on: windows-latest
     steps:
-#    - uses: actions/checkout@v4
-#    - name: Set up JDK 17
-#      uses: actions/setup-java@v4
-#      with:
-#        java-version: '17'
-#        distribution: 'zulu'
-#        java-package: 'jdk+fx'
+    - uses: actions/checkout@v4
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'zulu'
+        java-package: 'jdk+fx'
     - name: Download bin directory
       uses: actions/download-artifact@v4
       with:
        name: bindir
+      run: |
+        pwd
+        ls -l
     - name: Look for bin directory created by ant
       run: |
         pwd
