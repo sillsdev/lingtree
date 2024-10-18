@@ -27,6 +27,11 @@ jobs:
         pwd
         ls -l
       shell: bash
+    - uses: actions/upload-artifact@v4
+      with:
+        name: bindir
+        path: bin
+        if-no-files-found: error
 
   build_installer:
     name: Build Windows Installer
@@ -40,6 +45,10 @@ jobs:
         java-version: '17'
         distribution: 'zulu'
         java-package: 'jdk+fx'
+    - name: Download bin directory
+    - uses: actions/download-artifact@v4
+      with:
+       name: bindir
     - name: Look for bin directory created by ant
       run: |
         pwd
