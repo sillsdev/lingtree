@@ -31,6 +31,7 @@ jobs:
       run: |
           cd installer/windows
           BuildWin.bat
+	  dir
       shell: cmd
 #    - uses: actions/upload-artifact@v4
 #      with:
