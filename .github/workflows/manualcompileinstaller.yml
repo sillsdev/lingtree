@@ -35,11 +35,11 @@ jobs:
 
     - name: Sign LingTree installer
 #    needs: build-installer
-    uses: sillsdev/codesign/.github/workflows/sign.yml@v2
-    with:
-      artifact: LingTree
-    secrets:
-      certificate: ${{ secrets.CODESIGN_LSDEVSECTIGOEV }}
+      uses: sillsdev/codesign/.github/workflows/sign.yml@v2
+      with:
+        artifact: LingTree
+      secrets:
+        certificate: ${{ secrets.CODESIGN_LSDEVSECTIGOEV }}
 
   create-release:
     name: Create Release
