@@ -5,7 +5,7 @@ name: Windows Build Installer with Version
 on:
   push:
     tags:
-      - 'v*'  # Build the app for commits that are tagged starting with 'Version ' e.g. v1.5.2
+      - 'v*'  # Build the app for commits that are tagged starting with 'v' e.g. v1.5.2
   workflow_dispatch:
 
 jobs:
