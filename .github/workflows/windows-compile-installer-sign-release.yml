@@ -1,6 +1,6 @@
 # This workflow will build a Java project with Ant
 
-name: Compile, Build Installer, Sign, and Post on release for Windows
+name: Windows Build Installer with Version
 
 on:
   push:
@@ -35,9 +35,9 @@ jobs:
             exit 1
           fi
         shell: bash
-      - name: Build version ${{ env.VERSION }}
+#      - name: Build version ${{ env.VERSION }}
 #      - uses: actions/checkout@v4
-#      - name: Set up JDK 17
+      - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           java-version: '17'
