@@ -35,7 +35,7 @@ jobs:
     - uses: actions/upload-artifact@v4
       with:
         name: LingTree
-        path: LingTree-*.exe
+        path: installer/windows/LingTree-*.exe
         if-no-files-found: error
 
   sign-installer:
@@ -43,7 +43,7 @@ jobs:
     needs: build-installer
     uses: sillsdev/codesign/.github/workflows/sign.yml@v2
     with:
-      artifact: installer/windows/LingTree
+      artifact: LingTree
     secrets:
       certificate: ${{ secrets.CODESIGN_LSDEVSECTIGOEV }}
 
