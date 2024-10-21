@@ -33,9 +33,9 @@ jobs:
           BuildWin.bat
       shell: cmd
 
+    - uses: sillsdev/codesign/.github/workflows/sign.yml@v2
     - name: Sign LingTree installer
 #    needs: build-installer
-      uses: sillsdev/codesign/.github/workflows/sign.yml@v2
       with:
         artifact: LingTree
       secrets:
