@@ -1,6 +1,6 @@
 # This workflow will build a Java project with Ant
 
-name: Compile, Build Installer, Sign, and Post on release
+name: Manual Compile and Build
 
 on:
   push:
