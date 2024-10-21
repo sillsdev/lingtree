@@ -43,7 +43,7 @@ jobs:
 
   create-release:
     name: Create Release
-    needs: sign-installer
+    needs: build
     runs-on: windows-latest
 
     steps:
