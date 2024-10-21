@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  build-installer:
 
     runs-on: windows-latest
 
@@ -33,13 +33,14 @@ jobs:
           BuildWin.bat
       shell: cmd
 
-    - uses: sillsdev/codesign/.github/workflows/sign.yml@v2
-    - name: Sign LingTree installer
-#    needs: build-installer
-      with:
-        artifact: LingTree
-      secrets:
-        certificate: ${{ secrets.CODESIGN_LSDEVSECTIGOEV }}
+  sign-installer:
+    name: Sign LoingTree installer
+    needs: build-installer
+    uses: sillsdev/codesign/.github/workflows/sign.yml@v2
+    with:
+      artifact: LingTree
+    secrets:
+      certificate: ${{ secrets.CODESIGN_LSDEVSECTIGOEV }}
 
 #  create-release:
 #    name: Create Release
