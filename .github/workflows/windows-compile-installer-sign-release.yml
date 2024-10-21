@@ -52,6 +52,12 @@ jobs:
           cd installer/windows
           BuildWin.bat
         shell: cmd
+      - name: Rename exe file with version and architecture
+        env:
+          PUBLISH_PATH: 'installer/windows'
+        run: |
+          mv ${{env.PUBLISH_PATH}}\LingTree-.exe LingTree-${{ env.VERSION }}.exe
+
       - uses: actions/upload-artifact@v4
         with:
           name: LingTree
