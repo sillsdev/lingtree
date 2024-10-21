@@ -289,4 +289,16 @@ public class TreeDrawerTest extends ServiceBaseTest {
 		node1 = node1.getDaughters().get(0);
 		assertEquals(100, node1.getXCoordinate(), 0.0);
 	}
+	
+	@Test
+	public void drawAsSVGTest() {
+		LingTreeTree origTree = new LingTreeTree();
+		LingTreeTree ltTree = TreeBuilder.parseAString("(S (NP< (\\L Juan> (\\G John))) (VP (V (\\L duerme & mas (\\G sleeps)))))", origTree);
+		drawer = new TreeDrawer(ltTree);
+		StringBuilder sb = drawer.drawAsSVG();
+		String result = sb.toString();
+		assertEquals(true, result.contains("NP&lt;"));
+		assertEquals(true, result.contains("Juan&gt;"));
+		assertEquals(true, result.contains("duerme &amp; "));
+	}
 }

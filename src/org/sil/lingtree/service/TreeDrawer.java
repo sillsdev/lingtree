@@ -431,7 +431,7 @@ public class TreeDrawer {
 		sb.append("\" fill=\"");
 		sb.append(StringUtilities.toRGBCode(fontInfo.getColor()));
 		sb.append("\">");
-		sb.append(tb.getText().replace("<", "&lt;").replace(">", "&gt;"));
+		sb.append(tb.getText().replace("<", "&lt;").replace(">", "&gt;").replace(" & ", " &amp; "));
 		sb.append("</text>\n");
 	}
 
