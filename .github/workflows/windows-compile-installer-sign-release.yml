@@ -36,8 +36,8 @@ jobs:
           fi
         shell: bash
       - name: Build version ${{ env.VERSION }}
-      - uses: actions/checkout@v4
-      - name: Set up JDK 17
+#      - uses: actions/checkout@v4
+#      - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           java-version: '17'
