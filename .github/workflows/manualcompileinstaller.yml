@@ -43,7 +43,7 @@ jobs:
     needs: build-installer
     uses: sillsdev/codesign/.github/workflows/sign.yml@v2
     with:
-      artifact: LingTree
+      artifact: installer/windows/LingTree
     secrets:
       certificate: ${{ secrets.CODESIGN_LSDEVSECTIGOEV }}
 
