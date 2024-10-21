@@ -32,9 +32,14 @@ jobs:
           cd installer/windows
           BuildWin.bat
       shell: cmd
+      - uses: actions/upload-artifact@v4
+        with:
+          name: LingTree
+          path: LingTree-*.exe
+          if-no-files-found: error
 
   sign-installer:
-    name: Sign LoingTree installer
+    name: Sign LingTree installer
     needs: build-installer
     uses: sillsdev/codesign/.github/workflows/sign.yml@v2
     with:
