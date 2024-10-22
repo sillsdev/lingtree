@@ -63,7 +63,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: LingTree
-          path: installer/windows\LingTree-*.exe
+          path: LingTree-*.exe
           if-no-files-found: error
 
   sign-installer:
