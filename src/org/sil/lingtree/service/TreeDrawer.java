@@ -237,6 +237,7 @@ public class TreeDrawer {
 		recalculateValues();
 		LingTreeNode node = ltTree.getRootNode();
 		drawNodes(node, pane);
+		pane.setMinWidth(ltTree.getXSize() + 10);
 		pane.setStyle("-fx-background-color:"
 				+ StringUtilities.toRGBCode(ltTree.getBackgroundColor()) + ";");
 	}
