@@ -225,7 +225,13 @@ public class WindowsKeyboardHandler extends KeyboardHandler {
 		try {
 			CodeSource codeSource = MainApp.class.getProtectionDomain().getCodeSource();
 			jarFile = new File(codeSource.getLocation().toURI().getPath());
-			jarDir = jarFile.getParentFile().getPath();
+			File parentFile = jarFile.getParentFile();
+			if (parentFile.getPath().toLowerCase().contains("eclipse")) {
+				jarDir = parentFile.getPath();
+			}
+			else {
+				jarDir = jarFile.getParentFile().getParentFile().getPath();
+			}
 		} catch (URISyntaxException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
