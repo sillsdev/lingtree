@@ -198,29 +198,19 @@ public class WindowsKeyboardHandler extends KeyboardHandler {
 		String progLocation = getLocationOfProgram();
 		sb.append("\"");
 		System.out.println("prog='" + progLocation + "'");
-//		System.out.println("user-dir='" + System.getProperty("user.dir") + "'" );
-//		MainApp.showDebugMessage("user-dir='" + System.getProperty("user.dir") + "'");
-		MainApp.showDebugMessage("prog='" + progLocation + "'");
+//		MainApp.showDebugMessage("prog='" + progLocation + "'");
 //		sb.append(System.getProperty("user.dir"));
 		sb.append(progLocation);
 		sb.append("\\resources\\Keyboards\\Windows\\GetKeyboardProfiles.exe\"");
 
 		final String dosCommand = sb.toString();
 		System.out.println("dosCommand='" + dosCommand + "'");
-		MainApp.showDebugMessage("dosCommand='" + dosCommand + "'");
+//		MainApp.showDebugMessage("dosCommand='" + dosCommand + "'");
 		return getCurrentEnabledKeyboardIDs(dosCommand, sLangIDs);
 	}
 
 	protected String getLocationOfProgram() {
 		String jarDir="";
-//		try {
-//			String path = MainApp.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-//			System.out.println("path='" + path + "'");
-//			jarDir = URLDecoder.decode(path, "UTF-8");
-//		} catch (UnsupportedEncodingException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
 		File jarFile;
 		try {
 			CodeSource codeSource = MainApp.class.getProtectionDomain().getCodeSource();

@@ -108,10 +108,10 @@ public class MainApp extends Application implements MainAppUtilities {
 
 	public static void main(String[] args) throws IOException {
 		userArgs = args;
-		MainApp.showDebugMessage("main:");
-		for (int i = 0; i < args.length; i++) {
-			MainApp.showDebugMessage("\ti='" + args[i] + "'");
-		}
+//		MainApp.showDebugMessage("main:");
+//		for (int i = 0; i < args.length; i++) {
+//			MainApp.showDebugMessage("\ti='" + args[i] + "'");
+//		}
 		if (userArgs.length == 0) {
 			launch(args);
 		} else if (userArgs.length == 1 && !userArgs[0].equals("-b")) {
