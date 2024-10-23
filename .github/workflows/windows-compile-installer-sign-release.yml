@@ -85,6 +85,11 @@ jobs:
         with:
           name: LingTree
 
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: '0'
+
       - name: Set VERSION (e.g. 1.0.0) and FULL_VERSION (e.g. 1.0.0-abcdef4)
         run: |
           VERSION="${GITHUB_REF#refs/tags/v}"
