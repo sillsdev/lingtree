@@ -57,9 +57,7 @@ public class ControllerUtilities {
 	public static Tooltip createToolbarButtonWithImage(String sUrl, Button buttonToolbar,
 			Tooltip buttonTooltip, String sTooltip, String sLocation) {
 		ImageView imageView = new ImageView();
-		System.out.println("toolbar prog='" + getUriOfProgram() + "'");
 		String sStandardIconURL = getUriOfProgram() + "/resources/images/" + sUrl;
-//		String sStandardIconURL = "file:resources/images/" + sUrl;
 		Image icon = getIconImageFromURL(sStandardIconURL, sLocation);
 		imageView.setImage(icon);
 		buttonToolbar.setGraphic(imageView);
@@ -73,8 +71,6 @@ public class ControllerUtilities {
 		File jarFile;
 		try {
 			CodeSource codeSource = MainApp.class.getProtectionDomain().getCodeSource();
-//			System.out.println("codesource url='" + codeSource.getLocation());
-//			System.out.println("codesource uri='" + codeSource.getLocation().toURI().getPath());
 			jarFile = new File(codeSource.getLocation().toURI().getPath());
 			File parentFile = jarFile.getParentFile();
 			if (parentFile.getPath().toLowerCase().contains("eclipse")) {

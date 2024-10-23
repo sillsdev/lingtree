@@ -197,15 +197,10 @@ public class WindowsKeyboardHandler extends KeyboardHandler {
 		StringBuilder sb = new StringBuilder();
 		String progLocation = getLocationOfProgram();
 		sb.append("\"");
-		System.out.println("prog='" + progLocation + "'");
-//		MainApp.showDebugMessage("prog='" + progLocation + "'");
-//		sb.append(System.getProperty("user.dir"));
 		sb.append(progLocation);
 		sb.append("\\resources\\Keyboards\\Windows\\GetKeyboardProfiles.exe\"");
 
 		final String dosCommand = sb.toString();
-		System.out.println("dosCommand='" + dosCommand + "'");
-//		MainApp.showDebugMessage("dosCommand='" + dosCommand + "'");
 		return getCurrentEnabledKeyboardIDs(dosCommand, sLangIDs);
 	}
 
