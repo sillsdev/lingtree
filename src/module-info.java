@@ -1,6 +1,7 @@
 module org.sil.lingtree {
 	// Exports
 	exports org.sil.lingtree;
+	exports org.sil.lingtree.backendprovider;
 	exports org.sil.lingtree.model;
 	exports org.sil.lingtree.descriptionparser;
 	exports org.sil.lingtree.descriptionparser.antlr4generated;
