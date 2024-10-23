@@ -85,6 +85,15 @@ jobs:
         with:
           name: LingTree
 
+      - name: Set VERSION (e.g. 1.0.0) and FULL_VERSION (e.g. 1.0.0-abcdef4)
+        run: |
+          VERSION="${GITHUB_REF#refs/tags/v}"
+          SHORT_SHA=$(git rev-parse --short HEAD)
+          FULL_VERSION="${VERSION}-${SHORT_SHA}"
+          echo "VERSION=${VERSION}" >> $GITHUB_ENV
+          echo "FULL_VERSION=${FULL_VERSION}" >> $GITHUB_ENV
+        shell: bash
+
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
