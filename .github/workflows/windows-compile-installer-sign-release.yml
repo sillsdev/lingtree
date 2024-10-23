@@ -5,8 +5,9 @@ name: Windows Build Installer with Version
 on:
   push:
     tags:
-      - 'v*'  # Build the app for commits that are tagged starting with 'v' e.g. v1.5.2
-  workflow_dispatch:
+      - 'v*'  # Build the app for commits that are tagged starting with 'v' e.g. v1.2.3
+      # to tag a commit, use "git tag v1.2.3"
+      # when you then use "git push origin v1.2.3" this workflow will be invoked
 
 jobs:
   build-installer:
@@ -22,7 +23,6 @@ jobs:
       - name: Set VERSION (e.g. 1.0.0) and FULL_VERSION (e.g. 1.0.0-abcdef4)
         run: |
           VERSION="${GITHUB_REF#refs/tags/v}"
-          echo ${VERSION}
           SHORT_SHA=$(git rev-parse --short HEAD)
           FULL_VERSION="${VERSION}-${SHORT_SHA}"
           echo "VERSION=${VERSION}" >> $GITHUB_ENV
@@ -88,7 +88,7 @@ jobs:
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
-          files: LingTree-*.exe
+          files: LingTree-${{ env.VERSION }}.exe
           body: |
             Release for version ${{ github.ref }}
           draft: true
