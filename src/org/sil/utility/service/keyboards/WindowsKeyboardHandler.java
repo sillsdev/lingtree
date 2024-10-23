@@ -19,6 +19,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.sil.lingtree.MainApp;
 import org.sil.utility.view.ControllerUtilities;
 
 import javafx.stage.Stage;
@@ -191,10 +192,14 @@ public class WindowsKeyboardHandler extends KeyboardHandler {
 	protected int getCurrentWindowsLangIDs(String[] sLangIDs) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("\"");
+		System.out.println("user-dir='" + System.getProperty("user.dir") + "'" );
+		MainApp.showDebugMessage("user-dir='" + System.getProperty("user.dir") + "'");
 		sb.append(System.getProperty("user.dir"));
 		sb.append("\\resources\\Keyboards\\Windows\\GetKeyboardProfiles.exe\"");
 
 		final String dosCommand = sb.toString();
+		System.out.println("dosCommand='" + dosCommand + "'");
+		MainApp.showDebugMessage("dosCommand='" + dosCommand + "'");
 		return getCurrentEnabledKeyboardIDs(dosCommand, sLangIDs);
 	}
 

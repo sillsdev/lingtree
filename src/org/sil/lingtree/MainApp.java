@@ -108,6 +108,10 @@ public class MainApp extends Application implements MainAppUtilities {
 
 	public static void main(String[] args) throws IOException {
 		userArgs = args;
+		MainApp.showDebugMessage("main:");
+		for (int i = 0; i < args.length; i++) {
+			MainApp.showDebugMessage("\ti='" + args[i] + "'");
+		}
 		if (userArgs.length == 0) {
 			launch(args);
 		} else if (userArgs.length == 1 && !userArgs[0].equals("-b")) {
@@ -383,4 +387,16 @@ public class MainApp extends Application implements MainAppUtilities {
 		System.exit(1);
 	}
 
+	public static void showDebugMessage(String msg) {
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				Alert alert = new Alert(AlertType.CONFIRMATION);
+				alert.setTitle("Debug message");
+				alert.setHeaderText("debugging");
+				alert.setContentText(msg);
+				alert.showAndWait();
+			}
+		});
+	}
 }
