@@ -7,8 +7,12 @@ package org.sil.utility.service.keyboards;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URISyntaxException;
+import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.security.CodeSource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -191,16 +195,42 @@ public class WindowsKeyboardHandler extends KeyboardHandler {
 
 	protected int getCurrentWindowsLangIDs(String[] sLangIDs) {
 		StringBuilder sb = new StringBuilder();
+		String progLocation = getLocationOfProgram();
 		sb.append("\"");
-		System.out.println("user-dir='" + System.getProperty("user.dir") + "'" );
-		MainApp.showDebugMessage("user-dir='" + System.getProperty("user.dir") + "'");
-		sb.append(System.getProperty("user.dir"));
+		System.out.println("prog='" + progLocation + "'");
+//		System.out.println("user-dir='" + System.getProperty("user.dir") + "'" );
+//		MainApp.showDebugMessage("user-dir='" + System.getProperty("user.dir") + "'");
+		MainApp.showDebugMessage("prog='" + progLocation + "'");
+//		sb.append(System.getProperty("user.dir"));
+		sb.append(progLocation);
 		sb.append("\\resources\\Keyboards\\Windows\\GetKeyboardProfiles.exe\"");
 
 		final String dosCommand = sb.toString();
 		System.out.println("dosCommand='" + dosCommand + "'");
 		MainApp.showDebugMessage("dosCommand='" + dosCommand + "'");
 		return getCurrentEnabledKeyboardIDs(dosCommand, sLangIDs);
+	}
+
+	protected String getLocationOfProgram() {
+		String jarDir="";
+//		try {
+//			String path = MainApp.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+//			System.out.println("path='" + path + "'");
+//			jarDir = URLDecoder.decode(path, "UTF-8");
+//		} catch (UnsupportedEncodingException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+		File jarFile;
+		try {
+			CodeSource codeSource = MainApp.class.getProtectionDomain().getCodeSource();
+			jarFile = new File(codeSource.getLocation().toURI().getPath());
+			jarDir = jarFile.getParentFile().getPath();
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return jarDir;
 	}
 
 	@Override
