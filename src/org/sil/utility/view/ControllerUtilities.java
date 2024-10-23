@@ -10,7 +10,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.security.CodeSource;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
@@ -20,6 +22,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.controlsfx.control.StatusBar;
 import org.sil.utility.service.ValidLocaleCollector;
+import org.sil.lingtree.MainApp;
 import org.sil.utility.ApplicationPreferencesUtilities;
 import org.sil.utility.MainAppUtilities;
 import org.sil.utility.StringUtilities;
@@ -54,13 +57,37 @@ public class ControllerUtilities {
 	public static Tooltip createToolbarButtonWithImage(String sUrl, Button buttonToolbar,
 			Tooltip buttonTooltip, String sTooltip, String sLocation) {
 		ImageView imageView = new ImageView();
-		String sStandardIconURL = "file:resources/images/" + sUrl;
+		System.out.println("toolbar prog='" + getUriOfProgram() + "'");
+		String sStandardIconURL = getUriOfProgram() + "/resources/images/" + sUrl;
+//		String sStandardIconURL = "file:resources/images/" + sUrl;
 		Image icon = getIconImageFromURL(sStandardIconURL, sLocation);
 		imageView.setImage(icon);
 		buttonToolbar.setGraphic(imageView);
 		buttonTooltip = new Tooltip(sTooltip);
 		buttonToolbar.setTooltip(buttonTooltip);
 		return buttonTooltip;
+	}
+
+	protected static String getUriOfProgram() {
+		String uriOfProgram="";
+		File jarFile;
+		try {
+			CodeSource codeSource = MainApp.class.getProtectionDomain().getCodeSource();
+//			System.out.println("codesource url='" + codeSource.getLocation());
+//			System.out.println("codesource uri='" + codeSource.getLocation().toURI().getPath());
+			jarFile = new File(codeSource.getLocation().toURI().getPath());
+			File parentFile = jarFile.getParentFile();
+			if (parentFile.getPath().toLowerCase().contains("eclipse")) {
+				uriOfProgram = parentFile.toURI().toString();
+			}
+			else {
+				uriOfProgram = jarFile.getParentFile().getParentFile().toURI().toString();
+			}
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return uriOfProgram;
 	}
 
 	public static Image getIconImageFromURL(String sStandardIconURL, String sLocation) {
