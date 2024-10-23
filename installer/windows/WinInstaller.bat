@@ -5,7 +5,7 @@ jpackage --type exe ^
 	--copyright "2017-2024 SIL International" ^
 	--description "Linguistic Tree Editor" ^
 	--name LingTree ^
-	--install-dir "SIL\LingTree17" ^
+	--install-dir "SIL\LingTree" ^
 	--resource-dir input/resources ^
 	--app-image output/LingTree ^
 	--win-menu ^
@@ -13,4 +13,5 @@ jpackage --type exe ^
 	--license-file License.txt ^
 	--icon input/LingTree.ico ^
 	--temp installtemp ^
+	--file-associations lingtree.properties ^
 	--vendor "SIL International" 
