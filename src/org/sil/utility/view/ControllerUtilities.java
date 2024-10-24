@@ -74,9 +74,11 @@ public class ControllerUtilities {
 			jarFile = new File(codeSource.getLocation().toURI().getPath());
 			File parentFile = jarFile.getParentFile();
 			if (parentFile.getPath().toLowerCase().contains("eclipse")) {
+				// When using the Eclipse IDE we need this
 				uriOfProgram = parentFile.toURI().toString();
 			}
 			else {
+				// The installed version needs this
 				uriOfProgram = jarFile.getParentFile().getParentFile().toURI().toString();
 			}
 		} catch (URISyntaxException e) {

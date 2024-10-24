@@ -212,9 +212,11 @@ public class WindowsKeyboardHandler extends KeyboardHandler {
 			jarFile = new File(codeSource.getLocation().toURI().getPath());
 			File parentFile = jarFile.getParentFile();
 			if (parentFile.getPath().toLowerCase().contains("eclipse")) {
+				// when using the Eclipse IDE, we need this
 				jarDir = parentFile.getPath();
 			}
 			else {
+				// The installed version needs this
 				jarDir = jarFile.getParentFile().getParentFile().getPath();
 			}
 		} catch (URISyntaxException e) {
