@@ -45,5 +45,9 @@ installer/windows/installtemp
 installer/windows/META-INF
 installer/windows/*.exe
 
-installer/linux
+installer/linux/input
+installer/linux/output
+installer/linux/installtemp
+installer/linux/META-INF
+installer/linux/*.deb
 installer/macos

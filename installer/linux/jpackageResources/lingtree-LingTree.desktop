@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Name=LingTree
+Comment=Linguistic Tree Editor
+Exec=/opt/sil/lingtree/bin/PcPatrEditor
+Path=/opt/sil/lingtree/bin
+Icon=/opt/sil/lingtree/lib/LingTree.png
+Terminal=false
+Type=Application
+Categories=Education
+MimeType=text/tre
