@@ -52,7 +52,7 @@ jobs:
       - name: Run the Linux installer script
         run: |
           cd installer/linux
-          BuildLinux.sh
+          ./BuildLinux.sh
         shell: bash
       - name: Rename deb file with version and architecture
         env:
