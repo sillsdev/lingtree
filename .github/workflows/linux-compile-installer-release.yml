@@ -68,7 +68,7 @@ jobs:
 
   create-release:
     name: Create Release
-    needs: sign-installer
+    needs: build-installer
     runs-on: ubuntu-latest
 
     steps:
