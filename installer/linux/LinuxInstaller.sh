@@ -4,7 +4,7 @@ if [ -d installtemp ]; then
  rm -rf installtemp
 fi
 echo "	invoking jpackage, part 2"
-VERSION=1.5.2
+VERSION=$1
 # 	--verbose \
 #	--linux-shortcut \
 jpackage --type deb \

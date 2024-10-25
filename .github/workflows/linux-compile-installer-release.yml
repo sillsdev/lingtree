@@ -52,7 +52,8 @@ jobs:
       - name: Run the Linux installer script
         run: |
           cd installer/linux
-          ./BuildLinux.sh
+          chmod +x *.sh
+          ./BuildLinux.sh ${{ env.VERSION }}
         shell: bash
       - name: Rename deb file with version and architecture
         env:
