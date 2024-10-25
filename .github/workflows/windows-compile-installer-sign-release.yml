@@ -48,6 +48,7 @@ jobs:
       - name: Build with Ant
         run: |
           ant -noinput -buildfile build.xml
+          echo $JAVA_HOME
         shell: bash
       - name: Run the Windows installer batch file
         run: |
