@@ -5,12 +5,12 @@ if [ ! -d input/libs ]; then
 else
  rm -r input/libs/* > /dev/null
 fi
-cp ../../libs/ANTLR/* input/libs > /dev/null
-cp ../../libs/ControlsFX/* input/libs > /dev/null
-cp ../../libs/JAXB/* input/libs > /dev/null
-cp ../../libs/jna input/libs > /dev/null
-cp ../../libs/json input/libs > /dev/null
-cp ../../libs/Richtextfx/* input/libs > /dev/null
+cp -r ../../libs/ANTLR/* input/libs > /dev/null
+cp -r ../../libs/ControlsFX/* input/libs > /dev/null
+cp -r ../../libs/JAXB/* input/libs > /dev/null
+cp -r ../../libs/jna input/libs > /dev/null
+cp -r ../../libs/json input/libs > /dev/null
+cp -r ../../libs/Richtextfx/* input/libs > /dev/null
 
 echo "	Documentation"
 if [ ! -d input/doc ]; then
@@ -18,7 +18,7 @@ if [ ! -d input/doc ]; then
 else
  rm -r input/doc/* > /dev/null
 fi
-cp ../../doc/*.pdf input/doc > /dev/null
+cp -r ../../doc/*.pdf input/doc > /dev/null
 
 echo "	Resources"
 if [ ! -d input/resources ]; then
@@ -27,7 +27,7 @@ else
  rm -r input/resources/* > /dev/null
 fi
 cp -r ../../src/org/sil/lingtree/resources input/resources
-cp LongTree.png input/LingTree.png > /dev/null
+cp LingTree.png input/LingTree.png > /dev/null
 
 echo "	Jar file"
 ./CreateJar.sh

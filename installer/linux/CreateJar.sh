@@ -1,6 +1,6 @@
 #! /usr/bin/bash
 
-cd ../../mods
+cd ../../bin
 # jar cmf META-INF/MANIFEST.MF pcpatreditor.jar .
 jar cf lingtree.jar .
 cp lingtree.jar ../installer/linux/input > nul
