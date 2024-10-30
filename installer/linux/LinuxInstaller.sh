@@ -20,4 +20,4 @@ jpackage --type deb \
 	--temp installtemp \
 	--file-associations lingtree.properties \
 	--vendor "SIL International"
-./FixDesktopShortcutInDebFile.sh $VERSION
+# ./FixDesktopShortcutInDebFile.sh $VERSION
