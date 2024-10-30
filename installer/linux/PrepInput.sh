@@ -18,7 +18,7 @@ if [ ! -d input/doc ]; then
 else
  rm -r input/doc/* > /dev/null
 fi
-cp -r ../../doc/*.pdf input/doc > /dev/null
+cp -R ../../doc/*.pdf input/doc > /dev/null
 
 echo "	Resources"
 if [ ! -d input/resources ]; then
@@ -26,7 +26,7 @@ if [ ! -d input/resources ]; then
 else
  rm -r input/resources/* > /dev/null
 fi
-cp -r ../../src/org/sil/lingtree/resources input/resources
+cp -R ../../src/org/sil/lingtree/resources input/resources
 cp LingTree.png input/LingTree.png > /dev/null
 
 echo "	Jar file"
