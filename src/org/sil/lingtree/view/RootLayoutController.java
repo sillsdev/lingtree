@@ -9,7 +9,9 @@ package org.sil.lingtree.view;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.security.CodeSource;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -819,6 +821,10 @@ public class RootLayoutController implements Initializable {
 			try {
 				File myFile = new File(sFileToShow);
 				MainApp.showDebugMessage(myFile.getAbsolutePath());
+				if (!myFile.exists()) {
+					String sUriOfProgram = getUriOfProgram();
+					MainApp.showDebugMessage(sUriOfProgram);
+				}
 				String sOS = mainApp.getOperatingSystem().toLowerCase();
 				if (sOS.contains("linux")) {
 					Runtime.getRuntime().exec(new String[] { "xdg-open", myFile.getAbsolutePath() });
@@ -838,6 +844,28 @@ public class RootLayoutController implements Initializable {
 				MainApp.reportException(ex, null);
 			}
 		}
+	}
+
+	protected String getUriOfProgram() {
+		String uriOfProgram="";
+		File jarFile;
+		try {
+			CodeSource codeSource = MainApp.class.getProtectionDomain().getCodeSource();
+			jarFile = new File(codeSource.getLocation().toURI().getPath());
+			File parentFile = jarFile.getParentFile();
+			if (parentFile.getPath().toLowerCase().contains("eclipse")) {
+				// When using the Eclipse IDE we need this
+				uriOfProgram = parentFile.toURI().toString();
+			}
+			else {
+				// The installed version needs this
+				uriOfProgram = jarFile.getParentFile().getParentFile().toURI().toString();
+			}
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return uriOfProgram;
 	}
 
 
