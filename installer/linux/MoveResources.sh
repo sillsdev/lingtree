@@ -4,5 +4,5 @@
 # we run from bin and the executable looks here for the resources
 cp -r input/resources/* output/LingTree/lib/resources > /dev/null
 #rm -r input/LingTree/lib/app/resources > /dev/null
-cp -r input/doc/* output/LingTree/lib/doc > /dev/null
+cp -r input/doc output/LingTree/lib > /dev/null
 #rm -r input/LingTree/lib/app/doc > /dev/null

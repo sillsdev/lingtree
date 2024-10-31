@@ -95,6 +95,12 @@ public class ControllerUtilities {
 			String sSourcePath = sStandardIconURL.substring(0, 5) + sLocation
 					+ sStandardIconURL.substring(5);
 			icon = new Image(sSourcePath);
+			if (icon.getHeight() == 0) {
+				// failed again; try this; had problems on Linux
+				String sUriOfProgram = getUriOfProgram();
+				String sPathToTry = sUriOfProgram + sStandardIconURL;
+				icon = new Image(sPathToTry);
+			}
 		}
 		return icon;
 	}
