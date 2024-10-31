@@ -98,7 +98,7 @@ public class ControllerUtilities {
 			if (icon.getHeight() == 0) {
 				// failed again; try this; had problems on Linux
 				String sUriOfProgram = getUriOfProgram();
-				String sPathToTry = "file:" + sUriOfProgram + sStandardIconURL.substring(5);
+				String sPathToTry = sUriOfProgram + sStandardIconURL.substring(5);
 				MainApp.showDebugMessage(sPathToTry);
 				icon = new Image(sPathToTry);
 			}
