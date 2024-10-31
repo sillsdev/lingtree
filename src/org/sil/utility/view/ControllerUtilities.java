@@ -99,7 +99,6 @@ public class ControllerUtilities {
 				// failed again; try this; had problems on Linux
 				String sUriOfProgram = getUriOfProgram();
 				String sPathToTry = sUriOfProgram + sStandardIconURL.substring(5);
-				MainApp.showDebugMessage(sPathToTry);
 				icon = new Image(sPathToTry);
 			}
 		}
