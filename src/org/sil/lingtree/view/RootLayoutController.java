@@ -820,14 +820,11 @@ public class RootLayoutController implements Initializable {
 		if (Desktop.isDesktopSupported()) {
 			try {
 				File myFile = new File(sFileToShow);
-				MainApp.showDebugMessage(myFile.getAbsolutePath());
 				if (!myFile.exists()) {
+					// this can happen on Linux
 					String sUriOfProgram = getUriOfProgram();
-					MainApp.showDebugMessage(sUriOfProgram);
 					String sPathToTry = sUriOfProgram.substring(5) + sFileToShow;
-					MainApp.showDebugMessage(sPathToTry);
 					myFile = new File(sPathToTry);
-					MainApp.showDebugMessage(myFile.getAbsolutePath());
 				}
 				String sOS = mainApp.getOperatingSystem().toLowerCase();
 				if (sOS.contains("linux")) {
