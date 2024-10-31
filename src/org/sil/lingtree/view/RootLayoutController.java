@@ -818,6 +818,7 @@ public class RootLayoutController implements Initializable {
 		if (Desktop.isDesktopSupported()) {
 			try {
 				File myFile = new File(sFileToShow);
+				MainApp.showDebugMessage(myFile.getAbsolutePath());
 				String sOS = mainApp.getOperatingSystem().toLowerCase();
 				if (sOS.contains("linux")) {
 					Runtime.getRuntime().exec(new String[] { "xdg-open", myFile.getAbsolutePath() });
