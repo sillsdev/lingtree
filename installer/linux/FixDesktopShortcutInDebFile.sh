@@ -11,7 +11,7 @@ DEB_FILE=`ls lingtree_1.0-1_amd64.deb`
 echo $DEB_FILE
 dpkg-deb -R $DEB_FILE debtemp
 echo "what's in the debtemp dir"
-ls -R debtemp
+ls -l debtemp/opt/sil/lingtree/lib
 sed '/^Exec=*/a Path=/opt/sil/lingtree/bin/' debtemp/opt/sil/lingtree/lib/lingtree-LingTree.desktop >debtemp/opt/sil/lingtree/lib/lingtree-LingTree2.desktop
 rm debtemp/opt/sil/lingtree/lib/lingtree-LingTree.desktop
 mv debtemp/opt/sil/lingtree/lib/lingtree-Lingtree2.desktop debtemp/opt/sil/lingtree/lib/lingtree-LingTree.desktop
