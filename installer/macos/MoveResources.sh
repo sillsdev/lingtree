@@ -7,9 +7,14 @@ echo 'input/resources has'
 ls -l -R input/resources
 echo 'before input chmod'
 chmod +x input/resources/Keyboards/macOS/xkbswitch
+echo 'after input chmod'
+ls -l -R input/resources
+mkdir -p output/LingTree/resources
+echo 'after making dirs'
+ls -l -R output/LingTree
 echo 'before copy'
 ls -l -R output/LingTree/
-cp -r input/resources output/LingTree/resources > /dev/null
+cp -r input/resources/* output/LingTree/resources > /dev/null
 echo 'after copy'
 ls -l -R output/LingTree/
 chmod +x output/LingTree/resources/Keyboards/macOS/xkbswitch
