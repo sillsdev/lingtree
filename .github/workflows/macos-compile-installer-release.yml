@@ -60,7 +60,7 @@ jobs:
           PUBLISH_PATH: 'installer/macos'
         run: |
           ls -l ${{env.PUBLISH_PATH}}
-          mv ${{env.PUBLISH_PATH}}/lingtree_1.0-.dmg LingTree-${{ env.VERSION }}.dmg
+          mv ${{env.PUBLISH_PATH}}/lingtree_1.0.dmg LingTree-${{ env.VERSION }}.dmg
 
       - uses: actions/upload-artifact@v4
         with:
