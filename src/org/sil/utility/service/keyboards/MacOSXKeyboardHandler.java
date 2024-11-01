@@ -27,7 +27,7 @@ public class MacOSXKeyboardHandler extends KeyboardHandler {
 	public boolean changeToKeyboard(KeyboardInfo keyboard, Stage stage) {
 		StringBuilder sb = new StringBuilder();
 		sb.append(System.getProperty("user.dir"));
-		sb.append("/resources/Keyboards/macOS/xkbswitch -se ");
+		sb.append(kXkbSwitch + " -se ");
 		sb.append(keyboard.getMacDescription());
 
 		final String command = sb.toString();
