@@ -14,7 +14,7 @@ echo 'after making dirs'
 ls -l -R output/LingTree
 echo 'before copy'
 ls -l -R output/LingTree/
-cp -r input/resources/* output/LingTree/resources > /dev/null
+cp -r input/resources output/LingTree/ > /dev/null
 echo 'after copy'
 ls -l -R output/LingTree/
 chmod +x output/LingTree/resources/Keyboards/macOS/xkbswitch
