@@ -26,7 +26,7 @@ if [ ! -d input/resources ]; then
 else
  rm -r input/resources/* > /dev/null
 fi
-cp -R ../../src/org/sil/lingtree/resources input/resources
+cp -r ../../src/org/sil/lingtree/resources input
 cp ../../src/org/sil/lingtree/resources/images/LingTree.icns input/LingTree.icns > /dev/null
 
 echo "	Jar file"
