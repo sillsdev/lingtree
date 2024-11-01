@@ -4,7 +4,7 @@
 # cp -r input/resources output/ > /dev/null
 # we run from bin and the executable looks here for the resources
 echo 'input has'
-ls -l -R inout/resources
+ls -l -R input/resources
 echo 'before copy'
 ls -l -R output/LingTree/
 cp -r input/resources output/LingTree > /dev/null

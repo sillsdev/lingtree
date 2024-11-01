@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.sil.lingtree.MainApp;
 import org.sil.utility.view.ControllerUtilities;
 
 import javafx.stage.Stage;
@@ -31,6 +32,7 @@ public class MacOSXKeyboardHandler extends KeyboardHandler {
 		sb.append(keyboard.getMacDescription());
 
 		final String command = sb.toString();
+		MainApp.showDebugMessage(command);
 		return invokeTerminalCommand(command);
 	}
 
@@ -90,6 +92,7 @@ public class MacOSXKeyboardHandler extends KeyboardHandler {
 		sb.append(kXkbSwitch + " -ge");
 
 		final String command = sb.toString();
+		MainApp.showDebugMessage(command);
 		invokeTerminalCommand(command);
 		try {
 			final Process process = Runtime.getRuntime().exec(command);
@@ -123,6 +126,7 @@ public class MacOSXKeyboardHandler extends KeyboardHandler {
 		sb.append(sCurrentKeyboardName);
 
 		final String command = sb.toString();
+		MainApp.showDebugMessage(command);
 		invokeTerminalCommand(command);
 	}
 
