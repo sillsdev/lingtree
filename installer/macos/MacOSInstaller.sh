@@ -9,7 +9,7 @@ jpackage --type dmg \
 	--copyright "2021-2024 SIL International" \
 	--description "Linguistic Tree Editor" \
 	--name LingTree \
-	--resource-dir jpackageResources \
+	--resource-dir input/resources \
 	--app-image output/LingTree.app \
     --mac-package-name "Linguistic Tree Editor" \
 	--license-file License.txt \
