@@ -66,7 +66,7 @@ public class ControllerUtilities {
 		return buttonTooltip;
 	}
 
-	protected static String getUriOfProgram() {
+	public static String getUriOfProgram() {
 		String uriOfProgram="";
 		File jarFile;
 		try {
