@@ -21,12 +21,13 @@ import javafx.stage.Stage;
 public class MacOSXKeyboardHandler extends KeyboardHandler {
 
 	String sCurrentKeyboardName = "";
+	final String kXkbSwitch = "/resources/Keyboards/macOS/xkbswitch";
 
 	@Override
 	public boolean changeToKeyboard(KeyboardInfo keyboard, Stage stage) {
 		StringBuilder sb = new StringBuilder();
 		sb.append(System.getProperty("user.dir"));
-		sb.append("/resources/Keyboards/MacOSX/xkbswitch -se ");
+		sb.append("/resources/Keyboards/macOS/xkbswitch -se ");
 		sb.append(keyboard.getMacDescription());
 
 		final String command = sb.toString();
@@ -86,7 +87,7 @@ public class MacOSXKeyboardHandler extends KeyboardHandler {
 	public void rememberCurrentKeyboard() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(System.getProperty("user.dir"));
-		sb.append("/resources/Keyboards/MacOSX/xkbswitch -ge");
+		sb.append(kXkbSwitch + " -ge");
 
 		final String command = sb.toString();
 		invokeTerminalCommand(command);
@@ -118,7 +119,7 @@ public class MacOSXKeyboardHandler extends KeyboardHandler {
 	public void restoreCurrentKeyboard() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(System.getProperty("user.dir"));
-		sb.append("/resources/Keyboards/MacOSX/xkbswitch -se ");
+		sb.append(kXkbSwitch + " -se ");
 		sb.append(sCurrentKeyboardName);
 
 		final String command = sb.toString();
@@ -128,7 +129,7 @@ public class MacOSXKeyboardHandler extends KeyboardHandler {
 	protected int getCurrentMacOSXKeyboardIDs(String[] sLangIDs) {
 		StringBuilder sb = new StringBuilder();
 		sb.append(System.getProperty("user.dir"));
-		sb.append("/resources/Keyboards/MacOSX/xkbswitch -l");
+		sb.append(kXkbSwitch + " -l");
 
 		final String command = sb.toString();
 		return getCurrentEnabledKeyboardIDs(command, sLangIDs);
