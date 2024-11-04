@@ -80,6 +80,10 @@ public class ControllerUtilities {
 			else {
 				// The installed version needs this
 				uriOfProgram = jarFile.getParentFile().getParentFile().toURI().toString();
+				String sOS = System.getProperty("os.name");
+				if (sOS.toLowerCase().contains("mac")) {
+					uriOfProgram = uriOfProgram.replaceFirst("Contents", "Contents/app");
+				}
 			}
 		} catch (URISyntaxException e) {
 			// TODO Auto-generated catch block
