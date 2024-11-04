@@ -21,7 +21,7 @@ module org.sil.lingtree {
 
 	// JavaFX
 	requires transitive javafx.controls;
-	requires javafx.fxml;
+	requires transitive javafx.fxml;
 	requires javafx.graphics;
 	requires javafx.swing;
 	requires javafx.web;
@@ -46,7 +46,7 @@ module org.sil.lingtree {
 	requires javafx.base;
 	requires javafx.media;
 	requires java.base;
-	requires richtextfx.fat;
+	requires transitive richtextfx.fat;
 	requires json.simple;
 //	requires org.sil.utility;
 }
