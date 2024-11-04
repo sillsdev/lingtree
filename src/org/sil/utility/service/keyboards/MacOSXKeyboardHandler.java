@@ -27,8 +27,7 @@ public class MacOSXKeyboardHandler extends KeyboardHandler {
 	@Override
 	public boolean changeToKeyboard(KeyboardInfo keyboard, Stage stage) {
 		StringBuilder sb = new StringBuilder();
-		String sUriOfProgram = ControllerUtilities.getUriOfProgram();
-		sb.append(System.getProperty(sUriOfProgram));
+		sb.append(ControllerUtilities.getUriOfProgram());
 //		sb.append(System.getProperty("user.dir"));
 		sb.append(kXkbSwitch + " -se ");
 		sb.append(keyboard.getMacDescription());
@@ -90,8 +89,7 @@ public class MacOSXKeyboardHandler extends KeyboardHandler {
 	@Override
 	public void rememberCurrentKeyboard() {
 		StringBuilder sb = new StringBuilder();
-		String sUriOfProgram = ControllerUtilities.getUriOfProgram();
-		sb.append(System.getProperty(sUriOfProgram));
+		sb.append(ControllerUtilities.getUriOfProgram());
 //		sb.append(System.getProperty("user.dir"));
 		sb.append(kXkbSwitch + " -ge");
 
@@ -125,8 +123,7 @@ public class MacOSXKeyboardHandler extends KeyboardHandler {
 	@Override
 	public void restoreCurrentKeyboard() {
 		StringBuilder sb = new StringBuilder();
-		String sUriOfProgram = ControllerUtilities.getUriOfProgram();
-		sb.append(System.getProperty(sUriOfProgram));
+		sb.append(ControllerUtilities.getUriOfProgram());
 		sb.append(kXkbSwitch + " -se ");
 		sb.append(sCurrentKeyboardName);
 
@@ -137,9 +134,7 @@ public class MacOSXKeyboardHandler extends KeyboardHandler {
 
 	protected int getCurrentMacOSXKeyboardIDs(String[] sLangIDs) {
 		StringBuilder sb = new StringBuilder();
-		String sUriOfProgram = ControllerUtilities.getUriOfProgram();
-		sb.append(System.getProperty(sUriOfProgram));
-//		sb.append(System.getProperty("user.dir"));
+		sb.append(ControllerUtilities.getUriOfProgram());
 		sb.append(kXkbSwitch + " -l");
 
 		final String command = sb.toString();

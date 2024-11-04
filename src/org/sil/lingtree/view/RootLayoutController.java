@@ -803,28 +803,6 @@ public class RootLayoutController implements Initializable {
 		alert.setTitle(sAboutHeader);
 		alert.setHeaderText(null);
 		alert.setContentText(sAboutContent);
-
-//		String sStandardIconURL = "file:resources/images/SILLogo.png";
-//		Image icon = new Image(sStandardIconURL);
-//		MainApp.showDebugMessage("first icon attempt:" + icon.getHeight());
-//		if (icon.getHeight() == 0) {
-//			// normal location failed; try this one
-//			String sSourcePath = sStandardIconURL.substring(0, 5) + Constants.RESOURCE_SOURCE_LOCATION
-//					+ sStandardIconURL.substring(5);
-//			MainApp.showDebugMessage("sSourcePath='" + sSourcePath + "'");
-//			icon = new Image(sSourcePath);
-//			MainApp.showDebugMessage("second icon attempt:" + icon.getHeight());
-//			if (icon.getHeight() == 0) {
-//				// failed again; try this; had problems on Linux
-//				String sUriOfProgram = getUriOfProgram();
-//				MainApp.showDebugMessage("sUriOfProgram='" + sUriOfProgram + "'");
-//				String sPathToTry = sUriOfProgram + sStandardIconURL.substring(5);
-//				MainApp.showDebugMessage("sPathToTry='" + sPathToTry + "'");
-//				icon = new Image(sPathToTry);
-//				MainApp.showDebugMessage("third icon attempt:" + icon.getHeight());
-//			}
-//		}
-
 		Image silLogo = ControllerUtilities.getIconImageFromURL(
 				"file:resources/images/SILLogo.png", Constants.RESOURCE_SOURCE_LOCATION);
 		alert.setGraphic(new ImageView(silLogo));
@@ -844,10 +822,8 @@ public class RootLayoutController implements Initializable {
 				File myFile = new File(sFileToShow);
 				if (!myFile.exists()) {
 					// this can happen on Linux
-					String sUriOfProgram = getUriOfProgram();
-					MainApp.showDebugMessage("showFileToUser: sUriOfProgram='" + sUriOfProgram + "'");
+					String sUriOfProgram = ControllerUtilities.getUriOfProgram();
 					String sPathToTry = sUriOfProgram.substring(5) + sFileToShow;
-					MainApp.showDebugMessage("showFileToUser: sPathToTry='" + sPathToTry + "'");
 					myFile = new File(sPathToTry);
 				}
 				String sOS = mainApp.getOperatingSystem().toLowerCase();
@@ -870,33 +846,6 @@ public class RootLayoutController implements Initializable {
 			}
 		}
 	}
-
-	protected String getUriOfProgram() {
-		String uriOfProgram="";
-		File jarFile;
-		try {
-			CodeSource codeSource = MainApp.class.getProtectionDomain().getCodeSource();
-			jarFile = new File(codeSource.getLocation().toURI().getPath());
-			File parentFile = jarFile.getParentFile();
-			if (parentFile.getPath().toLowerCase().contains("eclipse")) {
-				// When using the Eclipse IDE we need this
-				uriOfProgram = parentFile.toURI().toString();
-			}
-			else {
-				// The installed version needs this
-				uriOfProgram = jarFile.getParentFile().getParentFile().toURI().toString();
-				String sOS = mainApp.getOperatingSystem().toLowerCase();
-				if (sOS.toLowerCase().contains("mac")) {
-					uriOfProgram = uriOfProgram.replaceFirst("Contents", "Contents/app");
-				}
-			}
-		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return uriOfProgram;
-	}
-
 
 	@FXML
 	protected void handleCopy() {
