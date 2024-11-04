@@ -28,6 +28,7 @@ else
 fi
 cp -r ../../src/org/sil/lingtree/resources input
 cp ../../src/org/sil/lingtree/resources/images/LingTree.icns input/LingTree.icns > /dev/null
+chmod +x input/resources/Keyboards/macOS/*
 
 echo "	Jar file"
 ./CreateJar.sh
