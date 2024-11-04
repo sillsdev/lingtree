@@ -6,4 +6,7 @@ xcopy output\LingTree\app\doc output\LingTree\doc /E/s/i > nul
 rmdir output\LingTree\app\doc /S /q > nul
 copy LTBatch.bat output\LingTree\app /Y  > nul
 echo java home="%JAVA_HOME%"
+dir %JAVA_HOME%
+echo bin dir
+dir %JAVA_HOME%\bin
 copy %JAVA_HOME%\bin\java.exe output\LingTree\runtime\bin /Y > nul
