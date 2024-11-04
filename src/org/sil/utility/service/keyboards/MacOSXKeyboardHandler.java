@@ -27,14 +27,18 @@ public class MacOSXKeyboardHandler extends KeyboardHandler {
 	@Override
 	public boolean changeToKeyboard(KeyboardInfo keyboard, Stage stage) {
 		StringBuilder sb = new StringBuilder();
-		sb.append(ControllerUtilities.getUriOfProgram());
-//		sb.append(System.getProperty("user.dir"));
-		sb.append(kXkbSwitch + " -se ");
+		sb.append(getShellCommandBeginning());
+		sb.append(" -se ");
 		sb.append(keyboard.getMacDescription());
-
 		final String command = sb.toString();
 		MainApp.showDebugMessage(command);
 		return invokeTerminalCommand(command);
+	}
+
+	protected String getShellCommandBeginning() {
+		String sLocation = ControllerUtilities.getUriOfProgram();
+		String sCommandBeginning = sLocation.substring(5) + kXkbSwitch;
+		return sCommandBeginning;
 	}
 
 	@Override
@@ -89,9 +93,8 @@ public class MacOSXKeyboardHandler extends KeyboardHandler {
 	@Override
 	public void rememberCurrentKeyboard() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(ControllerUtilities.getUriOfProgram());
-//		sb.append(System.getProperty("user.dir"));
-		sb.append(kXkbSwitch + " -ge");
+		sb.append(getShellCommandBeginning());
+		sb.append(" -ge");
 
 		final String command = sb.toString();
 		MainApp.showDebugMessage(command);
@@ -123,20 +126,17 @@ public class MacOSXKeyboardHandler extends KeyboardHandler {
 	@Override
 	public void restoreCurrentKeyboard() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(ControllerUtilities.getUriOfProgram());
-		sb.append(kXkbSwitch + " -se ");
+		sb.append(getShellCommandBeginning());
+		sb.append(" -se ");
 		sb.append(sCurrentKeyboardName);
-
 		final String command = sb.toString();
-		MainApp.showDebugMessage(command);
 		invokeTerminalCommand(command);
 	}
 
 	protected int getCurrentMacOSXKeyboardIDs(String[] sLangIDs) {
 		StringBuilder sb = new StringBuilder();
-		sb.append(ControllerUtilities.getUriOfProgram());
-		sb.append(kXkbSwitch + " -l");
-
+		sb.append(getShellCommandBeginning());
+		sb.append(" -l");
 		final String command = sb.toString();
 		return getCurrentEnabledKeyboardIDs(command, sLangIDs);
 	}
