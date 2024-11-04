@@ -885,6 +885,10 @@ public class RootLayoutController implements Initializable {
 			else {
 				// The installed version needs this
 				uriOfProgram = jarFile.getParentFile().getParentFile().toURI().toString();
+				String sOS = mainApp.getOperatingSystem().toLowerCase();
+				if (sOS.toLowerCase().contains("mac")) {
+					uriOfProgram = uriOfProgram.replaceFirst("Contents", "Contents/app");
+				}
 			}
 		} catch (URISyntaxException e) {
 			// TODO Auto-generated catch block
