@@ -803,6 +803,28 @@ public class RootLayoutController implements Initializable {
 		alert.setTitle(sAboutHeader);
 		alert.setHeaderText(null);
 		alert.setContentText(sAboutContent);
+
+		String sStandardIconURL = "file:resources/images/SILLogo.png";
+		Image icon = new Image(sStandardIconURL);
+		MainApp.showDebugMessage("first icon attempt:" + icon.getHeight());
+		if (icon.getHeight() == 0) {
+			// normal location failed; try this one
+			String sSourcePath = sStandardIconURL.substring(0, 5) + Constants.RESOURCE_SOURCE_LOCATION
+					+ sStandardIconURL.substring(5);
+			MainApp.showDebugMessage("sSourcePath='" + sSourcePath + "'");
+			icon = new Image(sSourcePath);
+			MainApp.showDebugMessage("second icon attempt:" + icon.getHeight());
+			if (icon.getHeight() == 0) {
+				// failed again; try this; had problems on Linux
+				String sUriOfProgram = getUriOfProgram();
+				MainApp.showDebugMessage("sUriOfProgram='" + sUriOfProgram + "'");
+				String sPathToTry = sUriOfProgram + sStandardIconURL.substring(5);
+				MainApp.showDebugMessage("sPathToTry='" + sPathToTry + "'");
+				icon = new Image(sPathToTry);
+				MainApp.showDebugMessage("third icon attempt:" + icon.getHeight());
+			}
+		}
+
 		Image silLogo = ControllerUtilities.getIconImageFromURL(
 				"file:resources/images/SILLogo.png", Constants.RESOURCE_SOURCE_LOCATION);
 		alert.setGraphic(new ImageView(silLogo));
@@ -823,7 +845,9 @@ public class RootLayoutController implements Initializable {
 				if (!myFile.exists()) {
 					// this can happen on Linux
 					String sUriOfProgram = getUriOfProgram();
+					MainApp.showDebugMessage("showFileToUser: sUriOfProgram='" + sUriOfProgram + "'");
 					String sPathToTry = sUriOfProgram.substring(5) + sFileToShow;
+					MainApp.showDebugMessage("showFileToUser: sPathToTry='" + sPathToTry + "'");
 					myFile = new File(sPathToTry);
 				}
 				String sOS = mainApp.getOperatingSystem().toLowerCase();
