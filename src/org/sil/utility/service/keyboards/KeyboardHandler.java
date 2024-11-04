@@ -5,8 +5,9 @@
  */
 package org.sil.utility.service.keyboards;
 
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -57,7 +58,7 @@ public class KeyboardHandler {
 		int iCount = 0;
 		try {
 			final Process process = Runtime.getRuntime().exec(command);
-			final InputStream in = process.getInputStream();
+			final BufferedReader in = process.inputReader(StandardCharsets.UTF_8);
 			StringBuilder sbs = new StringBuilder();
 			int ch;
 			while ((ch = in.read()) != -1) {
