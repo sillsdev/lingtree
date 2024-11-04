@@ -10,3 +10,5 @@ dir %JAVA_HOME%
 echo bin dir
 dir %JAVA_HOME%\bin
 copy %JAVA_HOME%\bin\java.exe output\LingTree\runtime\bin /Y > nul
+echo runtime bin
+dir output\LingTree\runtime\bin
