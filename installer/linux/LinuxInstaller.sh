@@ -7,6 +7,7 @@ echo "	invoking jpackage, part 2"
 VERSION=$1
 # 	--verbose \
 #	--linux-shortcut \
+ls -l -R
 jpackage --type deb \
 	--copyright "2021-2024 SIL International" \
 	--description "Linguistic Tree Editor" \
