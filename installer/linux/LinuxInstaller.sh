@@ -19,6 +19,7 @@ jpackage --type deb \
 	--license-file License.txt \
 	--icon input/LingTree.png \
 	--temp installtemp \
+	--app-version $1 \
 	--file-associations lingtree.properties \
 	--vendor "SIL International"
 # ./FixDesktopShortcutInDebFile.sh $VERSION

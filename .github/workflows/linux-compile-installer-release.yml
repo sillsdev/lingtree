@@ -3,12 +3,13 @@
 name: Linux Build Installer with Version
 
 on:
-#  push:
-#    tags:
-#      - 'v*'  # Build the app for commits that are tagged starting with 'v' e.g. v1.2.3
-#      # to tag a commit, use "git tag v1.2.3"
-#      # when you then use "git push origin v1.2.3" this workflow will be invoked
-  workflow_dispatch:
+  push:
+    tags:
+      - 'v*'  # Build the app for commits that are tagged starting with 'v' e.g. v1.2.3
+      # to tag a commit, use "git tag v1.2.3"
+      # when you then use "git push origin v1.2.3" this workflow will be invoked
+#  workflow_dispatch:
+
 jobs:
   build-installer:
 
@@ -59,7 +60,7 @@ jobs:
         env:
           PUBLISH_PATH: 'installer/linux'
         run: |
-          mv ${{env.PUBLISH_PATH}}/lingtree_1.0-1_amd64.deb LingTree-${{ env.VERSION }}.deb
+          mv ${{env.PUBLISH_PATH}}/lingtree_${{ env.VERSION }}-1_amd64.deb LingTree-${{ env.VERSION }}.deb
 
       - uses: actions/upload-artifact@v4
         with:

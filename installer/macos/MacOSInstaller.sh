@@ -15,6 +15,7 @@ jpackage --type dmg \
 	--license-file License.txt \
 	--temp installtemp \
 	--icon input/LingTree.icns \
+	--app-version $1 \
 	--file-associations lingtree.properties \
 	--vendor "SIL International"
 

@@ -5,5 +5,5 @@ echo PrepInput
 echo CreateMacOSApp
 ./CreateMacOSApp.sh
 echo MacOsInstaller
-./MacOSInstaller.sh
+./MacOSInstaller.sh $1
 
