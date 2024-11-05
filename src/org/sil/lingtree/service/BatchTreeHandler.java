@@ -59,12 +59,6 @@ public class BatchTreeHandler {
 		if (!fileExists()) {
 			String sMsg = bundle.getString("batch.filenotfound") + treeFile.getPath();
 			System.out.println(sMsg);
-			Platform.runLater(new Runnable() {
-				@Override
-				public void run() {
-					MainApp.showDebugMessage(sMsg);
-				}
-			});
 			return;
 		}
 		xmlBackEndProvider.loadTreeDataFromFile(treeFile);
