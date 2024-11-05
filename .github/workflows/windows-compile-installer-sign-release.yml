@@ -61,7 +61,8 @@ jobs:
         run: |
          dir
          dir ${{env.PUBLISH_PATH}}
-          mv ${{env.PUBLISH_PATH}}\LingTree-1.0.exe LingTree-${{ env.VERSION }}.exe
+          mv ${{env.PUBLISH_PATH}}\LingTree-${{ env.VERSION }}.exe LingTree-${{ env.VERSION }}.exe
+         dir
 
       - uses: actions/upload-artifact@v4
         with:
