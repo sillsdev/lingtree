@@ -16,6 +16,7 @@ import javafx.scene.layout.Pane;
 
 //import org.junit.Rule;
 import org.sil.lingtree.Constants;
+import org.sil.lingtree.MainApp;
 import org.sil.lingtree.backendprovider.XMLBackEndProvider;
 import org.sil.lingtree.model.LingTreeTree;
 //import org.sil.lingtree.view.JavaFXThreadingRule;
@@ -56,7 +57,14 @@ public class BatchTreeHandler {
 
 	public void processTree() throws IOException {
 		if (!fileExists()) {
-			System.out.println(bundle.getString("batch.filenotfound") + treeFile.getPath());
+			String sMsg = bundle.getString("batch.filenotfound") + treeFile.getPath();
+			System.out.println(sMsg);
+			Platform.runLater(new Runnable() {
+				@Override
+				public void run() {
+					MainApp.showDebugMessage(sMsg);
+				}
+			});
 			return;
 		}
 		xmlBackEndProvider.loadTreeDataFromFile(treeFile);
