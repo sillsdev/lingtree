@@ -13,5 +13,6 @@ jpackage --type exe ^
 	--license-file License.txt ^
 	--icon input/LingTree.ico ^
 	--temp installtemp ^
+	--app-version %1 ^
 	--file-associations lingtree.properties ^
 	--vendor "SIL International" 

@@ -7,5 +7,5 @@ call PrepInput.bat %java_path%
 echo CreateWinApp
 call CreateWinApp.bat %java_path%
 echo WinInstaller
-call WinInstaller.bat %java_path%
+call WinInstaller.bat %java_path% %1 
 REM rundll32 user32.dll,MessageBeep
