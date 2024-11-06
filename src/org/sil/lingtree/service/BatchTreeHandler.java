@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import javax.swing.JOptionPane;
+
 import javafx.application.Platform;
 import javafx.scene.layout.Pane;
 
@@ -57,8 +59,10 @@ public class BatchTreeHandler {
 
 	public void processTree() throws IOException {
 		if (!fileExists()) {
+			String sPrompt = bundle.getString("batch.prompt");
 			String sMsg = bundle.getString("batch.filenotfound") + treeFile.getPath();
 			System.out.println(sMsg);
+			JOptionPane.showMessageDialog(null, sMsg, sPrompt, JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		xmlBackEndProvider.loadTreeDataFromFile(treeFile);
