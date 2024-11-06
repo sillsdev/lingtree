@@ -14,7 +14,9 @@ jpackage --type app-image \
 	--main-class org.sil.lingtree.MainApp \
 	--icon input/LingTree.icns \
 	--module-path jmods \
-	--vendor "SIL International"
+	--vendor "SIL International" \
+	--mac-sign \
+	--mac-signing-key-user-name "Developer ID Application: Summer Institute of Linguistics, Inc (SIL) (3YE4W86L3G)"
 echo "	MoveResources"
 ./MoveResources.sh
 
