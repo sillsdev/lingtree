@@ -63,11 +63,11 @@ public class BatchTreeHandlerTest {
 		// file missing
 		handler = new BatchTreeHandler(Constants.UNIT_TEST_DATA_FILE + ".bad", null);
 		assertFalse(handler.fileExists());
-		handler.processTree();
+		handler.processTree(true);
 		// file is good; tree description is ill-formed
 		handler = new BatchTreeHandler(Constants.UNIT_TEST_DATA_FILE_BAD_TREE, null);
 		assertTrue(handler.fileExists());
-		handler.processTree();
+		handler.processTree(true);
 		File file = new File(svgFilePath);
 		assertFalse(file.exists());
 		file = new File(pngFilePath);
@@ -75,7 +75,7 @@ public class BatchTreeHandlerTest {
 		// file is good; tree description is well-formed
 		handler = new BatchTreeHandler(Constants.UNIT_TEST_DATA_FILE, null);
 		assertTrue(handler.fileExists());
-		handler.processTree();
+		handler.processTree(true);
 		file = new File(svgFilePath);
 		assertTrue(file.exists());
 		// we use runLater to allow time for the drawer to work

@@ -137,7 +137,7 @@ public class MainApp extends Application implements MainAppUtilities {
 			sFilePath = sWorkingDirectory + File.separator + sFilePath;
 		}
 		BatchTreeHandler handler = new BatchTreeHandler(sFilePath, bundle);
-		handler.processTree();
+		handler.processTree(false);
 	}
 
 	/**

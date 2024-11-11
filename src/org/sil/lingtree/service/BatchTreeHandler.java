@@ -57,12 +57,14 @@ public class BatchTreeHandler {
 		return treeFile.exists();
 	}
 
-	public void processTree() throws IOException {
+	public void processTree(boolean fTesting) throws IOException {
 		if (!fileExists()) {
 			String sPrompt = bundle.getString("batch.prompt");
 			String sMsg = bundle.getString("batch.filenotfound") + treeFile.getPath();
 			System.out.println(sMsg);
-			JOptionPane.showMessageDialog(null, sMsg, sPrompt, JOptionPane.ERROR_MESSAGE);
+			if (!fTesting) {
+				JOptionPane.showMessageDialog(null, sMsg, sPrompt, JOptionPane.ERROR_MESSAGE);
+			}
 			return;
 		}
 		xmlBackEndProvider.loadTreeDataFromFile(treeFile);
