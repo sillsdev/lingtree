@@ -12,6 +12,7 @@ jpackage --type exe ^
 	--win-shortcut ^
 	--license-file License.txt ^
 	--icon input/LingTree.ico ^
+	--win-upgrade-uuid 651246EB-EFC6-4BE2-97EA-28BDE1D98055 ^
 	--temp installtemp ^
 	--app-version %1 ^
 	--file-associations lingtree.properties ^
