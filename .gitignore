@@ -56,3 +56,4 @@ installer/macos/installtemp
 installer/macos/META-INF
 installer/macos/*.dmg
 installer/macos/check-notarized.sh
+compiler/

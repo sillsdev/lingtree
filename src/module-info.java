@@ -7,14 +7,10 @@ module org.sil.lingtree {
 	exports org.sil.lingtree.descriptionparser.antlr4generated;
 	exports org.sil.lingtree.service;
 	exports org.sil.lingtree.view;
-	exports org.sil.utility;
-	exports org.sil.utility.service;
-	exports org.sil.utility.service.keyboards;
-	exports org.sil.utility.view;
-	exports org.sil.utility.xml;
 
 	opens org.sil.lingtree.view to javafx.fxml;
 //	opens org.sil.lingtree.view.fxml to richtextfx.fat;
+
 	// Java
 	requires java.desktop;
 	requires java.prefs;
@@ -35,7 +31,13 @@ module org.sil.lingtree {
 	requires com.sun.jna;
 	requires com.sun.jna.platform;
 
-	
+	// LibJavaDev
+	requires transitive org.sil.utility;
+//	requires org.sil.utility.service;
+//	requires org.sil.utility.service.keyboards;
+//	requires org.sil.utility.view;
+//	requires org.sil.utility.xml;
+
 	// JUnit
 	requires junit;
 

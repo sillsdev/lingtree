@@ -308,7 +308,7 @@ public class MainApp extends Application implements MainAppUtilities {
 	 */
 	public Image getNewMainIconImage() {
 		Image img = ControllerUtilities.getIconImageFromURL(kApplicationIconResource,
-				Constants.RESOURCE_SOURCE_LOCATION);
+				Constants.RESOURCE_SOURCE_LOCATION, MainApp.class);
 		return img;
 	}
 
