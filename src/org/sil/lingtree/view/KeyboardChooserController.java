@@ -10,6 +10,7 @@ import java.net.URL;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import org.sil.lingtree.MainApp;
 import org.sil.lingtree.model.LingTreeTree;
 import org.sil.utility.service.keyboards.KeyboardChanger;
 import org.sil.utility.service.keyboards.KeyboardHandler;
@@ -65,7 +66,7 @@ public class KeyboardChooserController implements Initializable {
 	 */
 	public void initialize(URL location, ResourceBundle resources) {
 		keyboardChanger = KeyboardChanger.getInstance();
-		keyboardChanger.initKeyboardHandler();
+		keyboardChanger.initKeyboardHandler(MainApp.class);
 		
 		ObservableList<KeyboardInfo> activeKeyboards = FXCollections
 				.observableArrayList(keyboardChanger.getActiveKeyboards());

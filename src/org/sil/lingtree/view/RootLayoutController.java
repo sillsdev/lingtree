@@ -273,25 +273,25 @@ public class RootLayoutController implements Initializable {
 		statusBarKey.textProperty().bind(RESOURCE_FACTORY.getStringBinding("label.key"));
 
 		keyboardChanger = KeyboardChanger.getInstance();
-		keyboardChanger.initKeyboardHandler();
+		keyboardChanger.initKeyboardHandler(MainApp.class);
 		treeDescription.caretPositionProperty().addListener((observable, oldValue, newValue) -> {
 			String sPrevious = treeDescription.getText(0, newValue);
 			NodeType ntype = NodeTypeDeterminer.determineNodeTypeFrom(sPrevious);
 			switch (ntype) {
 			case NonTerminal:
-				keyboardChanger.tryToChangeKeyboardTo(ltTree.getNonTerminalKeyboard());
+				keyboardChanger.tryToChangeKeyboardTo(ltTree.getNonTerminalKeyboard(), MainApp.class);
 				break;
 			case Lex:
-				keyboardChanger.tryToChangeKeyboardTo(ltTree.getLexicalKeyboard());
+				keyboardChanger.tryToChangeKeyboardTo(ltTree.getLexicalKeyboard(), MainApp.class);
 				break;
 			case Gloss:
-				keyboardChanger.tryToChangeKeyboardTo(ltTree.getGlossKeyboard());
+				keyboardChanger.tryToChangeKeyboardTo(ltTree.getGlossKeyboard(), MainApp.class);
 				break;
 			case EmptyElement:
-				keyboardChanger.tryToChangeKeyboardTo(ltTree.getEmptyElementKeyboard());
+				keyboardChanger.tryToChangeKeyboardTo(ltTree.getEmptyElementKeyboard(), MainApp.class);
 				break;
 			case Syntagmeme:
-				keyboardChanger.tryToChangeKeyboardTo(ltTree.getSyntagmemeKeyboard());
+				keyboardChanger.tryToChangeKeyboardTo(ltTree.getSyntagmemeKeyboard(), MainApp.class);
 				break;
 			}
 		});

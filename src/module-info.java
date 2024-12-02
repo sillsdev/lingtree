@@ -49,6 +49,6 @@ module org.sil.lingtree {
 	requires javafx.media;
 	requires java.base;
 	requires transitive richtextfx.fat;
-	requires json.simple;
+	requires org.json;
 //	requires org.sil.utility;
 }
