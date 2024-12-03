@@ -9,7 +9,6 @@ module org.sil.lingtree {
 	exports org.sil.lingtree.view;
 
 	opens org.sil.lingtree.view to javafx.fxml;
-//	opens org.sil.lingtree.view.fxml to richtextfx.fat;
 
 	// Java
 	requires java.desktop;
@@ -33,22 +32,16 @@ module org.sil.lingtree {
 
 	// LibJavaDev
 	requires transitive org.sil.utility;
-//	requires org.sil.utility.service;
-//	requires org.sil.utility.service.keyboards;
-//	requires org.sil.utility.view;
-//	requires org.sil.utility.xml;
 
 	// JUnit
 	requires junit;
 
 	// Other modules/libraries
 	requires antlr;
-//	requires transitive libjavadev;
 	requires transitive org.controlsfx.controls;
 	requires javafx.base;
 	requires javafx.media;
 	requires java.base;
 	requires transitive richtextfx.fat;
 	requires org.json;
-//	requires org.sil.utility;
 }
