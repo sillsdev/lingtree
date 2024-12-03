@@ -1,0 +1,3 @@
+Main-Class: org.sil.pcpatreditor.MainApp
+Manifest-Version: 1.0
+Created-By: 17.0.13 (Azul Systems, Inc.)
