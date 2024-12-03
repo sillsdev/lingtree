@@ -31,9 +31,10 @@
         <pathelement location="libs/Richtextfx/richtextfx-fat-0.10.7.jar"/>
         <pathelement location="libs/jna/jna-5.11.0.jar"/>
         <pathelement location="libs/jna/jna-platform-5.11.0.jar"/>
-        <pathelement location="libs/json/json-simple-1.1.1.jar"/>
+        <pathelement location="libs/json/json-20230618.jar"/>
         <pathelement location="libs/ANTLR/antlr-4.7-complete.jar"/>
         <pathelement location="libs/ControlsFX/controlsfx-11.0.2.jar"/>
+        <pathelement location="libs/LibJavaDev/libjavadev-1.7.0.jar"/>
     </path>
     <path id="run.BatchTreeHandlerTest.classpath">
         <path refid="lingtree.classpath"/>
@@ -48,9 +49,10 @@
         <pathelement location="libs/Richtextfx/richtextfx-fat-0.10.7.jar"/>
         <pathelement location="libs/jna/jna-5.11.0.jar"/>
         <pathelement location="libs/jna/jna-platform-5.11.0.jar"/>
-        <pathelement location="libs/json/json-simple-1.1.1.jar"/>
+        <pathelement location="libs/json/json-20230618.jar"/>
         <pathelement location="libs/ANTLR/antlr-4.7-complete.jar"/>
         <pathelement location="libs/ControlsFX/controlsfx-11.0.2.jar"/>
+        <pathelement location="libs/LibJavaDev/libjavadev-1.7.0.jar"/>
     </path>
     <path id="run.MainApp (4).classpath">
         <path refid="lingtree.classpath"/>
@@ -65,9 +67,10 @@
         <pathelement location="libs/Richtextfx/richtextfx-fat-0.10.7.jar"/>
         <pathelement location="libs/jna/jna-5.11.0.jar"/>
         <pathelement location="libs/jna/jna-platform-5.11.0.jar"/>
-        <pathelement location="libs/json/json-simple-1.1.1.jar"/>
+        <pathelement location="libs/json/json-20230618.jar"/>
         <pathelement location="libs/ANTLR/antlr-4.7-complete.jar"/>
         <pathelement location="libs/ControlsFX/controlsfx-11.0.2.jar"/>
+        <pathelement location="libs/LibJavaDev/libjavadev-1.7.0.jar"/>
     </path>
     <path id="run.test (7).classpath">
         <path refid="lingtree.classpath"/>
@@ -82,9 +85,10 @@
         <pathelement location="libs/Richtextfx/richtextfx-fat-0.10.7.jar"/>
         <pathelement location="libs/jna/jna-5.11.0.jar"/>
         <pathelement location="libs/jna/jna-platform-5.11.0.jar"/>
-        <pathelement location="libs/json/json-simple-1.1.1.jar"/>
+        <pathelement location="libs/json/json-20230618.jar"/>
         <pathelement location="libs/ANTLR/antlr-4.7-complete.jar"/>
         <pathelement location="libs/ControlsFX/controlsfx-11.0.2.jar"/>
+        <pathelement location="libs/LibJavaDev/libjavadev-1.7.0.jar"/>
     </path>
     <target name="init">
         <mkdir dir="bin"/>
