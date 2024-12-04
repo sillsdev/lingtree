@@ -1189,21 +1189,23 @@ public class RootLayoutController implements Initializable {
 	}
 
 	private void updateAllKeyboardInfos() {
-		updateKeyboardInfoValues(EmptyElementKeyboard.getInstance(), ltTree.getEmptyElementKeyboard());
-		updateKeyboardInfoValues(GlossKeyboard.getInstance(), ltTree.getGlossKeyboard());
-		updateKeyboardInfoValues(LexicalKeyboard.getInstance(), ltTree.getLexicalKeyboard());
-		updateKeyboardInfoValues(NonTerminalKeyboard.getInstance(), ltTree.getNonTerminalKeyboard());
-		updateKeyboardInfoValues(SyntagmemeKeyboard.getInstance(), ltTree.getSyntagmemeKeyboard());
 		keyboardChanger = KeyboardChanger.getInstance();
 		keyboardChanger.initKeyboardHandler(MainApp.class);
+		ltTree.setEmptyElementKeyboard(updateKeyboardInfoValues(ltTree.getEmptyElementKeyboard()));
+		ltTree.setGlossKeyboard(updateKeyboardInfoValues(ltTree.getGlossKeyboard()));
+		ltTree.setLexicalKeyboard(updateKeyboardInfoValues(ltTree.getLexicalKeyboard()));
+		ltTree.setNonTerminalKeyboard(updateKeyboardInfoValues(ltTree.getNonTerminalKeyboard()));
+		ltTree.setSyntagmemeKeyboard(updateKeyboardInfoValues(ltTree.getSyntagmemeKeyboard()));
 	}
 
-	private void updateKeyboardInfoValues(KeyboardInfo kiUsedWhenDrawing, KeyboardInfo kiFromTree) {
-		kiUsedWhenDrawing.setDescription(kiFromTree.getDescription());
-		kiUsedWhenDrawing.setLocale(kiFromTree.getLocale());
-		kiUsedWhenDrawing.setMacDescription(kiFromTree.getMacDescription());
-		kiUsedWhenDrawing.setSLocale(kiFromTree.getSLocale());
-		kiUsedWhenDrawing.setWindowsLangID(kiFromTree.getWindowsLangID());
+	private KeyboardInfo updateKeyboardInfoValues(KeyboardInfo kiFromTree) {
+		KeyboardInfo kiUsedWhenTyping = new KeyboardInfo();
+		kiUsedWhenTyping.setDescription(kiFromTree.getDescription());
+		kiUsedWhenTyping.setLocale(kiFromTree.getLocale());
+		kiUsedWhenTyping.setMacDescription(kiFromTree.getMacDescription());
+		kiUsedWhenTyping.setSLocale(kiFromTree.getSLocale());
+		kiUsedWhenTyping.setWindowsLangID(kiFromTree.getWindowsLangID());
+		return kiUsedWhenTyping;
 	}
 
 	@FXML
