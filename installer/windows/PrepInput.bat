@@ -10,6 +10,7 @@ copy ..\..\libs\ControlsFX\* input\libs > nul
 copy ..\..\libs\JAXB input\libs > nul
 copy ..\..\libs\jna input\libs > nul
 copy ..\..\libs\json input\libs > nul
+copy ..\..\libs\LibJavaDev input\libs > nul
 copy ..\..\libs\Richtextfx input\libs > nul
 
 REM Documentation
