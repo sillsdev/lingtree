@@ -9,9 +9,7 @@ package org.sil.lingtree.view;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.net.URL;
-import java.security.CodeSource;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,28 +22,32 @@ import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.Token;
-//import org.controlsfx.dialog.FontSelectorDialogWithColor;
 import org.fxmisc.richtext.InlineCssTextArea;
 import org.sil.lingtree.MainApp;
 import org.sil.lingtree.descriptionparser.antlr4generated.DescriptionLexer;
 import org.sil.lingtree.model.AbbreviationFontInfo;
 import org.sil.lingtree.model.EmptyElementFontInfo;
+import org.sil.lingtree.model.EmptyElementKeyboard;
 import org.sil.lingtree.model.FontInfo;
 import org.sil.lingtree.model.GlossFontInfo;
+import org.sil.lingtree.model.GlossKeyboard;
 import org.sil.lingtree.model.LexFontInfo;
+import org.sil.lingtree.model.LexicalKeyboard;
 import org.sil.lingtree.model.LingTreeTree;
 import org.sil.lingtree.model.NodeType;
 import org.sil.lingtree.model.NonTerminalFontInfo;
+import org.sil.lingtree.model.NonTerminalKeyboard;
+import org.sil.lingtree.model.SyntagmemeKeyboard;
 import org.sil.lingtree.service.GraphicImageSaver;
 import org.sil.lingtree.service.NodeTypeDeterminer;
 import org.sil.lingtree.service.TreeBuilder;
 import org.sil.lingtree.service.TreeDrawer;
-import org.sil.lingtree.view.FontSelectorDialogWithColor;
 import org.sil.lingtree.Constants;
 import org.sil.lingtree.ApplicationPreferences;
 import org.sil.utility.ClipboardUtilities;
 import org.sil.utility.StringUtilities;
 import org.sil.utility.service.keyboards.KeyboardChanger;
+import org.sil.utility.service.keyboards.KeyboardInfo;
 import org.sil.utility.view.ControllerUtilities;
 import org.sil.utility.view.ObservableResourceFactory;
 import org.sil.utility.view.FilteringEventDispatcher;
@@ -1145,6 +1147,7 @@ public class RootLayoutController implements Initializable {
 			applicationPreferences.getSavedTreeParameters(ltTree);
 			ltTree.setDescription(initialDescription);
 			updateAllFontInfos();
+			updateAllKeyboardInfos();
 			treeDescription.replaceText(initialDescription);
 			treeDescription.moveTo(1);
 			treeDescription.requestFocus();
@@ -1183,6 +1186,22 @@ public class RootLayoutController implements Initializable {
 		fiUsedWhenDrawing.setFontFamily(fiFromTree.getFontFamily());
 		fiUsedWhenDrawing.setFontSize(fiFromTree.getFontSize());
 		fiUsedWhenDrawing.setFontType(fiFromTree.getFontType());
+	}
+
+	private void updateAllKeyboardInfos() {
+		updateKeyboardInfoValues(EmptyElementKeyboard.getInstance(), ltTree.getEmptyElementKeyboard());
+		updateKeyboardInfoValues(GlossKeyboard.getInstance(), ltTree.getGlossKeyboard());
+		updateKeyboardInfoValues(LexicalKeyboard.getInstance(), ltTree.getLexicalKeyboard());
+		updateKeyboardInfoValues(NonTerminalKeyboard.getInstance(), ltTree.getNonTerminalKeyboard());
+		updateKeyboardInfoValues(SyntagmemeKeyboard.getInstance(), ltTree.getSyntagmemeKeyboard());
+	}
+
+	private void updateKeyboardInfoValues(KeyboardInfo kiUsedWhenDrawing, KeyboardInfo kiFromTree) {
+		kiUsedWhenDrawing.setDescription(kiFromTree.getDescription());
+		kiUsedWhenDrawing.setLocale(kiFromTree.getLocale());
+		kiUsedWhenDrawing.setMacDescription(kiFromTree.getMacDescription());
+		kiUsedWhenDrawing.setSLocale(kiFromTree.getSLocale());
+		kiUsedWhenDrawing.setWindowsLangID(kiFromTree.getWindowsLangID());
 	}
 
 	@FXML
