@@ -20,7 +20,7 @@ type="tLingTree"
 ><emailAddress
 >lingtree_support@sil.org</emailAddress
 ><date
->November 7, 2024</date
+>December 3, 2024</date
 ><version
 >Version 1.5.3</version
 ><version
@@ -2487,7 +2487,7 @@ term="iMac"
 >Currently, this is fully available on Windows and partly available on <object
 type="tmacOS"
 ></object
->.  On <object
+>. On <object
 type="tmacOS"
 ></object
 >, regular keyboards work but <object
@@ -2499,7 +2499,7 @@ id="nKeymanOnMac"
 >This is a bug in current versions of Java on <object
 type="tmacOS"
 ></object
->.  It is a known issue and hopefully will be fixed soon.</p
+>. It is a known issue and hopefully will be fixed soon.</p
 ></endnote
 > When you select this menu item, it brings up a dialog that looks like what is in <exampleRef
 letter="xSetKeyboards"
@@ -3355,6 +3355,34 @@ type="tmacOS"
 type="tLingTree"
 ></object
 > is written in.</li
+><li
+><indexedItem
+term="iMac"
+></indexedItem
+>On <object
+type="tmacOS"
+></object
+>: when you create a new tree description file, the saved keyboard values will show in the set keyboards dialog via the <object
+type="tMenuItem"
+>Format</object
+> menu item / <object
+type="tMenuItem"
+>Set keyboards</object
+>, but they may not work correctly.  You will have to manually set them again.  Then they should work.  See section <sectionRef
+sec="sKeyboards"
+></sectionRef
+>.</li
+><li
+><indexedItem
+term="iMac"
+></indexedItem
+>On <object
+type="tmacOS"
+></object
+>, regular keyboards work but <object
+type="tTool"
+>Keyman</object
+> keyboards do not.</li
 ></ul
 ></section1
 ><section1
