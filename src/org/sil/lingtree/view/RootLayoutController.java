@@ -1194,6 +1194,8 @@ public class RootLayoutController implements Initializable {
 		updateKeyboardInfoValues(LexicalKeyboard.getInstance(), ltTree.getLexicalKeyboard());
 		updateKeyboardInfoValues(NonTerminalKeyboard.getInstance(), ltTree.getNonTerminalKeyboard());
 		updateKeyboardInfoValues(SyntagmemeKeyboard.getInstance(), ltTree.getSyntagmemeKeyboard());
+		keyboardChanger = KeyboardChanger.getInstance();
+		keyboardChanger.initKeyboardHandler(MainApp.class);
 	}
 
 	private void updateKeyboardInfoValues(KeyboardInfo kiUsedWhenDrawing, KeyboardInfo kiFromTree) {
