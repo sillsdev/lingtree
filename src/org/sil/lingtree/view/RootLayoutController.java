@@ -1189,8 +1189,6 @@ public class RootLayoutController implements Initializable {
 	}
 
 	private void updateAllKeyboardInfos() {
-		keyboardChanger = KeyboardChanger.getInstance();
-		keyboardChanger.initKeyboardHandler(MainApp.class);
 		ltTree.setEmptyElementKeyboard(updateKeyboardInfoValues(ltTree.getEmptyElementKeyboard()));
 		ltTree.setGlossKeyboard(updateKeyboardInfoValues(ltTree.getGlossKeyboard()));
 		ltTree.setLexicalKeyboard(updateKeyboardInfoValues(ltTree.getLexicalKeyboard()));
