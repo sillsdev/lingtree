@@ -50,6 +50,7 @@ public class ApplicationPreferences extends ApplicationPreferencesUtilities {
 	static final String EMPTY_ELEMENT_FONT_TYPE = "emptyElementFontType";
 	static final String EMPTY_ELEMENT_KEYBOARD_LOCALE = "emptyElementKeyboardLocale";
 	static final String EMPTY_ELEMENT_KEYBOARD_DESCRIPTION = "emptyElementKeyboardDescription";
+	static final String EMPTY_ELEMENT_KEYBOARD_MAC_DESCRIPTION = "emptyElementKeyboardMacDescription";
 	static final String EMPTY_ELEMENT_KEYBOARD_WINDOWS_LANG_ID = "emptyElementKeyboardWindowsLangId";
 	static final String GLOSS_FONT_COLOR = "glossFontColor";
 	static final String GLOSS_FONT_FAMILY = "glossFontFamily";
@@ -57,6 +58,7 @@ public class ApplicationPreferences extends ApplicationPreferencesUtilities {
 	static final String GLOSS_FONT_TYPE = "glossFontType";
 	static final String GLOSS_KEYBOARD_LOCALE = "glossKeyboardLocale";
 	static final String GLOSS_KEYBOARD_DESCRIPTION = "glossKeyboardDescription";
+	static final String GLOSS_KEYBOARD_MAC_DESCRIPTION = "glossKeyboardMacDescription";
 	static final String GLOSS_KEYBOARD_WINDOWS_LANG_ID = "glossKeyboardWindowsLangId";
 	static final String HORIZONTAL_GAP = "horizontalGap";
 	static final String HORIZONTAL_OFFSET = "horizontalOffset";
@@ -72,6 +74,7 @@ public class ApplicationPreferences extends ApplicationPreferencesUtilities {
 	static final String LEXICAL_FONT_TYPE = "lexicalFontType";
 	static final String LEXICAL_KEYBOARD_LOCALE = "lexicalKeyboardLocale";
 	static final String LEXICAL_KEYBOARD_DESCRIPTION = "lexicalKeyboardDescription";
+	static final String LEXICAL_KEYBOARD_MAC_DESCRIPTION = "lexicalKeyboardMacDescription";
 	static final String LEXICAL_KEYBOARD_WINDOWS_LANG_ID = "lexicalKeyboardWindowsLangId";
 	static final String LINE_COLOR = "lineColor";
 	static final String LINE_WIDTH = "lineWidth";
@@ -81,12 +84,14 @@ public class ApplicationPreferences extends ApplicationPreferencesUtilities {
 	static final String NON_TERMINAL_FONT_TYPE = "nonTerminalFontType";
 	static final String NON_TERMINAL_KEYBOARD_LOCALE = "nonTerminalKeyboardLocale";
 	static final String NON_TERMINAL_KEYBOARD_DESCRIPTION = "nonTerminalKeyboardDescription";
+	static final String NON_TERMINAL_KEYBOARD_MAC_DESCRIPTION = "nonTerminalKeyboardMacDescription";
 	static final String NON_TERMINAL_KEYBOARD_WINDOWS_LANG_ID = "nonTerminalKeyboardWindowsLangId";
 	static final String SAVE_AS_PNG = "saveAsPng";
 	static final String SAVE_AS_SVG = "saveAsSVG";
 	static final String SHOW_FLAT_VIEW = "showFlatView";
 	static final String SYNTAGMEME_KEYBOARD_LOCALE = "syntagmemeKeyboardLocale";
 	static final String SYNTAGMEME_KEYBOARD_DESCRIPTION = "syntagmemeKeyboardDescription";
+	static final String SYNTAGMEME_KEYBOARD_MAC_DESCRIPTION = "syntagmemeKeyboardMacDescription";
 	static final String SYNTAGMEME_KEYBOARD_WINDOWS_LANG_ID = "syntagmemeKeyboardWindowsLangId";
 	static final String VERTICAL_GAP = "verticalGap";
 
@@ -263,30 +268,36 @@ public class ApplicationPreferences extends ApplicationPreferencesUtilities {
 
 		final String sDefaultLocale = "en";
 		final String sDefaultDescription = "English";
+		final String sDefaultMacDescription = "US";
 		final int defaultWindowsLangId = 0;
 		KeyboardInfo ki = new KeyboardInfo(prefs.get(GLOSS_KEYBOARD_LOCALE, sDefaultLocale),
 				prefs.get(GLOSS_KEYBOARD_DESCRIPTION, sDefaultDescription), prefs.getInt(
 						GLOSS_KEYBOARD_WINDOWS_LANG_ID, defaultWindowsLangId));
+		ki.setMacDescription(prefs.get(GLOSS_KEYBOARD_MAC_DESCRIPTION, sDefaultMacDescription));
 		ltTree.setGlossKeyboard(ki);
 
 		ki = new KeyboardInfo(prefs.get(EMPTY_ELEMENT_KEYBOARD_LOCALE, sDefaultLocale),
 				prefs.get(EMPTY_ELEMENT_KEYBOARD_DESCRIPTION, sDefaultDescription), prefs.getInt(
 						EMPTY_ELEMENT_KEYBOARD_WINDOWS_LANG_ID, defaultWindowsLangId));
+		ki.setMacDescription(prefs.get(EMPTY_ELEMENT_KEYBOARD_MAC_DESCRIPTION, sDefaultMacDescription));
 		ltTree.setEmptyElementKeyboard(ki);
 
 		ki = new KeyboardInfo(prefs.get(LEXICAL_KEYBOARD_LOCALE, sDefaultLocale),
 				prefs.get(LEXICAL_KEYBOARD_DESCRIPTION, sDefaultDescription), prefs.getInt(
 						LEXICAL_KEYBOARD_WINDOWS_LANG_ID, defaultWindowsLangId));
+		ki.setMacDescription(prefs.get(LEXICAL_KEYBOARD_MAC_DESCRIPTION, sDefaultMacDescription));
 		ltTree.setLexicalKeyboard(ki);
 
 		ki = new KeyboardInfo(prefs.get(NON_TERMINAL_KEYBOARD_LOCALE, sDefaultLocale),
 				prefs.get(NON_TERMINAL_KEYBOARD_DESCRIPTION, sDefaultDescription), prefs.getInt(
 						NON_TERMINAL_KEYBOARD_WINDOWS_LANG_ID, defaultWindowsLangId));
+		ki.setMacDescription(prefs.get(NON_TERMINAL_KEYBOARD_MAC_DESCRIPTION, sDefaultMacDescription));
 		ltTree.setNonTerminalKeyboard(ki);
 
 		ki = new KeyboardInfo(prefs.get(SYNTAGMEME_KEYBOARD_LOCALE, sDefaultLocale),
 				prefs.get(SYNTAGMEME_KEYBOARD_DESCRIPTION, sDefaultDescription), prefs.getInt(
 						SYNTAGMEME_KEYBOARD_WINDOWS_LANG_ID, defaultWindowsLangId));
+		ki.setMacDescription(prefs.get(SYNTAGMEME_KEYBOARD_MAC_DESCRIPTION, sDefaultMacDescription));
 		ltTree.setSyntagmemeKeyboard(ki);
 	}
 
@@ -335,22 +346,27 @@ public class ApplicationPreferences extends ApplicationPreferencesUtilities {
 		KeyboardInfo ki = ltTree.getGlossKeyboard();
 		setPreferencesKey(GLOSS_KEYBOARD_LOCALE, ki.getSLocale());
 		setPreferencesKey(GLOSS_KEYBOARD_DESCRIPTION, ki.getDescription());
+		setPreferencesKey(GLOSS_KEYBOARD_MAC_DESCRIPTION, ki.getMacDescription());
 		setPreferencesKey(GLOSS_KEYBOARD_WINDOWS_LANG_ID, ki.getWindowsLangID());
 		ki = ltTree.getEmptyElementKeyboard();
 		setPreferencesKey(EMPTY_ELEMENT_KEYBOARD_LOCALE, ki.getSLocale());
 		setPreferencesKey(EMPTY_ELEMENT_KEYBOARD_DESCRIPTION, ki.getDescription());
+		setPreferencesKey(EMPTY_ELEMENT_KEYBOARD_MAC_DESCRIPTION, ki.getMacDescription());
 		setPreferencesKey(EMPTY_ELEMENT_KEYBOARD_WINDOWS_LANG_ID, ki.getWindowsLangID());
 		ki = ltTree.getLexicalKeyboard();
 		setPreferencesKey(LEXICAL_KEYBOARD_LOCALE, ki.getSLocale());
 		setPreferencesKey(LEXICAL_KEYBOARD_DESCRIPTION, ki.getDescription());
+		setPreferencesKey(LEXICAL_KEYBOARD_MAC_DESCRIPTION, ki.getMacDescription());
 		setPreferencesKey(LEXICAL_KEYBOARD_WINDOWS_LANG_ID, ki.getWindowsLangID());
 		ki = ltTree.getNonTerminalKeyboard();
 		setPreferencesKey(NON_TERMINAL_KEYBOARD_LOCALE, ki.getSLocale());
 		setPreferencesKey(NON_TERMINAL_KEYBOARD_DESCRIPTION, ki.getDescription());
+		setPreferencesKey(NON_TERMINAL_KEYBOARD_MAC_DESCRIPTION, ki.getMacDescription());
 		setPreferencesKey(NON_TERMINAL_KEYBOARD_WINDOWS_LANG_ID, ki.getWindowsLangID());
 		ki = ltTree.getSyntagmemeKeyboard();
 		setPreferencesKey(SYNTAGMEME_KEYBOARD_LOCALE, ki.getSLocale());
 		setPreferencesKey(SYNTAGMEME_KEYBOARD_DESCRIPTION, ki.getDescription());
+		setPreferencesKey(SYNTAGMEME_KEYBOARD_MAC_DESCRIPTION, ki.getMacDescription());
 		setPreferencesKey(SYNTAGMEME_KEYBOARD_WINDOWS_LANG_ID, ki.getWindowsLangID());
 }
 

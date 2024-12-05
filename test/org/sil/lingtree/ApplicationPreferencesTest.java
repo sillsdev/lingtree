@@ -16,7 +16,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.sil.lingtree.ApplicationPreferences;
 import org.sil.lingtree.model.ColorXmlAdaptor;
 import org.sil.lingtree.model.FontInfo;
 import org.sil.lingtree.model.LingTreeTree;
