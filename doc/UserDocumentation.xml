@@ -20,7 +20,7 @@ type="tLingTree"
 ><emailAddress
 >lingtree_support@sil.org</emailAddress
 ><date
->December 3, 2024</date
+>December 5, 2024</date
 ><version
 >Version 1.5.3</version
 ><version
@@ -3362,27 +3362,18 @@ term="iMac"
 >On <object
 type="tmacOS"
 ></object
->: when you create a new tree description file, the saved keyboard values will show in the set keyboards dialog via the <object
-type="tMenuItem"
->Format</object
-> menu item / <object
-type="tMenuItem"
->Set keyboards</object
->, but they may not work correctly.  You will have to manually set them again.  Then they should work.  See section <sectionRef
-sec="sKeyboards"
-></sectionRef
->.</li
-><li
-><indexedItem
-term="iMac"
-></indexedItem
->On <object
-type="tmacOS"
-></object
 >, regular keyboards work but <object
 type="tTool"
 >Keyman</object
 > keyboards do not.</li
+><li
+><indexedItem
+term="iKeyboards"
+></indexedItem
+>When you move a <object
+type="tLingTree"
+></object
+> file from one computer to another, you may well need to reset the keyboards manually.  This is because the keyboard settings may be different on the two machines.</li
 ></ul
 ></section1
 ><section1
