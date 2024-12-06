@@ -16,9 +16,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.antlr.v4.runtime.*;
-import org.sil.lingtree.descriptionparser.DescriptionConstants;
-import org.sil.lingtree.descriptionparser.DescriptionErrorInfo;
-import org.sil.lingtree.descriptionparser.DescriptionErrorListener;
 import org.sil.lingtree.descriptionparser.DescriptionErrorListener.VerboseListener;
 import org.sil.lingtree.descriptionparser.antlr4generated.DescriptionLexer;
 import org.sil.lingtree.descriptionparser.antlr4generated.DescriptionParser;
@@ -205,6 +202,7 @@ public class DescriptionRecognizerTest {
 		errListener.clearErrorMessageList();
 		parser.addErrorListener(errListener);
 		// begin parsing at rule 'description'
+		@SuppressWarnings("unused")
 		ParseTree tree = parser.description();
 		// uncomment the next two lines to see what parsed
 //		String sTree = tree.toStringTree(parser);

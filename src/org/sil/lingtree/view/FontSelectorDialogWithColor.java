@@ -24,6 +24,12 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+// Modifications: 
+/* Copyright (c) 2016-2024 SIL International
+ * This software is licensed under the LGPL, version 2.1 or later
+ * (http://www.gnu.org/licenses/lgpl-2.1.html)
+ */
+
 package org.sil.lingtree.view;
 
 import java.util.ArrayList;
@@ -40,10 +46,8 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.transformation.FilteredList;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Dialog;
@@ -68,7 +72,7 @@ import javafx.util.Callback;
 public class FontSelectorDialogWithColor extends Dialog<Font> {
 
 	private FontPanel fontPanel;
-	private Font defaultFont;
+//	private Font defaultFont;
 	private String dialogTitle;
 	private String dialogHeaderText;
 
@@ -79,7 +83,7 @@ public class FontSelectorDialogWithColor extends Dialog<Font> {
 		fontPanel = new FontPanel(bundle, defaultColor);
 		fontPanel.setFont(defaultFont);
 
-		this.defaultFont = defaultFont;
+//		this.defaultFont = defaultFont;
 
 		setResultConverter(dialogButton -> dialogButton == ButtonType.OK ? fontPanel.getFont()
 				: null);
@@ -405,9 +409,9 @@ public class FontSelectorDialogWithColor extends Dialog<Font> {
 			return color;
 		}
 
-		public void setColor(Color color) {
-			this.color = color;
-		}
+//		public void setColor(Color color) {
+//			this.color = color;
+//		}
 
 		public Font getFont() {
 			try {

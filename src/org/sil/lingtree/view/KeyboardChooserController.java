@@ -13,11 +13,7 @@ import java.util.ResourceBundle;
 import org.sil.lingtree.MainApp;
 import org.sil.lingtree.model.LingTreeTree;
 import org.sil.utility.service.keyboards.KeyboardChanger;
-import org.sil.utility.service.keyboards.KeyboardHandler;
 import org.sil.utility.service.keyboards.KeyboardInfo;
-import org.sil.utility.service.keyboards.LinuxKeyboardHandler;
-import org.sil.utility.service.keyboards.MacOSXKeyboardHandler;
-import org.sil.utility.service.keyboards.WindowsKeyboardHandler;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

@@ -11,7 +11,6 @@ import java.util.List;
 
 import org.sil.lingtree.Constants;
 import org.sil.lingtree.model.LingTreeNode;
-import org.sil.lingtree.model.NodeType;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -47,7 +46,7 @@ public class LingTreeNode {
 	private double dHeight; // height of the node
 	private double dWidth; // width of the node
 
-	private int iIndex; // index of node within its tree
+//	private int iIndex; // index of node within its tree
 	// left horizontal position of the node
 	private double dXCoordinate;
 	// mid horizontal position of the node
@@ -59,7 +58,7 @@ public class LingTreeNode {
 	// upper mid position of the node for drawing a line above the node
 	private double dYUpperMid;
 	// id of the node (used, e.g., by PcPatrBrowser to refer to a rule id)
-	private String id;
+//	private String id;
 
 	List<NodeText> contentsAsList = new ArrayList<NodeText>();
 	private boolean hasAbbreviation;

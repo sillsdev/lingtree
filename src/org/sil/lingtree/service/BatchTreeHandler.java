@@ -18,7 +18,6 @@ import javafx.scene.layout.Pane;
 
 //import org.junit.Rule;
 import org.sil.lingtree.Constants;
-import org.sil.lingtree.MainApp;
 import org.sil.lingtree.backendprovider.XMLBackEndProvider;
 import org.sil.lingtree.model.LingTreeTree;
 //import org.sil.lingtree.view.JavaFXThreadingRule;

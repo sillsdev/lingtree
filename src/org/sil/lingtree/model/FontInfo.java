@@ -11,15 +11,10 @@ import org.sil.utility.StringUtilities;
 
 import jakarta.xml.bind.annotation.XmlTransient;
 import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import javafx.event.Event;
-import javafx.event.EventHandler;
-import javafx.scene.control.ColorPicker;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
-import javafx.stage.Stage;
 
 /**
  * @author Andy Black

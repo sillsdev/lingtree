@@ -19,7 +19,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.sil.lingtree.Constants;
-import org.sil.lingtree.backendprovider.XMLBackEndProvider;
 import org.sil.lingtree.model.FontInfo;
 import org.sil.lingtree.model.LingTreeTree;
 import org.sil.utility.view.JavaFXThreadingRule;
