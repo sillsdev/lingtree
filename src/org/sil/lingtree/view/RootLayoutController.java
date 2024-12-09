@@ -213,6 +213,8 @@ public class RootLayoutController implements Initializable {
 	@FXML
 	private MenuItem menuItemBackgroundAndLineParameters;
 	@FXML
+	private CheckMenuItem menuItemDrawVerticalLineWithEmptyText;
+	@FXML
 	private MenuItem menuItemSaveTreeParameters;
 	@FXML
 	private Menu menuSettings;
@@ -527,8 +529,9 @@ public class RootLayoutController implements Initializable {
 		menuSettings.textProperty().bind(RESOURCE_FACTORY.getStringBinding("menu.settings"));
 		menuItemDescriptionFontSize.textProperty().bind(
 				RESOURCE_FACTORY.getStringBinding("menu.descriptionfontsize"));
-		menuItemDrawAsType.textProperty()
-				.bind(RESOURCE_FACTORY.getStringBinding("menu.drawastype"));
+		menuItemDrawAsType.textProperty().bind(RESOURCE_FACTORY.getStringBinding("menu.drawastype"));
+		menuItemDrawVerticalLineWithEmptyText.textProperty()
+				.bind(RESOURCE_FACTORY.getStringBinding("menu.drawverticallinewithemptytext"));
 		menuItemShowMatchingParenWithArrowKeys.textProperty().bind(
 				RESOURCE_FACTORY.getStringBinding("menu.showmatchingparenwitharrowkeys"));
 		menuItemShowMatchingParenDelay.textProperty().bind(
@@ -617,6 +620,7 @@ public class RootLayoutController implements Initializable {
 		}
 		this.applicationPreferences = mainApp.getApplicationPreferences();
 		menuItemDrawAsType.setSelected(applicationPreferences.getDrawAsType());
+		menuItemDrawVerticalLineWithEmptyText.setSelected(applicationPreferences.getDrawVerticalLineWithEmptyText());
 		menuItemShowFullFilePath.setSelected(applicationPreferences.getShowFullFilePath());
 		menuItemShowMatchingParenWithArrowKeys.setSelected(applicationPreferences
 				.getShowMatchingParenWithArrowKeys());
@@ -659,6 +663,7 @@ public class RootLayoutController implements Initializable {
 		ltTree.setSaveAsSVG(menuItemSaveAsSVG.isSelected());
 		menuItemUseRightToLeftOrientation.setSelected(ltTree.isUseRightToLeftOrientation());
 		ltTree.setUseRightToLeftOrientation(menuItemUseRightToLeftOrientation.isSelected());
+		menuItemDrawVerticalLineWithEmptyText.setSelected(ltTree.isDrawVerticalLineWithEmptyText());
 	}
 
 	public SplitPane getSplitPane() {
@@ -1076,6 +1081,18 @@ public class RootLayoutController implements Initializable {
 	@FXML
 	private void handleMenuDrawAsType() {
 		applicationPreferences.setDrawAsType(menuItemDrawAsType.isSelected());
+	}
+
+	@FXML
+	private void handleMenuItemDrawVerticalLineWithEmptyText() {;
+		boolean value = menuItemDrawVerticalLineWithEmptyText.isSelected();
+		applicationPreferences.setDrawVerticalLineWithEmptyText(value);
+		ltTree.setDrawVerticalLineWithEmptyText(value);
+		if (menuItemDrawAsType.isSelected()) {
+			computeHighlighting();
+			handleDrawTree();
+			markAsDirty();
+		}
 	}
 
 	@FXML

@@ -61,6 +61,7 @@ public class LingTreeTree {
 	boolean fSaveAsSVG;
 	boolean fShowFlatView;
 	boolean fUseRightToLeftOrientation;
+	boolean fDrawVerticalLineWithEmptyText;
 
 	/**
 	 * 
@@ -229,6 +230,15 @@ public class LingTreeTree {
 	@XmlElement(name = "saveAsSVG")
 	public boolean isSaveAsSVG() {
 		return fSaveAsSVG;
+	}
+
+	@XmlElement(name = "drawVerticalLineWithEmptyText")
+	public boolean isDrawVerticalLineWithEmptyText() {
+		return fDrawVerticalLineWithEmptyText;
+	}
+
+	public void setDrawVerticalLineWithEmptyText(boolean value) {
+		this.fDrawVerticalLineWithEmptyText = value;
 	}
 
 	public void setSaveAsSVG(boolean fSaveAsSVG) {

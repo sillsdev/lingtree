@@ -176,6 +176,7 @@ public class TreeBuilder {
 		ltTree.setSyntagmemeKeyboard(origTree.getSyntagmemeKeyboard());
 		ltTree.setVerticalGap(origTree.getVerticalGap());
 		ltTree.setUseRightToLeftOrientation(origTree.isUseRightToLeftOrientation());
+		ltTree.setDrawVerticalLineWithEmptyText(origTree.isDrawVerticalLineWithEmptyText());
 	}
 
 	public static String buildErrorMessage(ResourceBundle bundle) {

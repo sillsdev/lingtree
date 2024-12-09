@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<lingTreeTree dbversion="4">
+    <abbreviationFontInfo>
+        <color>#008000</color>
+        <fontFamily>Charis SIL Small Caps</fontFamily>
+        <fontSize>12.0</fontSize>
+        <fontType>Regular</fontType>
+    </abbreviationFontInfo>
+    <backgroundColor>#ffffff</backgroundColor>
+    <description>(Mascoian((Enxet Sur)(Enlhet Norte))(((Angaité)(Sanapaná))((Kaskihá)(Toba-Maskoy))))</description>
+    <drawVerticalLineWithEmptyText>true</drawVerticalLineWithEmptyText>
+    <emptyElementFontInfo>
+        <color>#663366</color>
+        <fontFamily>Ezra SIL</fontFamily>
+        <fontSize>14.0</fontSize>
+        <fontType>Regular</fontType>
+    </emptyElementFontInfo>
+    <emptyElementKeyboard>
+        <description>Ancient Hebrew (hbo-Hebr-IL) Hebrew (SIL)</description>
+        <macDescription>US</macDescription>
+        <SLocale>hbo</SLocale>
+        <windowsLangID>8192</windowsLangID>
+    </emptyElementKeyboard>
+    <glossFontInfo>
+        <color>#008000</color>
+        <fontFamily>Courier New</fontFamily>
+        <fontSize>12.0</fontSize>
+        <fontType>Regular</fontType>
+    </glossFontInfo>
+    <glossKeyboard>
+        <description>es_MX; Spanish (Mexico)</description>
+        <macDescription>US</macDescription>
+        <SLocale>es</SLocale>
+        <windowsLangID>2058</windowsLangID>
+    </glossKeyboard>
+    <horizontalGap>17.83</horizontalGap>
+    <horizontalOffset>516.8535937499998</horizontalOffset>
+    <initialXCoordinate>5.94</initialXCoordinate>
+    <initialYCoordinate>14.94</initialYCoordinate>
+    <lexGlossGapAdjustment>15.0</lexGlossGapAdjustment>
+    <lexicalFontInfo>
+        <color>#0000ff</color>
+        <fontFamily>Courier New</fontFamily>
+        <fontSize>12.0</fontSize>
+        <fontType>Regular</fontType>
+    </lexicalFontInfo>
+    <lexicalKeyboard>
+        <description>und-Latn (und-Latn) IPA (SIL)</description>
+        <macDescription>US</macDescription>
+        <SLocale>en</SLocale>
+        <windowsLangID>9216</windowsLangID>
+    </lexicalKeyboard>
+    <lineColor>#400040</lineColor>
+    <lineWidth>1.0</lineWidth>
+    <minimumXGapForExtraVerticalSpacing>500.0</minimumXGapForExtraVerticalSpacing>
+    <nonTerminalFontInfo>
+        <color>#000000</color>
+        <fontFamily>Courier New</fontFamily>
+        <fontSize>12.0</fontSize>
+        <fontType>Bold</fontType>
+    </nonTerminalFontInfo>
+    <nonTerminalKeyboard>
+        <description>English</description>
+        <macDescription>US</macDescription>
+        <SLocale>en</SLocale>
+        <windowsLangID>0</windowsLangID>
+    </nonTerminalKeyboard>
+    <saveAsPng>true</saveAsPng>
+    <saveAsSVG>true</saveAsSVG>
+    <showFlatView>false</showFlatView>
+    <synTagmemeKeyboard>
+        <description>English</description>
+        <macDescription>US</macDescription>
+        <SLocale>en</SLocale>
+        <windowsLangID>0</windowsLangID>
+    </synTagmemeKeyboard>
+    <useRightToLeftOrientation>false</useRightToLeftOrientation>
+    <verticalAdjustmentForExtraVerticalSpacing>75.0</verticalAdjustmentForExtraVerticalSpacing>
+    <verticalGap>17.83</verticalGap>
+</lingTreeTree>

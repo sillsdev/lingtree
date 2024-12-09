@@ -44,6 +44,7 @@ public class ApplicationPreferences extends ApplicationPreferencesUtilities {
 	static final String ABBREVIATION_FONT_FAMILY = "abbreviationFontFamily";
 	static final String ABBREVIATION_FONT_SIZE = "abbreviationFontSize";
 	static final String ABBREVIATION_FONT_TYPE = "abbreviationFontType";
+	static final String DRAW_VERTICAL_LINE_WITH_EMPTY_TEXT = "drawVerticalLineWithEmptyText";
 	static final String EMPTY_ELEMENT_FONT_COLOR = "emptyElementFontColor";
 	static final String EMPTY_ELEMENT_FONT_FAMILY = "emptyElementFontFamily";
 	static final String EMPTY_ELEMENT_FONT_SIZE = "emptyElementFontSize";
@@ -153,6 +154,14 @@ public class ApplicationPreferences extends ApplicationPreferencesUtilities {
 
 	public void setDrawAsType(boolean fDrawAsType) {
 		setPreferencesKey(DRAW_AS_TYPE, fDrawAsType);
+	}
+
+	public boolean getDrawVerticalLineWithEmptyText() {
+		return prefs.getBoolean(DRAW_VERTICAL_LINE_WITH_EMPTY_TEXT, false);
+	}
+
+	public void setDrawVerticalLineWithEmptyText(boolean value) {
+		setPreferencesKey(DRAW_VERTICAL_LINE_WITH_EMPTY_TEXT, value);
 	}
 
 	public boolean getShowFullFilePath() {

@@ -269,6 +269,14 @@ public class TreeDrawer {
 				drawTriangle(node, pane, mother);
 			}
 		}
+		if (ltTree.isDrawVerticalLineWithEmptyText() && node.getContentTextBox().getText().length() == 0) {
+			// Need to draw a line from top to bottom of this node
+			Line lineNode = new Line(node.getXMid(), node.getYLowerMid(), node.getXMid(),
+					node.getYUpperMid());
+			lineNode.setStroke(ltTree.getLineColor());
+			lineNode.setStrokeWidth(ltTree.getLineWidth());
+			pane.getChildren().add(lineNode);
+		}
 		for (LingTreeNode daughterNode : node.getDaughters()) {
 			drawNodes(daughterNode, pane);
 		}
@@ -373,6 +381,11 @@ public class TreeDrawer {
 			} else if (node.isTriangle()) {
 				drawTriangleAsSVG(mother, node, sb);
 			}
+		}
+		if (ltTree.isDrawVerticalLineWithEmptyText() && node.getContentTextBox().getText().length() == 0) {
+			// Need to draw a line from top to bottom of this node
+			createLineAsSVG(node.getXMid(), node.getYLowerMid(), node.getXMid(),
+					node.getYUpperMid(), sb);
 		}
 		for (LingTreeNode daughterNode : node.getDaughters()) {
 			drawNodesAsSVG(daughterNode, sb);

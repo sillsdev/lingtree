@@ -58,6 +58,18 @@ public class TreeDrawerTest extends ServiceBaseTest {
 		assertEquals(19.62890625, maxHeightPerLevel.get(3), 0.0);
 		assertEquals(13.40625, maxHeightPerLevel.get(4), 0.0);
 		assertNull(maxHeightPerLevel.get(5));
+
+		// no text in node
+		ltTree = TreeBuilder.parseAString("(Mascoian((Enxet Sur)(Enlhet Norte))((((Angaité)(Sanapaná)))((Kaskihá)(Toba-Maskoy))))", origTree);
+		drawer = new TreeDrawer(ltTree);
+		drawer.calculateMaxHeightPerLevel();
+		maxHeightPerLevel = drawer.getMaxHeightPerLevel();
+		assertEquals(13.2890625, maxHeightPerLevel.get(1), 0.0);
+		assertEquals(15.9609375, maxHeightPerLevel.get(2), 0.0);
+		assertEquals(15.9609375, maxHeightPerLevel.get(3), 0.0);
+		assertEquals(15.9609375, maxHeightPerLevel.get(4), 0.0);
+		assertEquals(13.2890625, maxHeightPerLevel.get(5), 0.0);
+		assertNull(maxHeightPerLevel.get(6));
 	}
 
 	@Test
@@ -222,6 +234,31 @@ public class TreeDrawerTest extends ServiceBaseTest {
 		assertEquals(172.71484375, node1.getYUpperMid(), 0.0);
 		assertEquals(192.12109375, node1.getYLowerMid(), 0.0);
 
+		// no text in node (just the first set)
+		ltTree = TreeBuilder.parseAString("(Mascoian((Enxet Sur)(Enlhet Norte))((((Angaité)(Sanapaná)))((Kaskihá)(Toba-Maskoy))))", origTree);
+		drawer = new TreeDrawer(ltTree);
+		drawer.calculateMaxHeightPerLevel();
+		drawer.calculateYCoordinateOfEveryNode();
+		drawer.calculateXCoordinateOfEveryNode();
+		node = ltTree.getRootNode();  // Mascoian
+		assertEquals(100.0, node.getYCoordinate(), 0.0);
+		node1 = node.getDaughters().get(0); // empty
+		assertEquals(133.2890625, node1.getYCoordinate(), 0.0);
+		node2 = node1.getDaughters().get(0); // Enxet Sur
+		assertEquals(169.25, node2.getYCoordinate(), 0.0);
+		node2 = node1.getDaughters().get(1); // Enlhet Norte
+		assertEquals(169.25, node2.getYCoordinate(), 0.0);
+
+		node1 = node.getDaughters().get(1); // empty
+		assertEquals(133.2890625, node1.getYCoordinate(), 0.0);
+		node2 = node1.getDaughters().get(0); // empty
+		assertEquals(169.25, node2.getYCoordinate(), 0.0);
+		LingTreeNode node3 = node2.getDaughters().get(0); // empty
+		assertEquals(205.2109375, node3.getYCoordinate(), 0.0);
+		LingTreeNode node4 = node3.getDaughters().get(0); // Angaité
+		assertEquals(241.171875, node4.getYCoordinate(), 0.0);
+		node4 = node3.getDaughters().get(1); // Sanapaná
+		assertEquals(241.171875, node4.getYCoordinate(), 0.0);
 	}
 
 	@Test
@@ -288,6 +325,32 @@ public class TreeDrawerTest extends ServiceBaseTest {
 		assertEquals(121.0791015625, node1.getXCoordinate(), 0.0);
 		node1 = node1.getDaughters().get(0);
 		assertEquals(100, node1.getXCoordinate(), 0.0);
+
+		// no text in node (just the first set)
+		ltTree = TreeBuilder.parseAString("(Mascoian((Enxet Sur)(Enlhet Norte))((((Angaité)(Sanapaná)))((Kaskihá)(Toba-Maskoy))))", origTree);
+		drawer = new TreeDrawer(ltTree);
+		drawer.calculateMaxHeightPerLevel();
+		drawer.calculateYCoordinateOfEveryNode();
+		drawer.calculateXCoordinateOfEveryNode();
+		node = ltTree.getRootNode();  // Mascoian
+		assertEquals(264.9161376953125, node.getXCoordinate(), 0.0);
+		node1 = node.getDaughters().get(0); // empty
+		assertEquals(166.2138671875, node1.getXCoordinate(), 0.0);
+		node2 = node1.getDaughters().get(0); // Enxet Sur
+		assertEquals(100.0, node2.getXCoordinate(), 0.0);
+		node2 = node1.getDaughters().get(1); // Enlhet Norte
+		assertEquals(177.736328125, node2.getXCoordinate(), 0.0);
+
+		node1 = node.getDaughters().get(1); // empty
+		assertEquals(410.270751953125, node1.getXCoordinate(), 0.0);
+		node2 = node1.getDaughters().get(0); // empty
+		assertEquals(331.03515625, node2.getXCoordinate(), 0.0);
+		LingTreeNode node3 = node2.getDaughters().get(0); // empty
+		assertEquals(331.03515625, node3.getXCoordinate(), 0.0);
+		LingTreeNode node4 = node3.getDaughters().get(0); // Angaité
+		assertEquals(273.7158203125, node4.getXCoordinate(), 0.0);
+		node4 = node3.getDaughters().get(1); // Sanapaná
+		assertEquals(346.3720703125, node4.getXCoordinate(), 0.0);
 	}
 	
 	@Test
@@ -300,5 +363,16 @@ public class TreeDrawerTest extends ServiceBaseTest {
 		assertEquals(true, result.contains("NP&lt;"));
 		assertEquals(true, result.contains("Juan&gt;"));
 		assertEquals(true, result.contains("duerme &amp; "));
+
+		origTree = new LingTreeTree();
+		ltTree = TreeBuilder.parseAString("(Mascoian((Enxet Sur)(Enlhet Norte))((((Angaité)(Sanapaná)))((Kaskihá)(Toba-Maskoy))))", origTree);
+        ltTree.setDrawVerticalLineWithEmptyText(true);
+		drawer = new TreeDrawer(ltTree);
+		sb = drawer.drawAsSVG();
+		result = sb.toString();
+		assertEquals(true, result.contains(">Mascoian<"));
+		assertEquals(true, result.contains("Enxet Sur"));
+		assertEquals(true, result.contains("Enlhet Norte"));
+		assertEquals(true, result.contains("<line x1=\"166.2138671875\" y1=\"139.30078125\" x2=\"166.2138671875\" y2=\"117.33984375\" stroke=\"#000000\" stroke-width=\"10.0\"/>"));
 	}
 }

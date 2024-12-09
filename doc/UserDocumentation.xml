@@ -20,7 +20,7 @@ type="tLingTree"
 ><emailAddress
 >lingtree_support@sil.org</emailAddress
 ><date
->December 5, 2024</date
+>December 9, 2024</date
 ><version
 >Version 1.5.3</version
 ><version
@@ -2150,7 +2150,7 @@ id="sFormatting"
 ><secTitle
 >Formating a tree</secTitle
 ><p
->You can adjust the positioning of the tree and its nodes as well as choose the fonts, sizes, and colors for the non-terminal, lexical, gloss and empty nodes (and abbreviations). You can also set a background color and determine the color and thickness of the lines in the trees. In addition, you can have the tree show all of its lexical and gloss items at the same vertical position (which we refer to as using a “flat” view of the tree).</p
+>You can adjust the positioning of the tree and its nodes as well as choose the fonts, sizes, colors and keyboards for the non-terminal, lexical, gloss and empty nodes (and abbreviations). You can also set a background color and determine the color and thickness of the lines in the trees. In addition, you can have the tree show all of its lexical and gloss items at the same vertical position (which we refer to as using a “flat” view of the tree).</p
 ><p
 >All of these parameters are available on the <object
 type="tMenuItem"
@@ -2531,7 +2531,7 @@ id="sTreeSpacing"
 ><indexedItem
 term="iTreeSpacing"
 ></indexedItem
->The third from last item in the main <object
+>The next item in the main <object
 type="tMenuItem"
 >Format</object
 > menu item is <object
@@ -2618,7 +2618,7 @@ term="iColorLines"
 ><indexedItem
 term="iWidth"
 ></indexedItem
->The second from last item in the main <object
+>The third from last item in the main <object
 type="tMenuItem"
 >Format</object
 > menu item is <object
@@ -2640,6 +2640,81 @@ width="450"
 ></example
 ><pc
 >You can set the color of the tree background and the width and color of the lines. The width is in terms of screen pixels.</pc
+></section2
+><section2
+id="sVerticalLineEmpty"
+><secTitle
+>Draw vertical line with empty text</secTitle
+><p
+><indexedItem
+term="iDrawVerticalLine"
+></indexedItem
+><indexedItem
+term="iEmptyGap"
+></indexedItem
+>The second from last item in the main <object
+type="tMenuItem"
+>Format</object
+> menu item is <object
+type="tMenuItem"
+>Draw vertical line with empty text</object
+>. When this menu item has a check mark before it, any place where a text node is empty will have a vertical line connecting what comes above it with what comes below it.</p
+><p
+>For example, suppose you have a language family tree diagram like what is in <exampleRef
+letter="xLanguageFamilyTree"
+num="xLanguageFamilyTree"
+></exampleRef
+>.</p
+><example
+num="xLanguageFamilyTree"
+><word
+><langData
+lang="lTreeExample"
+>(Mascoian ( (Enxet Sur) (Enlhet Norte)) ( ((Angaité) (Sanapaná))  ((Kaskihá) (Toba-Maskoy))))</langData
+></word
+></example
+><p
+>When <object
+type="tMenuItem"
+>Draw vertical line with empty text</object
+> is not checked, this will look like what is in</p
+><example
+num="xLanguageFamilyTreeNo"
+><chart
+><img
+XeLaTeXSpecial="scaled='1000'"
+src="resources/LanguageFamilyTreeNo.svg"
+></img
+></chart
+></example
+><p
+>This, of course, is not what is desired.  One could try and add vertical line characters in the empty nodes, but that is not ideal, either.</p
+><p
+>When <object
+type="tMenuItem"
+>Draw vertical line with empty text</object
+> is checked, however, the tree will be as in <exampleRef
+letter="xLanguageFamilyTreeYes"
+num="xLanguageFamilyTreeYes"
+></exampleRef
+>.</p
+><example
+num="xLanguageFamilyTreeYes"
+><chart
+><img
+XeLaTeXSpecial="scaled='1000'"
+src="resources/LanguageFamilyTreeYes.svg"
+></img
+></chart
+></example
+><p
+>This is much better for this particular case.  The default is for <object
+type="tMenuItem"
+>Draw vertical line with empty text</object
+> to not be checked.  If you are making a number of these kinds of trees, you can use what is in section <sectionRef
+sec="sSaveForNew"
+></sectionRef
+> to make this menu item be checked for new tree diagrams.</p
 ></section2
 ><section2
 id="sSaveForNew"
@@ -3373,7 +3448,7 @@ term="iKeyboards"
 >When you move a <object
 type="tLingTree"
 ></object
-> file from one computer to another, you may well need to reset the keyboards manually.  This is because the keyboard settings may be different on the two machines.</li
+> file from one computer to another, you may well need to reset the keyboards manually. This is because the keyboard settings may be different on the two machines.</li
 ></ul
 ></section1
 ><section1
@@ -3607,9 +3682,19 @@ id="iDrawAsType"
 >Draw tree as you type</term
 ></indexTerm
 ><indexTerm
+id="iDrawVerticalLine"
+><term
+>Draw vertical line with empty text</term
+></indexTerm
+><indexTerm
 id="iEmptyElementNode"
 ><term
 >Empty element node</term
+></indexTerm
+><indexTerm
+id="iEmptyGap"
+><term
+>Empty gap in tree</term
 ></indexTerm
 ><indexTerm
 id="iErrors"

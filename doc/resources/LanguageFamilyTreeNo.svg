@@ -1,0 +1,28 @@
+﻿<?xml version='1.0' standalone='no'?>
+<svg width='509.0235937499999' height='120.54914062499999' version='1.1' xmlns='http://www.w3.org/2000/svg' contentScriptType='text/javascript'>
+<script  id="clientEventHandlersJS">
+function OnClickLingTreeNode(node){}
+</script>
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="182.57033691406247" y="14.94" font-family="Courier New" font-size="12.0" font-weight="bold" fill="#000000">Mascoian</text>
+<text x="85.06642578124999" y="46.363749999999996" font-family="Courier New" font-size="12.0" font-weight="bold" fill="#000000"></text>
+<line x1="211.48635253906247" y1="21.543515624999998" x2="85.06642578124999" y2="30.414531249999996" stroke="#400040" stroke-width="1.0"/>
+<text x="5.939999999999998" y="80.1546875" font-family="Courier New" font-size="12.0" font-weight="bold" fill="#000000">Enxet Sur</text>
+<line x1="85.06642578124999" y1="52.375468749999996" x2="38.3452734375" y2="67.164453125" stroke="#400040" stroke-width="1.0"/>
+<text x="88.58054687499998" y="80.1546875" font-family="Courier New" font-size="12.0" font-weight="bold" fill="#000000">Enlhet Norte</text>
+<line x1="85.06642578124999" y1="52.375468749999996" x2="131.78757812499998" y2="67.164453125" stroke="#400040" stroke-width="1.0"/>
+<text x="337.90627929687497" y="46.363749999999996" font-family="Courier New" font-size="12.0" font-weight="bold" fill="#000000"></text>
+<line x1="211.48635253906247" y1="21.543515624999998" x2="337.90627929687497" y2="30.414531249999996" stroke="#400040" stroke-width="1.0"/>
+<text x="259.571640625" y="80.1546875" font-family="Courier New" font-size="12.0" font-weight="bold" fill="#000000"></text>
+<line x1="337.90627929687497" y1="52.375468749999996" x2="259.571640625" y2="64.20546875" stroke="#400040" stroke-width="1.0"/>
+<text x="196.40175781249997" y="113.94562499999999" font-family="Courier New" font-size="12.0" font-weight="bold" fill="#000000">Angaité</text>
+<line x1="259.571640625" y1="86.16640625" x2="221.74062499999997" y2="100.95539062499999" stroke="#400040" stroke-width="1.0"/>
+<text x="268.59796874999995" y="113.94562499999999" font-family="Courier New" font-size="12.0" font-weight="bold" fill="#000000">Sanapaná</text>
+<line x1="259.571640625" y1="86.16640625" x2="297.40265624999995" y2="100.95539062499999" stroke="#400040" stroke-width="1.0"/>
+<text x="416.24091796874995" y="80.1546875" font-family="Courier New" font-size="12.0" font-weight="bold" fill="#000000"></text>
+<line x1="337.90627929687497" y1="52.375468749999996" x2="416.24091796874995" y2="64.20546875" stroke="#400040" stroke-width="1.0"/>
+<text x="347.86058593749993" y="113.94562499999999" font-family="Courier New" font-size="12.0" font-weight="bold" fill="#000000">Kaskihá</text>
+<line x1="416.24091796874995" y1="86.16640625" x2="373.06468749999993" y2="100.95539062499999" stroke="#400040" stroke-width="1.0"/>
+<text x="419.8107031249999" y="113.94562499999999" font-family="Courier New" font-size="12.0" font-weight="bold" fill="#000000">Toba-Maskoy</text>
+<line x1="416.24091796874995" y1="86.16640625" x2="459.4171484374999" y2="100.95539062499999" stroke="#400040" stroke-width="1.0"/>
+</svg>
