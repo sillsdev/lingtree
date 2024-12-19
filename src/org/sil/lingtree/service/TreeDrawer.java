@@ -25,6 +25,7 @@ import org.sil.utility.StringUtilities;
  *
  */
 public class TreeDrawer {
+	public boolean fUseRevisedAlgorithm = true;
 	LingTreeTree ltTree;
 	HashMap<Integer, Double> maxHeightPerLevel = new HashMap<>();
 
@@ -121,7 +122,53 @@ public class TreeDrawer {
 	public void calculateXCoordinateOfEveryNode() {
 		ltTree.setHorizontalOffset(ltTree.getInitialXCoordinate());
 		LingTreeNode node = ltTree.getRootNode();
-		calculateXCoordinateOfANode(node, 0);
+		if (fUseRevisedAlgorithm) {
+			calculateWidthOfEveryNodeAndInitXCoord(node);
+			System.out.println("max width of single columns");
+			calculateMaxWidthOfSingleColumnSubtrees(node);
+		} else {
+			calculateXCoordinateOfANode(node, 0);
+		}
+	}
+	private void calculateWidthOfEveryNodeAndInitXCoord(LingTreeNode node) {
+		node.calculateWidth();
+		node.setXCoordinate(ltTree.getInitialXCoordinate());
+		for (LingTreeNode daughter : node.getDaughters()) {
+			calculateWidthOfEveryNodeAndInitXCoord(daughter);
+		}
+	}
+
+	private double calculateMaxWidthOfSingleColumnSubtrees(LingTreeNode node) {
+		System.out.println("\t" + node.getContent());
+		double dMaxWidthOfColumn = node.getWidth();
+		if (node.getDaughters().size() > 0) {
+			for (LingTreeNode daughter : node.getDaughters()) {
+				int numDaughters = daughter.getDaughters().size();
+				if (numDaughters == 1) {
+					// is a single column (at least at this point)
+					double dMaxWidthOfDaughters = calculateMaxWidthOfSingleColumnSubtrees(daughter);
+					dMaxWidthOfColumn = Math.max(daughter.getWidth(), dMaxWidthOfDaughters);
+					setMaxWidthOfAllDaughtersInColumn(daughter, dMaxWidthOfColumn);
+				} else if (numDaughters > 1) {
+					// is multi-column
+					System.out.println("\tmulti-column for " + daughter.getContent());
+					calculateMaxWidthOfSingleColumnSubtrees(daughter);
+				} else {
+					// is a leaf node
+					dMaxWidthOfColumn = daughter.getWidth();
+				}
+			}
+		}
+		System.out.println("\tmax width for " + node.getContent() + " = " + node.getMaxWidthInColumn());
+		return dMaxWidthOfColumn;
+	}
+
+	private void setMaxWidthOfAllDaughtersInColumn(LingTreeNode node, double dMaxWidthOfColumn) {
+		node.setMaxWidthInColumn(dMaxWidthOfColumn);
+		for (LingTreeNode daughter : node.getDaughters()) {
+			setMaxWidthOfAllDaughtersInColumn(daughter, dMaxWidthOfColumn);
+		}
+		System.out.println("\t\tmax width for " + node.getContent() + " = " + node.getMaxWidthInColumn());
 	}
 
 	// Determine the X-axis coordinate for this node

@@ -45,6 +45,7 @@ public class LingTreeNode {
 
 	private double dHeight; // height of the node
 	private double dWidth; // width of the node
+	private double dMaxWidthInColumn; // maximum width of this node in its column
 
 //	private int iIndex; // index of node within its tree
 	// left horizontal position of the node
@@ -255,13 +256,36 @@ public class LingTreeNode {
 				+ dSuperscriptHeightAdjust;
 	}
 
-	public double getWidth() {
+	public double calculateWidth() {
 		if (hasAbbreviation()) {
 			getWidthOfNodeWithAbbreviation();
 		} else {
 			getWidthOfRegularNode();
 		}
 		return dWidth;
+	}
+
+	public double getWidth() {
+		return dWidth;
+	}
+
+	public void setWidth(double dWidth) {
+		this.dWidth = dWidth;
+	}
+
+
+	/**
+	 * @return the dMaxWidthInColumn
+	 */
+	public double getMaxWidthInColumn() {
+		return dMaxWidthInColumn;
+	}
+
+	/**
+	 * @param dMaxWidthInColumn the dMaxWidthInColumn to set
+	 */
+	public void setMaxWidthInColumn(double dMaxWidthInColumn) {
+		this.dMaxWidthInColumn = dMaxWidthInColumn;
 	}
 
 	protected void getWidthOfNodeWithAbbreviation() {
