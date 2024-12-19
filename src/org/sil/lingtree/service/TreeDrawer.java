@@ -26,6 +26,7 @@ import org.sil.utility.StringUtilities;
  */
 public class TreeDrawer {
 	public boolean fUseRevisedAlgorithm = true;
+	public boolean fDoDebugPrint = true;
 	LingTreeTree ltTree;
 	HashMap<Integer, Double> maxHeightPerLevel = new HashMap<>();
 
@@ -124,9 +125,9 @@ public class TreeDrawer {
 		LingTreeNode node = ltTree.getRootNode();
 		if (fUseRevisedAlgorithm) {
 			calculateWidthOfEveryNodeAndInitXCoord(node);
-			System.out.println("max width of single columns");
+			doDebugPrint("max width of single columns");
 			calculateMaxWidthOfSingleColumnSubtrees(node);
-			System.out.println("max width of multi-columns");
+			doDebugPrint("max width of multi-columns");
 			calculateMaxWidthOfMultiColumnSubtrees(node);
 		} else {
 			calculateXCoordinateOfANode(node, 0);
@@ -142,7 +143,7 @@ public class TreeDrawer {
 	}
 
 	private double calculateMaxWidthOfSingleColumnSubtrees(LingTreeNode node) {
-		System.out.println("\t" + node.getContent());
+		doDebugPrint("\t" + node.getContent());
 		double dMaxWidthOfColumn = node.getWidth();
 		if (node.getDaughters().size() > 0) {
 			for (LingTreeNode daughter : node.getDaughters()) {
@@ -154,7 +155,7 @@ public class TreeDrawer {
 					setMaxWidthOfAllDaughtersInColumn(daughter, dMaxWidthOfColumn);
 				} else if (numDaughters > 1) {
 					// is multi-column
-					System.out.println("\tmulti-column for " + daughter.getContent());
+					doDebugPrint("\tmulti-column for " + daughter.getContent());
 					calculateMaxWidthOfSingleColumnSubtrees(daughter);
 				} else {
 					// is a leaf node
@@ -162,7 +163,7 @@ public class TreeDrawer {
 				}
 			}
 		}
-		System.out.println("\tmax width for " + node.getContent() + " = " + node.getMaxWidthInColumn());
+		doDebugPrint("\tmax width for " + node.getContent() + " = " + node.getMaxWidthInColumn());
 		return dMaxWidthOfColumn;
 	}
 
@@ -171,11 +172,11 @@ public class TreeDrawer {
 		for (LingTreeNode daughter : node.getDaughters()) {
 			setMaxWidthOfAllDaughtersInColumn(daughter, dMaxWidthOfColumn);
 		}
-		System.out.println("\t\tmax width for " + node.getContent() + " = " + node.getMaxWidthInColumn());
+		doDebugPrint("\t\tmax width for " + node.getContent() + " = " + node.getMaxWidthInColumn());
 	}
 
 	private void calculateMaxWidthOfMultiColumnSubtrees(LingTreeNode node) {
-		System.out.println("\t" + node.getContent());
+		doDebugPrint("\t" + node.getContent());
 		for (LingTreeNode daughter : node.getDaughters()) {
 			calculateMaxWidthOfMultiColumnSubtrees(daughter);
 			int numDaughters = node.getDaughters().size();
@@ -183,7 +184,7 @@ public class TreeDrawer {
 				// is multi-column
 				double dMaxWidthOfDaughters = 0.0;
 				for (LingTreeNode subtree : node.getDaughters()) {
-					System.out.println("\t\t\tsubtree is " + subtree.getContent() + " max = " + subtree.getMaxWidthInColumn());
+					doDebugPrint("\t\t\tsubtree is " + subtree.getContent() + " max = " + subtree.getMaxWidthInColumn());
 					dMaxWidthOfDaughters += subtree.getMaxWidthInColumn();
 					if (subtree.getRightSister() != null) {
 						// include the gap between nodes
@@ -192,7 +193,7 @@ public class TreeDrawer {
 				}
 				dMaxWidthOfDaughters = Math.max(node.getWidth(), dMaxWidthOfDaughters);
 				node.setMaxWidthInColumn(dMaxWidthOfDaughters);
-				System.out.println("\t\tmax width for " + node.getContent() + " = " + node.getMaxWidthInColumn());
+				doDebugPrint("\t\tmax width for " + node.getContent() + " = " + node.getMaxWidthInColumn());
 			} else {
 				// is single column or leaf node; it's already been calculated; ignore it
 			}
@@ -536,5 +537,11 @@ public class TreeDrawer {
 		createLineAsSVG(dTopX, dTopY, dRightmostX, dBottomY, sb);
 		// bottom part of line
 		createLineAsSVG(dLeftmostX, dBottomY, dRightmostX, dBottomY, sb);
+	}
+
+	private void doDebugPrint(String msg) {
+		if (fDoDebugPrint) {
+			System.out.println(msg);
+		}
 	}
 }
