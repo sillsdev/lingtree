@@ -126,10 +126,13 @@ public class TreeDrawer {
 			calculateWidthOfEveryNodeAndInitXCoord(node);
 			System.out.println("max width of single columns");
 			calculateMaxWidthOfSingleColumnSubtrees(node);
+			System.out.println("max width of multi-columns");
+			calculateMaxWidthOfMultiColumnSubtrees(node);
 		} else {
 			calculateXCoordinateOfANode(node, 0);
 		}
 	}
+
 	private void calculateWidthOfEveryNodeAndInitXCoord(LingTreeNode node) {
 		node.calculateWidth();
 		node.setXCoordinate(ltTree.getInitialXCoordinate());
@@ -169,6 +172,31 @@ public class TreeDrawer {
 			setMaxWidthOfAllDaughtersInColumn(daughter, dMaxWidthOfColumn);
 		}
 		System.out.println("\t\tmax width for " + node.getContent() + " = " + node.getMaxWidthInColumn());
+	}
+
+	private void calculateMaxWidthOfMultiColumnSubtrees(LingTreeNode node) {
+		System.out.println("\t" + node.getContent());
+		for (LingTreeNode daughter : node.getDaughters()) {
+			calculateMaxWidthOfMultiColumnSubtrees(daughter);
+			int numDaughters = node.getDaughters().size();
+			if (numDaughters > 1) {
+				// is multi-column
+				double dMaxWidthOfDaughters = 0.0;
+				for (LingTreeNode subtree : node.getDaughters()) {
+					System.out.println("\t\t\tsubtree is " + subtree.getContent() + " max = " + subtree.getMaxWidthInColumn());
+					dMaxWidthOfDaughters += subtree.getMaxWidthInColumn();
+					if (subtree.getRightSister() != null) {
+						// include the gap between nodes
+						dMaxWidthOfDaughters += ltTree.getHorizontalGap();
+					}
+				}
+				dMaxWidthOfDaughters = Math.max(node.getWidth(), dMaxWidthOfDaughters);
+				node.setMaxWidthInColumn(dMaxWidthOfDaughters);
+				System.out.println("\t\tmax width for " + node.getContent() + " = " + node.getMaxWidthInColumn());
+			} else {
+				// is single column or leaf node; it's already been calculated; ignore it
+			}
+		}
 	}
 
 	// Determine the X-axis coordinate for this node
