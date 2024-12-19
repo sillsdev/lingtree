@@ -26,7 +26,7 @@ import org.sil.utility.StringUtilities;
  */
 public class TreeDrawer {
 	public boolean fUseRevisedAlgorithm = true;
-	public boolean fDoDebugPrint = true;
+	public boolean fDoDebugPrint = false;
 	LingTreeTree ltTree;
 	HashMap<Integer, Double> maxHeightPerLevel = new HashMap<>();
 
@@ -129,14 +129,29 @@ public class TreeDrawer {
 			calculateMaxWidthOfSingleColumnSubtrees(node);
 			doDebugPrint("max width of multi-columns");
 			calculateMaxWidthOfMultiColumnSubtrees(node);
+			System.out.println("calculate x-coord and xmid");
+			calculateXCoordinateAndXMidOfANode(node);
+			printNodeValues(node);
 		} else {
 			calculateXCoordinateOfANode(node, 0);
 		}
 	}
 
+	private void printNodeValues(LingTreeNode node) {
+		for (LingTreeNode daughter : node.getDaughters()) {
+			printNodeValues(daughter);
+		}
+		System.out.println("node is " + node.getContent());
+		System.out.println("\tx-coord = " + node.getXCoordinate());
+		System.out.println("\txmid    = " + node.getXMid());
+		System.out.println("\twidth   = " + node.getWidth());
+		System.out.println("\tmax     = " + node.getMaxWidthInColumn());
+
+	}
+
 	private void calculateWidthOfEveryNodeAndInitXCoord(LingTreeNode node) {
 		node.calculateWidth();
-		node.setXCoordinate(ltTree.getInitialXCoordinate());
+//		node.setXCoordinate(ltTree.getInitialXCoordinate());
 		for (LingTreeNode daughter : node.getDaughters()) {
 			calculateWidthOfEveryNodeAndInitXCoord(daughter);
 		}
@@ -199,6 +214,84 @@ public class TreeDrawer {
 			}
 		}
 	}
+
+	private void calculateXCoordinateAndXMidOfANode(LingTreeNode node) {
+		double xcoord = node.getXCoordinate();
+		double diff = node.getMaxWidthInColumn() - node.getWidth();
+		System.out.println("\txcoord and xmid for " + node.getContent());
+//		System.out.println("\t\txcoord = " + node.getXCoordinate());
+//		System.out.println("\t\twidth  = " + node.getMaxWidthInColumn());
+//		System.out.println("\t\tmax    = " + node.getMaxWidthInColumn());
+//		System.out.println("\t\tdiff   = " + diff);
+		System.out.println("\t\toffset = " + ltTree.getHorizontalOffset());
+		for (LingTreeNode daughter : node.getDaughters()) {
+			double dOffset = ltTree.getHorizontalOffset();
+			int numDaughters = node.getDaughters().size();
+			if (numDaughters == 1) {
+				// is a single column (at least at this point);
+				System.out.println("\tsingle column for " + node.getContent());
+				xcoord = node.getXCoordinate();
+				diff = node.getMaxWidthInColumn() - node.getWidth();
+				System.out.println("\t\txcoord = " + node.getXCoordinate());
+				System.out.println("\t\twidth  = " + node.getWidth());
+				System.out.println("\t\tmax    = " + node.getMaxWidthInColumn());
+				System.out.println("\t\tdiff   = " + diff);
+				xcoord += diff;
+				node.setXCoordinate(xcoord + dOffset);
+				node.setXMid(xcoord + (node.getWidth() / 2) + ltTree.getHorizontalOffset());
+				System.out.println("\t\txcoord = " + node.getXCoordinate());
+				System.out.println("\t\txmid   = " + node.getXMid());
+				setXCoordAndXMidOfAllDaughtersInColumn(node, node.getXMid());
+				double dNewOffset = dOffset + node.getMaxWidthInColumn() + ltTree.getHorizontalGap();
+				System.out.println("\t\tnew offset = " + dNewOffset);
+				ltTree.setHorizontalOffset(dNewOffset);
+			} else if (numDaughters > 1) {
+				// is multi-column
+				System.out.println("\tmulti-column for " + daughter.getContent());
+				System.out.println("\t\tprocessing subtrees");
+				for (LingTreeNode subtree : daughter.getDaughters()) {
+					calculateXCoordinateAndXMidOfANode(subtree);
+				}
+				System.out.println("\t\tfinished subtrees; now for " + daughter.getContent());
+				xcoord = daughter.getXCoordinate();
+				diff = daughter.getMaxWidthInColumn() - daughter.getWidth();
+				System.out.println("\t\txcoord = " + daughter.getXCoordinate());
+				System.out.println("\t\twidth  = " + daughter.getWidth());
+				System.out.println("\t\tmax    = " + daughter.getMaxWidthInColumn());
+				System.out.println("\t\tdiff   = " + diff);
+				xcoord += diff / 2;
+				daughter.setXCoordinate(xcoord + dOffset);
+				daughter.setXMid(xcoord + (daughter.getWidth() / 2) + dOffset);
+				System.out.println("\t\txcoord = " + daughter.getXCoordinate());
+				System.out.println("\t\txmid   = " + daughter.getXMid());
+//				double offset = ltTree.getHorizontalOffset() + daughter.getMaxWidthInColumn() + ltTree.getHorizontalGap();
+//				System.out.println("\t\tnew offset = " + offset);
+//				ltTree.setHorizontalOffset(offset);
+			} else {
+				// is a leaf node
+				// already done by single column portion above
+			}
+		}
+		if (!node.hasMother()) {
+			double dXMid = node.getMaxWidthInColumn() / 2;
+			node.setXCoordinate(dXMid - (node.getWidth() / 2) + ltTree.getInitialXCoordinate());
+			node.setXMid(dXMid);
+		}
+//		node.setXCoordinate(xcoord + diff);
+//		node.setXMid(xcoord + (diff / 2));
+	}
+
+	private void setXCoordAndXMidOfAllDaughtersInColumn(LingTreeNode node, double dXMid) {
+		for (LingTreeNode daughter : node.getDaughters()) {
+			System.out.println("\tset in column for " + daughter.getContent());
+			daughter.setXCoordinate(dXMid - (daughter.getWidth()/2));
+			daughter.setXMid(dXMid);
+			System.out.println("\t\txcoord = " + daughter.getXCoordinate());
+			System.out.println("\t\txmid   = " + daughter.getXMid());
+			setXCoordAndXMidOfAllDaughtersInColumn(daughter, dXMid);
+		}
+	}
+
 
 	// Determine the X-axis coordinate for this node
 	// It assumes that the width of this and all other nodes have
