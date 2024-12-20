@@ -130,7 +130,7 @@ public class TreeDrawer {
 			doDebugPrint("max width of multi-columns");
 			calculateMaxWidthOfMultiColumnSubtrees(node);
 			System.out.println("calculate x-coord and xmid");
-			calculateXCoordinateAndXMidOfANode(node);
+			calculateXCoordinateAndXMidOfANode(node, 0.0);
 			printNodeValues(node);
 			ltTree.setXSize(node.getMaxWidthInColumn());
 		} else {
@@ -216,7 +216,7 @@ public class TreeDrawer {
 		}
 	}
 
-	private void calculateXCoordinateAndXMidOfANode(LingTreeNode node) {
+	private void calculateXCoordinateAndXMidOfANode(LingTreeNode node, double dDaughtersOffset) {
 		double xcoord = node.getXCoordinate();
 		double diff = node.getMaxWidthInColumn() - node.getWidth();
 		System.out.println("\txcoord and xmid for " + node.getContent());
@@ -231,7 +231,7 @@ public class TreeDrawer {
 			if (numDaughters == 1) {
 				// is a single column (at least at this point);
 				System.out.println("\tsingle column for " + node.getContent());
-				xcoord = node.getXCoordinate();
+				xcoord = node.getXCoordinate() + dDaughtersOffset;
 				diff = node.getMaxWidthInColumn() - node.getWidth();
 				System.out.println("\t\txcoord = " + node.getXCoordinate());
 				System.out.println("\t\twidth  = " + node.getWidth());
@@ -250,8 +250,16 @@ public class TreeDrawer {
 				// is multi-column
 				System.out.println("\tmulti-column for " + daughter.getContent());
 				System.out.println("\t\tprocessing subtrees");
+				double dDaughtersWidth = 0.0;
 				for (LingTreeNode subtree : daughter.getDaughters()) {
-					calculateXCoordinateAndXMidOfANode(subtree);
+					dDaughtersWidth += subtree.getMaxWidthInColumn();
+					if (subtree.getRightSister() != null) {
+						dDaughtersWidth += ltTree.getHorizontalGap();
+					}
+				}
+				double dOffsetForDaughters = Math.max(daughter.getWidth() - dDaughtersWidth, 0.0) / 2;
+				for (LingTreeNode subtree : daughter.getDaughters()) {
+					calculateXCoordinateAndXMidOfANode(subtree, dOffsetForDaughters);
 				}
 				System.out.println("\t\tfinished subtrees; now for " + daughter.getContent());
 				xcoord = daughter.getXCoordinate();
