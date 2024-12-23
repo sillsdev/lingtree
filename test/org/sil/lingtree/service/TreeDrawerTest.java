@@ -266,6 +266,7 @@ public class TreeDrawerTest extends ServiceBaseTest {
 		LingTreeTree origTree = new LingTreeTree();
 		LingTreeTree ltTree = TreeBuilder.parseAString("(S (NP (\\L Juan (\\G John))) (VP (V (\\L duerme (\\G sleeps)))))", origTree);
 		drawer = new TreeDrawer(ltTree);
+		drawer.fUseRevisedAlgorithm = false;
 		drawer.calculateMaxHeightPerLevel();
 		drawer.calculateYCoordinateOfEveryNode();
 		drawer.calculateXCoordinateOfEveryNode();
@@ -290,6 +291,7 @@ public class TreeDrawerTest extends ServiceBaseTest {
 		origTree = new LingTreeTree();
 		ltTree = TreeBuilder.parseAString("(S (NP/Ssuper (\\L Juan (\\G John))) (VP (V/ssub (\\L duerme (\\G sleeps)))))", origTree);
 		drawer = new TreeDrawer(ltTree);
+		drawer.fUseRevisedAlgorithm = false;
 		drawer.calculateMaxHeightPerLevel();
 		drawer.calculateYCoordinateOfEveryNode();
 		drawer.calculateXCoordinateOfEveryNode();
@@ -314,6 +316,7 @@ public class TreeDrawerTest extends ServiceBaseTest {
 		origTree = new LingTreeTree();
 		ltTree = TreeBuilder.parseAString("(NP (N (\\L mi libros (\\G -/a1.poss/A- book -/a pl /A))))", origTree);
 		drawer = new TreeDrawer(ltTree);
+		drawer.fUseRevisedAlgorithm = false;
 		drawer.calculateMaxHeightPerLevel();
 		drawer.calculateYCoordinateOfEveryNode();
 		drawer.calculateXCoordinateOfEveryNode();
@@ -329,6 +332,7 @@ public class TreeDrawerTest extends ServiceBaseTest {
 		// no text in node (just the first set)
 		ltTree = TreeBuilder.parseAString("(Mascoian((Enxet Sur)(Enlhet Norte))((((Angaité)(Sanapaná)))((Kaskihá)(Toba-Maskoy))))", origTree);
 		drawer = new TreeDrawer(ltTree);
+		drawer.fUseRevisedAlgorithm = false;
 		drawer.calculateMaxHeightPerLevel();
 		drawer.calculateYCoordinateOfEveryNode();
 		drawer.calculateXCoordinateOfEveryNode();
@@ -358,6 +362,7 @@ public class TreeDrawerTest extends ServiceBaseTest {
 		LingTreeTree origTree = new LingTreeTree();
 		LingTreeTree ltTree = TreeBuilder.parseAString("(S (NP< (\\L Juan> (\\G John))) (VP (V (\\L duerme & mas (\\G sleeps)))))", origTree);
 		drawer = new TreeDrawer(ltTree);
+		drawer.fUseRevisedAlgorithm = false;
 		StringBuilder sb = drawer.drawAsSVG();
 		String result = sb.toString();
 		assertEquals(true, result.contains("NP&lt;"));
