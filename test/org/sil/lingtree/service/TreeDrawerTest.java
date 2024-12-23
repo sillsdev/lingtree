@@ -579,4 +579,30 @@ public class TreeDrawerTest extends ServiceBaseTest {
 		assertEquals(true, result.contains("Enlhet Norte"));
 		assertEquals(true, result.contains("<line x1=\"166.2138671875\" y1=\"139.30078125\" x2=\"166.2138671875\" y2=\"117.33984375\" stroke=\"#000000\" stroke-width=\"10.0\"/>"));
 	}
+
+	@Test
+	public void drawAsSVGRevisedTest() {
+		LingTreeTree origTree = new LingTreeTree();
+		LingTreeTree ltTree = TreeBuilder.parseAString("(S (NP< (\\L Juan> (\\G John))) (VP (V (\\L duerme & mas (\\G sleeps)))))", origTree);
+		drawer = new TreeDrawer(ltTree);
+		drawer.fUseRevisedAlgorithm = true;
+		StringBuilder sb = drawer.drawAsSVG();
+		String result = sb.toString();
+		assertEquals(true, result.contains("NP&lt;"));
+		assertEquals(true, result.contains("Juan&gt;"));
+		assertEquals(true, result.contains("duerme &amp; "));
+
+		origTree = new LingTreeTree();
+		ltTree = TreeBuilder.parseAString("(1234567890(123(\\\\L1234(\\\\G1)))(12(1234(123456(123(\\\\L456(\\\\G3)))))(0987(345(34(\\\\L123456(\\\\G4)))))))", origTree);
+        ltTree.setDrawVerticalLineWithEmptyText(true);
+		drawer = new TreeDrawer(ltTree);
+		drawer.fUseRevisedAlgorithm = true;
+		sb = drawer.drawAsSVG();
+		result = sb.toString();
+		System.out.print(result);
+		assertEquals(true, result.contains(">1234567890<"));
+		assertEquals(true, result.contains(">123456<"));
+		assertEquals(true, result.contains(">123<"));
+		assertEquals(true, result.contains("<line x1=\"191.998046875\" y1=\"105.595703125\" x2=\"118.9990234375\" y2=\"119.595703125\" stroke=\"#000000\" stroke-width=\"10.0\"/>"));
+	}
 }
