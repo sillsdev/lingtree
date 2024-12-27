@@ -26,7 +26,7 @@ import org.sil.utility.StringUtilities;
  */
 public class TreeDrawer {
 	public boolean fUseRevisedAlgorithm = true;
-	public boolean fDoDebugPrint = false;
+	public boolean fDoDebugPrint = true;
 	LingTreeTree ltTree;
 	HashMap<Integer, Double> maxHeightPerLevel = new HashMap<>();
 
@@ -257,11 +257,13 @@ public class TreeDrawer {
 				doDebugPrint("\t\twidth  = " + node.getWidth());
 				doDebugPrint("\t\tmax    = " + node.getMaxWidthInColumn());
 				doDebugPrint("\t\tdiff   = " + diff);
-				xcoord += diff / 2;
-				node.setXCoordinate(xcoord + dOffset);
-				node.setXMid(xcoord + (node.getWidth() / 2) + ltTree.getHorizontalOffset() /*+ dRootOffset*/);
-				doDebugPrint("\t\txcoord = " + node.getXCoordinate());
-				doDebugPrint("\t\txmid   = " + node.getXMid());
+				if (node.hasMother()) {
+					xcoord += diff / 2;
+					node.setXCoordinate(xcoord + dOffset);
+					node.setXMid(xcoord + (node.getWidth() / 2) + ltTree.getHorizontalOffset() /* + dRootOffset */);
+					doDebugPrint("\t\txcoord = " + node.getXCoordinate());
+					doDebugPrint("\t\txmid   = " + node.getXMid());
+				}
 				setXCoordAndXMidOfAllDaughtersInColumn(node, node.getXMid(), dDaughtersOffset, dRootOffset);
 				double dNewOffset = dOffset + node.getMaxWidthInColumn() + ltTree.getHorizontalGap();
 				doDebugPrint("\t\tnew offset = " + dNewOffset);
@@ -322,7 +324,7 @@ public class TreeDrawer {
 				setXCoordAndXMidOfAllDaughtersInColumn(daughter, dXMid, dDaughtersOffset, dRootOffset);
 			} else {
 				daughter.setXMid(dXMid);
-				daughter.setXCoordinate(dXMid);
+				daughter.setXCoordinate(dXMid - (daughter.getWidth() / 2));
 				doDebugPrint("\t\tmulti for " + daughter.getContent());
 				doDebugPrint("\t\txcoord = " + daughter.getXCoordinate());
 				doDebugPrint("\t\txmid   = " + daughter.getXMid());

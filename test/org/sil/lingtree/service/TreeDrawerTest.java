@@ -553,6 +553,29 @@ public class TreeDrawerTest extends ServiceBaseTest {
 		assertEquals(338.55859375, node2.getXCoordinate(), 0.0);
 		node2 = node2.getDaughters().get(0);
 		assertEquals(338.599609375, node2.getXCoordinate(), 0.0);
+
+		// single single double
+		origTree = new LingTreeTree();
+		ltTree = TreeBuilder.parseAString("(S (VP (V (\\L ʃu (\\G ab ) ) ) (aux (\\L be (\\G cd ) ) )   ) )", origTree);
+		drawer = new TreeDrawer(ltTree);
+		drawer.fUseRevisedAlgorithm = true;
+		drawer.calculateMaxHeightPerLevel();
+		drawer.calculateYCoordinateOfEveryNode();
+		drawer.calculateXCoordinateOfEveryNode();
+		node = ltTree.getRootNode();
+		assertEquals(127.0, node.getXCoordinate(), 0.0);
+		node1 = node.getDaughters().get(0);
+		assertEquals(122.6669921875, node1.getXCoordinate(), 0.0);
+		node2 = node1.getDaughters().get(0);
+		assertEquals(102.3408203125, node2.getXCoordinate(), 0.0);
+		node2 = node2.getDaughters().get(0);
+		assertEquals(101.130859375, node2.getXCoordinate(), 0.0);
+		node1 = node1.getDaughters().get(1);
+		assertEquals(143.34765625, node1.getXCoordinate(), 0.0);
+		node2 = node1.getDaughters().get(0);
+		assertEquals(145.73828125, node2.getXCoordinate(), 0.0);
+		node2 = node2.getDaughters().get(0);
+		assertEquals(145.673828125, node2.getXCoordinate(), 0.0);
 	}
 
 	@Test
