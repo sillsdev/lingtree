@@ -271,21 +271,21 @@ public class TreeDrawerTest extends ServiceBaseTest {
 		drawer.calculateYCoordinateOfEveryNode();
 		drawer.calculateXCoordinateOfEveryNode();
 		LingTreeNode node = ltTree.getRootNode();
-		assertEquals(141.24267578125, node.getXCoordinate(), 0.0);
+		checkNodeContentAndXCoordinate(node, "S", 141.24267578125);
 		LingTreeNode node1 = node.getDaughters().get(0);
-		assertEquals(105.26171875, node1.getXCoordinate(), 0.0);
+		checkNodeContentAndXCoordinate(node1, "NP", 105.26171875);
 		LingTreeNode node2 = node.getDaughters().get(1);
-		assertEquals(168.478515625, node2.getXCoordinate(), 0.0);
+		checkNodeContentAndXCoordinate(node2, "VP", 168.478515625);
 		node1 = node1.getDaughters().get(0);
-		assertEquals(100.234375, node1.getXCoordinate(), 0.0);
+		checkNodeContentAndXCoordinate(node1, "Juan", 100.234375);
 		node1 = node1.getDaughters().get(0);
-		assertEquals(100.0, node1.getXCoordinate(), 0.0);
+		checkNodeContentAndXCoordinate(node1, "John", 100.0);
 		node2 = node2.getDaughters().get(0);
-		assertEquals(171.8154296875, node2.getXCoordinate(), 0.0);
+		checkNodeContentAndXCoordinate(node2, "V", 171.8154296875);
 		node2 = node2.getDaughters().get(0);
-		assertEquals(156.021484375, node2.getXCoordinate(), 0.0);
+		checkNodeContentAndXCoordinate(node2, "duerme", 156.021484375);
 		node2 = node2.getDaughters().get(0);
-		assertEquals(158.8046875, node2.getXCoordinate(), 0.0);
+		checkNodeContentAndXCoordinate(node2, "sleeps", 158.8046875);
 
 		// with subscript and superscript
 		origTree = new LingTreeTree();
@@ -296,21 +296,21 @@ public class TreeDrawerTest extends ServiceBaseTest {
 		drawer.calculateYCoordinateOfEveryNode();
 		drawer.calculateXCoordinateOfEveryNode();
 		node = ltTree.getRootNode();
-		assertEquals(147.03598546981812, node.getXCoordinate(), 0.0);
+		checkNodeContentAndXCoordinate(node, "S", 147.03598546981812);
 		node1 = node.getDaughters().get(0);
-		assertEquals(100.0, node1.getXCoordinate(), 0.0);
+		checkNodeContentAndXCoordinate(node1, "NP", 100.0);
 		node2 = node.getDaughters().get(1);
-		assertEquals(176.20292854309082, node2.getXCoordinate(), 0.0);
+		checkNodeContentAndXCoordinate(node2, "VP", 176.20292854309082);
 		node1 = node1.getDaughters().get(0);
-		assertEquals(104.09658145904541, node1.getXCoordinate(), 0.0);
+		checkNodeContentAndXCoordinate(node1, "Juan", 104.09658145904541);
 		node1 = node1.getDaughters().get(0);
-		assertEquals(103.86220645904541, node1.getXCoordinate(), 0.0);
+		checkNodeContentAndXCoordinate(node1, "John", 103.86220645904541);
 		node2 = node2.getDaughters().get(0);
-		assertEquals(173.70536994934082, node2.getXCoordinate(), 0.0);
+		checkNodeContentAndXCoordinate(node2, "V", 173.70536994934082);
 		node2 = node2.getDaughters().get(0);
-		assertEquals(163.74589729309082, node2.getXCoordinate(), 0.0);
+		checkNodeContentAndXCoordinate(node2, "duerme", 0163.74589729309082);
 		node2 = node2.getDaughters().get(0);
-		assertEquals(166.52910041809082, node2.getXCoordinate(), 0.0);
+		checkNodeContentAndXCoordinate(node2, "sleeps", 166.52910041809082);
 
 		// abbreviations
 		origTree = new LingTreeTree();
@@ -321,12 +321,16 @@ public class TreeDrawerTest extends ServiceBaseTest {
 		drawer.calculateYCoordinateOfEveryNode();
 		drawer.calculateXCoordinateOfEveryNode();
 		node = ltTree.getRootNode();
+		checkNodeContentAndXCoordinate(node, "NP", 136.9375);
 		assertEquals(136.9375, node.getXCoordinate(), 0.0);
 		node1 = node.getDaughters().get(0);
+		checkNodeContentAndXCoordinate(node1, "N", 140.2744140625);
 		assertEquals(140.2744140625, node1.getXCoordinate(), 0.0);
 		node1 = node1.getDaughters().get(0);
+		checkNodeContentAndXCoordinate(node1, "mi libros", 121.0791015625);
 		assertEquals(121.0791015625, node1.getXCoordinate(), 0.0);
 		node1 = node1.getDaughters().get(0);
+		checkNodeContentAndXCoordinate(node1, "", 100.0);
 		assertEquals(100, node1.getXCoordinate(), 0.0);
 
 		// no text in node (just the first set)
@@ -336,25 +340,25 @@ public class TreeDrawerTest extends ServiceBaseTest {
 		drawer.calculateMaxHeightPerLevel();
 		drawer.calculateYCoordinateOfEveryNode();
 		drawer.calculateXCoordinateOfEveryNode();
-		node = ltTree.getRootNode();  // Mascoian
-		assertEquals(264.9161376953125, node.getXCoordinate(), 0.0);
-		node1 = node.getDaughters().get(0); // empty
-		assertEquals(166.2138671875, node1.getXCoordinate(), 0.0);
-		node2 = node1.getDaughters().get(0); // Enxet Sur
-		assertEquals(100.0, node2.getXCoordinate(), 0.0);
-		node2 = node1.getDaughters().get(1); // Enlhet Norte
-		assertEquals(177.736328125, node2.getXCoordinate(), 0.0);
+		node = ltTree.getRootNode();
+		checkNodeContentAndXCoordinate(node, "Mascoian", 264.9161376953125);
+		node1 = node.getDaughters().get(0);
+		checkNodeContentAndXCoordinate(node1, "", 166.2138671875);
+		node2 = node1.getDaughters().get(0);
+		checkNodeContentAndXCoordinate(node2, "Enxet Sur", 100.0);
+		node2 = node1.getDaughters().get(1);
+		checkNodeContentAndXCoordinate(node2, "Enlhet Norte", 177.736328125);
 
-		node1 = node.getDaughters().get(1); // empty
-		assertEquals(410.270751953125, node1.getXCoordinate(), 0.0);
-		node2 = node1.getDaughters().get(0); // empty
-		assertEquals(331.03515625, node2.getXCoordinate(), 0.0);
-		LingTreeNode node3 = node2.getDaughters().get(0); // empty
-		assertEquals(331.03515625, node3.getXCoordinate(), 0.0);
-		LingTreeNode node4 = node3.getDaughters().get(0); // Angaité
-		assertEquals(273.7158203125, node4.getXCoordinate(), 0.0);
-		node4 = node3.getDaughters().get(1); // Sanapaná
-		assertEquals(346.3720703125, node4.getXCoordinate(), 0.0);
+		node1 = node.getDaughters().get(1);
+		checkNodeContentAndXCoordinate(node1, "", 410.270751953125);
+		node2 = node1.getDaughters().get(0);
+		checkNodeContentAndXCoordinate(node2, "", 331.03515625);
+		LingTreeNode node3 = node2.getDaughters().get(0);
+		checkNodeContentAndXCoordinate(node3, "", 331.03515625);
+		LingTreeNode node4 = node3.getDaughters().get(0);
+		checkNodeContentAndXCoordinate(node4, "Angaité", 273.7158203125);
+		node4 = node3.getDaughters().get(1);
+		checkNodeContentAndXCoordinate(node4, "Sanapaná", 346.3720703125);
 	}
 	
 	@Test
