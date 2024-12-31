@@ -709,7 +709,7 @@ public class TreeDrawerTest extends ServiceBaseTest {
 		node2 = node2.getDaughters().get(0);
 		assertEquals(244.41015625, node2.getXCoordinate(), 0.0);
 
-		// two non-terminals getting zero or negative x-coordinates
+		// two non-terminals getting zero or negative x-coordinates before fix
 		origTree = new LingTreeTree();
 		ltTree = TreeBuilder.parseAString("(S (part) (S2 (DP1) ) )", origTree);
 		ltTree.setInitialXCoordinate(10);
@@ -719,14 +719,69 @@ public class TreeDrawerTest extends ServiceBaseTest {
 		drawer.calculateYCoordinateOfEveryNode();
 		drawer.calculateXCoordinateOfEveryNode();
 		node = ltTree.getRootNode();
-		checkNodeContentAndXCoordinate(node, "S", 32.3330078125);
+		checkNodeContentAndXCoordinate(node, "S", 41.6904296875);
 		node1 = node.getDaughters().get(0);
 		checkNodeContentAndXCoordinate(node1, "part", 10.0);
 		node1 = node.getDaughters().get(1);
 		checkNodeContentAndXCoordinate(node1, "S2", 33.0478515625);
 		node2 = node1.getDaughters().get(0);
 		checkNodeContentAndXCoordinate(node2, "DP1", 28.71484375);
-}
+
+		// two leaf nodes overlapping x-coordinates before fix
+		origTree = new LingTreeTree();
+		ltTree = TreeBuilder.parseAString("(PT=NP[4]:PF=Objc:PD=det\n"
+				+ "(part(\\L את/אֶת־[285] (\\G object marker)))\n"
+				+ "(SP[4:SPR=Appo]\n"
+				+ "(SP[25:SPR=Xatr] (DP\n"
+				+ "(art(\\L ה/הַ[292] (\\G the)))\n"
+				+ "(subs(\\L מאור/מָּאֹ֤ור [293] (\\G lamp [/am sg a - /A])))))\n"
+				+ "(SP[24:SPR=atr] (DP (art(\\L ה/הַ[294] (\\G the)))))))", origTree);
+		ltTree.setInitialXCoordinate(10);
+		drawer = new TreeDrawer(ltTree);
+		drawer.fUseRevisedAlgorithm = true;
+		drawer.calculateMaxHeightPerLevel();
+		drawer.calculateYCoordinateOfEveryNode();
+		drawer.calculateXCoordinateOfEveryNode();
+		node = ltTree.getRootNode();
+		checkNodeContentAndXCoordinate(node, "PT=NP[4]:PF=Objc:PD=det", 135.056640625);
+		node1 = node.getDaughters().get(0);
+		checkNodeContentAndXCoordinate(node1, "part", 38.6259765625);
+		node2 = node1.getDaughters().get(0);
+		checkNodeContentAndXCoordinate(node2, "את/אֶת־[285]", 10.0);
+		node2 = node2.getDaughters().get(0);
+		checkNodeContentAndXCoordinate(node2, "object marker", 11.5556640625);
+
+		node1 = node.getDaughters().get(1);
+		checkNodeContentAndXCoordinate(node1, "SP[4:SPR=Appo]", 213.8095703125);
+		node2 = node1.getDaughters().get(0);
+		checkNodeContentAndXCoordinate(node2, "SP[25:SPR=Xatr]", 159.7568359375);
+		node2 = node2.getDaughters().get(0);
+		checkNodeContentAndXCoordinate(node2, "DP", 195.14453125);
+		LingTreeNode node3 = node2.getDaughters().get(0);
+		checkNodeContentAndXCoordinate(node3, "art", 135.912109375);
+		node3 = node3.getDaughters().get(0);
+		checkNodeContentAndXCoordinate(node3, "ה/הַ[292]", 115.966796875);
+		node3 = node3.getDaughters().get(0);
+		checkNodeContentAndXCoordinate(node3, "the", 133.908203125);
+
+		node3 = node2.getDaughters().get(1);
+		checkNodeContentAndXCoordinate(node3, "subs", 233.4267578125);
+		node3 = node3.getDaughters().get(0);
+		checkNodeContentAndXCoordinate(node3, "מאור/מָּאֹ֤ור [293]", 198.53125);
+		node3 = node3.getDaughters().get(0);
+		checkNodeContentAndXCoordinate(node3, "", 204.419921875);
+
+		node2 = node1.getDaughters().get(1);
+		checkNodeContentAndXCoordinate(node2, "SP[24:SPR=atr]", 319.662109375);
+		node2 = node2.getDaughters().get(0);
+		checkNodeContentAndXCoordinate(node2, "DP", 350.716796875);
+		node3 = node2.getDaughters().get(0);
+		checkNodeContentAndXCoordinate(node3, "art", 352.0498046875);
+		node3 = node3.getDaughters().get(0);
+		checkNodeContentAndXCoordinate(node3, "ה/הַ[294]", 332.1044921875);
+		node3 = node3.getDaughters().get(0);
+		checkNodeContentAndXCoordinate(node3, "the", 350.0458984375);
+	}
 
 	private void checkNodeContentAndXCoordinate(LingTreeNode node, String content, double xcoord) {
 		assertEquals(content, node.getContent());

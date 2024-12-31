@@ -125,10 +125,12 @@ public class TreeDrawer {
 		LingTreeNode node = ltTree.getRootNode();
 		if (fUseRevisedAlgorithm) {
 			calculateWidthOfEveryNodeAndInitXCoord(node);
-			doDebugPrint("max width of single columns");
-			calculateMaxWidthOfSingleColumnSubtrees(node);
-			doDebugPrint("max width of multi-columns");
-			calculateMaxWidthOfMultiColumnSubtrees(node);
+			doDebugPrint("max width of nodes");
+			calculateMaxWidthOfNodes(node);
+//			doDebugPrint("max width of single columns");
+//			calculateMaxWidthOfSingleColumnSubtrees(node);
+//			doDebugPrint("max width of multi-columns");
+//			calculateMaxWidthOfMultiColumnSubtrees(node);
 			doDebugPrint("calculate x-coord and xmid");
 			calculateXCoordinateAndXMidOfANode(node, 0.0, 0.0);
 			printNodeValues(node);
@@ -159,66 +161,22 @@ public class TreeDrawer {
 		}
 	}
 
-	private double calculateMaxWidthOfSingleColumnSubtrees(LingTreeNode node) {
-		doDebugPrint("\t" + node.getContent());
-		double dMaxWidthOfColumn = node.getWidth();
-		if (node.getDaughters().size() > 0) {
-			for (LingTreeNode daughter : node.getDaughters()) {
-				int numDaughters = daughter.getDaughters().size();
-				if (numDaughters == 1) {
-					// is a single column (at least at this point)
-					double dMaxWidthOfDaughters = calculateMaxWidthOfSingleColumnSubtrees(daughter);
-					dMaxWidthOfColumn = Math.max(daughter.getWidth(), dMaxWidthOfDaughters);
-					setMaxWidthOfAllDaughtersInColumn(daughter, dMaxWidthOfColumn);
-				} else if (numDaughters > 1) {
-					// is multi-column
-					doDebugPrint("\tmulti-column for " + daughter.getContent());
-					calculateMaxWidthOfSingleColumnSubtrees(daughter);
-				} else {
-					// is a leaf node
-					dMaxWidthOfColumn = daughter.getWidth();
-				}
-			}
-		}
-		doDebugPrint("\tmax width for " + node.getContent() + " = " + node.getMaxWidthInColumn());
-		return dMaxWidthOfColumn;
-	}
-
-	private void setMaxWidthOfAllDaughtersInColumn(LingTreeNode node, double dMaxWidthOfColumn) {
-		node.setMaxWidthInColumn(dMaxWidthOfColumn);
+	private double calculateMaxWidthOfNodes(LingTreeNode node) {
+		doDebugPrint("\tcalculateMaxWidthOfNodes for " + node.getContent());
+		double dMaxWidthOfNode = node.getWidth();
+		double dMaxWidthOfDaughters = 0.0;
 		for (LingTreeNode daughter : node.getDaughters()) {
-			if (daughter.getDaughters().size() <= 1) {
-				setMaxWidthOfAllDaughtersInColumn(daughter, dMaxWidthOfColumn);
-			} else {
-				calculateMaxWidthOfMultiColumnSubtrees(daughter);
+			dMaxWidthOfDaughters += calculateMaxWidthOfNodes(daughter);
+			if (daughter.getRightSister() != null) {
+				dMaxWidthOfDaughters += ltTree.getHorizontalGap();
 			}
 		}
-		doDebugPrint("\t\tmax width for " + node.getContent() + " = " + node.getMaxWidthInColumn());
-	}
-
-	private void calculateMaxWidthOfMultiColumnSubtrees(LingTreeNode node) {
-		doDebugPrint("\t" + node.getContent());
-		for (LingTreeNode daughter : node.getDaughters()) {
-			calculateMaxWidthOfMultiColumnSubtrees(daughter);
-			int numDaughters = node.getDaughters().size();
-			if (numDaughters > 1) {
-				// is multi-column
-				double dMaxWidthOfDaughters = 0.0;
-				for (LingTreeNode subtree : node.getDaughters()) {
-					doDebugPrint("\t\t\tsubtree is " + subtree.getContent() + " max = " + subtree.getMaxWidthInColumn());
-					dMaxWidthOfDaughters += subtree.getMaxWidthInColumn();
-					if (subtree.getRightSister() != null) {
-						// include the gap between nodes
-						dMaxWidthOfDaughters += ltTree.getHorizontalGap();
-					}
-				}
-				dMaxWidthOfDaughters = Math.max(node.getWidth(), dMaxWidthOfDaughters);
-				node.setMaxWidthInColumn(dMaxWidthOfDaughters);
-				doDebugPrint("\t\tmax width for " + node.getContent() + " = " + node.getMaxWidthInColumn());
-			} else {
-				// is single column or leaf node; it's already been calculated; ignore it
-			}
-		}
+		dMaxWidthOfNode = Math.max(dMaxWidthOfNode, dMaxWidthOfDaughters);
+		node.setMaxWidthInColumn(dMaxWidthOfNode);
+		doDebugPrint("\t\tset max width for " + node.getContent());
+		doDebugPrint("\t\t\twidth     = "  + node.getWidth());
+		doDebugPrint("\t\t\tmax width = "  + node.getMaxWidthInColumn());
+		return dMaxWidthOfNode;
 	}
 
 	private void calculateXCoordinateAndXMidOfANode(LingTreeNode node, double dDaughtersOffset, double dAncestorOffset) {
@@ -301,6 +259,8 @@ public class TreeDrawer {
 			doDebugPrint("\t\tdNodeOffset = " + dNodeOffset);
 			doDebugPrint("\t\toffset      = " + ltTree.getHorizontalOffset());
 
+			doDebugPrint("calculateXCoordinateAndXMidOfANode end for node " + node.getContent());
+			doDebugPrint("\t\t\tmax = " + dDaughtersWidth);
 			node.setMaxWidthInColumn(dDaughtersWidth);
 			double gap = ltTree.getHorizontalGap();
 			if (dDaughtersWidth == 0.0) {
