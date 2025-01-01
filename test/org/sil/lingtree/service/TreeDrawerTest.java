@@ -723,9 +723,9 @@ public class TreeDrawerTest extends ServiceBaseTest {
 		node1 = node.getDaughters().get(0);
 		checkNodeContentAndXCoordinate(node1, "part", 10.0);
 		node1 = node.getDaughters().get(1);
-		checkNodeContentAndXCoordinate(node1, "S2", 33.0478515625);
+		checkNodeContentAndXCoordinate(node1, "S2", 63.0478515625);
 		node2 = node1.getDaughters().get(0);
-		checkNodeContentAndXCoordinate(node2, "DP1", 28.71484375);
+		checkNodeContentAndXCoordinate(node2, "DP1", 58.71484375);
 
 		// two leaf nodes overlapping x-coordinates before fix
 		origTree = new LingTreeTree();

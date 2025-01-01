@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2024 SIL International
+ * Copyright (c) 2016-2025 SIL International
  * This software is licensed under the LGPL, version 2.1 or later
  * (http://www.gnu.org/licenses/lgpl-2.1.html)
  */
@@ -46,6 +46,7 @@ public class LingTreeNode {
 	private double dHeight; // height of the node
 	private double dWidth; // width of the node
 	private double dMaxWidthInColumn; // maximum width of this node in its column
+	private double dMaxWidthOfDaughters; // maximum width of this node's daughters
 
 //	private int iIndex; // index of node within its tree
 	// left horizontal position of the node
@@ -286,6 +287,14 @@ public class LingTreeNode {
 	 */
 	public void setMaxWidthInColumn(double dMaxWidthInColumn) {
 		this.dMaxWidthInColumn = dMaxWidthInColumn;
+	}
+
+	public double getMaxWidthOfDaughters() {
+		return dMaxWidthOfDaughters;
+	}
+
+	public void setMaxWidthOfDaughters(double dMaxWidthOfDaughters) {
+		this.dMaxWidthOfDaughters = dMaxWidthOfDaughters;
 	}
 
 	protected void getWidthOfNodeWithAbbreviation() {
