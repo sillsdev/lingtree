@@ -123,7 +123,6 @@ public class TreeDrawer {
 		ltTree.setHorizontalOffset(ltTree.getInitialXCoordinate());
 		LingTreeNode node = ltTree.getRootNode();
 		if (ltTree.isUseColumnOrientedAlgorithm()) {
-			calculateWidthOfEveryNode(node);
 			doDebugPrint("max width of nodes");
 			calculateMaxWidthOfNodes(node);
 			doDebugPrint("calculate x-coord and xmid");
@@ -158,6 +157,7 @@ public class TreeDrawer {
 	// The revised algorithm calculates the maximum width of a node in its column
 	private double calculateMaxWidthOfNodes(LingTreeNode node) {
 		doDebugPrint("\tcalculateMaxWidthOfNodes for " + node.getContent());
+		node.calculateWidth();
 		double dMaxWidthOfNode = node.getWidth();
 		double dMaxWidthOfDaughters = 0.0;
 		for (LingTreeNode daughter : node.getDaughters()) {
