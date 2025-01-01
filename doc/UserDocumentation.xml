@@ -20,11 +20,11 @@ type="tLingTree"
 ><emailAddress
 >lingtree_support@sil.org</emailAddress
 ><date
->December 9, 2024</date
+>January 2, 2025</date
 ><version
->Version 1.5.3</version
+>Version 1.5.4</version
 ><version
->Copyright © 2002-2024 SIL International</version
+>Copyright © 2002-2025 SIL International</version
 ><contents
 ></contents
 ></frontMatter
@@ -2354,6 +2354,22 @@ src="resources/HebrewLTR.svg"
 ></example
 ></section2
 ><section2
+id="sUseColumnOrientedAlgorithm"
+><secTitle
+>Use column-oriented algorithm</secTitle
+><p
+><indexedItem
+term="iColumnOrientedAlgorithm"
+></indexedItem
+>The third item under the main <object
+type="tMenuItem"
+>Format</object
+> menu item is <object
+type="tMenuItem"
+>Use column-oriented algorithm</object
+>. When this has a check mark before it, the tree will be drawn using an algorithm that figures out the column widths of each node and places the nodes in a tighter position than the default algorithm.  In fact, the default algorithm assumes that the text in higher nodes is shorter than the text in lower nodes.  The column-oriented algorithm does not make this assumption.</p
+></section2
+><section2
 id="sFontColor"
 ><secTitle
 >Setting the font and color information</secTitle
@@ -2670,7 +2686,7 @@ num="xLanguageFamilyTree"
 ><word
 ><langData
 lang="lTreeExample"
->(Mascoian ( (Enxet Sur) (Enlhet Norte)) ( ((Angaité) (Sanapaná))  ((Kaskihá) (Toba-Maskoy))))</langData
+>(Mascoian ( (Enxet Sur) (Enlhet Norte)) ( ((Angaité) (Sanapaná)) ((Kaskihá) (Toba-Maskoy))))</langData
 ></word
 ></example
 ><p
@@ -2688,7 +2704,7 @@ src="resources/LanguageFamilyTreeNo.svg"
 ></chart
 ></example
 ><p
->This, of course, is not what is desired.  One could try and add vertical line characters in the empty nodes, but that is not ideal, either.</p
+>This, of course, is not what is desired. One could try and add vertical line characters in the empty nodes, but that is not ideal, either.</p
 ><p
 >When <object
 type="tMenuItem"
@@ -2708,10 +2724,10 @@ src="resources/LanguageFamilyTreeYes.svg"
 ></chart
 ></example
 ><p
->This is much better for this particular case.  The default is for <object
+>This is much better for this particular case. The default is for <object
 type="tMenuItem"
 >Draw vertical line with empty text</object
-> to not be checked.  If you are making a number of these kinds of trees, you can use what is in section <sectionRef
+> to not be checked. If you are making a number of these kinds of trees, you can use what is in section <sectionRef
 sec="sSaveForNew"
 ></sectionRef
 > to make this menu item be checked for new tree diagrams.</p
@@ -3412,6 +3428,14 @@ sec="sDelayMatching"
 ></li
 ><li
 ><indexedItem
+term="iColumnOrientedAlgorithm"
+></indexedItem
+>The default algorithm for drawing trees assumes that the text in higher nodes in a tree are shorter than the text in lower nodes.  If your tree needs wider higher nodes, try using the column-oriented algorithm described in section <sectionRef
+sec="sUseColumnOrientedAlgorithm"
+></sectionRef
+>.</li
+><li
+><indexedItem
 term="iMac"
 ></indexedItem
 >On <object
@@ -3675,6 +3699,11 @@ id="iColorLines"
 >Lines</term
 ></indexTerm
 ></indexTerms
+></indexTerm
+><indexTerm
+id="iColumnOrientedAlgorithm"
+><term
+>Column-oriented algorithm</term
 ></indexTerm
 ><indexTerm
 id="iDrawAsType"
