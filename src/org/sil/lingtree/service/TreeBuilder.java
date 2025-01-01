@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2024 SIL International
+ * Copyright (c) 2016-2025 SIL International
  * This software is licensed under the LGPL, version 2.1 or later
  * (http://www.gnu.org/licenses/lgpl-2.1.html)
  */
@@ -177,6 +177,7 @@ public class TreeBuilder {
 		ltTree.setVerticalGap(origTree.getVerticalGap());
 		ltTree.setUseRightToLeftOrientation(origTree.isUseRightToLeftOrientation());
 		ltTree.setDrawVerticalLineWithEmptyText(origTree.isDrawVerticalLineWithEmptyText());
+		ltTree.setUseColumnOrientedAlgorithm(origTree.isUseColumnOrientedAlgorithm());
 	}
 
 	public static String buildErrorMessage(ResourceBundle bundle) {

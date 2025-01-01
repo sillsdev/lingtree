@@ -1,4 +1,4 @@
-// Copyright (c) 2017-2024 SIL International
+// Copyright (c) 2017-2025 SIL International
 // This software is licensed under the LGPL, version 2.1 or later
 // (http://www.gnu.org/licenses/lgpl-2.1.html)
 package org.sil.lingtree;
@@ -94,6 +94,7 @@ public class ApplicationPreferences extends ApplicationPreferencesUtilities {
 	static final String SYNTAGMEME_KEYBOARD_DESCRIPTION = "syntagmemeKeyboardDescription";
 	static final String SYNTAGMEME_KEYBOARD_MAC_DESCRIPTION = "syntagmemeKeyboardMacDescription";
 	static final String SYNTAGMEME_KEYBOARD_WINDOWS_LANG_ID = "syntagmemeKeyboardWindowsLangId";
+	static final String USE_COLUMN_ORIENTED_ALGORITHM = "useColumnOrientedAlgorithm";
 	static final String VERTICAL_GAP = "verticalGap";
 
 	Preferences prefs;
@@ -194,6 +195,14 @@ public class ApplicationPreferences extends ApplicationPreferencesUtilities {
 
 	public void setTreeDescriptionFontSize(double dSize) {
 		setPreferencesKey(TREE_DESCRIPTION_FONT_SIZE, dSize);
+	}
+
+	public boolean getUseColumnOrientedAlgorithm() {
+		return prefs.getBoolean(USE_COLUMN_ORIENTED_ALGORITHM, false);
+	}
+
+	public void setUseColumnOrientedAlgorithm(boolean value) {
+		setPreferencesKey(USE_COLUMN_ORIENTED_ALGORITHM, value);
 	}
 
 	public Stage getLastWindowParameters(String sWindow, Stage stage, Double defaultHeight,
@@ -323,6 +332,8 @@ public class ApplicationPreferences extends ApplicationPreferencesUtilities {
 		setPreferencesKey(SAVE_AS_SVG, ltTree.isSaveAsSVG());
 		setPreferencesKey(SHOW_FLAT_VIEW, ltTree.isShowFlatView());
 		setPreferencesKey(VERTICAL_GAP, ltTree.getVerticalGap());
+		setPreferencesKey(DRAW_VERTICAL_LINE_WITH_EMPTY_TEXT, ltTree.isDrawVerticalLineWithEmptyText());
+		setPreferencesKey(USE_COLUMN_ORIENTED_ALGORITHM, ltTree.isUseColumnOrientedAlgorithm());
 
 		setPreferencesKey(BACKGROUND_COLOR, ltTree.getBackgroundColor());
 		setPreferencesKey(LINE_COLOR, ltTree.getLineColor());

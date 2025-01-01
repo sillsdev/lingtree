@@ -58,6 +58,7 @@
                   <items>
                     <CheckMenuItem fx:id="menuItemUseFlatTree" mnemonicParsing="true" onAction="#handleMenuUseFlatTree" text="%menu.useflattree" />
                     <CheckMenuItem fx:id="menuItemUseRightToLeftOrientation" mnemonicParsing="true" onAction="#handleMenuUseRightToLeftOrientation" text="%menu.userighttoleftorientation" />
+                    <CheckMenuItem fx:id="menuItemUseColumnOrientedAlgorithm" mnemonicParsing="true" onAction="#handleMenuUseColumnOrientedAlgorithm" text="%menu.usecolumnorientedalgorithm" />
 					<SeparatorMenuItem />
 					<MenuItem fx:id="menuItemNonTerminalFont" mnemonicParsing="true" onAction="#handleNonTerminalFontInfo" text="%menu.nonterminalfont" />
 					<MenuItem fx:id="menuItemLexicalFont" mnemonicParsing="true" onAction="#handleLexicalFontInfo" text="%menu.lexicalfont" />
@@ -70,7 +71,7 @@
 					<MenuItem fx:id="menuItemTreeSpacingParameter" mnemonicParsing="true" onAction="#handleTreeSpacingParameters" text="%menu.treespacingparameters" />
 					<MenuItem fx:id="menuItemBackgroundAndLineParameters" mnemonicParsing="true" onAction="#handleBackgroundAndLineParameters" text="%menu.backgroundandlineparameters" />
 					<SeparatorMenuItem />
-                    <CheckMenuItem fx:id="menuItemDrawVerticalLineWithEmptyText" mnemonicParsing="true" onAction="#handleMenuItemDrawVerticalLineWithEmptyText" text="%menu.drawverticallinewithemptytext" />
+                    <CheckMenuItem fx:id="menuItemDrawVerticalLineWithEmptyText" mnemonicParsing="true" onAction="#handleMenuDrawVerticalLineWithEmptyText" text="%menu.drawverticallinewithemptytext" />
 					<SeparatorMenuItem />
 					<MenuItem fx:id="menuItemSaveTreeParameters" mnemonicParsing="true" onAction="#handleSaveTreeParameters" text="%menu.savetreeparameters" />
                   </items>

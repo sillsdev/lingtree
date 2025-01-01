@@ -25,8 +25,7 @@ import org.sil.utility.StringUtilities;
  *
  */
 public class TreeDrawer {
-	public boolean fUseRevisedAlgorithm = true;
-	public boolean fDoDebugPrint = true;
+	public boolean fDoDebugPrint = false;
 	LingTreeTree ltTree;
 	HashMap<Integer, Double> maxHeightPerLevel = new HashMap<>();
 
@@ -123,7 +122,7 @@ public class TreeDrawer {
 	public void calculateXCoordinateOfEveryNode() {
 		ltTree.setHorizontalOffset(ltTree.getInitialXCoordinate());
 		LingTreeNode node = ltTree.getRootNode();
-		if (fUseRevisedAlgorithm) {
+		if (ltTree.isUseColumnOrientedAlgorithm()) {
 			calculateWidthOfEveryNode(node);
 			doDebugPrint("max width of nodes");
 			calculateMaxWidthOfNodes(node);

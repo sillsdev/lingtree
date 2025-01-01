@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2024 SIL International
+ * Copyright (c) 2016-2025 SIL International
  * This software is licensed under the LGPL, version 2.1 or later
  * (http://www.gnu.org/licenses/lgpl-2.1.html)
  */
@@ -214,6 +214,8 @@ public class RootLayoutController implements Initializable {
 	private MenuItem menuItemBackgroundAndLineParameters;
 	@FXML
 	private CheckMenuItem menuItemDrawVerticalLineWithEmptyText;
+	@FXML
+	private CheckMenuItem menuItemUseColumnOrientedAlgorithm;
 	@FXML
 	private MenuItem menuItemSaveTreeParameters;
 	@FXML
@@ -531,7 +533,9 @@ public class RootLayoutController implements Initializable {
 				RESOURCE_FACTORY.getStringBinding("menu.descriptionfontsize"));
 		menuItemDrawAsType.textProperty().bind(RESOURCE_FACTORY.getStringBinding("menu.drawastype"));
 		menuItemDrawVerticalLineWithEmptyText.textProperty()
-				.bind(RESOURCE_FACTORY.getStringBinding("menu.drawverticallinewithemptytext"));
+		.bind(RESOURCE_FACTORY.getStringBinding("menu.drawverticallinewithemptytext"));
+		menuItemUseColumnOrientedAlgorithm.textProperty()
+		.bind(RESOURCE_FACTORY.getStringBinding("menu.usecolumnorientedalgorithm"));
 		menuItemShowMatchingParenWithArrowKeys.textProperty().bind(
 				RESOURCE_FACTORY.getStringBinding("menu.showmatchingparenwitharrowkeys"));
 		menuItemShowMatchingParenDelay.textProperty().bind(
@@ -621,6 +625,7 @@ public class RootLayoutController implements Initializable {
 		this.applicationPreferences = mainApp.getApplicationPreferences();
 		menuItemDrawAsType.setSelected(applicationPreferences.getDrawAsType());
 		menuItemDrawVerticalLineWithEmptyText.setSelected(applicationPreferences.getDrawVerticalLineWithEmptyText());
+		menuItemUseColumnOrientedAlgorithm.setSelected(applicationPreferences.getUseColumnOrientedAlgorithm());
 		menuItemShowFullFilePath.setSelected(applicationPreferences.getShowFullFilePath());
 		menuItemShowMatchingParenWithArrowKeys.setSelected(applicationPreferences
 				.getShowMatchingParenWithArrowKeys());
@@ -664,6 +669,7 @@ public class RootLayoutController implements Initializable {
 		menuItemUseRightToLeftOrientation.setSelected(ltTree.isUseRightToLeftOrientation());
 		ltTree.setUseRightToLeftOrientation(menuItemUseRightToLeftOrientation.isSelected());
 		menuItemDrawVerticalLineWithEmptyText.setSelected(ltTree.isDrawVerticalLineWithEmptyText());
+		menuItemUseColumnOrientedAlgorithm.setSelected(ltTree.isUseColumnOrientedAlgorithm());
 	}
 
 	public SplitPane getSplitPane() {
@@ -1084,10 +1090,20 @@ public class RootLayoutController implements Initializable {
 	}
 
 	@FXML
-	private void handleMenuItemDrawVerticalLineWithEmptyText() {;
+	private void handleMenuDrawVerticalLineWithEmptyText() {;
 		boolean value = menuItemDrawVerticalLineWithEmptyText.isSelected();
-		applicationPreferences.setDrawVerticalLineWithEmptyText(value);
 		ltTree.setDrawVerticalLineWithEmptyText(value);
+		if (menuItemDrawAsType.isSelected()) {
+			computeHighlighting();
+			handleDrawTree();
+			markAsDirty();
+		}
+	}
+
+	@FXML
+	private void handleMenuUseColumnOrientedAlgorithm() {;
+		boolean value = menuItemUseColumnOrientedAlgorithm.isSelected();
+		ltTree.setUseColumnOrientedAlgorithm(value);
 		if (menuItemDrawAsType.isSelected()) {
 			computeHighlighting();
 			handleDrawTree();
