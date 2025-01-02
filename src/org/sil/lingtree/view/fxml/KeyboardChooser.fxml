@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright (c) 2024-2025 SIL Global 
+    This software is licensed under the LGPL, version 2.1 or later 
+    (http://www.gnu.org/licenses/lgpl-2.1.html) -->
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ButtonBar?>
