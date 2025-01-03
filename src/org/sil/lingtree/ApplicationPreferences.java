@@ -95,6 +95,7 @@ public class ApplicationPreferences extends ApplicationPreferencesUtilities {
 	static final String SYNTAGMEME_KEYBOARD_MAC_DESCRIPTION = "syntagmemeKeyboardMacDescription";
 	static final String SYNTAGMEME_KEYBOARD_WINDOWS_LANG_ID = "syntagmemeKeyboardWindowsLangId";
 	static final String USE_COLUMN_ORIENTED_ALGORITHM = "useColumnOrientedAlgorithm";
+	static final String CENTER_NODES_OVER_DAUGHTERS = "centerNodesOverDaughters";
 	static final String VERTICAL_GAP = "verticalGap";
 
 	Preferences prefs;
@@ -203,6 +204,14 @@ public class ApplicationPreferences extends ApplicationPreferencesUtilities {
 
 	public void setUseColumnOrientedAlgorithm(boolean value) {
 		setPreferencesKey(USE_COLUMN_ORIENTED_ALGORITHM, value);
+	}
+
+	public boolean getCenterNodesOverDaughters() {
+		return prefs.getBoolean(CENTER_NODES_OVER_DAUGHTERS, false);
+	}
+
+	public void setCenterNodesOverDaughters(boolean value) {
+		setPreferencesKey(CENTER_NODES_OVER_DAUGHTERS, value);
 	}
 
 	public Stage getLastWindowParameters(String sWindow, Stage stage, Double defaultHeight,
@@ -334,6 +343,7 @@ public class ApplicationPreferences extends ApplicationPreferencesUtilities {
 		setPreferencesKey(VERTICAL_GAP, ltTree.getVerticalGap());
 		setPreferencesKey(DRAW_VERTICAL_LINE_WITH_EMPTY_TEXT, ltTree.isDrawVerticalLineWithEmptyText());
 		setPreferencesKey(USE_COLUMN_ORIENTED_ALGORITHM, ltTree.isUseColumnOrientedAlgorithm());
+		setPreferencesKey(CENTER_NODES_OVER_DAUGHTERS, ltTree.isCenterColumnOrientedOnDaughtersWidth());
 
 		setPreferencesKey(BACKGROUND_COLOR, ltTree.getBackgroundColor());
 		setPreferencesKey(LINE_COLOR, ltTree.getLineColor());

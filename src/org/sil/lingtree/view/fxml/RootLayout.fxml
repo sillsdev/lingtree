@@ -62,6 +62,7 @@
                     <CheckMenuItem fx:id="menuItemUseFlatTree" mnemonicParsing="true" onAction="#handleMenuUseFlatTree" text="%menu.useflattree" />
                     <CheckMenuItem fx:id="menuItemUseRightToLeftOrientation" mnemonicParsing="true" onAction="#handleMenuUseRightToLeftOrientation" text="%menu.userighttoleftorientation" />
                     <CheckMenuItem fx:id="menuItemUseColumnOrientedAlgorithm" mnemonicParsing="true" onAction="#handleMenuUseColumnOrientedAlgorithm" text="%menu.usecolumnorientedalgorithm" />
+                    <CheckMenuItem fx:id="menuItemCenterNodesOverDaughters" mnemonicParsing="true" onAction="#handleMenuCenterNodesOverDaughters" text="%menu.centernodesoverdaughters" />
 					<SeparatorMenuItem />
 					<MenuItem fx:id="menuItemNonTerminalFont" mnemonicParsing="true" onAction="#handleNonTerminalFontInfo" text="%menu.nonterminalfont" />
 					<MenuItem fx:id="menuItemLexicalFont" mnemonicParsing="true" onAction="#handleLexicalFontInfo" text="%menu.lexicalfont" />
