@@ -206,13 +206,29 @@ public class TreeDrawer {
 			calculateXCoordinateAndXMidOfNodes(daughter, daughtersLeftOffset + gap);
 			daughtersLeftOffset += daughter.getMaxWidthInColumn() + gap;
 		}
-		double dXMid = leftOffset + (node.getMaxWidthInColumn() / 2);
+		double dXMid = calculateXMidOfNode(node, leftOffset);
 		node.setXMid(dXMid);
 		node.setXCoordinate(dXMid - (node.getWidth() / 2));
 		doDebugPrint("\tfor " + node.getContent());
 		doDebugPrint("\t\tleft offset = " + leftOffset);
 		doDebugPrint("\t\txmid        = "  + node.getXMid());
 		doDebugPrint("\t\txcoord      = "  + node.getXCoordinate());
+	}
+
+	protected double calculateXMidOfNode(LingTreeNode node, double leftOffset) {
+		double dXMid = leftOffset + (node.getMaxWidthInColumn() / 2);
+		int numDaughters = node.getDaughters().size();
+		if (ltTree.isCenterColumnOrientedOnDaughtersWidth() && numDaughters > 0) {
+			LingTreeNode firstDaughter = node.getDaughters().get(0);
+			if (numDaughters > 1) {
+				LingTreeNode lastDaughter = node.getDaughters().get(numDaughters - 1);
+				double dWidthToUse = (lastDaughter.getXCoordinate() + lastDaughter.getWidth()) - firstDaughter.getXCoordinate();
+				dXMid = leftOffset + (dWidthToUse / 2);
+			} else if (numDaughters == 1){
+				dXMid = firstDaughter.getXMid();
+			}
+		}
+		return dXMid;
 	}
 
 	// Determine the X-axis coordinate for this node

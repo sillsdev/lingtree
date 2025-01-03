@@ -62,7 +62,8 @@ public class LingTreeTree {
 	boolean fShowFlatView;
 	boolean fUseRightToLeftOrientation;
 	boolean fDrawVerticalLineWithEmptyText;
-	boolean fUseColumnOrientedAlgorithm;
+	boolean fUseColumnOrientedAlgorithm = false;
+	boolean fCenterColumnOrientedOnDaughtersWidth = false;
 
 	/**
 	 * 
@@ -249,6 +250,15 @@ public class LingTreeTree {
 
 	public void setUseColumnOrientedAlgorithm(boolean fUseColumnOrientedAlgorithm) {
 		this.fUseColumnOrientedAlgorithm = fUseColumnOrientedAlgorithm;
+	}
+
+	@XmlElement(name = "centerColumnOrientedOnDaughtesWidth")
+	public boolean isCenterColumnOrientedOnDaughtersWidth() {
+		return fCenterColumnOrientedOnDaughtersWidth;
+	}
+
+	public void setCenterColumnOrientedOnDaughtersWidth(boolean fCenterColumnOrientedOnDaughtersWidth) {
+		this.fCenterColumnOrientedOnDaughtersWidth = fCenterColumnOrientedOnDaughtersWidth;
 	}
 
 	public void setSaveAsSVG(boolean fSaveAsSVG) {

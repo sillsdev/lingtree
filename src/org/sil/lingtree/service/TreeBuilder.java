@@ -178,6 +178,7 @@ public class TreeBuilder {
 		ltTree.setUseRightToLeftOrientation(origTree.isUseRightToLeftOrientation());
 		ltTree.setDrawVerticalLineWithEmptyText(origTree.isDrawVerticalLineWithEmptyText());
 		ltTree.setUseColumnOrientedAlgorithm(origTree.isUseColumnOrientedAlgorithm());
+		ltTree.setCenterColumnOrientedOnDaughtersWidth(origTree.isCenterColumnOrientedOnDaughtersWidth());
 	}
 
 	public static String buildErrorMessage(ResourceBundle bundle) {
