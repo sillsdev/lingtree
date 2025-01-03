@@ -631,7 +631,7 @@ public class RootLayoutController implements Initializable {
 		menuItemDrawVerticalLineWithEmptyText.setSelected(applicationPreferences.getDrawVerticalLineWithEmptyText());
 		menuItemUseColumnOrientedAlgorithm.setSelected(applicationPreferences.getUseColumnOrientedAlgorithm());
 		menuItemCenterNodesOverDaughters.setSelected(applicationPreferences.getCenterNodesOverDaughters());
-		enableDisableCenetrNodesOverDaughtersMenuItem();
+		enableDisableCenterNodesOverDaughtersMenuItem();
 		menuItemShowFullFilePath.setSelected(applicationPreferences.getShowFullFilePath());
 		menuItemShowMatchingParenWithArrowKeys.setSelected(applicationPreferences
 				.getShowMatchingParenWithArrowKeys());
@@ -640,7 +640,7 @@ public class RootLayoutController implements Initializable {
 		defaultFont = new Font(applicationPreferences.getTreeDescriptionFontSize());
 	}
 
-	protected void enableDisableCenetrNodesOverDaughtersMenuItem() {
+	protected void enableDisableCenterNodesOverDaughtersMenuItem() {
 		menuItemCenterNodesOverDaughters.setDisable(!menuItemUseColumnOrientedAlgorithm.isSelected());
 	}
 
@@ -681,6 +681,7 @@ public class RootLayoutController implements Initializable {
 		menuItemDrawVerticalLineWithEmptyText.setSelected(ltTree.isDrawVerticalLineWithEmptyText());
 		menuItemUseColumnOrientedAlgorithm.setSelected(ltTree.isUseColumnOrientedAlgorithm());
 		menuItemCenterNodesOverDaughters.setSelected(ltTree.isCenterColumnOrientedOnDaughtersWidth());
+		enableDisableCenterNodesOverDaughtersMenuItem();
 	}
 
 	public SplitPane getSplitPane() {
@@ -1115,7 +1116,7 @@ public class RootLayoutController implements Initializable {
 	private void handleMenuUseColumnOrientedAlgorithm() {;
 		boolean value = menuItemUseColumnOrientedAlgorithm.isSelected();
 		ltTree.setUseColumnOrientedAlgorithm(value);
-		enableDisableCenetrNodesOverDaughtersMenuItem();
+		enableDisableCenterNodesOverDaughtersMenuItem();
 		if (menuItemDrawAsType.isSelected()) {
 			computeHighlighting();
 			handleDrawTree();
