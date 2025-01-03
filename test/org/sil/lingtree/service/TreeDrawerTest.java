@@ -359,7 +359,119 @@ public class TreeDrawerTest extends ServiceBaseTest {
 		checkNodeContentAndXCoordinate(node4, "Angaité", 273.7158203125);
 		node4 = node3.getDaughters().get(1);
 		checkNodeContentAndXCoordinate(node4, "Sanapaná", 346.3720703125);
-	}
+
+		// long tree that goes from left to right as it goes down
+		origTree = new LingTreeTree();
+		ltTree = TreeBuilder.parseAString("(IP(DP1 V-IIA-3P (\\T \\L ēsan (\\G They were ) ) )"
+				+ " (I'(VP1 (Adv-Conj? (\\L de (\\G now ) ) )(VP2(V'(V-PPA-NMP(\\L proskarterountes (\\G steadfastly continuing ) ) )"
+				+ " (DP2(DP3(D'1(Art-DFS1 (\\L tē (\\G the )) ) ( NP1 (N'1(N-DFS1 (\\L didachē (\\G teaching ) ) )"
+				+ " (DP4 (D'2 (Art-GMP (\\L tōn (\\G of the ) ) ) ) (NP2 (N'2  (N (\\L apostolōn (\\G apostles ) ) ) )))))))"
+				+ " (Conj (\\L kai(\\G and ) ) )(DP5 (DP6(D'3(Art-DFS2 (\\L tē (\\G  the )  ) )"
+				+ " (NP3(N'3(N-DFS2 (\\L koinōnia (\\G fellowship )) ) ) )) )"
+				+ " (DP7 (DP8 (D'4(Art-DFS3 (\\L tē (\\G the ) ) )(NP4(N'4(N-DFS3(\\L klasei (\\G breaking of bread ) ) ) ) ) ) )"
+				+ " (Conj (\\L kai (\\G and ) ) )(DP9 (D'5 (Art-DFP (\\L tais (\\G the ) ) )"
+				+ " (NP5 (N'5 (N-DFP (\\L proseuchais (\\G prayers ) ) ) ) )) ) )) ))))) ) ", origTree);
+		ltTree.setUseColumnOrientedAlgorithm(false);
+		ltTree.setCenterColumnOrientedOnDaughtersWidth(false);
+		drawer = new TreeDrawer(ltTree);
+		drawer.calculateMaxHeightPerLevel();
+		drawer.calculateYCoordinateOfEveryNode();
+		drawer.calculateXCoordinateOfEveryNode();
+		node = ltTree.getRootNode();
+		checkNodeContentAndXCoordinate(node, "IP", 256.9041290283203);
+		node1 = node.getDaughters().get(0);
+		checkNodeContentAndXCoordinate(node1, "DP1 V-IIA-3P", 100.0);
+		node2 = node1.getDaughters().get(0);
+		checkNodeContentAndXCoordinate(node2, "ēsan", 123.3818359375);
+		node2 = node2.getDaughters().get(0);
+		checkNodeContentAndXCoordinate(node2, "They were", 107.154296875);
+		node1 = node.getDaughters().get(1);
+		checkNodeContentAndXCoordinate(node1, "I'", 386.2340393066406);
+		node2 = node1.getDaughters().get(0);
+		checkNodeContentAndXCoordinate(node2, "VP1", 378.6432189941406);
+		node3 = node2.getDaughters().get(0);
+		checkNodeContentAndXCoordinate(node3, "Adv-Conj?", 200.330078125);
+		node3 = node3.getDaughters().get(0);
+		checkNodeContentAndXCoordinate(node3, "de", 220.66796875);
+		node3 = node3.getDaughters().get(0);
+		checkNodeContentAndXCoordinate(node3, "now", 215.986328125);
+		node3 = node2.getDaughters().get(1);
+		checkNodeContentAndXCoordinate(node3, "VP2", 540.9631958007812);
+		node3 = node3.getDaughters().get(0);
+		checkNodeContentAndXCoordinate(node3, "V'", 546.2190551757812);
+		node4 = node3.getDaughters().get(0);
+		checkNodeContentAndXCoordinate(node4, "V-PPA-NMP", 309.0185546875);
+		node4 = node4.getDaughters().get(0);
+		checkNodeContentAndXCoordinate(node4, "proskarterountes", 296.62890625);
+		node4 = node4.getDaughters().get(0);
+		checkNodeContentAndXCoordinate(node4, "steadfastly continuing", 283.65625);
+		node4 = node3.getDaughters().get(1);
+		checkNodeContentAndXCoordinate(node4, "DP2", 751.2369384765625);
+		// and so on...
+
+		// goes from right to left
+		origTree = new LingTreeTree();
+		ltTree = TreeBuilder.parseAString("(Word  (Infl[n] (Stem[n]  (Infl[v] (Stem[v]\n"
+				+ " (root (\\L  rika (\\G to.see))))\n"
+				+ " (Aspect (\\L yka: (\\G  ipfv ))) \n"
+				+ "(Object (\\L  ma: (\\G 1.obj)))) \n"
+				+ "(Derv (\\L  na (\\G nmlz))) )\n"
+				+ " (Poss (\\L  yki (\\G  2.poss)))\n"
+				+ "     (Case (\\L  paq (\\G  purp))))\n"
+				+ ")", origTree);
+		ltTree.setUseColumnOrientedAlgorithm(false);
+		ltTree.setCenterColumnOrientedOnDaughtersWidth(false);
+		drawer = new TreeDrawer(ltTree);
+		drawer.calculateMaxHeightPerLevel();
+		drawer.calculateYCoordinateOfEveryNode();
+		drawer.calculateXCoordinateOfEveryNode();
+		node = ltTree.getRootNode();
+		checkNodeContentAndXCoordinate(node, "Word", 342.47705078125);
+		node1 = node.getDaughters().get(0);
+		checkNodeContentAndXCoordinate(node1, "Infl[n]", 340.49365234375);
+		node2 = node1.getDaughters().get(0);
+		checkNodeContentAndXCoordinate(node2, "Stem[n]", 237.3203125);
+		node3 = node2.getDaughters().get(0);
+		checkNodeContentAndXCoordinate(node3, "Infl[v]", 172.3310546875);
+		node4 = node3.getDaughters().get(0);
+		checkNodeContentAndXCoordinate(node4, "Stem[v]", 100.0);
+		node4 = node4.getDaughters().get(0);
+		checkNodeContentAndXCoordinate(node4, "root", 109.65625);
+		node4 = node4.getDaughters().get(0);
+		checkNodeContentAndXCoordinate(node4, "rika", 108.90625);
+		node4 = node4.getDaughters().get(0);
+		checkNodeContentAndXCoordinate(node4, "to.see", 102.9853515625);
+		node4 = node3.getDaughters().get(1);
+		checkNodeContentAndXCoordinate(node4, "Aspect", 171.3203125);
+		node4 = node4.getDaughters().get(0);
+		checkNodeContentAndXCoordinate(node4, "yka:", 176.875);
+		node4 = node4.getDaughters().get(0);
+		checkNodeContentAndXCoordinate(node4, "ipfv", 178.6533203125);
+		node4 = node3.getDaughters().get(2);
+		checkNodeContentAndXCoordinate(node4, "Object", 240.6484375);
+		node4 = node4.getDaughters().get(0);
+		checkNodeContentAndXCoordinate(node4, "ma:", 246.818359375);
+		node4 = node4.getDaughters().get(0);
+		checkNodeContentAndXCoordinate(node4, "1.obj", 243.6396484375);
+		node3 = node2.getDaughters().get(1);
+		checkNodeContentAndXCoordinate(node3, "Derv", 313.31640625);
+		node4 = node3.getDaughters().get(0);
+		checkNodeContentAndXCoordinate(node4, "na", 318.8564453125);
+		node4 = node4.getDaughters().get(0);
+		checkNodeContentAndXCoordinate(node4, "nmlz", 312.642578125);
+		node2 = node1.getDaughters().get(1);
+		checkNodeContentAndXCoordinate(node2, "Poss", 381.3115234375);
+		node2 = node2.getDaughters().get(0);
+		checkNodeContentAndXCoordinate(node2, "yki", 384.115234375);
+		node2 = node2.getDaughters().get(0);
+		checkNodeContentAndXCoordinate(node2, "2.poss", 374.640625);
+		node2 = node1.getDaughters().get(2);
+		checkNodeContentAndXCoordinate(node2, "Case", 443.9921875);
+		node2 = node2.getDaughters().get(0);
+		checkNodeContentAndXCoordinate(node2, "paq", 445.955078125);
+		node2 = node2.getDaughters().get(0);
+		checkNodeContentAndXCoordinate(node2, "purp", 443.646484375);
+}
 	
 	@Test
 	public void calculateXCoordinateOfEveryNodeRevisedTest() {
@@ -785,7 +897,7 @@ public class TreeDrawerTest extends ServiceBaseTest {
 
 	@Test
 	public void calculateXCoordinateOfEveryNodeRevisedCenterOnDaughtersTest() {
-		// some mother nodes are wider than daughter nodes
+		// long tree that goes from left to right as it goes down
 		LingTreeTree origTree = new LingTreeTree();
 		LingTreeTree ltTree = TreeBuilder.parseAString("(IP(DP1 V-IIA-3P (\\T \\L ēsan (\\G They were ) ) )"
 				+ " (I'(VP1 (Adv-Conj? (\\L de (\\G now ) ) )(VP2(V'(V-PPA-NMP(\\L proskarterountes (\\G steadfastly continuing ) ) )"
@@ -803,7 +915,7 @@ public class TreeDrawerTest extends ServiceBaseTest {
 		drawer.calculateYCoordinateOfEveryNode();
 		drawer.calculateXCoordinateOfEveryNode();
 		LingTreeNode node = ltTree.getRootNode();
-		checkNodeContentAndXCoordinate(node, "IP", 213.5004653930664);
+		checkNodeContentAndXCoordinate(node, "IP", 256.9041290283203);
 		LingTreeNode node1 = node.getDaughters().get(0);
 		checkNodeContentAndXCoordinate(node1, "DP1 V-IIA-3P", 100.0);
 		LingTreeNode node2 = node1.getDaughters().get(0);
@@ -811,9 +923,9 @@ public class TreeDrawerTest extends ServiceBaseTest {
 		node2 = node2.getDaughters().get(0);
 		checkNodeContentAndXCoordinate(node2, "They were", 107.154296875);
 		node1 = node.getDaughters().get(1);
-		checkNodeContentAndXCoordinate(node1, "I'", 331.5126495361328);
+		checkNodeContentAndXCoordinate(node1, "I'", 386.2340393066406);
 		node2 = node1.getDaughters().get(0);
-		checkNodeContentAndXCoordinate(node2, "VP1", 323.9218292236328);
+		checkNodeContentAndXCoordinate(node2, "VP1", 378.6432189941406);
 		LingTreeNode node3 = node2.getDaughters().get(0);
 		checkNodeContentAndXCoordinate(node3, "Adv-Conj?", 200.330078125);
 		node3 = node3.getDaughters().get(0);
@@ -821,9 +933,9 @@ public class TreeDrawerTest extends ServiceBaseTest {
 		node3 = node3.getDaughters().get(0);
 		checkNodeContentAndXCoordinate(node3, "now", 215.986328125);
 		node3 = node2.getDaughters().get(1);
-		checkNodeContentAndXCoordinate(node3, "VP2", 447.5135803222656);
+		checkNodeContentAndXCoordinate(node3, "VP2", 540.9631958007812);
 		node3 = node3.getDaughters().get(0);
-		checkNodeContentAndXCoordinate(node3, "V'", 452.7694396972656);
+		checkNodeContentAndXCoordinate(node3, "V'", 546.2190551757812);
 		LingTreeNode node4 = node3.getDaughters().get(0);
 		checkNodeContentAndXCoordinate(node4, "V-PPA-NMP", 309.0185546875);
 		node4 = node4.getDaughters().get(0);
@@ -831,9 +943,72 @@ public class TreeDrawerTest extends ServiceBaseTest {
 		node4 = node4.getDaughters().get(0);
 		checkNodeContentAndXCoordinate(node4, "steadfastly continuing", 283.65625);
 		node4 = node3.getDaughters().get(1);
-		checkNodeContentAndXCoordinate(node4, "DP2", 636.7332153320312);
+		checkNodeContentAndXCoordinate(node4, "DP2", 751.2369384765625);
 		// and so on...
-}
+
+		// tree that goes from right to left as it goes down
+		origTree = new LingTreeTree();
+		ltTree = TreeBuilder.parseAString("(Word  (Infl[n] (Stem[n]  (Infl[v] (Stem[v]\n"
+				+ " (root (\\L  rika (\\G to.see))))\n"
+				+ " (Aspect (\\L yka: (\\G  ipfv ))) \n"
+				+ "(Object (\\L  ma: (\\G 1.obj)))) \n"
+				+ "(Derv (\\L  na (\\G nmlz))) )\n"
+				+ " (Poss (\\L  yki (\\G  2.poss)))\n"
+				+ "     (Case (\\L  paq (\\G  purp))))\n"
+				+ ")", origTree);
+		ltTree.setUseColumnOrientedAlgorithm(true);
+		ltTree.setCenterColumnOrientedOnDaughtersWidth(true);
+		drawer = new TreeDrawer(ltTree);
+		drawer.calculateMaxHeightPerLevel();
+		drawer.calculateYCoordinateOfEveryNode();
+		drawer.calculateXCoordinateOfEveryNode();
+		node = ltTree.getRootNode();
+		checkNodeContentAndXCoordinate(node, "Word", 322.2607421875);
+		node1 = node.getDaughters().get(0);
+		checkNodeContentAndXCoordinate(node1, "Infl[n]", 320.27734375);
+		node2 = node1.getDaughters().get(0);
+		checkNodeContentAndXCoordinate(node2, "Stem[n]", 225.8388671875);
+		node3 = node2.getDaughters().get(0);
+		checkNodeContentAndXCoordinate(node3, "Infl[v]", 168.0068359375);
+		node4 = node3.getDaughters().get(0);
+		checkNodeContentAndXCoordinate(node4, "Stem[v]", 100.0);
+		node4 = node4.getDaughters().get(0);
+		checkNodeContentAndXCoordinate(node4, "root", 109.65625);
+		node4 = node4.getDaughters().get(0);
+		checkNodeContentAndXCoordinate(node4, "rika", 108.90625);
+		node4 = node4.getDaughters().get(0);
+		checkNodeContentAndXCoordinate(node4, "to.see", 102.9853515625);
+		node4 = node3.getDaughters().get(1);
+		checkNodeContentAndXCoordinate(node4, "Aspect", 168.66015625);
+		node4 = node4.getDaughters().get(0);
+		checkNodeContentAndXCoordinate(node4, "yka:", 174.21484375);
+		node4 = node4.getDaughters().get(0);
+		checkNodeContentAndXCoordinate(node4, "ipfv", 175.9931640625);
+		node4 = node3.getDaughters().get(2);
+		checkNodeContentAndXCoordinate(node4, "Object", 232.0);
+		node4 = node4.getDaughters().get(0);
+		checkNodeContentAndXCoordinate(node4, "ma:", 238.169921875);
+		node4 = node4.getDaughters().get(0);
+		checkNodeContentAndXCoordinate(node4, "1.obj", 234.9912109375);
+		node3 = node2.getDaughters().get(1);
+		checkNodeContentAndXCoordinate(node3, "Derv", 294.677734375);
+		node4 = node3.getDaughters().get(0);
+		checkNodeContentAndXCoordinate(node4, "na", 300.2177734375);
+		node4 = node4.getDaughters().get(0);
+		checkNodeContentAndXCoordinate(node4, "nmlz", 294.00390625);
+		node2 = node1.getDaughters().get(1);
+		checkNodeContentAndXCoordinate(node2, "Poss", 356.0107421875);
+		node2 = node2.getDaughters().get(0);
+		checkNodeContentAndXCoordinate(node2, "yki", 358.814453125);
+		node2 = node2.getDaughters().get(0);
+		checkNodeContentAndXCoordinate(node2, "2.poss", 349.33984375);
+		node2 = node1.getDaughters().get(2);
+		checkNodeContentAndXCoordinate(node2, "Case", 415.041015625);
+		node2 = node2.getDaughters().get(0);
+		checkNodeContentAndXCoordinate(node2, "paq", 417.00390625);
+		node2 = node2.getDaughters().get(0);
+		checkNodeContentAndXCoordinate(node2, "purp", 414.6953125);
+	}
 
 	private void checkNodeContentAndXCoordinate(LingTreeNode node, String content, double xcoord) {
 		assertEquals(content, node.getContent());

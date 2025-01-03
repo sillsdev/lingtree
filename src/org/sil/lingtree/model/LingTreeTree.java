@@ -252,7 +252,7 @@ public class LingTreeTree {
 		this.fUseColumnOrientedAlgorithm = fUseColumnOrientedAlgorithm;
 	}
 
-	@XmlElement(name = "centerColumnOrientedOnDaughtesWidth")
+	@XmlElement(name = "centerColumnOrientedOnDaughtersWidth")
 	public boolean isCenterColumnOrientedOnDaughtersWidth() {
 		return fCenterColumnOrientedOnDaughtersWidth;
 	}

@@ -218,14 +218,21 @@ public class TreeDrawer {
 	protected double calculateXMidOfNode(LingTreeNode node, double leftOffset) {
 		double dXMid = leftOffset + (node.getMaxWidthInColumn() / 2);
 		int numDaughters = node.getDaughters().size();
+		doDebugPrint("for " + node.getContent());
+		doDebugPrint("\tnumDaughters = " + numDaughters);
 		if (ltTree.isCenterColumnOrientedOnDaughtersWidth() && numDaughters > 0) {
 			LingTreeNode firstDaughter = node.getDaughters().get(0);
+			doDebugPrint("\t\tfirst is " + firstDaughter.getContent());
 			if (numDaughters > 1) {
 				LingTreeNode lastDaughter = node.getDaughters().get(numDaughters - 1);
-				double dWidthToUse = (lastDaughter.getXCoordinate() + lastDaughter.getWidth()) - firstDaughter.getXCoordinate();
-				dXMid = leftOffset + (dWidthToUse / 2);
+				double dWidthToUse = lastDaughter.getXMid() - firstDaughter.getXMid();
+				dXMid = firstDaughter.getXMid() + (dWidthToUse / 2);
+				doDebugPrint("\t\tfirst x-mid   = " + firstDaughter.getXMid());
+				doDebugPrint("\t\tlast  x-mid   = " + lastDaughter.getXMid());
+				doDebugPrint("\t\txmid  to use  = " + (lastDaughter.getXMid() - firstDaughter.getXMid()) / 2 + firstDaughter.getXMid());
 			} else if (numDaughters == 1){
 				dXMid = firstDaughter.getXMid();
+				doDebugPrint("\t\tdXMid         = " + dXMid);
 			}
 		}
 		return dXMid;
