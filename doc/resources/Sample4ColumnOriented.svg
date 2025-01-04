@@ -1,0 +1,46 @@
+﻿<?xml version='1.0' standalone='no'?>
+<svg width='340.0275' height='237.15632812499996' version='1.1' xmlns='http://www.w3.org/2000/svg' contentScriptType='text/javascript'>
+<script  id="clientEventHandlersJS">
+function OnClickLingTreeNode(node){}
+</script>
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="153.434921875" y="14.94" font-family="Courier New" font-size="12.0" font-weight="bold" fill="#ff0000">Word</text>
+<text x="142.7796484375" y="46.363749999999996" font-family="Courier New" font-size="12.0" font-weight="bold" fill="#ff0000">Infl[n]</text>
+<line x1="167.98375" y1="21.543515624999998" x2="167.98375" y2="33.373515624999996" stroke="#400040" stroke-width="1.0"/>
+<text x="91.38421875" y="77.7875" font-family="Courier New" font-size="12.0" font-weight="bold" fill="#ff0000">Stem[n]</text>
+<line x1="167.98375" y1="52.967265624999996" x2="116.5883203125" y2="64.797265625" stroke="#400040" stroke-width="1.0"/>
+<text x="67.111796875" y="109.21124999999999" font-family="Courier New" font-size="12.0" font-weight="bold" fill="#ff0000">Infl[v]</text>
+<line x1="116.5883203125" y1="84.391015625" x2="92.3158984375" y2="96.22101562499999" stroke="#400040" stroke-width="1.0"/>
+<text x="5.940000000000001" y="140.635" font-family="Courier New" font-size="12.0" font-weight="bold" fill="#ff0000">Stem[v]</text>
+<line x1="92.3158984375" y1="115.81476562499999" x2="31.1441015625" y2="127.64476562499999" stroke="#400040" stroke-width="1.0"/>
+<text x="16.7417578125" y="178.09390624999997" font-family="Courier New" font-size="12.0" font-weight="bold" fill="#ff0000">root</text>
+<line x1="31.1441015625" y1="147.238515625" x2="31.1441015625" y2="165.10367187499997" stroke="#400040" stroke-width="1.0"/>
+<text x="16.7417578125" y="215.55281249999996" font-family="Courier New" font-size="12.0" font-weight="bold" fill="#0000ff">rika</text>
+<line x1="31.1441015625" y1="184.69742187499997" x2="31.1441015625" y2="202.56257812499996" stroke="#400040" stroke-width="1.0"/>
+<text x="9.540585937500001" y="230.55281249999996" font-family="Courier New" font-size="12.0" font-weight="bold" fill="#008000">to.see</text>
+<text x="74.178203125" y="140.635" font-family="Courier New" font-size="12.0" font-weight="bold" fill="#ff0000">Aspect</text>
+<line x1="92.3158984375" y1="115.81476562499999" x2="95.916484375" y2="127.64476562499999" stroke="#400040" stroke-width="1.0"/>
+<text x="81.514140625" y="178.09390624999997" font-family="Courier New" font-size="12.0" font-weight="bold" fill="#0000ff">yka:</text>
+<line x1="95.916484375" y1="147.238515625" x2="95.916484375" y2="165.10367187499997" stroke="#400040" stroke-width="1.0"/>
+<text x="83.576640625" y="193.09390624999997" font-family="Charis SIL Small Caps" font-size="12.0" font-weight="bold" fill="#008000">ipfv</text>
+<text x="135.484765625" y="140.635" font-family="Courier New" font-size="12.0" font-weight="bold" fill="#ff0000">Object</text>
+<line x1="92.3158984375" y1="115.81476562499999" x2="157.08828125" y2="127.64476562499999" stroke="#400040" stroke-width="1.0"/>
+<text x="146.1869140625" y="178.09390624999997" font-family="Courier New" font-size="12.0" font-weight="bold" fill="#0000ff">ma:</text>
+<line x1="157.08828125" y1="147.238515625" x2="157.08828125" y2="165.10367187499997" stroke="#400040" stroke-width="1.0"/>
+<text x="141.133203125" y="193.09390624999997" font-family="Charis SIL Small Caps" font-size="12.0" font-weight="bold" fill="#008000">1.obj</text>
+<text x="197.4534375" y="109.21124999999999" font-family="Courier New" font-size="12.0" font-weight="bold" fill="#ff0000">Derv</text>
+<line x1="116.5883203125" y1="84.391015625" x2="211.87921875" y2="96.22101562499999" stroke="#400040" stroke-width="1.0"/>
+<text x="204.678046875" y="140.635" font-family="Courier New" font-size="12.0" font-weight="bold" fill="#0000ff">na</text>
+<line x1="211.87921875" y1="115.81476562499999" x2="211.87921875" y2="127.64476562499999" stroke="#400040" stroke-width="1.0"/>
+<text x="196.521796875" y="155.635" font-family="Charis SIL Small Caps" font-size="12.0" font-weight="bold" fill="#008000">nmlz</text>
+<text x="249.56078125" y="77.7875" font-family="Courier New" font-size="12.0" font-weight="bold" fill="#ff0000">Poss</text>
+<line x1="167.98375" y1="52.967265624999996" x2="263.963125" y2="64.797265625" stroke="#400040" stroke-width="1.0"/>
+<text x="253.1613671875" y="109.21124999999999" font-family="Courier New" font-size="12.0" font-weight="bold" fill="#0000ff">yki</text>
+<line x1="263.963125" y1="84.391015625" x2="263.963125" y2="96.22101562499999" stroke="#400040" stroke-width="1.0"/>
+<text x="245.066640625" y="124.21124999999999" font-family="Charis SIL Small Caps" font-size="12.0" font-weight="bold" fill="#008000">2.poss</text>
+<text x="300.9562109375" y="77.7875" font-family="Courier New" font-size="12.0" font-weight="bold" fill="#ff0000">Case</text>
+<line x1="167.98375" y1="52.967265624999996" x2="315.3585546875" y2="64.797265625" stroke="#400040" stroke-width="1.0"/>
+<text x="304.4103125" y="109.21124999999999" font-family="Courier New" font-size="12.0" font-weight="bold" fill="#0000ff">paq</text>
+<line x1="315.3585546875" y1="84.391015625" x2="315.3585546875" y2="96.22101562499999" stroke="#400040" stroke-width="1.0"/>
+<text x="300.689609375" y="124.21124999999999" font-family="Charis SIL Small Caps" font-size="12.0" font-weight="bold" fill="#008000">purp</text>
+</svg>

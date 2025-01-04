@@ -20,9 +20,9 @@ type="tLingTree"
 ><emailAddress
 >lingtree_support@sil.org</emailAddress
 ><date
->January 2, 2025</date
+>January 6, 2025</date
 ><version
->Version 1.5.4</version
+>Version 1.6.0</version
 ><version
 >Copyright © 2002-2025 SIL Global</version
 ><contents
@@ -2368,6 +2368,104 @@ type="tMenuItem"
 type="tMenuItem"
 >Use column-oriented algorithm</object
 >. When this has a check mark before it, the tree will be drawn using an algorithm that figures out the column widths of each node and centers every node within its column. As a result, it places the nodes in a tighter position than the default algorithm (which is more of an edge-out algorithm). In fact, the default algorithm assumes that the text in higher nodes is shorter than the text in lower nodes. The column-oriented algorithm does not make this assumption.</p
+><p
+>Examples <exampleRef
+letter="xSampleDefault"
+num="xSampleDefault"
+paren="initial"
+></exampleRef
+>–<exampleRef
+letter="xSampleColumnOriented"
+letterOnly="yes"
+num="xSampleColumnOriented"
+paren="final"
+></exampleRef
+> illustrate the difference.</p
+><example
+num="xSampleDefault"
+><chart
+><img
+XeLaTeXSpecial="scaled='1150'"
+src="resources/Sample4Default.svg"
+></img
+></chart
+></example
+><example
+num="xSampleColumnOriented"
+><chart
+><img
+XeLaTeXSpecial="scaled='1150'"
+src="resources/Sample4ColumnOriented.svg"
+></img
+></chart
+></example
+><p
+>Notice how the higher nodes are centered over the entire tree in example <exampleRef
+letter="xSampleColumnOriented"
+num="xSampleColumnOriented"
+></exampleRef
+> whereas they are not in example <exampleRef
+letter="xSampleDefault"
+num="xSampleDefault"
+></exampleRef
+>.</p
+></section2
+><section2
+id="sCenterOverDaughters"
+><secTitle
+>Center each node over its daughters</secTitle
+><p
+><indexedItem
+term="iCenterNodesOverDaughters"
+></indexedItem
+>The next item under the main <object
+type="tMenuItem"
+>Format</object
+> menu item is <object
+type="tMenuItem"
+>Center each node over its daughters</object
+>. This option is only available when using the column-oriented algorithm (see section <sectionRef
+sec="sUseColumnOrientedAlgorithm"
+></sectionRef
+>). When this has a check mark before it, the tree will be drawn using the column-oriented algorithm but will center each node over the space used by its daughter nodes.  Example <exampleRef
+letter="xSampleColumnOrientedCenteredOverDaughters"
+num="xSampleColumnOrientedCenteredOverDaughters"
+></exampleRef
+> shows how the sample tree in example <exampleRef
+letter="xSampleColumnOriented"
+letterOnly="yes"
+num="xSampleColumnOriented"
+paren="both"
+></exampleRef
+> appears using this option.</p
+><example
+num="xSampleColumnOrientedCenteredOverDaughters"
+><chart
+><img
+XeLaTeXSpecial="scaled='1150'"
+src="resources/Sample4ColumnOrientedCentered.svg"
+></img
+></chart
+></example
+><p
+>Compare this to using the default algorithm as shown in example <exampleRef
+letter="xSampleDefault2"
+num="xSampleDefault2"
+></exampleRef
+> (repeated from example <exampleRef
+letter="xSampleDefault"
+num="xSampleDefault"
+></exampleRef
+>).</p
+><example
+num="xSampleDefault2"
+><chart
+><img
+XeLaTeXSpecial="scaled='1150'"
+src="resources/Sample4Default.svg"
+></img
+></chart
+></example
 ></section2
 ><section2
 id="sFontColor"
@@ -3704,6 +3802,11 @@ id="iColorLines"
 id="iColumnOrientedAlgorithm"
 ><term
 >Column-oriented algorithm</term
+></indexTerm
+><indexTerm
+id="iCenterNodesOverDaughters"
+><term
+>Center nodes over daughters</term
 ></indexTerm
 ><indexTerm
 id="iDrawAsType"

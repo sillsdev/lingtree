@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<lingTreeTree dbversion="4">
+    <abbreviationFontInfo>
+        <color>#008000</color>
+        <fontFamily>Charis SIL Small Caps</fontFamily>
+        <fontSize>12.0</fontSize>
+        <fontType>Bold</fontType>
+    </abbreviationFontInfo>
+    <backgroundColor>#ffffff</backgroundColor>
+    <centerColumnOrientedOnDaughtersWidth>false</centerColumnOrientedOnDaughtersWidth>
+    <description>(Word  (Infl[n] (Stem[n]  (Infl[v] (Stem[v]
+ (root (\L  rika (\G to.see))))
+ (Aspect (\L yka: (\G  /aipfv/A ))) 
+(Object (\L  ma: (\G /a1.obj/A)))) 
+(Derv (\L  na (\G /anmlz/A))) )
+ (Poss (\L  yki (\G  /a2.poss/A)))
+     (Case (\L  paq (\G  /apurp/A))))
+)</description>
+    <drawVerticalLineWithEmptyText>false</drawVerticalLineWithEmptyText>
+    <emptyElementFontInfo>
+        <color>#663366</color>
+        <fontFamily>Ezra SIL</fontFamily>
+        <fontSize>14.0</fontSize>
+        <fontType>Regular</fontType>
+    </emptyElementFontInfo>
+    <emptyElementKeyboard>
+        <description>Ancient Hebrew (hbo-Hebr-IL) Hebrew (SIL)</description>
+        <macDescription>US</macDescription>
+        <SLocale>hbo</SLocale>
+        <windowsLangID>8192</windowsLangID>
+    </emptyElementKeyboard>
+    <glossFontInfo>
+        <color>#008000</color>
+        <fontFamily>Courier New</fontFamily>
+        <fontSize>12.0</fontSize>
+        <fontType>Bold</fontType>
+    </glossFontInfo>
+    <glossKeyboard>
+        <description>es_MX; Spanish (Mexico)</description>
+        <macDescription>US</macDescription>
+        <SLocale>es</SLocale>
+        <windowsLangID>2058</windowsLangID>
+    </glossKeyboard>
+    <horizontalGap>17.83</horizontalGap>
+    <horizontalOffset>5.94</horizontalOffset>
+    <initialXCoordinate>5.94</initialXCoordinate>
+    <initialYCoordinate>14.94</initialYCoordinate>
+    <lexGlossGapAdjustment>15.0</lexGlossGapAdjustment>
+    <lexicalFontInfo>
+        <color>#0000ff</color>
+        <fontFamily>Courier New</fontFamily>
+        <fontSize>12.0</fontSize>
+        <fontType>Bold</fontType>
+    </lexicalFontInfo>
+    <lexicalKeyboard>
+        <description>und-Latn (und-Latn) IPA (SIL)</description>
+        <macDescription>US</macDescription>
+        <SLocale></SLocale>
+        <windowsLangID>9216</windowsLangID>
+    </lexicalKeyboard>
+    <lineColor>#400040</lineColor>
+    <lineWidth>1.0</lineWidth>
+    <minimumXGapForExtraVerticalSpacing>500.0</minimumXGapForExtraVerticalSpacing>
+    <nonTerminalFontInfo>
+        <color>#ff0000</color>
+        <fontFamily>Courier New</fontFamily>
+        <fontSize>12.0</fontSize>
+        <fontType>Bold</fontType>
+    </nonTerminalFontInfo>
+    <nonTerminalKeyboard>
+        <description>English</description>
+        <macDescription>US</macDescription>
+        <SLocale>en</SLocale>
+        <windowsLangID>0</windowsLangID>
+    </nonTerminalKeyboard>
+    <saveAsPng>false</saveAsPng>
+    <saveAsSVG>true</saveAsSVG>
+    <showFlatView>false</showFlatView>
+    <synTagmemeKeyboard>
+        <description>English</description>
+        <macDescription>US</macDescription>
+        <SLocale>en</SLocale>
+        <windowsLangID>0</windowsLangID>
+    </synTagmemeKeyboard>
+    <useColumnOrientedAlgorithm>true</useColumnOrientedAlgorithm>
+    <useRightToLeftOrientation>false</useRightToLeftOrientation>
+    <verticalAdjustmentForExtraVerticalSpacing>75.0</verticalAdjustmentForExtraVerticalSpacing>
+    <verticalGap>17.83</verticalGap>
+</lingTreeTree>
