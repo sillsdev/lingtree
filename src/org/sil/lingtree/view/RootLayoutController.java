@@ -30,10 +30,12 @@ import org.sil.lingtree.model.EmptyElementFontInfo;
 import org.sil.lingtree.model.FontInfo;
 import org.sil.lingtree.model.GlossFontInfo;
 import org.sil.lingtree.model.LexFontInfo;
+import org.sil.lingtree.model.LingTreeNode;
 import org.sil.lingtree.model.LingTreeTree;
 import org.sil.lingtree.model.NodeType;
 import org.sil.lingtree.model.NonTerminalFontInfo;
 import org.sil.lingtree.service.GraphicImageSaver;
+import org.sil.lingtree.service.NodeFinder;
 import org.sil.lingtree.service.NodeTypeDeterminer;
 import org.sil.lingtree.service.TreeBuilder;
 import org.sil.lingtree.service.TreeDrawer;
@@ -69,6 +71,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -257,6 +261,7 @@ public class RootLayoutController implements Initializable {
 	protected Clipboard systemClipboard = Clipboard.getSystemClipboard();
 
 	private Font defaultFont;
+	private NodeFinder finder;
 
 	// following lines from
 	// https://stackoverflow.com/questions/32464974/javafx-change-application-language-on-the-run
@@ -274,6 +279,7 @@ public class RootLayoutController implements Initializable {
 		createToolbarButtons(bundle);
 		initMenuItemsForLocalization();
 		statusBarKey.textProperty().bind(RESOURCE_FACTORY.getStringBinding("label.key"));
+		finder = NodeFinder.getInstance();
 
 		keyboardChanger = KeyboardChanger.getInstance();
 		keyboardChanger.initKeyboardHandler(MainApp.class);
@@ -466,6 +472,20 @@ public class RootLayoutController implements Initializable {
 
 				if (menuItemDrawAsType.isSelected() && fContentJustChangedSoDrawTree) {
 					handleDrawTree();
+				}
+			}
+		});
+
+		drawingArea.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				event.consume();
+				LingTreeNode node = finder.nodeAt(ltTree, event.getX(), event.getY());
+				if (node != null) {
+					if (event.getButton().equals(MouseButton.PRIMARY)) {
+						handleNodeFontInfo(node);
+					} else if (event.getButton().equals(MouseButton.SECONDARY)) {
+					}
 				}
 			}
 		});
@@ -1524,6 +1544,30 @@ public class RootLayoutController implements Initializable {
 		computeHighlighting();
 		handleDrawTree();
 		markAsDirty();
+	}
+
+	public void handleNodeFontInfo(LingTreeNode node) {
+		FontInfo nodesDefaultFontInfo = node.getFontInfoFromNodeType();
+		FontInfo nodesCustomFontInfo = node.getCustomFontInfo();
+		if (nodesCustomFontInfo == null) {
+			// no custom font yet
+			nodesCustomFontInfo = new FontInfo(nodesDefaultFontInfo.getFontFamily(),
+					nodesDefaultFontInfo.getFontSize(), nodesDefaultFontInfo.getFontType());
+			nodesCustomFontInfo.setColor(nodesDefaultFontInfo.getColor());
+		}
+		FontInfo fontInfo = showFontInfo(mainApp.getPrimaryStage(), nodesCustomFontInfo);
+		if (fontInfo != null) {
+			node.setCustomFontInfo(fontInfo);
+			node.setContent(node.getContent());
+			// when we change the description at this point, we will want to use the commented items instead
+			TreeDrawer drawer = new TreeDrawer(ltTree);
+			cleanDrawingArea();
+			drawer.draw(drawingArea);
+//			processTreeDrawing();
+//			computeHighlighting();
+//			handleDrawTree();
+			markAsDirty();
+		}
 	}
 
 	@FXML

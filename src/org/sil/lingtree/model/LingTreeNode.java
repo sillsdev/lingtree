@@ -42,6 +42,8 @@ public class LingTreeNode {
 	private LingTreeNode rightSister;
 	// mother of this node in the tree
 	private LingTreeNode mother;
+	// custom font info for this node
+	private FontInfo customFontInfo = null;
 
 	private double dHeight; // height of the node
 	private double dWidth; // width of the node
@@ -323,6 +325,9 @@ public class LingTreeNode {
 
 	public FontInfo getFontInfoFromNodeType() {
 		FontInfo fontInfo;
+		if (customFontInfo != null) {
+			return customFontInfo;
+		}
 		switch (nodeType) {
 
 		case EmptyElement:
@@ -420,6 +425,14 @@ public class LingTreeNode {
 
 	public void setYUpperMid(double dYUpperMid) {
 		this.dYUpperMid = dYUpperMid;
+	}
+
+	public FontInfo getCustomFontInfo() {
+		return customFontInfo;
+	}
+
+	public void setCustomFontInfo(FontInfo fontInfo) {
+		this.customFontInfo = fontInfo;
 	}
 
 	private double adjustHeightForSubscript() {
