@@ -59,9 +59,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.ChoiceDialog;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.Tooltip;
@@ -80,6 +82,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Modality;
+import javafx.stage.PopupWindow.AnchorLocation;
 import javafx.stage.Stage;
 
 /**
@@ -93,6 +96,7 @@ public class RootLayoutController implements Initializable {
 	KeyboardChanger keyboardChanger;
 	ResourceBundle bundle;
 	LingTreeTree ltTree;
+	LingTreeNode selectedNode;
 	String sDescription;
 	ApplicationPreferences applicationPreferences;
 	boolean fIsDirty;
@@ -250,6 +254,10 @@ public class RootLayoutController implements Initializable {
 	private MenuItem menuItemAbout;
 	@FXML
 	private Text statusBarKey;
+
+	ContextMenu nodeFontInfoContextMenu = new ContextMenu();
+	MenuItem cmRestoreDefaultFontInfo;
+	MenuItem cmLeaveCustomFontInfo;
 
 	@FXML
 	private InlineCssTextArea treeDescription;
@@ -485,6 +493,9 @@ public class RootLayoutController implements Initializable {
 					if (event.getButton().equals(MouseButton.PRIMARY)) {
 						handleNodeFontInfo(node);
 					} else if (event.getButton().equals(MouseButton.SECONDARY)) {
+						if (node.getCustomFontInfo() != null) {
+							nodeFontInfoContextMenu.show(drawingArea, event.getScreenX(), event.getScreenY());
+						}
 					}
 				}
 			}
@@ -576,6 +587,17 @@ public class RootLayoutController implements Initializable {
 		menuItemUserDocumentation.textProperty().bind(
 				RESOURCE_FACTORY.getStringBinding("menu.userdocumentation"));
 		menuItemAbout.textProperty().bind(RESOURCE_FACTORY.getStringBinding("menu.about"));
+
+		cmRestoreDefaultFontInfo = new MenuItem(bundle.getString("view.cmRestoreDefaultFontInfo"));
+		cmRestoreDefaultFontInfo.setOnAction((event) -> {
+			handleRestoreDefaultFontInfo();
+		});
+		cmLeaveCustomFontInfo = new MenuItem(bundle.getString("view.cmLeaveCustomFontInfo"));
+		cmLeaveCustomFontInfo.setOnAction((event) -> {
+			handleLeaveCustomFontInfo();
+		});
+		nodeFontInfoContextMenu.getItems().addAll(cmRestoreDefaultFontInfo, new SeparatorMenuItem(),
+				cmLeaveCustomFontInfo);
 	}
 
 	public void computeHighlighting() {
@@ -919,6 +941,16 @@ public class RootLayoutController implements Initializable {
 	protected void handleRedo() {
 		treeDescription.redo();
 		computeHighlighting();
+	}
+
+	public void handleRestoreDefaultFontInfo() {
+		selectedNode.setCustomFontInfo(null);
+		selectedNode.setContent(selectedNode.getContent());
+		redrawTree();
+	}
+
+	public void handleLeaveCustomFontInfo() {
+		// nothing to do; this is essentially a cancel option
 	}
 
 	@FXML
@@ -1559,15 +1591,20 @@ public class RootLayoutController implements Initializable {
 		if (fontInfo != null) {
 			node.setCustomFontInfo(fontInfo);
 			node.setContent(node.getContent());
-			// when we change the description at this point, we will want to use the commented items instead
-			TreeDrawer drawer = new TreeDrawer(ltTree);
-			cleanDrawingArea();
-			drawer.draw(drawingArea);
+			selectedNode = node;
+			redrawTree();
+		}
+	}
+
+	protected void redrawTree() {
+		// when we change the description at this point, we will want to use the commented items instead
+		TreeDrawer drawer = new TreeDrawer(ltTree);
+		cleanDrawingArea();
+		drawer.draw(drawingArea);
 //			processTreeDrawing();
 //			computeHighlighting();
 //			handleDrawTree();
-			markAsDirty();
-		}
+		markAsDirty();
 	}
 
 	@FXML
