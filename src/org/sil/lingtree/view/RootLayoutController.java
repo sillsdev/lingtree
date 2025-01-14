@@ -34,6 +34,7 @@ import org.sil.lingtree.model.LingTreeNode;
 import org.sil.lingtree.model.LingTreeTree;
 import org.sil.lingtree.model.NodeType;
 import org.sil.lingtree.model.NonTerminalFontInfo;
+import org.sil.lingtree.service.FontInfoInserter;
 import org.sil.lingtree.service.GraphicImageSaver;
 import org.sil.lingtree.service.NodeFinder;
 import org.sil.lingtree.service.NodeTypeDeterminer;
@@ -493,7 +494,7 @@ public class RootLayoutController implements Initializable {
 					if (event.getButton().equals(MouseButton.PRIMARY)) {
 						handleNodeFontInfo(node);
 					} else if (event.getButton().equals(MouseButton.SECONDARY)) {
-						if (node.getCustomFontInfo() != null) {
+						if (node.hasCustomFontInfo()) {
 							nodeFontInfoContextMenu.show(drawingArea, event.getScreenX(), event.getScreenY());
 						}
 					}
@@ -1592,7 +1593,12 @@ public class RootLayoutController implements Initializable {
 			node.setCustomFontInfo(fontInfo);
 			node.setContent(node.getContent());
 			selectedNode = node;
-			redrawTree();
+			TreeDrawer drawer = new TreeDrawer(ltTree);
+			cleanDrawingArea();
+			drawer.draw(drawingArea);
+//			FontInfoInserter fiInserter = FontInfoInserter.getInstance();
+//			sDescription = fiInserter.insert(fontInfo, sDescription, node.getLineNumInDescription(), node.getCharacterPositionInLine());
+//			redrawTree();
 		}
 	}
 

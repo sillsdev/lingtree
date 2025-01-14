@@ -129,4 +129,14 @@ public interface DescriptionListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitAbbreviationWithText(DescriptionParser.AbbreviationWithTextContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link DescriptionParser#customFontInfo}.
+	 * @param ctx the parse tree
+	 */
+	void enterCustomFontInfo(DescriptionParser.CustomFontInfoContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link DescriptionParser#customFontInfo}.
+	 * @param ctx the parse tree
+	 */
+	void exitCustomFontInfo(DescriptionParser.CustomFontInfoContext ctx);
 }

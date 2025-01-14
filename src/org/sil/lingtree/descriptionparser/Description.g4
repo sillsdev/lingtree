@@ -27,12 +27,15 @@ description  : node EOF
              ;
 
 // we allow empty nodes that just have parens (hence, both type and content are optional)
-node : openParen type? content? node* closeParen
-	 | openParen type? abbreviationWithText+ node* closeParen
-	 | openParen type? abbreviationWithText+ closeParen
-	 | openParen type? content? node* closeParen {notifyErrorListeners("missingOpeningParen");} content
-     | openParen type? content? node*             {notifyErrorListeners("missingClosingParen");}
-     |           type  content?                   {notifyErrorListeners("missingOpeningParen");}
+node : openParen type? content? customFontInfo? node* closeParen
+	 | openParen type? abbreviationWithText+ customFontInfo? node* closeParen
+	 | openParen type? abbreviationWithText+ customFontInfo? closeParen
+     | openParen type? content? customFontInfo? node* closeParen
+	 | openParen type? abbreviationWithText+ customFontInfo? node* closeParen
+	 | openParen type? abbreviationWithText+ customFontInfo? closeParen
+	 | openParen type? content? customFontInfo? node* closeParen {notifyErrorListeners("missingOpeningParen");} content
+     | openParen type? content? customFontInfo? node*             {notifyErrorListeners("missingClosingParen");}
+     |           type  content? customFontInfo?                   {notifyErrorListeners("missingOpeningParen");}
      ;
 
 openParen : '('
@@ -94,6 +97,11 @@ abbreviationWithText : (TEXT | TEXTWITHSPACES)+ abbreviation (TEXT | TEXTWITHSPA
                      | abbreviation
                      ;
 
+customFontInfo : CUSTOMFONTBEGIN (TEXT | TEXTWITHSPACES)+ CUSTOMFONTEND
+               | CUSTOMFONTBEGIN (TEXT | TEXTWITHSPACES)+ {notifyErrorListeners("missingCustomFontEnd");}
+               | CUSTOMFONTBEGIN CUSTOMFONTEND {notifyErrorListeners("missingContentAfterCustomFontBegin");}
+               ;
+
 OMIT : '\\O';
 TRIANGLE : '\\T';
 
@@ -108,6 +116,9 @@ SUPERSCRIPTITALIC : '/^' ;
 
 ABBREVIATIONBEGIN : '/a';
 ABBREVIATIONEND : '/A';
+
+CUSTOMFONTBEGIN : '/f';
+CUSTOMFONTEND : '/F';
 
 // Node text content, with exception of backslash or forward slash sequences.
 // Those are handled via BACKSLASH and SLASH

@@ -14,6 +14,7 @@ import org.sil.lingtree.model.LingTreeNode;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.Node;
 import javafx.scene.text.Text;
 
 public class LingTreeNode {
@@ -29,6 +30,8 @@ public class LingTreeNode {
 	Text superscriptTextBox = new Text(0, 0, "");
 	boolean fSubscriptRegular = true;
 	boolean fSuperscriptRegular = true;
+	int lineNumInDescription;
+	int characterPositionInLine;
 
 	private int iLevel; // level (or depth) of the node within the tree
 
@@ -79,13 +82,17 @@ public class LingTreeNode {
 		this.hasAbbreviation = hasAbbreviation;
 	}
 
+	public boolean hasCustomFontInfo() {
+		return customFontInfo != null;
+	}
+
 	public String getContent() {
 		return contentTextBox.getText();
 	}
 
 	public void setContent(String content) {
-		contentTextBox.setText(content);
 		changeFontInfo();
+		contentTextBox.setText(content);
 	}
 
 	public String getSubscript() {
@@ -93,10 +100,10 @@ public class LingTreeNode {
 	}
 
 	public void setSubscript(String subscript) {
-		subscriptTextBox.setText(subscript);
 		FontInfo fontInfo = getFontInfoForSubscript();
 		subscriptTextBox.setFont(fontInfo.getFont());
 		subscriptTextBox.setFill(fontInfo.getColor());
+		subscriptTextBox.setText(subscript);
 	}
 
 	public String getSuperscript() {
@@ -104,10 +111,10 @@ public class LingTreeNode {
 	}
 
 	public void setSuperscript(String superscript) {
-		superscriptTextBox.setText(superscript);
 		FontInfo fontInfo = getFontInfoForSuperscript();
 		superscriptTextBox.setFont(fontInfo.getFont());
 		superscriptTextBox.setFill(fontInfo.getColor());
+		superscriptTextBox.setText(superscript);
 	}
 
 	public boolean isSubscriptRegular() {
@@ -321,11 +328,12 @@ public class LingTreeNode {
 		FontInfo fontInfo = getFontInfoFromNodeType();
 		contentTextBox.setFont(fontInfo.getFont());
 		contentTextBox.setFill(fontInfo.getColor());
+		contentTextBox.setText(getContent());
 	}
 
 	public FontInfo getFontInfoFromNodeType() {
 		FontInfo fontInfo;
-		if (customFontInfo != null) {
+		if (hasCustomFontInfo()) {
 			return customFontInfo;
 		}
 		switch (nodeType) {
@@ -433,6 +441,23 @@ public class LingTreeNode {
 
 	public void setCustomFontInfo(FontInfo fontInfo) {
 		this.customFontInfo = fontInfo;
+		setContent(getContent());
+	}
+
+	public int getLineNumInDescription() {
+		return lineNumInDescription;
+	}
+
+	public void setLineNumInDescription(int lineNumInDescription) {
+		this.lineNumInDescription = lineNumInDescription;
+	}
+
+	public int getCharacterPositionInLine() {
+		return characterPositionInLine;
+	}
+
+	public void setCharacterPositionInLine(int characterPositionInLine) {
+		this.characterPositionInLine = characterPositionInLine;
 	}
 
 	private double adjustHeightForSubscript() {

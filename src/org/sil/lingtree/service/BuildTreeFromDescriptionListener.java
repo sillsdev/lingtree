@@ -14,6 +14,7 @@ import org.sil.lingtree.descriptionparser.antlr4generated.DescriptionParser.Cont
 import org.sil.lingtree.descriptionparser.antlr4generated.DescriptionParser.NodeContext;
 import org.sil.lingtree.descriptionparser.antlr4generated.DescriptionParser.TypeContext;
 import org.sil.lingtree.model.AbbreviationText;
+import org.sil.lingtree.model.FontInfo;
 import org.sil.lingtree.model.LingTreeNode;
 import org.sil.lingtree.model.LingTreeTree;
 import org.sil.lingtree.model.NodeText;
@@ -27,7 +28,8 @@ public class BuildTreeFromDescriptionListener extends DescriptionBaseListener {
 
 	private LingTreeTree tree;
 	private HashMap<Integer, LingTreeNode> nodeMap = new HashMap<Integer, LingTreeNode>();
-	private String sAbbreviationText = "";
+	private String sCustomFontText = "";
+	CustomFontInfoParser fontInfoParser = CustomFontInfoParser.getInstance();
 
 	public BuildTreeFromDescriptionListener(DescriptionParser parser) {
 		super();
@@ -51,6 +53,8 @@ public class BuildTreeFromDescriptionListener extends DescriptionBaseListener {
 	@Override
 	public void enterNode(DescriptionParser.NodeContext ctx) {
 		LingTreeNode node = new LingTreeNode();
+		node.setLineNumInDescription(ctx.start.getLine());
+		node.setCharacterPositionInLine(ctx.start.getCharPositionInLine());
 		nodeMap.put(ctx.hashCode(), node);
 		if (tree.getRootNode() == null) {
 			node.setiLevel(1);
@@ -131,9 +135,9 @@ public class BuildTreeFromDescriptionListener extends DescriptionBaseListener {
 				int iAbbrEnd = sText.indexOf(Constants.ABBREVIATION_END);
 				String sAbbr = sText.substring(iAbbrBegin + Constants.ABBREVIATION_BEGIN.length(),
 						iAbbrEnd);
-				sAbbreviationText = adjustTextContent(sAbbr);
+				sCustomFontText = adjustTextContent(sAbbr);
 				AbbreviationText abbrNodeText = new AbbreviationText(node);
-				abbrNodeText.setText(sAbbreviationText);
+				abbrNodeText.setText(sCustomFontText);
 				node.getContentsAsList().add(abbrNodeText);
 				sText = sText.substring(iAbbrEnd + Constants.ABBREVIATION_END.length());
 			} else {
@@ -149,6 +153,21 @@ public class BuildTreeFromDescriptionListener extends DescriptionBaseListener {
 			}
 			iAbbrBegin = sText.indexOf(Constants.ABBREVIATION_BEGIN);
 		}
+	}
+
+	@Override
+	public void exitCustomFontInfo(DescriptionParser.CustomFontInfoContext ctx) {
+		DescriptionParser.NodeContext parentCtx = (NodeContext) ctx.getParent();
+		LingTreeNode node = nodeMap.get(parentCtx.hashCode());
+		String sContent = ctx.getText().trim();
+		int iCustomFontBegin = sContent.indexOf(Constants.CUSTOM_FONT_BEGIN);
+		String sText = sContent;
+		int iCustomFontEnd = sText.indexOf(Constants.CUSTOM_FONT_END);
+		String sCustomFont = sText.substring(iCustomFontBegin + Constants.CUSTOM_FONT_BEGIN.length(), iCustomFontEnd);
+		FontInfo fontInfo = fontInfoParser.parseString(sCustomFont, node, parser);
+		node.setCustomFontInfo(fontInfo);
+		node.setLineNumInDescription(ctx.start.getLine());
+		node.setCharacterPositionInLine(ctx.stop.getCharPositionInLine());
 	}
 
 	protected String adjustTextContent(String sContent) {

@@ -194,12 +194,20 @@ public class TreeBuilder {
 			sSyntaxErrorMessage = bundle.getString("descriptionsyntaxerror.missing_abbreviation_end");
 			break;
 
+		case DescriptionConstants.MISSING_CUSTOM_FONT_END:
+			sSyntaxErrorMessage = bundle.getString("descriptionsyntaxerror.missing_custom_font_end");
+			break;
+
 		case DescriptionConstants.MISSING_CLOSING_PAREN:
 			sSyntaxErrorMessage = bundle.getString("descriptionsyntaxerror.missing_closing_paren");
 			break;
 
 		case DescriptionConstants.MISSING_CONTENT_AFTER_ABBREVIATION_BEGIN:
 			sSyntaxErrorMessage = bundle.getString("descriptionsyntaxerror.missing_content_after_abbreviation_begin");
+			break;
+
+		case DescriptionConstants.MISSING_CONTENT_AFTER_CUSTOM_FONT_BEGIN:
+			sSyntaxErrorMessage = bundle.getString("descriptionsyntaxerror.missing_content_after_custom_font_begin");
 			break;
 
 		case DescriptionConstants.MISSING_OPENING_PAREN:

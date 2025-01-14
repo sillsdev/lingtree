@@ -10,8 +10,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
-import java.util.HashMap;
-
 import org.junit.Test;
 import org.sil.lingtree.model.LingTreeNode;
 import org.sil.lingtree.model.LingTreeTree;
@@ -27,7 +25,7 @@ public class FindNodeTest extends ServiceBaseTest {
 	private LingTreeNode nodeFound;
 
 	@Test
-	public void findNodesTest() {
+	public void findNodeTest() {
 		origTree = new LingTreeTree();
 		ltTree = TreeBuilder.parseAString("(S (NP (\\L Juan (\\G John))) (VP (V (\\L duerme (\\G sleeps)))))", origTree);
 		ltTree.setUseColumnOrientedAlgorithm(false);

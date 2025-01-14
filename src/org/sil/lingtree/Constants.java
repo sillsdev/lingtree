@@ -15,6 +15,8 @@ public class Constants {
 
 	public static final String ABBREVIATION_BEGIN = "/a";
 	public static final String ABBREVIATION_END = "/A";
+	public static final String CUSTOM_FONT_BEGIN = "/f";
+	public static final String CUSTOM_FONT_END = "/F";
 	public static final String SUBSCRIPT = "/s";
 	public static final String SUBSCRIPTITALIC = "/_";
 	public static final String SUPERSCRIPT = "/S";

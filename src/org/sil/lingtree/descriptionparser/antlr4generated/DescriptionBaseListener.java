@@ -157,6 +157,18 @@ public class DescriptionBaseListener implements DescriptionListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitAbbreviationWithText(DescriptionParser.AbbreviationWithTextContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterCustomFontInfo(DescriptionParser.CustomFontInfoContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCustomFontInfo(DescriptionParser.CustomFontInfoContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

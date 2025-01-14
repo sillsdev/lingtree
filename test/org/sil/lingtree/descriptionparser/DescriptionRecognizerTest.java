@@ -176,6 +176,70 @@ public class DescriptionRecognizerTest {
 				"(description (node (openParen () (content S) (node (openParen () (content NP) (node (openParen () (type (nodeType \\L) (lineType \\T)) (content Lee) (closeParen ))) (closeParen ))) (node (openParen () (content VP) (node (openParen () (content V) (node (openParen () (type (lineType \\T) (nodeType \\L)) (content gets) (closeParen ))) (closeParen ))) (node (openParen () (content NP) (node (openParen () (content Det) (node (openParen () (content the) (closeParen ))) (closeParen ))) (node (openParen () (content N) (node (openParen () (content idea) (closeParen ))) (closeParen ))) (closeParen ))) (closeParen ))) (closeParen ))) <EOF>)");
 	}
 
+	@Test
+	public void validDescriptionsWithCustomFontInfoTest() {
+		// following from original Help Topics documentation
+		checkValidDescription(
+				"(S (NP/f|b|i|c#00FF00|fTimes New Roman|s14.0/F) (VP))",
+				"(description (node (openParen () (content S) (node (openParen () (content NP) (customFontInfo /f |b|i|c#00FF00|fTimes New Roman|s14.0 /F) (closeParen ))) (node (openParen () (content VP) (closeParen ))) (closeParen ))) <EOF>)");
+		checkValidDescription(
+				"(S/f|b|i|c#00FF00|fTimes New Roman|s14.0/F (NP (Lee)) (VP (V (gets/f|b|i|c#00FF00|fTimes New Roman|s14.0/F)) (NP (Det (the)) (N (idea)))))",
+				"(description (node (openParen () (content S) (customFontInfo /f |b|i|c#00FF00|fTimes New Roman|s14.0 /F) (node (openParen () (content NP) (node (openParen () (content Lee) (closeParen ))) (closeParen ))) (node (openParen () (content VP) (node (openParen () (content V) (node (openParen () (content gets) (customFontInfo /f |b|i|c#00FF00|fTimes New Roman|s14.0 /F) (closeParen ))) (closeParen ))) (node (openParen () (content NP) (node (openParen () (content Det) (node (openParen () (content the) (closeParen ))) (closeParen ))) (node (openParen () (content N) (node (openParen () (content idea) (closeParen ))) (closeParen ))) (closeParen ))) (closeParen ))) (closeParen ))) <EOF>)");
+		checkValidDescription(
+				"(NP (Paul \\(the bear\\)/f|b|i|c#00FF00|fTimes New Roman|s14.0/F))",
+				"(description (node (openParen () (content NP) (node (openParen () (content Paul \\(the bear\\)) (customFontInfo /f |b|i|c#00FF00|fTimes New Roman|s14.0 /F) (closeParen ))) (closeParen ))) <EOF>)");
+		checkValidDescription(
+				"(S (NP (\\L John/f|b|i|c#00FF00|fTimes New Roman|s14.0/F)) (VP (V (\\L sleeps))))",
+				"(description (node (openParen () (content S) (node (openParen () (content NP) (node (openParen () (type (nodeType \\L)) (content John) (customFontInfo /f |b|i|c#00FF00|fTimes New Roman|s14.0 /F) (closeParen ))) (closeParen ))) (node (openParen () (content VP) (node (openParen () (content V) (node (openParen () (type (nodeType \\L)) (content sleeps) (closeParen ))) (closeParen ))) (closeParen ))) (closeParen ))) <EOF>)");
+		checkValidDescription(
+				"(S (NP (\\L Juan (\\G John/f|b|i|c#00FF00|fTimes New Roman|s14.0/F))) (VP (V (\\L duerme (\\G sleeps)))))",
+				"(description (node (openParen () (content S) (node (openParen () (content NP) (node (openParen () (type (nodeType \\L)) (content Juan) (node (openParen () (type (nodeType \\G)) (content John) (customFontInfo /f |b|i|c#00FF00|fTimes New Roman|s14.0 /F) (closeParen ))) (closeParen ))) (closeParen ))) (node (openParen () (content VP) (node (openParen () (content V) (node (openParen () (type (nodeType \\L)) (content duerme) (node (openParen () (type (nodeType \\G)) (content sleeps) (closeParen ))) (closeParen ))) (closeParen ))) (closeParen ))) (closeParen ))) <EOF>)");
+		checkValidDescription(
+				"(NP (\\T all the King’s men/f|b|i|c#00FF00|fTimes New Roman|s14.0/F))",
+				"(description (node (openParen () (content NP) (node (openParen () (type (lineType \\T)) (content all the King’s men) (customFontInfo /f |b|i|c#00FF00|fTimes New Roman|s14.0 /F) (closeParen ))) (closeParen ))) <EOF>)");
+		checkValidDescription(
+				"((\\O σ/f|b|i|c#00FF00|fTimes New Roman|s14.0/F (O (\\L t)) (N (R (\\L e)))) (\\O σ (O (\\L p)) (N (R (\\L i)) (C (\\L k)))))",
+				"(description (node (openParen () (node (openParen () (type (lineType \\O)) (content σ) (customFontInfo /f |b|i|c#00FF00|fTimes New Roman|s14.0 /F) (node (openParen () (content O) (node (openParen () (type (nodeType \\L)) (content t) (closeParen ))) (closeParen ))) (node (openParen () (content N) (node (openParen () (content R) (node (openParen () (type (nodeType \\L)) (content e) (closeParen ))) (closeParen ))) (closeParen ))) (closeParen ))) (node (openParen () (type (lineType \\O)) (content σ) (node (openParen () (content O) (node (openParen () (type (nodeType \\L)) (content p) (closeParen ))) (closeParen ))) (node (openParen () (content N) (node (openParen () (content R) (node (openParen () (type (nodeType \\L)) (content i) (closeParen ))) (closeParen ))) (node (openParen () (content C) (node (openParen () (type (nodeType \\L)) (content k) (closeParen ))) (closeParen ))) (closeParen ))) (closeParen ))) (closeParen ))) <EOF>)");
+		checkValidDescription(
+				"(S (NP/s1/f|b|i|c#00FF00|fTimes New Roman|s14.0/F (N (dogs))) (VP (V (chase)) (NP/s2 (N (cats)))))",
+				"(description (node (openParen () (content S) (node (openParen () (content NP (subscript /s 1)) (customFontInfo /f |b|i|c#00FF00|fTimes New Roman|s14.0 /F) (node (openParen () (content N) (node (openParen () (content dogs) (closeParen ))) (closeParen ))) (closeParen ))) (node (openParen () (content VP) (node (openParen () (content V) (node (openParen () (content chase) (closeParen ))) (closeParen ))) (node (openParen () (content NP (subscript /s 2)) (node (openParen () (content N) (node (openParen () (content cats) (closeParen ))) (closeParen ))) (closeParen ))) (closeParen ))) (closeParen ))) <EOF>)");
+		checkValidDescription(
+				"(IP (DP) (I/S'/f|b|i|c#00FF00|fTimes New Roman|s14.0/F))",
+				"(description (node (openParen () (content IP) (node (openParen () (content DP) (closeParen ))) (node (openParen () (content I (superscript /S ')) (customFontInfo /f |b|i|c#00FF00|fTimes New Roman|s14.0 /F) (closeParen ))) (closeParen ))) <EOF>)");
+		// abbreviations
+		checkValidDescription(
+				"(NP  /a ipfv /A AP/f|b|i|c#00FF00|fTimes New Roman|s14.0/F)",
+				"(description (node (openParen () (abbreviationWithText NP (abbreviation /a ipfv /A) AP) (customFontInfo /f |b|i|c#00FF00|fTimes New Roman|s14.0 /F) (closeParen ))) <EOF>)");
+		checkValidDescription(
+				"(S (NP (\\L Juan (\\G John))) (VP (V (\\L duerme (\\G /a3/Asleep/asg.prs/A/f|b|i|c#00FF00|fTimes New Roman|s14.0/F)))))",
+				"(description (node (openParen () (content S) (node (openParen () (content NP) (node (openParen () (type (nodeType \\L)) (content Juan) (node (openParen () (type (nodeType \\G)) (content John) (closeParen ))) (closeParen ))) (closeParen ))) (node (openParen () (content VP) (node (openParen () (content V) (node (openParen () (type (nodeType \\L)) (content duerme) (node (openParen () (type (nodeType \\G)) (abbreviationWithText (abbreviation /a 3 /A) sleep) (abbreviationWithText (abbreviation /a sg.prs /A)) (customFontInfo /f |b|i|c#00FF00|fTimes New Roman|s14.0 /F) (closeParen ))) (closeParen ))) (closeParen ))) (closeParen ))) (closeParen ))) <EOF>)");
+
+		// need examples with both \T and \L, in both orders, etc.
+		checkValidDescription(
+				"(NP (\\T\\L all the King’s men/f|b|i|c#00FF00|fTimes New Roman|s14.0/F))",
+				"(description (node (openParen () (content NP) (node (openParen () (type (lineType \\T) (nodeType \\L)) (content all the King’s men) (customFontInfo /f |b|i|c#00FF00|fTimes New Roman|s14.0 /F) (closeParen ))) (closeParen ))) <EOF>)");
+		checkValidDescription(
+				"(NP (\\L\\T all the King’s men/f|b|i|c#00FF00|fTimes New Roman|s14.0/F))",
+				"(description (node (openParen () (content NP) (node (openParen () (type (nodeType \\L) (lineType \\T)) (content all the King’s men) (customFontInfo /f |b|i|c#00FF00|fTimes New Roman|s14.0 /F) (closeParen ))) (closeParen ))) <EOF>)");
+
+		// backslashes and forward slashes with non-keyword items
+		checkValidDescription(
+				"(S (/S'/Comp (N (do\\gs/f|b|i|c#00FF00|fTimes New Roman|s14.0/F))) (VP (V (chase)) (/s2 (N (cats)))))",
+				"(description (node (openParen () (content S) (node (openParen () (content (superscript /S ' /C omp)) (node (openParen () (content N) (node (openParen () (content do \\g s) (customFontInfo /f |b|i|c#00FF00|fTimes New Roman|s14.0 /F) (closeParen ))) (closeParen ))) (closeParen ))) (node (openParen () (content VP) (node (openParen () (content V) (node (openParen () (content chase) (closeParen ))) (closeParen ))) (node (openParen () (content (subscript /s 2)) (node (openParen () (content N) (node (openParen () (content cats) (closeParen ))) (closeParen ))) (closeParen ))) (closeParen ))) (closeParen ))) <EOF>)");
+
+		// empty elements
+		checkValidDescription("(IP (DP/_m (D' (D'/s1 (D (\\L le (\\G FM)))\n" +
+				"(NP (\\T \\L xuz noo (\\G my father))))\n" +
+				"(IP (\\E t/_j/f|b|i|c#00FF00|fTimes New Roman|s14.0/F))))\n" +
+				"(IP (I' (I/_i (\\T \\L w-guu (\\G C-sow)))\n" +
+				"(VP (VP (DP (\\E t/_m))\n" +
+				"(V' (V (\\E t/_i)) (DP (\\T \\L bni (\\G seed)))))\n" +
+				"(IP/_j (I' (I/_k (\\L y-ra (\\G P-all)))\n" +
+				"(QP (DP/s1 (\\T \\E pro)) (Q' (Q (\\E t/_k))\n" +
+				"(DP/s2 (\\T \\L mee bzaan noo (\\G my brothers)))))))))))",
+				"(description (node (openParen () (content IP) (node (openParen () (content DP (subscript /_ m)) (node (openParen () (content D') (node (openParen () (content D' (subscript /s 1)) (node (openParen () (content D) (node (openParen () (type (nodeType \\L)) (content le) (node (openParen () (type (nodeType \\G)) (content FM) (closeParen ))) (closeParen ))) (closeParen ))) (node (openParen () (content NP) (node (openParen () (type (lineType \\T) (nodeType \\L)) (content xuz noo) (node (openParen () (type (nodeType \\G)) (content my father) (closeParen ))) (closeParen ))) (closeParen ))) (closeParen ))) (node (openParen () (content IP) (node (openParen () (type (nodeType \\E)) (content t (subscript /_ j)) (customFontInfo /f |b|i|c#00FF00|fTimes New Roman|s14.0 /F) (closeParen ))) (closeParen ))) (closeParen ))) (closeParen ))) (node (openParen () (content IP) (node (openParen () (content I') (node (openParen () (content I (subscript /_ i)) (node (openParen () (type (lineType \\T) (nodeType \\L)) (content w-guu) (node (openParen () (type (nodeType \\G)) (content C-sow) (closeParen ))) (closeParen ))) (closeParen ))) (node (openParen () (content VP) (node (openParen () (content VP) (node (openParen () (content DP) (node (openParen () (type (nodeType \\E)) (content t (subscript /_ m)) (closeParen ))) (closeParen ))) (node (openParen () (content V') (node (openParen () (content V) (node (openParen () (type (nodeType \\E)) (content t (subscript /_ i)) (closeParen ))) (closeParen ))) (node (openParen () (content DP) (node (openParen () (type (lineType \\T) (nodeType \\L)) (content bni) (node (openParen () (type (nodeType \\G)) (content seed) (closeParen ))) (closeParen ))) (closeParen ))) (closeParen ))) (closeParen ))) (node (openParen () (content IP (subscript /_ j)) (node (openParen () (content I') (node (openParen () (content I (subscript /_ k)) (node (openParen () (type (nodeType \\L)) (content y-ra) (node (openParen () (type (nodeType \\G)) (content P-all) (closeParen ))) (closeParen ))) (closeParen ))) (node (openParen () (content QP) (node (openParen () (content DP (subscript /s 1)) (node (openParen () (type (lineType \\T) (nodeType \\E)) (content pro) (closeParen ))) (closeParen ))) (node (openParen () (content Q') (node (openParen () (content Q) (node (openParen () (type (nodeType \\E)) (content t (subscript /_ k)) (closeParen ))) (closeParen ))) (node (openParen () (content DP (subscript /s 2)) (node (openParen () (type (lineType \\T) (nodeType \\L)) (content mee bzaan noo) (node (openParen () (type (nodeType \\G)) (content my brothers) (closeParen ))) (closeParen ))) (closeParen ))) (closeParen ))) (closeParen ))) (closeParen ))) (closeParen ))) (closeParen ))) (closeParen ))) (closeParen ))) (closeParen ))) <EOF>)");
+	}
+
 	private void checkValidDescription(String sDescription, String sANTLRTree) {
 		DescriptionParser parser = parseAString(sDescription);
 		int numErrors = parser.getNumberOfSyntaxErrors();

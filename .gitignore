@@ -57,3 +57,5 @@ installer/macos/META-INF
 installer/macos/*.dmg
 installer/macos/check-notarized.sh
 compiler/
+
+src/org/sil/lingtree/descriptionparser/antlr4generated/.gitignore
