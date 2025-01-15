@@ -73,6 +73,13 @@ public class BuildTreeFromDescriptionListener extends DescriptionBaseListener {
 	}
 
 	@Override
+	public void exitNode(DescriptionParser.NodeContext ctx) {
+		LingTreeNode node = nodeMap.get(ctx.hashCode());
+		node.setLineNumInDescription(ctx.start.getLine());
+		node.setCharacterPositionInLine(ctx.start.getCharPositionInLine());
+	}
+
+	@Override
 	public void exitLineType(DescriptionParser.LineTypeContext ctx) {
 		DescriptionParser.TypeContext typeCtx = (TypeContext) ctx.getParent();
 		DescriptionParser.NodeContext parentCtx = (NodeContext) typeCtx.getParent();

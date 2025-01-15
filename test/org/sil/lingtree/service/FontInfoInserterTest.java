@@ -10,7 +10,6 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 import org.sil.lingtree.model.FontInfo;
-import org.sil.utility.StringUtilities;
 
 import javafx.scene.paint.Color;
 
@@ -65,7 +64,123 @@ public class FontInfoInserterTest extends ServiceBaseTest {
 				+ " (Poss (\\L  yki (\\G  /a2.poss/A)))\n"
 				+ "     (Case (\\L  paq (\\G  a-/apurp/A-bc-/aa/A))))\n"
 				+ ")\n";
-		
+		assertEquals(expected, result);
+		// overwrite existing font info
+		description = "(Word  (Infl[n] (Stem[n]/f|b|c#008000|fCharis SIL|s10.0/F (Infl[v] (Stem[v]\n"
+				+ " (root (\\L  rika (\\G to.see))))(\\E בַ )\n"
+				+ " (Aspect (\\L yka: (\\G  /aipfv/A ))) \n"
+				+ "(Object (\\L  ma: (\\G /a1.obj/A)))) \n"
+				+ "(Derv (\\L  na (\\G /anmlz/A))) )\n"
+				+ " (Poss (\\L  yki (\\G  /a2.poss/A)))\n"
+				+ "     (Case (\\L  paq (\\G  a-/apurp/A-bc-/aa/A))))\n"
+				+ ")\n";
+		fontInfo = createFontInfo("Regular", "CurlZ", 15.0, Color.MAROON);
+		result = fiInserter.insert(fontInfo, description, 1, 24);
+		expected = "(Word  (Infl[n] (Stem[n]/f|r|c#800000|fCurlZ|s15.0/F (Infl[v] (Stem[v]\n"
+				+ " (root (\\L  rika (\\G to.see))))(\\E בַ )\n"
+				+ " (Aspect (\\L yka: (\\G  /aipfv/A ))) \n"
+				+ "(Object (\\L  ma: (\\G /a1.obj/A)))) \n"
+				+ "(Derv (\\L  na (\\G /anmlz/A))) )\n"
+				+ " (Poss (\\L  yki (\\G  /a2.poss/A)))\n"
+				+ "     (Case (\\L  paq (\\G  a-/apurp/A-bc-/aa/A))))\n"
+				+ ")\n";
+		assertEquals(expected, result);
+		description = "(Word  (Infl[n] (Stem[n]     /f|b|c#008000|fCharis SIL|s10.0/F (Infl[v] (Stem[v]\n"
+				+ " (root (\\L  rika (\\G to.see))))(\\E בַ )\n"
+				+ " (Aspect (\\L yka: (\\G  /aipfv/A ))) \n"
+				+ "(Object (\\L  ma: (\\G /a1.obj/A)))) \n"
+				+ "(Derv (\\L  na (\\G /anmlz/A))) )\n"
+				+ " (Poss (\\L  yki (\\G  /a2.poss/A)))\n"
+				+ "     (Case (\\L  paq (\\G  a-/apurp/A-bc-/aa/A))))\n"
+				+ ")\n";
+		fontInfo = createFontInfo("Regular", "CurlZ", 15.0, Color.MAROON);
+		result = fiInserter.insert(fontInfo, description, 1, 24);
+		expected = "(Word  (Infl[n] (Stem[n]/f|r|c#800000|fCurlZ|s15.0/F (Infl[v] (Stem[v]\n"
+				+ " (root (\\L  rika (\\G to.see))))(\\E בַ )\n"
+				+ " (Aspect (\\L yka: (\\G  /aipfv/A ))) \n"
+				+ "(Object (\\L  ma: (\\G /a1.obj/A)))) \n"
+				+ "(Derv (\\L  na (\\G /anmlz/A))) )\n"
+				+ " (Poss (\\L  yki (\\G  /a2.poss/A)))\n"
+				+ "     (Case (\\L  paq (\\G  a-/apurp/A-bc-/aa/A))))\n"
+				+ ")\n";
+		assertEquals(expected, result);
+		description = "(Word  (Infl[n] (Stem[n]\t /f|b|c#008000|fCharis SIL|s10.0/F (Infl[v] (Stem[v]\n"
+				+ " (root (\\L  rika (\\G to.see))))(\\E בַ )\n"
+				+ " (Aspect (\\L yka: (\\G  /aipfv/A ))) \n"
+				+ "(Object (\\L  ma: (\\G /a1.obj/A)))) \n"
+				+ "(Derv (\\L  na (\\G /anmlz/A))) )\n"
+				+ " (Poss (\\L  yki (\\G  /a2.poss/A)))\n"
+				+ "     (Case (\\L  paq (\\G  a-/apurp/A-bc-/aa/A))))\n"
+				+ ")\n";
+		fontInfo = createFontInfo("Regular", "CurlZ", 15.0, Color.MAROON);
+		result = fiInserter.insert(fontInfo, description, 1, 24);
+		expected = "(Word  (Infl[n] (Stem[n]/f|r|c#800000|fCurlZ|s15.0/F (Infl[v] (Stem[v]\n"
+				+ " (root (\\L  rika (\\G to.see))))(\\E בַ )\n"
+				+ " (Aspect (\\L yka: (\\G  /aipfv/A ))) \n"
+				+ "(Object (\\L  ma: (\\G /a1.obj/A)))) \n"
+				+ "(Derv (\\L  na (\\G /anmlz/A))) )\n"
+				+ " (Poss (\\L  yki (\\G  /a2.poss/A)))\n"
+				+ "     (Case (\\L  paq (\\G  a-/apurp/A-bc-/aa/A))))\n"
+				+ ")\n";
+		assertEquals(expected, result);
+	}
+
+	@Test
+	public void removeTest() {
+		fiInserter = FontInfoInserter.getInstance();
+		description = "(Word  (Infl[n] (Stem[n]/f|b|c#008000|fCharis SIL|s10.0/F (Infl[v] (Stem[v]\n"
+				+ " (root (\\L  rika (\\G to.see))))(\\E בַ )\n"
+				+ " (Aspect (\\L yka: (\\G  /aipfv/A ))) \n"
+				+ "(Object (\\L  ma: (\\G /a1.obj/A)))) \n"
+				+ "(Derv (\\L  na (\\G /anmlz/A))) )\n"
+				+ " (Poss (\\L  yki (\\G  /a2.poss/A)))\n"
+				+ "     (Case (\\L  paq (\\G  a-/apurp/A-bc-/aa/A))))\n"
+				+ ")\n";
+		String result = fiInserter.remove(description, 1, 24);
+		String expected = "(Word  (Infl[n] (Stem[n] (Infl[v] (Stem[v]\n"
+				+ " (root (\\L  rika (\\G to.see))))(\\E בַ )\n"
+				+ " (Aspect (\\L yka: (\\G  /aipfv/A ))) \n"
+				+ "(Object (\\L  ma: (\\G /a1.obj/A)))) \n"
+				+ "(Derv (\\L  na (\\G /anmlz/A))) )\n"
+				+ " (Poss (\\L  yki (\\G  /a2.poss/A)))\n"
+				+ "     (Case (\\L  paq (\\G  a-/apurp/A-bc-/aa/A))))\n"
+				+ ")\n";
+		assertEquals(expected, result);
+		description = "(Word  (Infl[n] (Stem[n]     /f|b|c#008000|fCharis SIL|s10.0/F (Infl[v] (Stem[v]\n"
+				+ " (root (\\L  rika (\\G to.see))))(\\E בַ )\n"
+				+ " (Aspect (\\L yka: (\\G  /aipfv/A ))) \n"
+				+ "(Object (\\L  ma: (\\G /a1.obj/A)))) \n"
+				+ "(Derv (\\L  na (\\G /anmlz/A))) )\n"
+				+ " (Poss (\\L  yki (\\G  /a2.poss/A)))\n"
+				+ "     (Case (\\L  paq (\\G  a-/apurp/A-bc-/aa/A))))\n"
+				+ ")\n";
+		result = fiInserter.remove(description, 1, 24);
+		expected = "(Word  (Infl[n] (Stem[n] (Infl[v] (Stem[v]\n"
+				+ " (root (\\L  rika (\\G to.see))))(\\E בַ )\n"
+				+ " (Aspect (\\L yka: (\\G  /aipfv/A ))) \n"
+				+ "(Object (\\L  ma: (\\G /a1.obj/A)))) \n"
+				+ "(Derv (\\L  na (\\G /anmlz/A))) )\n"
+				+ " (Poss (\\L  yki (\\G  /a2.poss/A)))\n"
+				+ "     (Case (\\L  paq (\\G  a-/apurp/A-bc-/aa/A))))\n"
+				+ ")\n";
+		assertEquals(expected, result);
+		description = "(Word  (Infl[n] (Stem[n]\t /f|b|c#008000|fCharis SIL|s10.0/F (Infl[v] (Stem[v]\n"
+				+ " (root (\\L  rika (\\G to.see))))(\\E בַ )\n"
+				+ " (Aspect (\\L yka: (\\G  /aipfv/A ))) \n"
+				+ "(Object (\\L  ma: (\\G /a1.obj/A)))) \n"
+				+ "(Derv (\\L  na (\\G /anmlz/A))) )\n"
+				+ " (Poss (\\L  yki (\\G  /a2.poss/A)))\n"
+				+ "     (Case (\\L  paq (\\G  a-/apurp/A-bc-/aa/A))))\n"
+				+ ")\n";
+		result = fiInserter.remove(description, 1, 24);
+		expected = "(Word  (Infl[n] (Stem[n] (Infl[v] (Stem[v]\n"
+				+ " (root (\\L  rika (\\G to.see))))(\\E בַ )\n"
+				+ " (Aspect (\\L yka: (\\G  /aipfv/A ))) \n"
+				+ "(Object (\\L  ma: (\\G /a1.obj/A)))) \n"
+				+ "(Derv (\\L  na (\\G /anmlz/A))) )\n"
+				+ " (Poss (\\L  yki (\\G  /a2.poss/A)))\n"
+				+ "     (Case (\\L  paq (\\G  a-/apurp/A-bc-/aa/A))))\n"
+				+ ")\n";
 		assertEquals(expected, result);
 	}
 }

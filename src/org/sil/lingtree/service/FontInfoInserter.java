@@ -27,26 +27,62 @@ public class FontInfoInserter {
         return instance;
     }
     
-    public String insert(FontInfo fontInfo, String description, int lineNum, int charPos) {
-    	StringBuilder sb = new StringBuilder();
-    	List<String> lines = description.lines().toList();
-    	lineNum--; // lineNum is one-based, not zero-based
-    	for (int i = 0; i < lines.size(); i++) {
-        	String sLine = lines.get(i);
-        	if (i == lineNum) {
-            	String newLine = sLine.substring(0, charPos);
-            	String fiRep = produceFontInfoRepresentation(fontInfo);
-            	String restOfLine = sLine.substring(charPos);
-            	sb.append(newLine);
-            	sb.append(fiRep);
-            	sb.append(restOfLine);
-        	} else {
-        		sb.append(sLine);
-        	}
-           	sb.append("\n");
-    	}
-    	return sb.toString();
-    }
+	public String insert(FontInfo fontInfo, String description, int lineNum, int charPos) {
+		StringBuilder sb = new StringBuilder();
+		List<String> lines = description.lines().toList();
+		lineNum--; // lineNum is one-based, not zero-based
+		for (int i = 0; i < lines.size(); i++) {
+			String sLine = lines.get(i);
+			if (i == lineNum) {
+				String newLine = sLine.substring(0, charPos);
+				String fiRep = produceFontInfoRepresentation(fontInfo);
+				String restOfLine = sLine.substring(charPos);
+				restOfLine = removeAnyPreviousFontInfoRep(restOfLine);
+				sb.append(newLine);
+				sb.append(fiRep);
+				sb.append(restOfLine);
+			} else {
+				sb.append(sLine);
+			}
+			sb.append("\n");
+		}
+		return sb.toString();
+	}
+
+	public String removeAnyPreviousFontInfoRep(String restOfLine) {
+		int iPosOfSlashf = restOfLine.indexOf("/f");
+		if (iPosOfSlashf > -1) {
+			int j = 0;
+			while (j < restOfLine.length()-1 && Character.isWhitespace(restOfLine.charAt(j))) {
+				j++;
+			}
+			if (restOfLine.charAt(j) == '/' && restOfLine.charAt(j+1) == 'f') {
+				int iPosOfSlashF = restOfLine.indexOf("/F");
+				restOfLine = restOfLine.substring(iPosOfSlashF + 2);
+			}
+		}
+		return restOfLine;
+	}
+
+	public String remove(String description, int lineNum, int charPos) {
+		StringBuilder sb = new StringBuilder();
+		List<String> lines = description.lines().toList();
+		lineNum--; // lineNum is one-based, not zero-based
+		for (int i = 0; i < lines.size(); i++) {
+			String sLine = lines.get(i);
+			if (i == lineNum) {
+				String newLine = sLine.substring(0, charPos);
+				String restOfLine = sLine.substring(charPos);
+				restOfLine = removeAnyPreviousFontInfoRep(restOfLine);
+				sb.append(newLine);
+				sb.append(restOfLine);
+			} else {
+				sb.append(sLine);
+			}
+			sb.append("\n");
+		}
+		return sb.toString();
+	}
 
     public String produceFontInfoRepresentation(FontInfo fontInfo) {
     	StringBuilder sb = new StringBuilder();

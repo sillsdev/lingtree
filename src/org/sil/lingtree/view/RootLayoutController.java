@@ -83,7 +83,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Modality;
-import javafx.stage.PopupWindow.AnchorLocation;
 import javafx.stage.Stage;
 
 /**
@@ -495,6 +494,7 @@ public class RootLayoutController implements Initializable {
 						handleNodeFontInfo(node);
 					} else if (event.getButton().equals(MouseButton.SECONDARY)) {
 						if (node.hasCustomFontInfo()) {
+							selectedNode = node;
 							nodeFontInfoContextMenu.show(drawingArea, event.getScreenX(), event.getScreenY());
 						}
 					}
@@ -613,14 +613,18 @@ public class RootLayoutController implements Initializable {
 		String gloss = GlossFontInfo.getInstance().getCss();
 		String empty = EmptyElementFontInfo.getInstance().getCss();
 		String lexical = LexFontInfo.getInstance().getCss();
+		String abbreviation = AbbreviationFontInfo.getInstance().getCss();
+		double dCustomFontSize = Math.max(applicationPreferences.getTreeDescriptionFontSize()-2.5, 3);
+		String customfont = "\n-fx-fill:grey;\n-fx-font-size:" + dCustomFontSize + "pt;\n";
 
 		String cssStyleClass = syntagmeme;
 		String textClassToUse = NonTerminalFontInfo.getInstance().getCss();
+		String textClassBeforeAbbreviation = "";
 		for (Token token : tokens.getTokens()) {
 			// We keep the following output for when we want to see the set of
 			// tokens and their types
-			// System.out.println("token='" + token.getText() + "'; type=" +
-			// token.getType());
+//			 System.out.println("token='" + token.getText() + "'; type=" +
+//			 token.getType());
 			switch (token.getType()) {
 			// TODO: if the description grammar changes, we may need to adjust
 			// the case values as they may change
@@ -640,8 +644,25 @@ public class RootLayoutController implements Initializable {
 				cssStyleClass = syntagmeme;
 				textClassToUse = empty;
 				break;
-			case 14: // text
-			case 15: // text with spaces
+			case 12: // /a
+				cssStyleClass = syntagmeme;
+				textClassBeforeAbbreviation = textClassToUse;
+				textClassToUse = abbreviation;
+				break;
+			case 13: // /A
+				cssStyleClass = syntagmeme;
+				textClassToUse = textClassBeforeAbbreviation;
+				break;
+			case 14: // /f
+				cssStyleClass = syntagmeme;
+				textClassToUse = syntagmeme + customfont;
+				break;
+			case 15: // /F
+				cssStyleClass = syntagmeme;
+				textClassToUse = customfont;
+				break;
+			case 16: // text
+			case 17: // text with spaces
 				cssStyleClass = textClassToUse;
 				break;
 			default:
@@ -946,7 +967,12 @@ public class RootLayoutController implements Initializable {
 
 	public void handleRestoreDefaultFontInfo() {
 		selectedNode.setCustomFontInfo(null);
+		FontInfoInserter fiInserter = FontInfoInserter.getInstance();
+		int charPos = selectedNode.getCharacterPositionInLine() + selectedNode.getContent().length() + 1;
+		sDescription = fiInserter.remove(sDescription, selectedNode.getLineNumInDescription(), charPos);
+		treeDescription.replaceText(sDescription);
 		selectedNode.setContent(selectedNode.getContent());
+		computeHighlighting();
 		redrawTree();
 	}
 
@@ -1593,12 +1619,15 @@ public class RootLayoutController implements Initializable {
 			node.setCustomFontInfo(fontInfo);
 			node.setContent(node.getContent());
 			selectedNode = node;
-			TreeDrawer drawer = new TreeDrawer(ltTree);
-			cleanDrawingArea();
-			drawer.draw(drawingArea);
-//			FontInfoInserter fiInserter = FontInfoInserter.getInstance();
-//			sDescription = fiInserter.insert(fontInfo, sDescription, node.getLineNumInDescription(), node.getCharacterPositionInLine());
-//			redrawTree();
+//			TreeDrawer drawer = new TreeDrawer(ltTree);
+//			cleanDrawingArea();
+//			drawer.draw(drawingArea);
+			FontInfoInserter fiInserter = FontInfoInserter.getInstance();
+			int charPos = node.getCharacterPositionInLine() + node.getContent().length() + 1;
+			sDescription = fiInserter.insert(fontInfo, sDescription, node.getLineNumInDescription(), charPos);
+			treeDescription.replaceText(sDescription);
+			computeHighlighting();
+			redrawTree();
 		}
 	}
 
