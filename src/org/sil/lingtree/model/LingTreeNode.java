@@ -219,7 +219,7 @@ public class LingTreeNode {
 	}
 
 	private FontInfo getFontInfoForSubOrSuperscript(boolean fIsRegular) {
-		FontInfo fontInfo = getFontInfoFromNodeType();
+		FontInfo fontInfo = getFontInfoFromNodeType(false);
 		double newSize = fontInfo.getFontSize()
 				* Constants.SUB_SUPER_SCRIPT_FONT_SIZE_FACTOR;
 		FontInfo newFontInfo = new FontInfo(fontInfo.getFontFamily(), newSize,
@@ -254,7 +254,7 @@ public class LingTreeNode {
 	protected void getHeightOfRegularNode() {
 		final double dSubscriptPercentage = 0.333333;
 		final double dSuperscriptPercentage = 0.333333;
-		FontInfo fontInfo = getFontInfoFromNodeType();
+		FontInfo fontInfo = getFontInfoFromNodeType(false);
 		double dContentFontSize = fontInfo.getFontSize();
 		double dSubscriptHeightAdjust = (subscriptTextBox.getText().length() > 0) ? dSubscriptPercentage
 				* dContentFontSize
@@ -325,15 +325,15 @@ public class LingTreeNode {
 	}
 
 	private void changeFontInfo() {
-		FontInfo fontInfo = getFontInfoFromNodeType();
+		FontInfo fontInfo = getFontInfoFromNodeType(false);
 		contentTextBox.setFont(fontInfo.getFont());
 		contentTextBox.setFill(fontInfo.getColor());
 		contentTextBox.setText(getContent());
 	}
 
-	public FontInfo getFontInfoFromNodeType() {
+	public FontInfo getFontInfoFromNodeType(boolean ignoreCustomFont) {
 		FontInfo fontInfo;
-		if (hasCustomFontInfo()) {
+		if (!ignoreCustomFont && hasCustomFontInfo()) {
 			return customFontInfo;
 		}
 		switch (nodeType) {
@@ -461,7 +461,7 @@ public class LingTreeNode {
 	}
 
 	private double adjustHeightForSubscript() {
-		FontInfo fontInfo = getFontInfoFromNodeType();
+		FontInfo fontInfo = getFontInfoFromNodeType(false);
 		double dContentFontSize = fontInfo.getFontSize();
 		double dHeightAdjust = .14 * dContentFontSize;
 		// dHeight = contentTextBox.getBoundsInLocal().getHeight() +
@@ -470,7 +470,7 @@ public class LingTreeNode {
 	}
 
 	private double adjustHeightForSuperscript() {
-		FontInfo fontInfo = getFontInfoFromNodeType();
+		FontInfo fontInfo = getFontInfoFromNodeType(false);
 		double dContentFontSize = fontInfo.getFontSize();
 		double dHeightAdjust = .33333 * dContentFontSize;
 		// dHeight = contentTextBox.getBoundsInLocal().getHeight() -

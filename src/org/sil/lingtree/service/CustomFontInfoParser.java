@@ -37,7 +37,7 @@ public class CustomFontInfoParser {
     			parser.notifyErrorListeners("custom font info missing");
     		return null;
     	}
-    	FontInfo typeFontInfo = node.getFontInfoFromNodeType();
+    	FontInfo typeFontInfo = node.getFontInfoFromNodeType(false);
     	FontInfo fontInfo = new FontInfo(typeFontInfo.getFontFamily(), typeFontInfo.getFontSize(), typeFontInfo.getFontType());
     	fontInfo.setColor(typeFontInfo.getColor());
     	String[] items = sDescription.split("\\|");

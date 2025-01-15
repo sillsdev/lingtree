@@ -1606,7 +1606,7 @@ public class RootLayoutController implements Initializable {
 	}
 
 	public void handleNodeFontInfo(LingTreeNode node) {
-		FontInfo nodesDefaultFontInfo = node.getFontInfoFromNodeType();
+		FontInfo nodesDefaultFontInfo = node.getFontInfoFromNodeType(true);
 		FontInfo nodesCustomFontInfo = node.getCustomFontInfo();
 		if (nodesCustomFontInfo == null) {
 			// no custom font yet
@@ -1619,12 +1619,9 @@ public class RootLayoutController implements Initializable {
 			node.setCustomFontInfo(fontInfo);
 			node.setContent(node.getContent());
 			selectedNode = node;
-//			TreeDrawer drawer = new TreeDrawer(ltTree);
-//			cleanDrawingArea();
-//			drawer.draw(drawingArea);
 			FontInfoInserter fiInserter = FontInfoInserter.getInstance();
 			int charPos = node.getCharacterPositionInLine() + node.getContent().length() + 1;
-			sDescription = fiInserter.insert(fontInfo, sDescription, node.getLineNumInDescription(), charPos);
+			sDescription = fiInserter.insert(fontInfo, nodesDefaultFontInfo, sDescription, node.getLineNumInDescription(), charPos);
 			treeDescription.replaceText(sDescription);
 			computeHighlighting();
 			redrawTree();

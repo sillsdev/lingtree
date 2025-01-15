@@ -476,7 +476,7 @@ public class TreeDrawer {
 				createTextAsSVG(nt.getTextBox(), nt.getFontInfo(), sb);
 			}
 		} else {
-			createTextAsSVG(node.getContentTextBox(), node.getFontInfoFromNodeType(), sb);
+			createTextAsSVG(node.getContentTextBox(), node.getFontInfoFromNodeType(false), sb);
 		}
 		if (node.hasSubscript()) {
 			FontInfo fontInfo = node.getFontInfoForSubscript();

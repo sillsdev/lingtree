@@ -35,7 +35,7 @@ public class NodeText {
 
 	public void setText(String text) {
 		textBox.setText(text);
-		fontInfo = node.getFontInfoFromNodeType();
+		fontInfo = node.getFontInfoFromNodeType(false);
 		textBox.setFont(fontInfo.getFont());
 		textBox.setFill(fontInfo.getColor());
 	}

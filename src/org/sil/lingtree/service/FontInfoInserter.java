@@ -49,6 +49,30 @@ public class FontInfoInserter {
 		return sb.toString();
 	}
 
+	public String insert(FontInfo newFontInfo, FontInfo oldFontInfo, String description, int lineNum, int charPos) {
+		StringBuilder sb = new StringBuilder();
+		List<String> lines = description.lines().toList();
+		lineNum--; // lineNum is one-based, not zero-based
+		for (int i = 0; i < lines.size(); i++) {
+			String sLine = lines.get(i);
+			if (i == lineNum) {
+				String newLine = sLine.substring(0, charPos);
+				String fiRep = produceFontInfoRepresentationThatDiffers(newFontInfo, oldFontInfo);
+				String restOfLine = sLine.substring(charPos);
+				restOfLine = removeAnyPreviousFontInfoRep(restOfLine);
+				sb.append(newLine);
+				if (!fiRep.equals("/f/F")) {
+					sb.append(fiRep);
+				}
+				sb.append(restOfLine);
+			} else {
+				sb.append(sLine);
+			}
+			sb.append("\n");
+		}
+		return sb.toString();
+	}
+
 	public String removeAnyPreviousFontInfoRep(String restOfLine) {
 		int iPosOfSlashf = restOfLine.indexOf("/f");
 		if (iPosOfSlashf > -1) {
@@ -99,6 +123,28 @@ public class FontInfoInserter {
     	return sb.toString();
     }
   
+    public String produceFontInfoRepresentationThatDiffers(FontInfo newFontInfo, FontInfo oldFontInfo) {
+    	StringBuilder sb = new StringBuilder();
+    	sb.append("/f");
+    	if (!newFontInfo.getFontType().equals(oldFontInfo.getFontType())) {
+        	sb.append(produceFontTypeRepresentation(newFontInfo.getFontType()));
+    	}
+    	if (!newFontInfo.getColor().equals(oldFontInfo.getColor())) {
+        	sb.append("|c");
+        	sb.append(StringUtilities.toRGBCode(newFontInfo.getColor()));
+    	}
+    	if (!newFontInfo.getFontFamily().equals(oldFontInfo.getFontFamily())) {
+        	sb.append("|f");
+        	sb.append(newFontInfo.getFontFamily());
+    	}
+    	if (newFontInfo.getFontSize() != oldFontInfo.getFontSize()) {
+        	sb.append("|s");
+        	sb.append(newFontInfo.getFontSize());
+    	}
+    	sb.append("/F");
+    	return sb.toString();
+    }
+
     protected String produceFontTypeRepresentation(String fontType) {
 		StringBuilder sb = new StringBuilder();
 		if (fontType.contains("Regular")) {

@@ -44,6 +44,35 @@ public class FontInfoInserterTest extends ServiceBaseTest {
 	}
 	
 	@Test
+	public void produceFontInfoRepresentationThatDiffersTest() {
+		fiInserter = FontInfoInserter.getInstance();
+		FontInfo oldFontInfo = createFontInfo("Regular", "Times New Roman", 12.0, Color.RED);
+		FontInfo newFontInfo = createFontInfo("Regular", "Times New Roman", 12.0, Color.RED);
+		checkRepresentrationThatDiffers(newFontInfo, oldFontInfo, "/f/F");
+		newFontInfo = createFontInfo("Bold", "Times New Roman", 12.0, Color.RED);
+		checkRepresentrationThatDiffers(newFontInfo, oldFontInfo, "/f|b/F");
+		newFontInfo = createFontInfo("Bold Italic", "Times New Roman", 12.0, Color.RED);
+		checkRepresentrationThatDiffers(newFontInfo, oldFontInfo, "/f|b|i/F");
+		newFontInfo = createFontInfo("Regular", "Charis SIL", 12.0, Color.RED);
+		checkRepresentrationThatDiffers(newFontInfo, oldFontInfo, "/f|fCharis SIL/F");
+		newFontInfo = createFontInfo("Regular", "Times New Roman", 14.0, Color.RED);
+		checkRepresentrationThatDiffers(newFontInfo, oldFontInfo, "/f|s14.0/F");
+		newFontInfo = createFontInfo("Regular", "Times New Roman", 12.0, Color.WHITE);
+		checkRepresentrationThatDiffers(newFontInfo, oldFontInfo, "/f|c#ffffff/F");
+		newFontInfo = createFontInfo("Bold", "Charis SIL", 12.0, Color.RED);
+		checkRepresentrationThatDiffers(newFontInfo, oldFontInfo, "/f|b|fCharis SIL/F");
+		newFontInfo = createFontInfo("Regular", "Times New Roman", 13.0, Color.BLACK);
+		checkRepresentrationThatDiffers(newFontInfo, oldFontInfo, "/f|c#000000|s13.0/F");
+		newFontInfo = createFontInfo("Italic", "Times New Roman", 16.0, Color.RED);
+		checkRepresentrationThatDiffers(newFontInfo, oldFontInfo, "/f|i|s16.0/F");
+	}
+
+	private void checkRepresentrationThatDiffers(FontInfo newFontInfo, FontInfo oldFontInfo, String expected) {
+		String rep = fiInserter.produceFontInfoRepresentationThatDiffers(newFontInfo, oldFontInfo);
+		assertEquals(expected, rep);
+	}
+
+	@Test
 	public void insertTest() {
 		fiInserter = FontInfoInserter.getInstance();
 		description = "(Word  (Infl[n] (Stem[n] (Infl[v] (Stem[v]\n"
