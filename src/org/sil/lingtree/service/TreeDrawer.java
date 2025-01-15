@@ -106,7 +106,7 @@ public class TreeDrawer {
 		// Determine Y-axis coordinate for any daughters
 		for (LingTreeNode daughterNode : node.getDaughters()) {
 			double dDaughterYCoordinate = node.getYCoordinate()
-					+ maxHeightPerLevel.get(node.getLevel());
+					+ maxHeightPerLevel.get(daughterNode.getLevel());
 			if (daughterNode.getNodeType() != NodeType.Gloss) {
 				dDaughterYCoordinate += ltTree.getVerticalGap();
 			} else {

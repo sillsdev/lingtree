@@ -92,25 +92,25 @@ public class TreeDrawerTest extends ServiceBaseTest {
 		assertEquals(119.595703125, node2.getYUpperMid(), 0.0);
 		assertEquals(138.884765625, node2.getYLowerMid(), 0.0);
 		node1 = node1.getDaughters().get(0);
-		assertEquals(166.578125, node1.getYCoordinate(), 0.0);
-		assertEquals(149.22265625, node1.getYUpperMid(), 0.0);
-		assertEquals(174.8515625, node1.getYLowerMid(), 0.0);
+		assertEquals(172.91796875, node1.getYCoordinate(), 0.0);
+		assertEquals(155.5625, node1.getYUpperMid(), 0.0);
+		assertEquals(181.19140625, node1.getYLowerMid(), 0.0);
 		node1 = node1.getDaughters().get(0);
-		assertEquals(186.20703125, node1.getYCoordinate(), 0.0);
-		assertEquals(172.34375, node1.getYUpperMid(), 0.0);
-		assertEquals(191.75, node1.getYLowerMid(), 0.0);
+		assertEquals(192.546875, node1.getYCoordinate(), 0.0);
+		assertEquals(178.68359375, node1.getYUpperMid(), 0.0);
+		assertEquals(198.08984375, node1.getYLowerMid(), 0.0);
 		node2 = node2.getDaughters().get(0);
-		assertEquals(166.578125, node2.getYCoordinate(), 0.0);
-		assertEquals(152.884765625, node2.getYUpperMid(), 0.0);
-		assertEquals(172.173828125, node2.getYLowerMid(), 0.0);
+		assertEquals(172.91796875, node2.getYCoordinate(), 0.0);
+		assertEquals(159.224609375, node2.getYUpperMid(), 0.0);
+		assertEquals(178.513671875, node2.getYLowerMid(), 0.0);
 		node2 = node2.getDaughters().get(0);
-		assertEquals(206.20703125, node2.getYCoordinate(), 0.0);
-		assertEquals(188.8515625, node2.getYUpperMid(), 0.0);
-		assertEquals(214.48046875, node2.getYLowerMid(), 0.0);
+		assertEquals(212.546875, node2.getYCoordinate(), 0.0);
+		assertEquals(195.19140625, node2.getYUpperMid(), 0.0);
+		assertEquals(220.8203125, node2.getYLowerMid(), 0.0);
 		node2 = node2.getDaughters().get(0);
-		assertEquals(225.8359375, node2.getYCoordinate(), 0.0);
-		assertEquals(211.97265625, node2.getYUpperMid(), 0.0);
-		assertEquals(231.37890625, node2.getYLowerMid(), 0.0);
+		assertEquals(225.953125, node2.getYCoordinate(), 0.0);
+		assertEquals(212.08984375, node2.getYUpperMid(), 0.0);
+		assertEquals(231.49609375, node2.getYLowerMid(), 0.0);
 
 		// Now with "show flat view" set
 		ltTree = TreeBuilder.parseAString("(S (NP (\\L Juan (\\G John))) (VP (V (\\L duerme (\\G sleeps)))))", origTree);
@@ -131,25 +131,25 @@ public class TreeDrawerTest extends ServiceBaseTest {
 		assertEquals(119.595703125, node2.getYUpperMid(), 0.0);
 		assertEquals(138.884765625, node2.getYLowerMid(), 0.0);
 		node1 = node1.getDaughters().get(0);
-		assertEquals(206.20703125, node1.getYCoordinate(), 0.0);
-		assertEquals(188.8515625, node1.getYUpperMid(), 0.0);
-		assertEquals(211.48046875, node1.getYLowerMid(), 0.0);
+		assertEquals(212.546875, node1.getYCoordinate(), 0.0);
+		assertEquals(195.19140625, node1.getYUpperMid(), 0.0);
+		assertEquals(217.8203125, node1.getYLowerMid(), 0.0);
 		node1 = node1.getDaughters().get(0);
-		assertEquals(225.8359375, node1.getYCoordinate(), 0.0);
-		assertEquals(214.97265625, node1.getYUpperMid(), 0.0);
-		assertEquals(228.37890625, node1.getYLowerMid(), 0.0);
+		assertEquals(225.953125, node1.getYCoordinate(), 0.0);
+		assertEquals(215.08984375, node1.getYUpperMid(), 0.0);
+		assertEquals(228.49609375, node1.getYLowerMid(), 0.0);
 		node2 = node2.getDaughters().get(0);
-		assertEquals(166.578125, node2.getYCoordinate(), 0.0);
-		assertEquals(152.884765625, node2.getYUpperMid(), 0.0);
-		assertEquals(172.173828125, node2.getYLowerMid(), 0.0);
+		assertEquals(172.91796875, node2.getYCoordinate(), 0.0);
+		assertEquals(159.224609375, node2.getYUpperMid(), 0.0);
+		assertEquals(178.513671875, node2.getYLowerMid(), 0.0);
 		node2 = node2.getDaughters().get(0);
-		assertEquals(206.20703125, node2.getYCoordinate(), 0.0);
-		assertEquals(188.8515625, node2.getYUpperMid(), 0.0);
-		assertEquals(211.48046875, node2.getYLowerMid(), 0.0);
+		assertEquals(212.546875, node2.getYCoordinate(), 0.0);
+		assertEquals(195.19140625, node2.getYUpperMid(), 0.0);
+		assertEquals(217.8203125, node2.getYLowerMid(), 0.0);
 		node2 = node2.getDaughters().get(0);
-		assertEquals(225.8359375, node2.getYCoordinate(), 0.0);
-		assertEquals(214.97265625, node2.getYUpperMid(), 0.0);
-		assertEquals(228.37890625, node2.getYLowerMid(), 0.0);
+		assertEquals(225.953125, node2.getYCoordinate(), 0.0);
+		assertEquals(215.08984375, node2.getYUpperMid(), 0.0);
+		assertEquals(228.49609375, node2.getYLowerMid(), 0.0);
 
 		// with subscript and superscript
 		ltTree = TreeBuilder.parseAString("(S (NP/Ssuper (\\L Juan (\\G John))) (VP (V/ssub (\\L duerme (\\G sleeps)))))", origTree);
@@ -162,33 +162,33 @@ public class TreeDrawerTest extends ServiceBaseTest {
 		assertEquals(86.306640625, node.getYUpperMid(), 0.0);
 		assertEquals(105.595703125, node.getYLowerMid(), 0.0);
 		node1 = node.getDaughters().get(0);
-		assertEquals(133.2890625, node1.getYCoordinate(), 0.0);
-		assertEquals(119.595703125, node1.getYUpperMid(), 0.0);
-		assertEquals(138.884765625, node1.getYLowerMid(), 0.0);
+		assertEquals(137.2890585, node1.getYCoordinate(), 0.0);
+		assertEquals(123.59569912500001, node1.getYUpperMid(), 0.0);
+		assertEquals(142.884761625, node1.getYLowerMid(), 0.0);
 		node2 = node.getDaughters().get(1);
-		assertEquals(133.2890625, node2.getYCoordinate(), 0.0);
-		assertEquals(119.595703125, node2.getYUpperMid(), 0.0);
-		assertEquals(138.884765625, node2.getYLowerMid(), 0.0);
+		assertEquals(137.2890585, node2.getYCoordinate(), 0.0);
+		assertEquals(123.59569912500001, node2.getYUpperMid(), 0.0);
+		assertEquals(142.884761625, node2.getYLowerMid(), 0.0);
 		node1 = node1.getDaughters().get(0);
-		assertEquals(170.578121, node1.getYCoordinate(), 0.0);
-		assertEquals(153.22265225, node1.getYUpperMid(), 0.0);
-		assertEquals(178.8515585, node1.getYLowerMid(), 0.0);
+		assertEquals(176.91796475, node1.getYCoordinate(), 0.0);
+		assertEquals(159.562496, node1.getYUpperMid(), 0.0);
+		assertEquals(185.19140225, node1.getYLowerMid(), 0.0);
 		node1 = node1.getDaughters().get(0);
-		assertEquals(190.20702725, node1.getYCoordinate(), 0.0);
-		assertEquals(176.343746, node1.getYUpperMid(), 0.0);
-		assertEquals(195.749996, node1.getYLowerMid(), 0.0);
+		assertEquals(196.546871, node1.getYCoordinate(), 0.0);
+		assertEquals(182.68358975, node1.getYUpperMid(), 0.0);
+		assertEquals(202.08983975, node1.getYLowerMid(), 0.0);
 		node2 = node2.getDaughters().get(0);
-		assertEquals(170.578121, node2.getYCoordinate(), 0.0);
-		assertEquals(156.884761625, node2.getYUpperMid(), 0.0);
-		assertEquals(176.173824125, node2.getYLowerMid(), 0.0);
+		assertEquals(176.91796475, node2.getYCoordinate(), 0.0);
+		assertEquals(163.224605375, node2.getYUpperMid(), 0.0);
+		assertEquals(182.513667875, node2.getYLowerMid(), 0.0);
 		node2 = node2.getDaughters().get(0);
-		assertEquals(210.20702725, node2.getYCoordinate(), 0.0);
-		assertEquals(192.8515585, node2.getYUpperMid(), 0.0);
-		assertEquals(218.48046475, node2.getYLowerMid(), 0.0);
+		assertEquals(216.546871, node2.getYCoordinate(), 0.0);
+		assertEquals(199.19140225, node2.getYUpperMid(), 0.0);
+		assertEquals(224.8203085, node2.getYLowerMid(), 0.0);
 		node2 = node2.getDaughters().get(0);
-		assertEquals(229.8359335, node2.getYCoordinate(), 0.0);
-		assertEquals(215.97265225, node2.getYUpperMid(), 0.0);
-		assertEquals(235.37890225, node2.getYLowerMid(), 0.0);
+		assertEquals(229.953121, node2.getYCoordinate(), 0.0);
+		assertEquals(216.08983975, node2.getYUpperMid(), 0.0);
+		assertEquals(235.49608975, node2.getYLowerMid(), 0.0);
 
 		// abbreviations
 		ltTree = TreeBuilder.parseAString("(NP (N (\\L mi libros (\\G -/a1.poss/A- book -/a pl /A))))", origTree);
@@ -204,13 +204,13 @@ public class TreeDrawerTest extends ServiceBaseTest {
 		assertEquals(119.595703125, node1.getYUpperMid(), 0.0);
 		assertEquals(138.884765625, node1.getYLowerMid(), 0.0);
 		node1 = node1.getDaughters().get(0);
-		assertEquals(166.578125, node1.getYCoordinate(), 0.0);
-		assertEquals(149.22265625, node1.getYUpperMid(), 0.0);
-		assertEquals(174.8515625, node1.getYLowerMid(), 0.0);
+		assertEquals(172.91796875, node1.getYCoordinate(), 0.0);
+		assertEquals(155.5625, node1.getYUpperMid(), 0.0);
+		assertEquals(181.19140625, node1.getYLowerMid(), 0.0);
 		node1 = node1.getDaughters().get(0);
-		assertEquals(186.20703125, node1.getYCoordinate(), 0.0);
-		assertEquals(172.34375, node1.getYUpperMid(), 0.0);
-		assertEquals(191.75, node1.getYLowerMid(), 0.0);
+		assertEquals(186.32421875, node1.getYCoordinate(), 0.0);
+		assertEquals(172.4609375, node1.getYUpperMid(), 0.0);
+		assertEquals(191.8671875, node1.getYLowerMid(), 0.0);
 
 		ltTree = TreeBuilder.parseAString("(NP (N (\\L mi libros (\\G -/a1.poss/A- book -/a pl /A))))", origTree);
 		drawer = new TreeDrawer(ltTree);
@@ -226,13 +226,13 @@ public class TreeDrawerTest extends ServiceBaseTest {
 		assertEquals(119.595703125, node1.getYUpperMid(), 0.0);
 		assertEquals(138.884765625, node1.getYLowerMid(), 0.0);
 		node1 = node1.getDaughters().get(0);
-		assertEquals(166.578125, node1.getYCoordinate(), 0.0);
-		assertEquals(149.22265625, node1.getYUpperMid(), 0.0);
-		assertEquals(174.8515625, node1.getYLowerMid(), 0.0);
+		assertEquals(172.91796875, node1.getYCoordinate(), 0.0);
+		assertEquals(155.5625, node1.getYUpperMid(), 0.0);
+		assertEquals(181.19140625, node1.getYLowerMid(), 0.0);
 		node1 = node1.getDaughters().get(0);
-		assertEquals(186.578125, node1.getYCoordinate(), 0.0);
-		assertEquals(172.71484375, node1.getYUpperMid(), 0.0);
-		assertEquals(192.12109375, node1.getYLowerMid(), 0.0);
+		assertEquals(192.91796875, node1.getYCoordinate(), 0.0);
+		assertEquals(179.0546875, node1.getYUpperMid(), 0.0);
+		assertEquals(198.4609375, node1.getYLowerMid(), 0.0);
 
 		// no text in node (just the first set)
 		ltTree = TreeBuilder.parseAString("(Mascoian((Enxet Sur)(Enlhet Norte))((((Angaité)(Sanapaná)))((Kaskihá)(Toba-Maskoy))))", origTree);
@@ -243,18 +243,18 @@ public class TreeDrawerTest extends ServiceBaseTest {
 		node = ltTree.getRootNode();  // Mascoian
 		assertEquals(100.0, node.getYCoordinate(), 0.0);
 		node1 = node.getDaughters().get(0); // empty
-		assertEquals(133.2890625, node1.getYCoordinate(), 0.0);
+		assertEquals(135.9609375, node1.getYCoordinate(), 0.0);
 		node2 = node1.getDaughters().get(0); // Enxet Sur
-		assertEquals(169.25, node2.getYCoordinate(), 0.0);
+		assertEquals(171.921875, node2.getYCoordinate(), 0.0);
 		node2 = node1.getDaughters().get(1); // Enlhet Norte
-		assertEquals(169.25, node2.getYCoordinate(), 0.0);
+		assertEquals(171.921875, node2.getYCoordinate(), 0.0);
 
 		node1 = node.getDaughters().get(1); // empty
-		assertEquals(133.2890625, node1.getYCoordinate(), 0.0);
+		assertEquals(135.9609375, node1.getYCoordinate(), 0.0);
 		node2 = node1.getDaughters().get(0); // empty
-		assertEquals(169.25, node2.getYCoordinate(), 0.0);
+		assertEquals(171.921875, node2.getYCoordinate(), 0.0);
 		LingTreeNode node3 = node2.getDaughters().get(0); // empty
-		assertEquals(205.2109375, node3.getYCoordinate(), 0.0);
+		assertEquals(207.8828125, node3.getYCoordinate(), 0.0);
 		LingTreeNode node4 = node3.getDaughters().get(0); // Angaité
 		assertEquals(241.171875, node4.getYCoordinate(), 0.0);
 		node4 = node3.getDaughters().get(1); // Sanapaná
@@ -1037,7 +1037,8 @@ public class TreeDrawerTest extends ServiceBaseTest {
 		assertEquals(true, result.contains(">Mascoian<"));
 		assertEquals(true, result.contains("Enxet Sur"));
 		assertEquals(true, result.contains("Enlhet Norte"));
-		assertEquals(true, result.contains("<line x1=\"166.2138671875\" y1=\"139.30078125\" x2=\"166.2138671875\" y2=\"117.33984375\" stroke=\"#000000\" stroke-width=\"10.0\"/>"));
+//		System.out.println("result='" + result + "'");
+		assertEquals(true, result.contains("<line x1=\"166.2138671875\" y1=\"141.97265625\" x2=\"123.8681640625\" y2=\"158.228515625\" stroke=\"#000000\" stroke-width=\"10.0\"/>"));
 	}
 
 	@Test

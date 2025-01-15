@@ -78,7 +78,7 @@ public class FindNodeTest extends ServiceBaseTest {
 		assertNotNull(nodeFound);
 		assertEquals("sleeps", nodeFound.getContent());
 		// at upper left corner
-		nodeFound = finder.nodeAt(ltTree, 158.9046875, 212.4296875);
+		nodeFound = finder.nodeAt(ltTree, 158.9046875, 218.4296875);
 		assertNotNull(nodeFound);
 		assertEquals("sleeps", nodeFound.getContent());
 		// at lower right corner
