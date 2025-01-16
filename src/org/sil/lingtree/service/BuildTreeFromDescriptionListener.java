@@ -7,12 +7,16 @@ package org.sil.lingtree.service;
 
 import java.util.HashMap;
 
+import org.antlr.v4.runtime.ParserRuleContext;
 import org.sil.lingtree.Constants;
+import org.sil.lingtree.MainApp;
 import org.sil.lingtree.descriptionparser.antlr4generated.DescriptionBaseListener;
 import org.sil.lingtree.descriptionparser.antlr4generated.DescriptionParser;
+import org.sil.lingtree.descriptionparser.antlr4generated.DescriptionParser.AbbreviationContext;
 import org.sil.lingtree.descriptionparser.antlr4generated.DescriptionParser.ContentContext;
 import org.sil.lingtree.descriptionparser.antlr4generated.DescriptionParser.NodeContext;
 import org.sil.lingtree.descriptionparser.antlr4generated.DescriptionParser.TypeContext;
+import org.sil.lingtree.model.AbbreviationFontInfo;
 import org.sil.lingtree.model.AbbreviationText;
 import org.sil.lingtree.model.FontInfo;
 import org.sil.lingtree.model.LingTreeNode;
@@ -30,6 +34,7 @@ public class BuildTreeFromDescriptionListener extends DescriptionBaseListener {
 	private HashMap<Integer, LingTreeNode> nodeMap = new HashMap<Integer, LingTreeNode>();
 	private String sCustomFontText = "";
 	CustomFontInfoParser fontInfoParser = CustomFontInfoParser.getInstance();
+	FontInfo abbreviationsFontInfo = null;
 
 	public BuildTreeFromDescriptionListener(DescriptionParser parser) {
 		super();
@@ -142,8 +147,22 @@ public class BuildTreeFromDescriptionListener extends DescriptionBaseListener {
 				int iAbbrEnd = sText.indexOf(Constants.ABBREVIATION_END);
 				String sAbbr = sText.substring(iAbbrBegin + Constants.ABBREVIATION_BEGIN.length(),
 						iAbbrEnd);
-				sCustomFontText = adjustTextContent(sAbbr);
 				AbbreviationText abbrNodeText = new AbbreviationText(node);
+				int iCustomFontBegin = sAbbr.indexOf(Constants.CUSTOM_FONT_BEGIN);
+				int iCustomFontEnd = sAbbr.indexOf(Constants.CUSTOM_FONT_END);
+				if (iCustomFontBegin >= 0 && iCustomFontEnd > 0) {
+					String sCustomFont = sAbbr.substring(iCustomFontBegin + Constants.CUSTOM_FONT_BEGIN.length(), iCustomFontEnd);
+					sAbbr = sAbbr.substring(0, iCustomFontBegin);
+					try {
+						FontInfo fontInfo = AbbreviationFontInfo.getInstance().clone();
+						fontInfo = fontInfoParser.adjustFontInfoPerDescription(sCustomFont, parser, fontInfo);
+						abbrNodeText.setCustomFontInfo(fontInfo);
+					} catch (CloneNotSupportedException e) {
+						e.printStackTrace();
+						MainApp.reportException(e, null);
+					}
+				}
+				sCustomFontText = adjustTextContent(sAbbr);
 				abbrNodeText.setText(sCustomFontText);
 				node.getContentsAsList().add(abbrNodeText);
 				sText = sText.substring(iAbbrEnd + Constants.ABBREVIATION_END.length());
@@ -164,17 +183,21 @@ public class BuildTreeFromDescriptionListener extends DescriptionBaseListener {
 
 	@Override
 	public void exitCustomFontInfo(DescriptionParser.CustomFontInfoContext ctx) {
-		DescriptionParser.NodeContext parentCtx = (NodeContext) ctx.getParent();
-		LingTreeNode node = nodeMap.get(parentCtx.hashCode());
-		String sContent = ctx.getText().trim();
-		int iCustomFontBegin = sContent.indexOf(Constants.CUSTOM_FONT_BEGIN);
-		String sText = sContent;
-		int iCustomFontEnd = sText.indexOf(Constants.CUSTOM_FONT_END);
-		String sCustomFont = sText.substring(iCustomFontBegin + Constants.CUSTOM_FONT_BEGIN.length(), iCustomFontEnd);
-		FontInfo fontInfo = fontInfoParser.parseString(sCustomFont, node, parser);
-		node.setCustomFontInfo(fontInfo);
-		node.setLineNumInDescription(ctx.start.getLine());
-		node.setCharacterPositionInLine(ctx.stop.getCharPositionInLine());
+		ParserRuleContext parent = ctx.getParent();
+		if (parent instanceof NodeContext parentCtx) {
+			LingTreeNode node = nodeMap.get(parentCtx.hashCode());
+			String sContent = ctx.getText().trim();
+			int iCustomFontBegin = sContent.indexOf(Constants.CUSTOM_FONT_BEGIN);
+			String sText = sContent;
+			int iCustomFontEnd = sText.indexOf(Constants.CUSTOM_FONT_END);
+			String sCustomFont = sText.substring(iCustomFontBegin + Constants.CUSTOM_FONT_BEGIN.length(), iCustomFontEnd);
+			FontInfo fontInfo = fontInfoParser.parseString(sCustomFont, node, parser);
+			node.setCustomFontInfo(fontInfo);
+			node.setLineNumInDescription(ctx.start.getLine());
+			node.setCharacterPositionInLine(ctx.stop.getCharPositionInLine());
+		} else if (parent instanceof AbbreviationContext) {
+			// do nothing here; we'll do it in exitAbbreviationWithText()
+		}
 	}
 
 	protected String adjustTextContent(String sContent) {

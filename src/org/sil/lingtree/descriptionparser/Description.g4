@@ -86,7 +86,7 @@ superscript : SUPERSCRIPT       (TEXT | TEXTWITHSPACES | BACKSLASH | SLASH)+
 		    | SUPERSCRIPTITALIC {notifyErrorListeners("missingContentAfterSuperscript");}
 		    ;
 
-abbreviation : ABBREVIATIONBEGIN (TEXT | TEXTWITHSPACES)+ ABBREVIATIONEND
+abbreviation : ABBREVIATIONBEGIN (TEXT | TEXTWITHSPACES)+ customFontInfo? ABBREVIATIONEND
              | ABBREVIATIONBEGIN (TEXT | TEXTWITHSPACES)+ {notifyErrorListeners("missingAbbreviationEnd");}
              | ABBREVIATIONBEGIN ABBREVIATIONEND {notifyErrorListeners("missingContentAfterAbbreviationBegin");}
              ;

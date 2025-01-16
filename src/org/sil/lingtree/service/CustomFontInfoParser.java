@@ -40,7 +40,13 @@ public class CustomFontInfoParser {
     	FontInfo typeFontInfo = node.getFontInfoFromNodeType(false);
     	FontInfo fontInfo = new FontInfo(typeFontInfo.getFontFamily(), typeFontInfo.getFontSize(), typeFontInfo.getFontType());
     	fontInfo.setColor(typeFontInfo.getColor());
-    	String[] items = sDescription.split("\\|");
+    	fontInfo = adjustFontInfoPerDescription(sDescription, parser, fontInfo);
+    	node.setCustomFontInfo(fontInfo);
+    	return fontInfo;
+    }
+
+	public FontInfo adjustFontInfoPerDescription(String sDescription, DescriptionParser parser, FontInfo fontInfo) {
+		String[] items = sDescription.split("\\|");
     	String type = "";
     	if (items.length == 0) {
     		if (parser != null)
@@ -84,9 +90,8 @@ public class CustomFontInfoParser {
 				}
 			}
     	}
-    	node.setCustomFontInfo(fontInfo);
     	return fontInfo;
-    }
+	}
 
 }
 

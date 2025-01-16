@@ -11,16 +11,28 @@ package org.sil.lingtree.model;
  *
  */
 public class AbbreviationText extends NodeText {
+	// custom font info for this abbreviation text
+	private FontInfo customFontInfo = null;
 
 	public AbbreviationText(LingTreeNode node) {
 		super(node);
 	}
 
+	public void setCustomFontInfo(FontInfo fontInfo) {
+		this.customFontInfo = fontInfo;
+//		setContent(getContent());
+	}
+
+
 	@Override
 	public void setText(String text) {
-		textBox.setText(text);
-		fontInfo = AbbreviationFontInfo.getInstance();
+		if (customFontInfo == null) {
+			fontInfo = AbbreviationFontInfo.getInstance();
+		} else {
+			fontInfo = customFontInfo;
+		}
 		textBox.setFont(fontInfo.getFont());
 		textBox.setFill(fontInfo.getColor());
+		textBox.setText(text);
 	}
 }
