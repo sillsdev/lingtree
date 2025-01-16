@@ -17,7 +17,7 @@ import org.sil.lingtree.model.LingTreeTree;
 /**
  * 
  */
-public class FindNodeTest extends ServiceBaseTest {
+public class NodeFinderTest extends ServiceBaseTest {
 	private TreeDrawer drawer;
 	private NodeFinder finder;
 	private LingTreeTree origTree;
