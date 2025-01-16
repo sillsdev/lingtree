@@ -164,6 +164,8 @@ public class BuildTreeFromDescriptionListener extends DescriptionBaseListener {
 				}
 				sCustomFontText = adjustTextContent(sAbbr);
 				abbrNodeText.setText(sCustomFontText);
+				abbrNodeText.setLineNumInDescription(ctx.start.getLine());
+				abbrNodeText.setCharacterPositionInLine(ctx.start.getCharPositionInLine());
 				node.getContentsAsList().add(abbrNodeText);
 				sText = sText.substring(iAbbrEnd + Constants.ABBREVIATION_END.length());
 			} else {
