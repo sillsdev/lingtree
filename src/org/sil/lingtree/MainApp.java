@@ -269,7 +269,7 @@ public class MainApp extends Application implements MainAppUtilities {
 			File file = controller.doFileOpen(true);
 			loadTreeData(file);
 			controller.setTree(ltTree);
-			controller.computeHighlighting();
+			controller.styleTreeDescription();
 			controller.handleDrawTree();
 
 		} else {

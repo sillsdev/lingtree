@@ -18,13 +18,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-import org.antlr.v4.runtime.CharStream;
-import org.antlr.v4.runtime.CharStreams;
-import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.Token;
 import org.fxmisc.richtext.InlineCssTextArea;
 import org.sil.lingtree.MainApp;
-import org.sil.lingtree.descriptionparser.antlr4generated.DescriptionLexer;
 import org.sil.lingtree.model.AbbreviationFontInfo;
 import org.sil.lingtree.model.EmptyElementFontInfo;
 import org.sil.lingtree.model.FontInfo;
@@ -34,6 +29,7 @@ import org.sil.lingtree.model.LingTreeNode;
 import org.sil.lingtree.model.LingTreeTree;
 import org.sil.lingtree.model.NodeType;
 import org.sil.lingtree.model.NonTerminalFontInfo;
+import org.sil.lingtree.service.DescriptionStyler;
 import org.sil.lingtree.service.FontInfoInserter;
 import org.sil.lingtree.service.GraphicImageSaver;
 import org.sil.lingtree.service.NodeFinder;
@@ -115,6 +111,8 @@ public class RootLayoutController implements Initializable {
 	private final String kPressedStyle = "buttonpressed";
 	private final String kUnPressedStyle = "buttonunpressed";
 	private final String kMacOSInstallDirectory = "/Applications/LingTree.app/Contents/app/";
+
+	private DescriptionStyler descriptionStyler = DescriptionStyler.getInstance();
 
 	@FXML
 	BorderPane mainPane;
@@ -476,7 +474,7 @@ public class RootLayoutController implements Initializable {
 				}
 
 				// TODO: is this the best place for this?
-				computeHighlighting();
+				styleTreeDescription();
 
 				if (menuItemDrawAsType.isSelected() && fContentJustChangedSoDrawTree) {
 					handleDrawTree();
@@ -518,7 +516,7 @@ public class RootLayoutController implements Initializable {
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
-				computeHighlighting();
+				styleTreeDescription();
 				treeDescription.requestFocus();
 				treeDescription.moveTo(0);
 			}
@@ -601,80 +599,8 @@ public class RootLayoutController implements Initializable {
 				cmLeaveCustomFontInfo);
 	}
 
-	public void computeHighlighting() {
-		CharStream input = CharStreams.fromString(treeDescription.getText());
-		DescriptionLexer lexer = new DescriptionLexer(input);
-		CommonTokenStream tokens = new CommonTokenStream(lexer);
-		tokens.fill();
-
-		String syntagmeme = "-fx-font-family: Monospaced;\n-fx-fill: black;\n-fx-font-size:"
-				+ applicationPreferences.getTreeDescriptionFontSize() + "pt;";
-		String nonterminal = NonTerminalFontInfo.getInstance().getCss();
-		String gloss = GlossFontInfo.getInstance().getCss();
-		String empty = EmptyElementFontInfo.getInstance().getCss();
-		String lexical = LexFontInfo.getInstance().getCss();
-		String abbreviation = AbbreviationFontInfo.getInstance().getCss();
-		double dCustomFontSize = Math.max(applicationPreferences.getTreeDescriptionFontSize()-2.5, 3);
-		String customfont = "\n-fx-fill:grey;\n-fx-font-size:" + dCustomFontSize + "pt;\n";
-
-		String cssStyleClass = syntagmeme;
-		String textClassToUse = NonTerminalFontInfo.getInstance().getCss();
-		String textClassBeforeAbbreviation = "";
-		for (Token token : tokens.getTokens()) {
-			// We keep the following output for when we want to see the set of
-			// tokens and their types
-//			 System.out.println("token='" + token.getText() + "'; type=" +
-//			 token.getType());
-			switch (token.getType()) {
-			// TODO: if the description grammar changes, we may need to adjust
-			// the case values as they may change
-			case 1: // opening parenthesis
-				cssStyleClass = syntagmeme;
-				textClassToUse = nonterminal;
-				break;
-			case 5: // \L
-				cssStyleClass = syntagmeme;
-				textClassToUse = lexical;
-				break;
-			case 6: // \G
-				cssStyleClass = syntagmeme;
-				textClassToUse = gloss;
-				break;
-			case 7: // \E
-				cssStyleClass = syntagmeme;
-				textClassToUse = empty;
-				break;
-			case 12: // /a
-				cssStyleClass = syntagmeme;
-				textClassBeforeAbbreviation = textClassToUse;
-				textClassToUse = abbreviation;
-				break;
-			case 13: // /A
-				cssStyleClass = syntagmeme;
-				textClassToUse = textClassBeforeAbbreviation;
-				break;
-			case 14: // /f
-				cssStyleClass = syntagmeme;
-				textClassToUse = syntagmeme + customfont;
-				break;
-			case 15: // /F
-				cssStyleClass = syntagmeme;
-				textClassToUse = customfont;
-				break;
-			case 16: // text
-			case 17: // text with spaces
-				cssStyleClass = textClassToUse;
-				break;
-			default:
-				cssStyleClass = syntagmeme;
-				break;
-			}
-			if (token.getType() != -1) { // -1 is EOF
-				int iStart = token.getStartIndex();
-				int iStop = token.getStopIndex() + 1;
-				treeDescription.setStyle(iStart, iStop, cssStyleClass);
-			}
-		}
+	public void styleTreeDescription() {
+		descriptionStyler.styleDescription(treeDescription, applicationPreferences.getTreeDescriptionFontSize());
 	}
 
 	public MainApp getMainApp() {
@@ -940,7 +866,7 @@ public class RootLayoutController implements Initializable {
 	@FXML
 	protected void handleCut() {
 		treeDescription.cut();
-		computeHighlighting();
+		styleTreeDescription();
 	}
 
 	@FXML
@@ -948,7 +874,7 @@ public class RootLayoutController implements Initializable {
 		ClipboardUtilities.removeAnyFinalNullFromStringOnClipboard();
 		// now our possibly adjusted string is on the clipboard; do a paste
 		treeDescription.paste();
-		computeHighlighting();
+		styleTreeDescription();
 		handleDrawTree();
 		treeDescription.requestFocus();
 	}
@@ -956,13 +882,13 @@ public class RootLayoutController implements Initializable {
 	@FXML
 	protected void handleUndo() {
 		treeDescription.undo();
-		computeHighlighting();
+		styleTreeDescription();
 	}
 
 	@FXML
 	protected void handleRedo() {
 		treeDescription.redo();
-		computeHighlighting();
+		styleTreeDescription();
 	}
 
 	public void handleRestoreDefaultFontInfo() {
@@ -972,7 +898,7 @@ public class RootLayoutController implements Initializable {
 		sDescription = fiInserter.remove(sDescription, selectedNode.getLineNumInDescription(), charPos);
 		treeDescription.replaceText(sDescription);
 		selectedNode.setContent(selectedNode.getContent());
-		computeHighlighting();
+		styleTreeDescription();
 		redrawTree();
 	}
 
@@ -1066,7 +992,7 @@ public class RootLayoutController implements Initializable {
 		if (result.isPresent()) {
 			defaultFont = new Font(result.get());
 			applicationPreferences.setTreeDescriptionFontSize(result.get());
-			computeHighlighting();
+			styleTreeDescription();
 		}
 	}
 
@@ -1185,7 +1111,7 @@ public class RootLayoutController implements Initializable {
 		boolean value = menuItemDrawVerticalLineWithEmptyText.isSelected();
 		ltTree.setDrawVerticalLineWithEmptyText(value);
 		if (menuItemDrawAsType.isSelected()) {
-			computeHighlighting();
+			styleTreeDescription();
 			handleDrawTree();
 			markAsDirty();
 		}
@@ -1197,7 +1123,7 @@ public class RootLayoutController implements Initializable {
 		ltTree.setUseColumnOrientedAlgorithm(value);
 		enableDisableCenterNodesOverDaughtersMenuItem();
 		if (menuItemDrawAsType.isSelected()) {
-			computeHighlighting();
+			styleTreeDescription();
 			handleDrawTree();
 			markAsDirty();
 		}
@@ -1208,7 +1134,7 @@ public class RootLayoutController implements Initializable {
 		boolean value = menuItemCenterNodesOverDaughters.isSelected();
 		ltTree.setCenterColumnOrientedOnDaughtersWidth(value);
 		if (menuItemDrawAsType.isSelected()) {
-			computeHighlighting();
+			styleTreeDescription();
 			handleDrawTree();
 			markAsDirty();
 		}
@@ -1298,7 +1224,7 @@ public class RootLayoutController implements Initializable {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			computeHighlighting();
+			styleTreeDescription();
 		} else {
 			ltTree = null;
 		}
@@ -1368,7 +1294,7 @@ public class RootLayoutController implements Initializable {
 		}
 		doFileOpen(false);
 		setTree(mainApp.getTree());
-		computeHighlighting();
+		styleTreeDescription();
 		treeDescription.requestFocus();
 		treeDescription.moveTo(0);
 		handleDrawTree();
@@ -1566,7 +1492,7 @@ public class RootLayoutController implements Initializable {
 		ltTree.setAbbreviationFontInfo(fontInfo);
 		AbbreviationFontInfo.getInstance().setFont(fontInfo.getFont());
 		AbbreviationFontInfo.getInstance().setColor(fontInfo.getColor());
-		computeHighlighting();
+		styleTreeDescription();
 		handleDrawTree();
 		markAsDirty();
 	}
@@ -1578,7 +1504,7 @@ public class RootLayoutController implements Initializable {
 		ltTree.setEmptyElementFontInfo(fontInfo);
 		EmptyElementFontInfo.getInstance().setFont(fontInfo.getFont());
 		EmptyElementFontInfo.getInstance().setColor(fontInfo.getColor());
-		computeHighlighting();
+		styleTreeDescription();
 		handleDrawTree();
 		markAsDirty();
 	}
@@ -1589,7 +1515,7 @@ public class RootLayoutController implements Initializable {
 		ltTree.setGlossFontInfo(fontInfo);
 		GlossFontInfo.getInstance().setFont(fontInfo.getFont());
 		GlossFontInfo.getInstance().setColor(fontInfo.getColor());
-		computeHighlighting();
+		styleTreeDescription();
 		handleDrawTree();
 		markAsDirty();
 	}
@@ -1600,7 +1526,7 @@ public class RootLayoutController implements Initializable {
 		ltTree.setLexicalFontInfo(fontInfo);
 		LexFontInfo.getInstance().setFont(fontInfo.getFont());
 		LexFontInfo.getInstance().setColor(fontInfo.getColor());
-		computeHighlighting();
+		styleTreeDescription();
 		handleDrawTree();
 		markAsDirty();
 	}
@@ -1623,7 +1549,7 @@ public class RootLayoutController implements Initializable {
 			int charPos = node.getCharacterPositionInLine() + node.getContent().length() + 1;
 			sDescription = fiInserter.insert(fontInfo, nodesDefaultFontInfo, sDescription, node.getLineNumInDescription(), charPos);
 			treeDescription.replaceText(sDescription);
-			computeHighlighting();
+			styleTreeDescription();
 			redrawTree();
 		}
 	}
@@ -1645,7 +1571,7 @@ public class RootLayoutController implements Initializable {
 		ltTree.setNonTerminalFontInfo(fontInfo);
 		NonTerminalFontInfo.getInstance().setFont(fontInfo.getFont());
 		NonTerminalFontInfo.getInstance().setColor(fontInfo.getColor());
-		computeHighlighting();
+		styleTreeDescription();
 		handleDrawTree();
 		markAsDirty();
 	}

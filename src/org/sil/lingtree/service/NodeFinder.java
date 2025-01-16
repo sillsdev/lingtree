@@ -6,7 +6,6 @@
 
 package org.sil.lingtree.service;
 
-import org.sil.lingtree.model.FontInfo;
 import org.sil.lingtree.model.LingTreeNode;
 import org.sil.lingtree.model.LingTreeTree;
 

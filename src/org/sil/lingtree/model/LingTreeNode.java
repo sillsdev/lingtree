@@ -14,7 +14,6 @@ import org.sil.lingtree.model.LingTreeNode;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.Node;
 import javafx.scene.text.Text;
 
 public class LingTreeNode {
