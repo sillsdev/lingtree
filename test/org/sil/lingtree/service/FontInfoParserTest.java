@@ -20,11 +20,11 @@ import javafx.scene.paint.Color;
 /**
  * 
  */
-public class CustomFontInfoParserTest extends ServiceBaseTest {
+public class FontInfoParserTest extends ServiceBaseTest {
 
 	@Test
 	public void parseFontInfoTest() {
-		CustomFontInfoParser fontInfoParser = CustomFontInfoParser.getInstance();
+		FontInfoParser fontInfoParser = FontInfoParser.getInstance();
 		DescriptionParser dParser = null;
 		FontInfo fontInfo = null;
 		fontInfo = fontInfoParser.parseString("", new LingTreeNode(), dParser);

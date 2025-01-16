@@ -33,7 +33,7 @@ public class BuildTreeFromDescriptionListener extends DescriptionBaseListener {
 	private LingTreeTree tree;
 	private HashMap<Integer, LingTreeNode> nodeMap = new HashMap<Integer, LingTreeNode>();
 	private String sCustomFontText = "";
-	CustomFontInfoParser fontInfoParser = CustomFontInfoParser.getInstance();
+	FontInfoParser fontInfoParser = FontInfoParser.getInstance();
 	FontInfo abbreviationsFontInfo = null;
 
 	public BuildTreeFromDescriptionListener(DescriptionParser parser) {

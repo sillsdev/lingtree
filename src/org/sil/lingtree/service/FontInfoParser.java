@@ -17,16 +17,16 @@ import javafx.scene.paint.Color;
  * @author Andy Black
  * Singleton pattern for parsing a custom font info string
  */
-public class CustomFontInfoParser {
-    private static CustomFontInfoParser instance;
+public class FontInfoParser {
+    private static FontInfoParser instance;
     LingTreeNode node;
     
-    private CustomFontInfoParser(){
+    private FontInfoParser(){
     }
     
-    public static CustomFontInfoParser getInstance(){
+    public static FontInfoParser getInstance(){
         if(instance == null){
-            instance = new CustomFontInfoParser();
+            instance = new FontInfoParser();
         }
         return instance;
     }
