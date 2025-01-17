@@ -16,6 +16,10 @@ public class NodeText {
 	protected Text textBox = new Text(0, 0, "");
 	protected LingTreeNode node = new LingTreeNode();
 	protected FontInfo fontInfo;
+	int lineNumInDescription;
+	int characterPositionInLine;
+	// custom font info for this node text
+	protected FontInfo customFontInfo = null;
 
 	public Text getTextBox() {
 		return textBox;
@@ -47,4 +51,31 @@ public class NodeText {
 	public void setFontInfo(FontInfo fontInfo) {
 		this.fontInfo = fontInfo;
 	}
+
+	public int getLineNumInDescription() {
+		return lineNumInDescription;
+	}
+
+	public void setLineNumInDescription(int lineNumInDescription) {
+		this.lineNumInDescription = lineNumInDescription;
+	}
+
+	public int getCharacterPositionInLine() {
+		return characterPositionInLine;
+	}
+
+	public void setCharacterPositionInLine(int characterPositionInLine) {
+		this.characterPositionInLine = characterPositionInLine;
+	}
+
+	public FontInfo getCustomFontInfo() {
+		return customFontInfo;
+	}
+
+	public void setCustomFontInfo(FontInfo fontInfo) {
+			this.customFontInfo = fontInfo;
+	//		setContent(getContent());
+		}
+
+
 }

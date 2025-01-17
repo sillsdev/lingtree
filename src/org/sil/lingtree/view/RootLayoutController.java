@@ -21,14 +21,17 @@ import java.util.ResourceBundle;
 import org.fxmisc.richtext.InlineCssTextArea;
 import org.sil.lingtree.MainApp;
 import org.sil.lingtree.model.AbbreviationFontInfo;
+import org.sil.lingtree.model.AbbreviationText;
 import org.sil.lingtree.model.EmptyElementFontInfo;
 import org.sil.lingtree.model.FontInfo;
 import org.sil.lingtree.model.GlossFontInfo;
 import org.sil.lingtree.model.LexFontInfo;
 import org.sil.lingtree.model.LingTreeNode;
 import org.sil.lingtree.model.LingTreeTree;
+import org.sil.lingtree.model.NodeText;
 import org.sil.lingtree.model.NodeType;
 import org.sil.lingtree.model.NonTerminalFontInfo;
+import org.sil.lingtree.service.NodeTextFinder;
 import org.sil.lingtree.service.DescriptionStyler;
 import org.sil.lingtree.service.FontInfoInserter;
 import org.sil.lingtree.service.GraphicImageSaver;
@@ -489,7 +492,16 @@ public class RootLayoutController implements Initializable {
 				LingTreeNode node = finder.nodeAt(ltTree, event.getX(), event.getY());
 				if (node != null) {
 					if (event.getButton().equals(MouseButton.PRIMARY)) {
-						handleNodeFontInfo(node);
+						if (node.getNodeType() == NodeType.Gloss && node.hasAbbreviation()) {
+							// if a gloss, then the click could be on an abbreviation
+							NodeTextFinder abbrFinder = NodeTextFinder.getInstance();
+							NodeText abbrText = abbrFinder.findNodeTextInNodeAround(node, event.getX(), event.getY());
+							if (abbrText != null) {
+								processNodeTextFontInfo(abbrText);
+								return;
+							}
+						}
+						processNodeFontInfo(node);
 					} else if (event.getButton().equals(MouseButton.SECONDARY)) {
 						if (node.hasCustomFontInfo()) {
 							selectedNode = node;
@@ -1531,7 +1543,7 @@ public class RootLayoutController implements Initializable {
 		markAsDirty();
 	}
 
-	public void handleNodeFontInfo(LingTreeNode node) {
+	private void processNodeFontInfo(LingTreeNode node) {
 		FontInfo nodesDefaultFontInfo = node.getFontInfoFromNodeType(true);
 		FontInfo nodesCustomFontInfo = node.getCustomFontInfo();
 		if (nodesCustomFontInfo == null) {
@@ -1554,14 +1566,37 @@ public class RootLayoutController implements Initializable {
 		}
 	}
 
+	private void processNodeTextFontInfo(NodeText nodeText) {
+		FontInfo nodeTextsDefaultFontInfo = (nodeText instanceof AbbreviationText) ? AbbreviationFontInfo.getInstance()
+				: GlossFontInfo.getInstance();
+		FontInfo nodeTextsCustomFontInfo = nodeText.getCustomFontInfo();
+		if (nodeTextsCustomFontInfo == null) {
+			// no custom font yet
+			nodeTextsCustomFontInfo = new FontInfo(nodeTextsDefaultFontInfo.getFontFamily(),
+					nodeTextsDefaultFontInfo.getFontSize(), nodeTextsDefaultFontInfo.getFontType());
+			nodeTextsCustomFontInfo.setColor(nodeTextsDefaultFontInfo.getColor());
+		}
+		FontInfo fontInfo = showFontInfo(mainApp.getPrimaryStage(), nodeTextsCustomFontInfo);
+		if (fontInfo != null) {
+			nodeText.setCustomFontInfo(fontInfo);
+			nodeText.setText(nodeText.getText());
+			FontInfoInserter fiInserter = FontInfoInserter.getInstance();
+			int charPos = nodeText.getCharacterPositionInLine() + nodeText.getText().length() /*+ Constants.ABBREVIATION_BEGIN.length()*/;
+			sDescription = fiInserter.insert(fontInfo, nodeTextsDefaultFontInfo, sDescription, nodeText.getLineNumInDescription(), charPos);
+			treeDescription.replaceText(sDescription);
+			styleTreeDescription();
+			redrawTree();
+		}
+	}
+
 	protected void redrawTree() {
 		// when we change the description at this point, we will want to use the commented items instead
 		TreeDrawer drawer = new TreeDrawer(ltTree);
 		cleanDrawingArea();
 		drawer.draw(drawingArea);
-//			processTreeDrawing();
-//			computeHighlighting();
-//			handleDrawTree();
+			processTreeDrawing();
+			styleTreeDescription();
+			handleDrawTree();
 		markAsDirty();
 	}
 

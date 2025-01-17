@@ -86,9 +86,9 @@ superscript : SUPERSCRIPT       (TEXT | TEXTWITHSPACES | BACKSLASH | SLASH)+
 		    | SUPERSCRIPTITALIC {notifyErrorListeners("missingContentAfterSuperscript");}
 		    ;
 
-abbreviation : ABBREVIATIONBEGIN (TEXT | TEXTWITHSPACES)+ customFontInfo? ABBREVIATIONEND
-             | ABBREVIATIONBEGIN (TEXT | TEXTWITHSPACES)+ {notifyErrorListeners("missingAbbreviationEnd");}
-             | ABBREVIATIONBEGIN ABBREVIATIONEND {notifyErrorListeners("missingContentAfterAbbreviationBegin");}
+abbreviation : customFontInfo? ABBREVIATIONBEGIN (TEXT | TEXTWITHSPACES)+ customFontInfo? ABBREVIATIONEND
+             | customFontInfo? ABBREVIATIONBEGIN (TEXT | TEXTWITHSPACES)+ {notifyErrorListeners("missingAbbreviationEnd");}
+             | customFontInfo? ABBREVIATIONBEGIN ABBREVIATIONEND {notifyErrorListeners("missingContentAfterAbbreviationBegin");}
              ;
 
 abbreviationWithText : (TEXT | TEXTWITHSPACES)+ abbreviation (TEXT | TEXTWITHSPACES)+

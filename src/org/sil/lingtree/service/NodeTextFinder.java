@@ -6,7 +6,6 @@
 
 package org.sil.lingtree.service;
 
-import org.sil.lingtree.model.AbbreviationText;
 import org.sil.lingtree.model.LingTreeNode;
 import org.sil.lingtree.model.NodeText;
 
@@ -15,33 +14,31 @@ import javafx.scene.text.Text;
 /**
  * 
  */
-public class AbbreviationFinder {
+public class NodeTextFinder {
 	
-    private static AbbreviationFinder instance;
+    private static NodeTextFinder instance;
     
-    private AbbreviationFinder(){
+    private NodeTextFinder(){
     }
     
-    public static AbbreviationFinder getInstance(){
+    public static NodeTextFinder getInstance(){
         if(instance == null){
-        	instance = new AbbreviationFinder();
+        	instance = new NodeTextFinder();
         }
         return instance;
     }
   
-    public AbbreviationText findAbbrTextInNodeAround(LingTreeNode node, double xcoord, double ycoord) {
-    	AbbreviationText result = null;
-    	for (NodeText text : node.getContentsAsList()) {
-    		if (text instanceof AbbreviationText abbrText) {
-    			if (isWithinBounds(abbrText, xcoord, ycoord)) {
-    				return abbrText;
-    			}
-    		}
-    	}
-    	return result;
-    }
+	public NodeText findNodeTextInNodeAround(LingTreeNode node, double xcoord, double ycoord) {
+		NodeText result = null;
+		for (NodeText nodeTtext : node.getContentsAsList()) {
+			if (isWithinBounds(nodeTtext, xcoord, ycoord)) {
+				return nodeTtext;
+			}
+		}
+		return result;
+	}
     
-    private boolean isWithinBounds(AbbreviationText text, double xcoord, double ycoord) {
+    private boolean isWithinBounds(NodeText text, double xcoord, double ycoord) {
     	Text textBox = text.getTextBox();
     	if (xcoord < textBox.getX() || xcoord > (textBox.getX() + textBox.getLayoutBounds().getWidth())) {
     		return false;

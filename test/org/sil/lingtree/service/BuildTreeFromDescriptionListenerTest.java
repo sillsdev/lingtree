@@ -26,6 +26,10 @@ import org.sil.utility.view.JavaFXThreadingRule;
  *
  */
 public class BuildTreeFromDescriptionListenerTest extends ServiceBaseTest {
+	LingTreeTree origTree;
+	LingTreeTree ltTree;
+	LingTreeNode rootNode;
+
 	@Rule
 	public JavaFXThreadingRule javafxRule = new JavaFXThreadingRule();
 
@@ -147,10 +151,33 @@ public class BuildTreeFromDescriptionListenerTest extends ServiceBaseTest {
 
 	@Test
 	public void buildTreesTest() {
+
+		origTree = new LingTreeTree();
+		ltTree = TreeBuilder.parseAString(
+				"(-/f|s13.0/F/a1.poss/A- book -/a pl /A)", origTree);
+		rootNode = ltTree.getRootNode();
+		checkNodeResult(rootNode, "", "", "", false, false, NodeType.NonTerminal, 1, 0);
+		assertNull(rootNode.getMother());
+		assertNull(rootNode.getRightSister());
+		assertTrue(rootNode.hasAbbreviation());
+		assertEquals(4, rootNode.getContentsAsList().size());
+		assertEquals("-", rootNode.getContentsAsList().get(0).getText());
+		assertEquals("1.poss", rootNode.getContentsAsList().get(1).getText());
+		assertEquals("- book -", rootNode.getContentsAsList().get(2).getText());
+		assertEquals("pl", rootNode.getContentsAsList().get(3).getText());
+		assertTrue(rootNode.getContentsAsList().get(0).toString().contains("NodeText"));
+		assertTrue(rootNode.getContentsAsList().get(1).toString().contains("AbbreviationText"));
+		assertTrue(rootNode.getContentsAsList().get(2).toString().contains("NodeText"));
+		assertTrue(rootNode.getContentsAsList().get(3).toString().contains("AbbreviationText"));
+		assertEquals(1, rootNode.getContentsAsList().get(0).getCharacterPositionInLine());
+		assertEquals(4, rootNode.getContentsAsList().get(1).getCharacterPositionInLine());
+		assertEquals(12, rootNode.getContentsAsList().get(2).getCharacterPositionInLine());
+		assertEquals(22, rootNode.getContentsAsList().get(3).getCharacterPositionInLine());
+
 		// Basic example
-		LingTreeTree origTree = new LingTreeTree();
-		LingTreeTree ltTree = TreeBuilder.parseAString("(S (NP) (VP))", origTree);
-		LingTreeNode rootNode = ltTree.getRootNode();
+		origTree = new LingTreeTree();
+		ltTree = TreeBuilder.parseAString("(S (NP) (VP))", origTree);
+		rootNode = ltTree.getRootNode();
 		checkNodeResult(rootNode, "S", "", "", false, false, NodeType.NonTerminal, 1, 2);
 		assertNull(rootNode.getMother());
 		assertNull(rootNode.getRightSister());
@@ -548,6 +575,10 @@ public class BuildTreeFromDescriptionListenerTest extends ServiceBaseTest {
 		assertTrue(rootNode.getContentsAsList().get(1).toString().contains("AbbreviationText"));
 		assertTrue(rootNode.getContentsAsList().get(2).toString().contains("NodeText"));
 		assertTrue(rootNode.getContentsAsList().get(3).toString().contains("AbbreviationText"));
+		assertEquals(1, rootNode.getContentsAsList().get(0).getCharacterPositionInLine());
+		assertEquals(4, rootNode.getContentsAsList().get(1).getCharacterPositionInLine());
+		assertEquals(12, rootNode.getContentsAsList().get(2).getCharacterPositionInLine());
+		assertEquals(22, rootNode.getContentsAsList().get(3).getCharacterPositionInLine());
 
 		ltTree = TreeBuilder.parseAString(
 				"(S (-/a1.poss/A- book -/a pl /A))", origTree);

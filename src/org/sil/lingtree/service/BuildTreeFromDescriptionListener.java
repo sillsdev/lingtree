@@ -13,6 +13,7 @@ import org.sil.lingtree.MainApp;
 import org.sil.lingtree.descriptionparser.antlr4generated.DescriptionBaseListener;
 import org.sil.lingtree.descriptionparser.antlr4generated.DescriptionParser;
 import org.sil.lingtree.descriptionparser.antlr4generated.DescriptionParser.AbbreviationContext;
+import org.sil.lingtree.descriptionparser.antlr4generated.DescriptionParser.AbbreviationWithTextContext;
 import org.sil.lingtree.descriptionparser.antlr4generated.DescriptionParser.ContentContext;
 import org.sil.lingtree.descriptionparser.antlr4generated.DescriptionParser.NodeContext;
 import org.sil.lingtree.descriptionparser.antlr4generated.DescriptionParser.TypeContext;
@@ -142,6 +143,7 @@ public class BuildTreeFromDescriptionListener extends DescriptionBaseListener {
 		int iAbbrBegin = sContent.indexOf(Constants.ABBREVIATION_BEGIN);
 		node.setHasAbbreviation(true);
 		String sText = sContent;
+		int charPos = ctx.start.getCharPositionInLine();
 		while (sText.length() > 0) {
 			if (iAbbrBegin == 0 ) {
 				int iAbbrEnd = sText.indexOf(Constants.ABBREVIATION_END);
@@ -165,7 +167,8 @@ public class BuildTreeFromDescriptionListener extends DescriptionBaseListener {
 				sCustomFontText = adjustTextContent(sAbbr);
 				abbrNodeText.setText(sCustomFontText);
 				abbrNodeText.setLineNumInDescription(ctx.start.getLine());
-				abbrNodeText.setCharacterPositionInLine(ctx.start.getCharPositionInLine());
+				abbrNodeText.setCharacterPositionInLine(charPos + Constants.ABBREVIATION_BEGIN.length());
+				charPos += iAbbrEnd + Constants.ABBREVIATION_END.length();
 				node.getContentsAsList().add(abbrNodeText);
 				sText = sText.substring(iAbbrEnd + Constants.ABBREVIATION_END.length());
 			} else {
@@ -177,6 +180,9 @@ public class BuildTreeFromDescriptionListener extends DescriptionBaseListener {
 					nodetext.setText(sText.substring(0));
 					sText = "";
 				}
+				nodetext.setLineNumInDescription(ctx.start.getLine());
+				nodetext.setCharacterPositionInLine(charPos);
+				charPos += nodetext.getText().length();
 				node.getContentsAsList().add(nodetext);
 			}
 			iAbbrBegin = sText.indexOf(Constants.ABBREVIATION_BEGIN);
@@ -186,6 +192,7 @@ public class BuildTreeFromDescriptionListener extends DescriptionBaseListener {
 	@Override
 	public void exitCustomFontInfo(DescriptionParser.CustomFontInfoContext ctx) {
 		ParserRuleContext parent = ctx.getParent();
+		System.out.println("parent is " + parent.getClass());
 		if (parent instanceof NodeContext parentCtx) {
 			LingTreeNode node = nodeMap.get(parentCtx.hashCode());
 			String sContent = ctx.getText().trim();

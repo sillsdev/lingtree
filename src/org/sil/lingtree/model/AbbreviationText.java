@@ -11,41 +11,9 @@ package org.sil.lingtree.model;
  *
  */
 public class AbbreviationText extends NodeText {
-	int lineNumInDescription;
-	int characterPositionInLine;
-
-	// custom font info for this abbreviation text
-	private FontInfo customFontInfo = null;
-
 	public AbbreviationText(LingTreeNode node) {
 		super(node);
 	}
-
-	public int getLineNumInDescription() {
-		return lineNumInDescription;
-	}
-
-	public void setLineNumInDescription(int lineNumInDescription) {
-		this.lineNumInDescription = lineNumInDescription;
-	}
-
-	public int getCharacterPositionInLine() {
-		return characterPositionInLine;
-	}
-
-	public void setCharacterPositionInLine(int characterPositionInLine) {
-		this.characterPositionInLine = characterPositionInLine;
-	}
-
-	public FontInfo getCustomFontInfo() {
-		return customFontInfo;
-	}
-
-	public void setCustomFontInfo(FontInfo fontInfo) {
-		this.customFontInfo = fontInfo;
-//		setContent(getContent());
-	}
-
 
 	@Override
 	public void setText(String text) {

@@ -11,24 +11,24 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
-import org.sil.lingtree.model.AbbreviationText;
 import org.sil.lingtree.model.LingTreeNode;
 import org.sil.lingtree.model.LingTreeTree;
+import org.sil.lingtree.model.NodeText;
 
 /**
  * 
  */
-public class AbbreviationFinderTest extends ServiceBaseTest {
+public class NodeTextFinderTest extends ServiceBaseTest {
 	private TreeDrawer drawer;
-	private AbbreviationFinder finder;
+	private NodeTextFinder finder;
 	private NodeFinder nodeFinder;
 	private LingTreeTree origTree;
 	private LingTreeTree ltTree;
 	private LingTreeNode nodeFound;
-	private AbbreviationText textFound;
+	private NodeText textFound;
 
 	@Test
-	public void findAbbreviationTest() {
+	public void findNodeTextTest() {
 		origTree = new LingTreeTree();
 		ltTree = TreeBuilder.parseAString("(S (NP (\\L Juan (\\G John))) (VP (V (\\L duerme (\\G sleep-/a3sg/A)))))", origTree);
 		ltTree.setUseColumnOrientedAlgorithm(false);
@@ -37,20 +37,21 @@ public class AbbreviationFinderTest extends ServiceBaseTest {
 		drawer.calculateYCoordinateOfEveryNode();
 		drawer.calculateXCoordinateOfEveryNode();
 //		showNodeDetails(ltTree.getRootNode());
-		finder = AbbreviationFinder.getInstance();
+		finder = NodeTextFinder.getInstance();
 		nodeFinder = NodeFinder.getInstance();
 
 		// final leaf node at various places
 		nodeFound = nodeFinder.nodeAt(ltTree, 159, 220);
 		assertNotNull(nodeFound);
 		assertEquals("", nodeFound.getContent());
-		textFound = finder.findAbbrTextInNodeAround(nodeFound, 159, 220);
-		assertNull(textFound);
-		textFound = finder.findAbbrTextInNodeAround(nodeFound, 189, 220);
+		textFound = finder.findNodeTextInNodeAround(nodeFound, 159, 220);
+		assertNotNull(textFound);
+		assertEquals("sleep-", textFound.getText());
+		textFound = finder.findNodeTextInNodeAround(nodeFound, 189, 220);
 		assertNotNull(textFound);
 		assertEquals("3sg", textFound.getText());
 	}
-	
+
 	void showNodeDetails(LingTreeNode node) {
 		System.out.println("node = " + node.getContent());
 		System.out.println("\txcoord = " + node.getXCoordinate());
