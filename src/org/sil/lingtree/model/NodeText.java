@@ -20,6 +20,8 @@ public class NodeText {
 	int characterPositionInLine;
 	// custom font info for this node text
 	protected FontInfo customFontInfo = null;
+	int customFontLineNumInDescription;
+	int customFontCharacterPositionInLine;
 
 	public Text getTextBox() {
 		return textBox;
@@ -38,8 +40,8 @@ public class NodeText {
 	}
 
 	public void setText(String text) {
+		fontInfo = (customFontInfo != null) ? customFontInfo : node.getFontInfoFromNodeType(false);
 		textBox.setText(text);
-		fontInfo = node.getFontInfoFromNodeType(false);
 		textBox.setFont(fontInfo.getFont());
 		textBox.setFill(fontInfo.getColor());
 	}
@@ -76,6 +78,22 @@ public class NodeText {
 			this.customFontInfo = fontInfo;
 	//		setContent(getContent());
 		}
+
+	public int getCustomFontLineNumInDescription() {
+		return customFontLineNumInDescription;
+	}
+
+	public void setCustomFontLineNumInDescription(int customFontLineNumInDescription) {
+		this.customFontLineNumInDescription = customFontLineNumInDescription;
+	}
+
+	public int getCustomFontCharacterPositionInLine() {
+		return customFontCharacterPositionInLine;
+	}
+
+	public void setCustomFontCharacterPositionInLine(int customFontCharacterPositionInLine) {
+		this.customFontCharacterPositionInLine = customFontCharacterPositionInLine;
+	}
 
 
 }

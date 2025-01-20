@@ -20,7 +20,7 @@ import javafx.scene.text.FontWeight;
  * @author Andy Black
  *
  */
-public class FontInfo {
+public class FontInfo implements Cloneable {
 
 	private Font font;
 	private String fontFamily;
@@ -167,5 +167,15 @@ public class FontInfo {
 		sb.append(StringUtilities.toRGBCode(getColor()));
 		sb.append(";\n");
 		return(sb.toString());
+	}
+
+	@Override
+	public FontInfo clone() throws CloneNotSupportedException {
+		FontInfo newFontInfo = new FontInfo();
+		newFontInfo.setFontFamily(getFontFamily());
+		newFontInfo.setFontSize(getFontSize());
+		newFontInfo.setFontType(getFontType());
+		newFontInfo.setColor(getColor());
+		return newFontInfo;
 	}
 }

@@ -492,12 +492,12 @@ public class RootLayoutController implements Initializable {
 				LingTreeNode node = finder.nodeAt(ltTree, event.getX(), event.getY());
 				if (node != null) {
 					if (event.getButton().equals(MouseButton.PRIMARY)) {
-						if (node.getNodeType() == NodeType.Gloss && node.hasAbbreviation()) {
-							// if a gloss, then the click could be on an abbreviation
-							NodeTextFinder abbrFinder = NodeTextFinder.getInstance();
-							NodeText abbrText = abbrFinder.findNodeTextInNodeAround(node, event.getX(), event.getY());
-							if (abbrText != null) {
-								processNodeTextFontInfo(abbrText);
+						if (node.hasAbbreviation()) {
+							// The click could be on an abbreviation or on text around one
+							NodeTextFinder finder = NodeTextFinder.getInstance();
+							NodeText nodeText = finder.findNodeTextInNodeAround(node, event.getX(), event.getY());
+							if (nodeText != null) {
+								processNodeTextFontInfo(nodeText, node);
 								return;
 							}
 						}
@@ -1546,11 +1546,15 @@ public class RootLayoutController implements Initializable {
 	private void processNodeFontInfo(LingTreeNode node) {
 		FontInfo nodesDefaultFontInfo = node.getFontInfoFromNodeType(true);
 		FontInfo nodesCustomFontInfo = node.getCustomFontInfo();
+		int charPos = 0;
 		if (nodesCustomFontInfo == null) {
 			// no custom font yet
 			nodesCustomFontInfo = new FontInfo(nodesDefaultFontInfo.getFontFamily(),
 					nodesDefaultFontInfo.getFontSize(), nodesDefaultFontInfo.getFontType());
 			nodesCustomFontInfo.setColor(nodesDefaultFontInfo.getColor());
+			charPos = node.getCharacterPositionInLine() + node.getContent().length();
+		} else {
+			charPos = node.getCustomFontCharacterPositionInLine();
 		}
 		FontInfo fontInfo = showFontInfo(mainApp.getPrimaryStage(), nodesCustomFontInfo);
 		if (fontInfo != null) {
@@ -1558,7 +1562,7 @@ public class RootLayoutController implements Initializable {
 			node.setContent(node.getContent());
 			selectedNode = node;
 			FontInfoInserter fiInserter = FontInfoInserter.getInstance();
-			int charPos = node.getCharacterPositionInLine() + node.getContent().length() + 1;
+//			int charPos = node.getCharacterPositionInLine() + node.getContent().length();
 			sDescription = fiInserter.insert(fontInfo, nodesDefaultFontInfo, sDescription, node.getLineNumInDescription(), charPos);
 			treeDescription.replaceText(sDescription);
 			styleTreeDescription();
@@ -1566,22 +1570,28 @@ public class RootLayoutController implements Initializable {
 		}
 	}
 
-	private void processNodeTextFontInfo(NodeText nodeText) {
+	private void processNodeTextFontInfo(NodeText nodeText, LingTreeNode node) {
 		FontInfo nodeTextsDefaultFontInfo = (nodeText instanceof AbbreviationText) ? AbbreviationFontInfo.getInstance()
-				: GlossFontInfo.getInstance();
+				: node.getFontInfoFromNodeType(true);
 		FontInfo nodeTextsCustomFontInfo = nodeText.getCustomFontInfo();
+		int charPos = 0;
 		if (nodeTextsCustomFontInfo == null) {
 			// no custom font yet
 			nodeTextsCustomFontInfo = new FontInfo(nodeTextsDefaultFontInfo.getFontFamily(),
 					nodeTextsDefaultFontInfo.getFontSize(), nodeTextsDefaultFontInfo.getFontType());
 			nodeTextsCustomFontInfo.setColor(nodeTextsDefaultFontInfo.getColor());
+			charPos = nodeText.getCharacterPositionInLine() + nodeText.getText().length();
+			if (nodeText instanceof AbbreviationText) {
+				charPos += Constants.ABBREVIATION_END.length();
+			}
+		} else {
+			charPos = nodeText.getCustomFontCharacterPositionInLine();
 		}
 		FontInfo fontInfo = showFontInfo(mainApp.getPrimaryStage(), nodeTextsCustomFontInfo);
 		if (fontInfo != null) {
 			nodeText.setCustomFontInfo(fontInfo);
 			nodeText.setText(nodeText.getText());
 			FontInfoInserter fiInserter = FontInfoInserter.getInstance();
-			int charPos = nodeText.getCharacterPositionInLine() + nodeText.getText().length() /*+ Constants.ABBREVIATION_BEGIN.length()*/;
 			sDescription = fiInserter.insert(fontInfo, nodeTextsDefaultFontInfo, sDescription, nodeText.getLineNumInDescription(), charPos);
 			treeDescription.replaceText(sDescription);
 			styleTreeDescription();

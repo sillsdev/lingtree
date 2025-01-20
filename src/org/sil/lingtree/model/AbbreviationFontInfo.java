@@ -13,7 +13,7 @@ import javafx.scene.paint.Color;
  *  Singleton pattern for font information for abbreviations
  */
 
-public class AbbreviationFontInfo extends FontInfo implements Cloneable {
+public class AbbreviationFontInfo extends FontInfo {
 
 	private static AbbreviationFontInfo instance;
 
@@ -27,12 +27,5 @@ public class AbbreviationFontInfo extends FontInfo implements Cloneable {
 			instance = new AbbreviationFontInfo();
 		}
 		return instance;
-	}
-
-	@Override
-	public FontInfo clone() throws CloneNotSupportedException {
-		FontInfo newFontInfo = new FontInfo(getFont());
-		newFontInfo.setColor(getColor());
-		return newFontInfo;
 	}
 }

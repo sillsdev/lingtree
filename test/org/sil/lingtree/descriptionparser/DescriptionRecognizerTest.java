@@ -209,10 +209,10 @@ public class DescriptionRecognizerTest {
 		// abbreviations
 		checkValidDescription(
 				"(NP  /a ipfv /A AP/f|b|i|c#00FF00|fTimes New Roman|s14.0/F)",
-				"(description (node (openParen () (abbreviationWithText NP (abbreviation /a ipfv /A) AP) (customFontInfo /f |b|i|c#00FF00|fTimes New Roman|s14.0 /F) (closeParen ))) <EOF>)");
+				"(description (node (openParen () (abbreviationWithText NP (abbreviation /a ipfv /A) AP (customFontInfo /f |b|i|c#00FF00|fTimes New Roman|s14.0 /F)) (closeParen ))) <EOF>)");
 		checkValidDescription(
 				"(S (NP (\\L Juan (\\G John))) (VP (V (\\L duerme (\\G /a3/Asleep/asg.prs/A/f|b|i|c#00FF00|fTimes New Roman|s14.0/F)))))",
-				"(description (node (openParen () (content S) (node (openParen () (content NP) (node (openParen () (type (nodeType \\L)) (content Juan) (node (openParen () (type (nodeType \\G)) (content John) (closeParen ))) (closeParen ))) (closeParen ))) (node (openParen () (content VP) (node (openParen () (content V) (node (openParen () (type (nodeType \\L)) (content duerme) (node (openParen () (type (nodeType \\G)) (abbreviationWithText (abbreviation /a 3 /A) sleep) (abbreviationWithText (abbreviation /a sg.prs /A)) (customFontInfo /f |b|i|c#00FF00|fTimes New Roman|s14.0 /F) (closeParen ))) (closeParen ))) (closeParen ))) (closeParen ))) (closeParen ))) <EOF>)");
+				"(description (node (openParen () (content S) (node (openParen () (content NP) (node (openParen () (type (nodeType \\L)) (content Juan) (node (openParen () (type (nodeType \\G)) (content John) (closeParen ))) (closeParen ))) (closeParen ))) (node (openParen () (content VP) (node (openParen () (content V) (node (openParen () (type (nodeType \\L)) (content duerme) (node (openParen () (type (nodeType \\G)) (abbreviationWithText (abbreviation /a 3 /A) sleep) (abbreviationWithText (abbreviation /a sg.prs /A) (customFontInfo /f |b|i|c#00FF00|fTimes New Roman|s14.0 /F)) (closeParen ))) (closeParen ))) (closeParen ))) (closeParen ))) (closeParen ))) <EOF>)");
 
 		// need examples with both \T and \L, in both orders, etc.
 		checkValidDescription(
@@ -241,9 +241,13 @@ public class DescriptionRecognizerTest {
 
 		// in abbreviation
 		checkValidDescription(
-				"(S (Comp (N (\\L dogs (\\G perro-/apl/f|b/F/A))) (VP (V (chase)) (/s2 (N (cats))))))",
-				"(description (node (openParen () (content S) (node (openParen () (content Comp) (node (openParen () (content N) (node (openParen () (type (nodeType \\L)) (content dogs) (node (openParen () (type (nodeType \\G)) (abbreviationWithText perro- (abbreviation /a pl (customFontInfo /f |b /F) /A)) (closeParen ))) (closeParen ))) (closeParen ))) (node (openParen () (content VP) (node (openParen () (content V) (node (openParen () (content chase) (closeParen ))) (closeParen ))) (node (openParen () (content (subscript /s 2)) (node (openParen () (content N) (node (openParen () (content cats) (closeParen ))) (closeParen ))) (closeParen ))) (closeParen ))) (closeParen ))) (closeParen ))) <EOF>)");
+				"(S (Comp (N (\\L dogs (\\G perro-/apl/A/f|b/F-here))) (VP (V (chase)) (/s2 (N (cats))))))",
+				"(description (node (openParen () (content S) (node (openParen () (content Comp) (node (openParen () (content N) (node (openParen () (type (nodeType \\L)) (content dogs) (node (openParen () (type (nodeType \\G)) (abbreviationWithText perro- (abbreviation /a pl /A) (customFontInfo /f |b /F) -here) (closeParen ))) (closeParen ))) (closeParen ))) (node (openParen () (content VP) (node (openParen () (content V) (node (openParen () (content chase) (closeParen ))) (closeParen ))) (node (openParen () (content (subscript /s 2)) (node (openParen () (content N) (node (openParen () (content cats) (closeParen ))) (closeParen ))) (closeParen ))) (closeParen ))) (closeParen ))) (closeParen ))) <EOF>)");
 
+		// in abbreviation and text around it
+		checkValidDescription(
+				"(S (Comp (N (\\L dogs (\\G perro-/f|s17.0/F/apl/A/f|b/F-here/f|b/F))) (VP (V (chase)) (/s2 (N (cats))))))",
+				"(description (node (openParen () (content S) (node (openParen () (content Comp) (node (openParen () (content N) (node (openParen () (type (nodeType \\L)) (content dogs) (node (openParen () (type (nodeType \\G)) (abbreviationWithText perro- (customFontInfo /f |s17.0 /F) (abbreviation /a pl /A) (customFontInfo /f |b /F) -here (customFontInfo /f |b /F)) (closeParen ))) (closeParen ))) (closeParen ))) (node (openParen () (content VP) (node (openParen () (content V) (node (openParen () (content chase) (closeParen ))) (closeParen ))) (node (openParen () (content (subscript /s 2)) (node (openParen () (content N) (node (openParen () (content cats) (closeParen ))) (closeParen ))) (closeParen ))) (closeParen ))) (closeParen ))) (closeParen ))) <EOF>)");
 }
 
 	private void checkValidDescription(String sDescription, String sANTLRTree) {

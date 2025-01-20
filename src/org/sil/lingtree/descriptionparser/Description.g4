@@ -28,11 +28,8 @@ description  : node EOF
 
 // we allow empty nodes that just have parens (hence, both type and content are optional)
 node : openParen type? content? customFontInfo? node* closeParen
-	 | openParen type? abbreviationWithText+ customFontInfo? node* closeParen
-	 | openParen type? abbreviationWithText+ customFontInfo? closeParen
+	 | openParen type? abbreviationWithText+ node* closeParen
      | openParen type? content? customFontInfo? node* closeParen
-	 | openParen type? abbreviationWithText+ customFontInfo? node* closeParen
-	 | openParen type? abbreviationWithText+ customFontInfo? closeParen
 	 | openParen type? content? customFontInfo? node* closeParen {notifyErrorListeners("missingOpeningParen");} content
      | openParen type? content? customFontInfo? node*             {notifyErrorListeners("missingClosingParen");}
      |           type  content? customFontInfo?                   {notifyErrorListeners("missingOpeningParen");}
@@ -86,15 +83,15 @@ superscript : SUPERSCRIPT       (TEXT | TEXTWITHSPACES | BACKSLASH | SLASH)+
 		    | SUPERSCRIPTITALIC {notifyErrorListeners("missingContentAfterSuperscript");}
 		    ;
 
-abbreviation : customFontInfo? ABBREVIATIONBEGIN (TEXT | TEXTWITHSPACES)+ customFontInfo? ABBREVIATIONEND
-             | customFontInfo? ABBREVIATIONBEGIN (TEXT | TEXTWITHSPACES)+ {notifyErrorListeners("missingAbbreviationEnd");}
-             | customFontInfo? ABBREVIATIONBEGIN ABBREVIATIONEND {notifyErrorListeners("missingContentAfterAbbreviationBegin");}
+abbreviation : ABBREVIATIONBEGIN (TEXT | TEXTWITHSPACES)+ ABBREVIATIONEND
+             | ABBREVIATIONBEGIN (TEXT | TEXTWITHSPACES)+ {notifyErrorListeners("missingAbbreviationEnd");}
+             | ABBREVIATIONBEGIN ABBREVIATIONEND {notifyErrorListeners("missingContentAfterAbbreviationBegin");}
              ;
 
-abbreviationWithText : (TEXT | TEXTWITHSPACES)+ abbreviation (TEXT | TEXTWITHSPACES)+
-                     | abbreviation (TEXT | TEXTWITHSPACES)+
-                     | (TEXT | TEXTWITHSPACES)+ abbreviation
-                     | abbreviation
+abbreviationWithText : (TEXT | TEXTWITHSPACES)+ customFontInfo? abbreviation customFontInfo? (TEXT | TEXTWITHSPACES)+ customFontInfo?
+                     | abbreviation customFontInfo? (TEXT | TEXTWITHSPACES)+ customFontInfo?
+                     | (TEXT | TEXTWITHSPACES)+ customFontInfo? abbreviation customFontInfo?
+                     | abbreviation customFontInfo?
                      ;
 
 customFontInfo : CUSTOMFONTBEGIN (TEXT | TEXTWITHSPACES)+ CUSTOMFONTEND

@@ -31,6 +31,8 @@ public class LingTreeNode {
 	boolean fSuperscriptRegular = true;
 	int lineNumInDescription;
 	int characterPositionInLine;
+	int customFontLineNumInDescription;
+	int customFontCharacterPositionInLine;
 
 	private int iLevel; // level (or depth) of the node within the tree
 
@@ -457,6 +459,22 @@ public class LingTreeNode {
 
 	public void setCharacterPositionInLine(int characterPositionInLine) {
 		this.characterPositionInLine = characterPositionInLine;
+	}
+
+	public int getCustomFontLineNumInDescription() {
+		return customFontLineNumInDescription;
+	}
+
+	public void setCustomFontLineNumInDescription(int customFontLineNumInDescription) {
+		this.customFontLineNumInDescription = customFontLineNumInDescription;
+	}
+
+	public int getCustomFontCharacterPositionInLine() {
+		return customFontCharacterPositionInLine;
+	}
+
+	public void setCustomFontCharacterPositionInLine(int customFontCharacterPositionInLine) {
+		this.customFontCharacterPositionInLine = customFontCharacterPositionInLine;
 	}
 
 	private double adjustHeightForSubscript() {
