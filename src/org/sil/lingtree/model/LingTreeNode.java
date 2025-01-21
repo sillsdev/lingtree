@@ -494,4 +494,14 @@ public class LingTreeNode {
 		// dHeightAdjust;
 		return dHeightAdjust;
 	}
+
+	public boolean hasNodeTextWithCustomFont(double x, double y) {
+		boolean result = false;
+		for (NodeText nt : getContentsAsList()) {
+			if (nt.hasCustomFont()) {
+				return true;
+			}
+		}
+		return result;
+	}
 }

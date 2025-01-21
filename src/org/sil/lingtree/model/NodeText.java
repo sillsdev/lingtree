@@ -95,5 +95,8 @@ public class NodeText {
 		this.customFontCharacterPositionInLine = customFontCharacterPositionInLine;
 	}
 
+	public boolean hasCustomFont() {
+		return customFontInfo != null;
+	}
 
 }

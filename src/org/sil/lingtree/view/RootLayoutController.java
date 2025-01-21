@@ -96,6 +96,7 @@ public class RootLayoutController implements Initializable {
 	ResourceBundle bundle;
 	LingTreeTree ltTree;
 	LingTreeNode selectedNode;
+	NodeText selectedNodeText;
 	String sDescription;
 	ApplicationPreferences applicationPreferences;
 	boolean fIsDirty;
@@ -492,21 +493,9 @@ public class RootLayoutController implements Initializable {
 				LingTreeNode node = finder.nodeAt(ltTree, event.getX(), event.getY());
 				if (node != null) {
 					if (event.getButton().equals(MouseButton.PRIMARY)) {
-						if (node.hasAbbreviation()) {
-							// The click could be on an abbreviation or on text around one
-							NodeTextFinder finder = NodeTextFinder.getInstance();
-							NodeText nodeText = finder.findNodeTextInNodeAround(node, event.getX(), event.getY());
-							if (nodeText != null) {
-								processNodeTextFontInfo(nodeText, node);
-								return;
-							}
-						}
-						processNodeFontInfo(node);
+						processPrimaryClickOnNode(event, node);
 					} else if (event.getButton().equals(MouseButton.SECONDARY)) {
-						if (node.hasCustomFontInfo()) {
-							selectedNode = node;
-							nodeFontInfoContextMenu.show(drawingArea, event.getScreenX(), event.getScreenY());
-						}
+						processSecondaryClickOnNode(event, node);
 					}
 				}
 			}
@@ -533,6 +522,34 @@ public class RootLayoutController implements Initializable {
 				treeDescription.moveTo(0);
 			}
 		});
+	}
+
+	protected void processPrimaryClickOnNode(MouseEvent event, LingTreeNode node) {
+		if (node.hasAbbreviation()) {
+			// The click could be on an abbreviation or on text around one
+			NodeTextFinder finder = NodeTextFinder.getInstance();
+			NodeText nodeText = finder.findNodeTextInNodeAround(node, event.getX(), event.getY());
+			if (nodeText != null) {
+				processNodeTextFontInfo(nodeText, node);
+				return;
+			}
+		}
+		processNodeFontInfo(node);
+	}
+
+	protected void processSecondaryClickOnNode(MouseEvent event, LingTreeNode node) {
+		if (node.hasCustomFontInfo()) {
+			selectedNode = node;
+			selectedNodeText = null;
+			nodeFontInfoContextMenu.show(drawingArea, event.getScreenX(), event.getScreenY());
+		} else {
+			NodeTextFinder finder = NodeTextFinder.getInstance();
+			NodeText nodeText = finder.findNodeTextInNodeAround(node, event.getX(), event.getY());
+			if (nodeText != null && nodeText.hasCustomFont()) {
+				selectedNodeText = nodeText;
+				nodeFontInfoContextMenu.show(drawingArea, event.getScreenX(), event.getScreenY());
+			}
+		}
 	}
 
 	private void initMenuItemsForLocalization() {
@@ -904,12 +921,24 @@ public class RootLayoutController implements Initializable {
 	}
 
 	public void handleRestoreDefaultFontInfo() {
-		selectedNode.setCustomFontInfo(null);
 		FontInfoInserter fiInserter = FontInfoInserter.getInstance();
-		int charPos = selectedNode.getCharacterPositionInLine() + selectedNode.getContent().length() + 1;
-		sDescription = fiInserter.remove(sDescription, selectedNode.getLineNumInDescription(), charPos);
+		int lineNum = 0;
+		int charPos = 0;
+		String sContent = (selectedNode != null) ? selectedNode.getContent() : "";
+		if (selectedNode != null && selectedNodeText == null) {
+			selectedNode.setCustomFontInfo(null);
+			lineNum = selectedNode.getLineNumInDescription();
+			charPos = selectedNode.getCustomFontCharacterPositionInLine();
+		} else if (selectedNodeText != null) {
+			selectedNodeText.setCustomFontInfo(null);
+			lineNum = selectedNodeText.getCustomFontLineNumInDescription();
+			charPos = selectedNodeText.getCustomFontCharacterPositionInLine();
+		}
+		sDescription = fiInserter.remove(sDescription, lineNum, charPos);
 		treeDescription.replaceText(sDescription);
-		selectedNode.setContent(selectedNode.getContent());
+		if (selectedNode != null) {
+			selectedNode.setContent(sContent);
+		}
 		styleTreeDescription();
 		redrawTree();
 	}
