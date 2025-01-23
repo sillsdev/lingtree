@@ -36,9 +36,14 @@ public class TreeBuilder {
 	static int lineNumberOfError;
 	static String errorMessage;
 	static String sDescription;
+	static int numberOfFontErrors;
 
 	public static int getNumberOfErrors() {
 		return numberOfErrors;
+	}
+
+	public static int getNumberOfFontErrors() {
+		return numberOfFontErrors;
 	}
 
 	public static int getLineNumberOfError() {
@@ -95,6 +100,7 @@ public class TreeBuilder {
 	}
 
 	public static LingTreeTree parseAString(String sInput, LingTreeTree origTree) {
+		numberOfFontErrors = 0;
 		sDescription = sInput;
 		CharStream input = CharStreams.fromString(sInput);
 		DescriptionLexer lexer = new DescriptionLexer(input);
@@ -140,13 +146,24 @@ public class TreeBuilder {
 			errorMessage = info.getMsg();
 			lineNumberOfError = info.getLine();
 			characterPositionInLineOfError = info.getCharPositionInLine();
+//			System.out.println("numberOfErrors = " + numberOfErrors);
 			return origTree;
 		}
 		ParseTreeWalker walker = new ParseTreeWalker(); // create standard
 														// walker
 		BuildTreeFromDescriptionListener validator = new BuildTreeFromDescriptionListener(parser);
-		walker.walk(validator, parseTree); // initiate walk of tree with
-											// listener
+		walker.walk(validator, parseTree); // initiate walk of tree with listener
+		if (validator.getFontErrors().size() > 0) {
+			numberOfFontErrors = validator.getFontErrors().size();
+//			System.out.println("num font errors = " + numberOfFontErrors);
+			FontInfoParserException fpex = validator.getFontErrors().get(0);
+			DescriptionErrorInfo info = new DescriptionErrorInfo(validator, fpex.getLineNumberOfError(),
+					fpex.getCharacterPositionInLineOfError(), fpex.getMsg(), null);
+			errorMessage = info.getMsg();
+			lineNumberOfError = info.getLine();
+			characterPositionInLineOfError = info.getCharPositionInLine();
+			return origTree;
+		}
 		LingTreeTree ltTree = validator.getTree();
 		restoreTreeParameters(origTree, ltTree);
 		return ltTree;
@@ -186,8 +203,7 @@ public class TreeBuilder {
 
 		switch (TreeBuilder.getErrorMessage()) {
 		case DescriptionConstants.CONTENT_AFTER_COMPLETED_TREE:
-			sSyntaxErrorMessage = bundle
-					.getString("descriptionsyntaxerror.content_after_completed_tree");
+			sSyntaxErrorMessage = bundle.getString("descriptionsyntaxerror.content_after_completed_tree");
 			break;
 
 		case DescriptionConstants.MISSING_ABBREVIATION_END:
@@ -227,21 +243,54 @@ public class TreeBuilder {
 			break;
 
 		case DescriptionConstants.MISSING_CONTENT_AFTER_SUBSCRIPT:
-			sSyntaxErrorMessage = bundle
-					.getString("descriptionsyntaxerror.missing_content_after_subscript");
+			sSyntaxErrorMessage = bundle.getString("descriptionsyntaxerror.missing_content_after_subscript");
 			break;
 
 		case DescriptionConstants.MISSING_CONTENT_AFTER_SUPERSCRIPT:
-			sSyntaxErrorMessage = bundle
-					.getString("descriptionsyntaxerror.missing_content_after_superscript");
+			sSyntaxErrorMessage = bundle.getString("descriptionsyntaxerror.missing_content_after_superscript");
+			break;
+
+		case DescriptionConstants.BAD_BAR_CODE:
+			sSyntaxErrorMessage = bundle.getString("descriptionsyntaxerror.bad_bar_code");
+			break;
+
+		case DescriptionConstants.BAD_COLOR:
+			sSyntaxErrorMessage = bundle.getString("descriptionsyntaxerror.bad_color");
+			break;
+
+		case DescriptionConstants.BAD_FONT_FAMILY:
+			sSyntaxErrorMessage = bundle.getString("descriptionsyntaxerror.bad_font_family");
+			break;
+
+		case DescriptionConstants.BAD_SIZE:
+			sSyntaxErrorMessage = bundle.getString("descriptionsyntaxerror.bad_size");
+			break;
+
+		case DescriptionConstants.EMPTY_DESCRIPTION:
+			sSyntaxErrorMessage = bundle.getString("descriptionsyntaxerror.empty_description");
+			break;
+
+		case DescriptionConstants.MISSING_BAR:
+			sSyntaxErrorMessage = bundle.getString("descriptionsyntaxerror.missing_bar");
+			break;
+
+		case DescriptionConstants.MISSING_COLOR:
+			sSyntaxErrorMessage = bundle.getString("descriptionsyntaxerror.missing_color");
+			break;
+
+		case DescriptionConstants.MISSING_FONT_FAMILY:
+			sSyntaxErrorMessage = bundle.getString("descriptionsyntaxerror.missing_font_family");
+			break;
+
+		case DescriptionConstants.MISSING_SIZE:
+			sSyntaxErrorMessage = bundle.getString("descriptionsyntaxerror.missing_size");
 			break;
 
 		default:
 			System.out.println("error was: " + TreeBuilder.getErrorMessage());
 			System.out.println("number of errors was: " + TreeBuilder.getNumberOfErrors());
 			System.out.println("line number was: " + TreeBuilder.getLineNumberOfError());
-			System.out.println("character position was: "
-					+ TreeBuilder.getCharacterPositionInLineOfError());
+			System.out.println("character position was: " + TreeBuilder.getCharacterPositionInLineOfError());
 			break;
 		}
 		return sSyntaxErrorMessage;

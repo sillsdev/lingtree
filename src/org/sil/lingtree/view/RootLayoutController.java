@@ -975,6 +975,8 @@ public class RootLayoutController implements Initializable {
 		updateTreeDataToBackEndProvider();
 		if (TreeBuilder.getNumberOfErrors() > 0) {
 			return null;
+		} else if (TreeBuilder.getNumberOfFontErrors() > 0) {
+			return null;
 		}
 		TreeDrawer drawer = new TreeDrawer(ltTree);
 		return drawer;

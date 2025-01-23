@@ -6,11 +6,11 @@
 package org.sil.lingtree.service;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.sil.lingtree.Constants;
-import org.sil.lingtree.MainApp;
 import org.sil.lingtree.descriptionparser.antlr4generated.DescriptionBaseListener;
 import org.sil.lingtree.descriptionparser.antlr4generated.DescriptionParser;
 import org.sil.lingtree.descriptionparser.antlr4generated.DescriptionParser.AbbreviationWithTextContext;
@@ -33,13 +33,14 @@ public class BuildTreeFromDescriptionListener extends DescriptionBaseListener {
 
 	private LingTreeTree tree;
 	private HashMap<Integer, LingTreeNode> nodeMap = new HashMap<Integer, LingTreeNode>();
-	private String sCustomFontText = "";
 	FontInfoParser fontInfoParser = FontInfoParser.getInstance();
 	FontInfo abbreviationsFontInfo = null;
+	LinkedList<FontInfoParserException> fontErrors = new LinkedList<FontInfoParserException>();
 
 	public BuildTreeFromDescriptionListener(DescriptionParser parser) {
 		super();
 		this.parser = parser;
+		fontErrors.clear();
 	}
 
 	public LingTreeTree getTree() {
@@ -48,6 +49,14 @@ public class BuildTreeFromDescriptionListener extends DescriptionBaseListener {
 
 	public void setTree(LingTreeTree tree) {
 		this.tree = tree;
+	}
+
+	public LinkedList<FontInfoParserException> getFontErrors() {
+		return fontErrors;
+	}
+
+	public void setFontErrors(LinkedList<FontInfoParserException> fontErrors) {
+		this.fontErrors = fontErrors;
 	}
 
 	@Override
@@ -192,12 +201,29 @@ public class BuildTreeFromDescriptionListener extends DescriptionBaseListener {
 						: node.getFontInfoFromNodeType(true).clone();
 				fontInfo = fontInfoParser.adjustFontInfoPerDescription(sCustomFont, parser, fontInfo);
 				nodeText.setCustomFontInfo(fontInfo);
-			} catch (CloneNotSupportedException e) {
-				e.printStackTrace();
-				MainApp.reportException(e, null);
+			} catch (CloneNotSupportedException | FontInfoParserException e) {
+				if (e instanceof FontInfoParserException fpex) {
+					fpex.setLineNumberOfError(node.getLineNumInDescription());
+					fpex.setCharacterPositionInLineOfError(node.getCharacterPositionInLine()
+							+ fpex.getCharacterPositionInLineOfError() + Constants.CUSTOM_FONT_BEGIN.length());
+				}
+				recordFontError(e);
 			}
 		}
 		return nodeText;
+	}
+
+	protected void recordFontError(Exception e) {
+		if (parser != null) {
+			if (e instanceof FontInfoParserException fpex) {
+//				System.out.println("font error; msg='" + e.getMessage() + "'");
+//				System.out.println("\tline = " + fpex.getLineNumberOfError());
+//				System.out.println("\tpos  = " + fpex.getCharacterPositionInLineOfError());
+//				System.out.println("\tmsg  = " + fpex.getMsg());
+				fontErrors.add(fpex);
+			}
+			parser.notifyErrorListeners(e.getMessage());
+		}
 	}
 
 	@Override
@@ -210,10 +236,20 @@ public class BuildTreeFromDescriptionListener extends DescriptionBaseListener {
 			String sText = sContent;
 			int iCustomFontEnd = sText.indexOf(Constants.CUSTOM_FONT_END);
 			String sCustomFont = sText.substring(iCustomFontBegin + Constants.CUSTOM_FONT_BEGIN.length(), iCustomFontEnd);
-			FontInfo fontInfo = fontInfoParser.parseString(sCustomFont, node, parser);
-			node.setCustomFontInfo(fontInfo);
-			node.setCustomFontLineNumInDescription(ctx.start.getLine());
-			node.setCustomFontCharacterPositionInLine(ctx.start.getCharPositionInLine());
+			FontInfo fontInfo;
+			try {
+				fontInfo = fontInfoParser.parseString(sCustomFont, node, parser);
+				node.setCustomFontInfo(fontInfo);
+				node.setCustomFontLineNumInDescription(ctx.start.getLine());
+				node.setCustomFontCharacterPositionInLine(ctx.start.getCharPositionInLine());
+			} catch (FontInfoParserException e) {
+				e.setLineNumberOfError(ctx.start.getLine());
+				e.setCharacterPositionInLineOfError(ctx.start.getCharPositionInLine()
+						+ e.getCharacterPositionInLineOfError() + Constants.CUSTOM_FONT_BEGIN.length());
+				recordFontError(e);
+				// TODO Auto-generated catch block
+//				e.printStackTrace();
+			}
 		} else if (parent instanceof AbbreviationWithTextContext) {
 			// do nothing here; we'll do it in exitAbbreviationWithText()
 		}
