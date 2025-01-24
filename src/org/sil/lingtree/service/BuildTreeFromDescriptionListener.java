@@ -16,6 +16,8 @@ import org.sil.lingtree.descriptionparser.antlr4generated.DescriptionParser;
 import org.sil.lingtree.descriptionparser.antlr4generated.DescriptionParser.AbbreviationWithTextContext;
 import org.sil.lingtree.descriptionparser.antlr4generated.DescriptionParser.ContentContext;
 import org.sil.lingtree.descriptionparser.antlr4generated.DescriptionParser.NodeContext;
+import org.sil.lingtree.descriptionparser.antlr4generated.DescriptionParser.SubscriptContext;
+import org.sil.lingtree.descriptionparser.antlr4generated.DescriptionParser.SuperscriptContext;
 import org.sil.lingtree.descriptionparser.antlr4generated.DescriptionParser.TypeContext;
 import org.sil.lingtree.model.AbbreviationFontInfo;
 import org.sil.lingtree.model.AbbreviationText;
@@ -24,6 +26,9 @@ import org.sil.lingtree.model.LingTreeNode;
 import org.sil.lingtree.model.LingTreeTree;
 import org.sil.lingtree.model.NodeText;
 import org.sil.lingtree.model.NodeType;
+import org.sil.lingtree.model.SubOrSuperscriptText;
+import org.sil.lingtree.model.SubscriptText;
+import org.sil.lingtree.model.SuperscriptText;
 
 /**
  * @author Andy Black build a tree from the parsed description
@@ -33,8 +38,12 @@ public class BuildTreeFromDescriptionListener extends DescriptionBaseListener {
 
 	private LingTreeTree tree;
 	private HashMap<Integer, LingTreeNode> nodeMap = new HashMap<Integer, LingTreeNode>();
+	private HashMap<Integer, SubscriptText> subscriptMap = new HashMap<Integer, SubscriptText>();
+	private HashMap<Integer, SuperscriptText> superscriptMap = new HashMap<Integer, SuperscriptText>();
 	FontInfoParser fontInfoParser = FontInfoParser.getInstance();
-	FontInfo abbreviationsFontInfo = null;
+	SubOrSuperscriptText subOrSuperscriptText;
+	FontInfo abbreviationsFontInfo;
+	FontInfo subOrSuperScriptFontInfo = null;
 	LinkedList<FontInfoParserException> fontErrors = new LinkedList<FontInfoParserException>();
 
 	public BuildTreeFromDescriptionListener(DescriptionParser parser) {
@@ -68,6 +77,8 @@ public class BuildTreeFromDescriptionListener extends DescriptionBaseListener {
 	@Override
 	public void enterNode(DescriptionParser.NodeContext ctx) {
 		LingTreeNode node = new LingTreeNode();
+		node.setSubscriptText(new SubscriptText(node));
+		node.setSuperscriptText(new SuperscriptText(node));
 		node.setLineNumInDescription(ctx.start.getLine());
 		node.setCharacterPositionInLine(ctx.start.getCharPositionInLine());
 		nodeMap.put(ctx.hashCode(), node);
@@ -85,6 +96,24 @@ public class BuildTreeFromDescriptionListener extends DescriptionBaseListener {
 			node.setMother(mother);
 			mother.getDaughters().add(node);
 		}
+	}
+
+	@Override
+	public void enterSubscript(DescriptionParser.SubscriptContext ctx) {
+		LingTreeNode node = findSubOrSupersNode(ctx);
+		SubscriptText subscriptText = new SubscriptText(node);
+		subscriptText.setLineNumInDescription(ctx.start.getLine());
+		subscriptText.setCharacterPositionInLine(ctx.start.getCharPositionInLine());
+		subscriptMap.put(ctx.hashCode(), subscriptText);
+	}
+
+	@Override
+	public void enterSuperscript(DescriptionParser.SuperscriptContext ctx) {
+		LingTreeNode node = findSubOrSupersNode(ctx);
+		SuperscriptText superscriptText = new SuperscriptText(node);
+		superscriptText.setLineNumInDescription(ctx.start.getLine());
+		superscriptText.setCharacterPositionInLine(ctx.start.getCharPositionInLine());
+		superscriptMap.put(ctx.hashCode(), superscriptText);
 	}
 
 //	@Override
@@ -138,6 +167,10 @@ public class BuildTreeFromDescriptionListener extends DescriptionBaseListener {
 		DescriptionParser.NodeContext parentCtx = (NodeContext) ctx.getParent();
 		LingTreeNode node = nodeMap.get(parentCtx.hashCode());
 		String sContent = ctx.getText().trim();
+		int iCustomFontBegin = sContent.indexOf(Constants.CUSTOM_FONT_BEGIN);
+		if (iCustomFontBegin > -1) {
+			sContent = sContent.substring(0, iCustomFontBegin);
+		}
 		sContent = adjustTextContent(sContent);
 		int iEndOfText = getEndOfTextIndex(sContent);
 		node.setContent(sContent.substring(0, iEndOfText));
@@ -231,28 +264,77 @@ public class BuildTreeFromDescriptionListener extends DescriptionBaseListener {
 		ParserRuleContext parent = ctx.getParent();
 		if (parent instanceof NodeContext parentCtx) {
 			LingTreeNode node = nodeMap.get(parentCtx.hashCode());
-			String sContent = ctx.getText().trim();
-			int iCustomFontBegin = sContent.indexOf(Constants.CUSTOM_FONT_BEGIN);
-			String sText = sContent;
-			int iCustomFontEnd = sText.indexOf(Constants.CUSTOM_FONT_END);
-			String sCustomFont = sText.substring(iCustomFontBegin + Constants.CUSTOM_FONT_BEGIN.length(), iCustomFontEnd);
-			FontInfo fontInfo;
-			try {
-				fontInfo = fontInfoParser.parseString(sCustomFont, node, parser);
-				node.setCustomFontInfo(fontInfo);
-				node.setCustomFontLineNumInDescription(ctx.start.getLine());
-				node.setCustomFontCharacterPositionInLine(ctx.start.getCharPositionInLine());
-			} catch (FontInfoParserException e) {
-				e.setLineNumberOfError(ctx.start.getLine());
-				e.setCharacterPositionInLineOfError(ctx.start.getCharPositionInLine()
-						+ e.getCharacterPositionInLineOfError() + Constants.CUSTOM_FONT_BEGIN.length());
-				recordFontError(e);
-				// TODO Auto-generated catch block
-//				e.printStackTrace();
+			processCustomFontInfoForANode(ctx, node);
+		} else if (parent instanceof ContentContext content) {
+			if (content.getParent() instanceof NodeContext nodeCtx) {
+				LingTreeNode node = nodeMap.get(nodeCtx.hashCode());
+				processCustomFontInfoForANode(ctx, node);
 			}
 		} else if (parent instanceof AbbreviationWithTextContext) {
 			// do nothing here; we'll do it in exitAbbreviationWithText()
+		} else if (parent instanceof SubscriptContext sub) {
+			LingTreeNode node = findSubOrSupersNode(sub);
+			SubscriptText subscriptText = subscriptMap.get(sub.hashCode());
+			subscriptText = (SubscriptText) processCustomFontInfo(ctx.getText(), subscriptText, node);
+			node.setSubscriptText(subscriptText);
+			subscriptText.setCustomFontCharacterPositionInLine(ctx.start.getCharPositionInLine());
+			subscriptText.setCustomFontLineNumInDescription(ctx.start.getLine());
+		} else if (parent instanceof SuperscriptContext sup) {
+			LingTreeNode node = findSubOrSupersNode(sup);
+			SuperscriptText superscriptText = superscriptMap.get(sup.hashCode());
+			superscriptText = (SuperscriptText) processCustomFontInfo(ctx.getText(), superscriptText, node);
+			node.setSuperscriptText(superscriptText);
+			superscriptText.setCustomFontCharacterPositionInLine(ctx.start.getCharPositionInLine());
+			superscriptText.setCustomFontLineNumInDescription(ctx.start.getLine());
 		}
+	}
+
+	protected LingTreeNode findSubOrSupersNode(ParserRuleContext ctx) {
+		LingTreeNode node = null;
+		ContentContext content = (ContentContext) ctx.getParent();
+		NodeContext nodeContext = (NodeContext) content.getParent();
+		node = nodeMap.get(nodeContext.hashCode());
+		return node;
+	}
+
+	protected FontInfo processCustomFontInfoForANode(DescriptionParser.CustomFontInfoContext ctx, LingTreeNode node) {
+		String sContent = ctx.getText().trim();
+		int iCustomFontBegin = sContent.indexOf(Constants.CUSTOM_FONT_BEGIN);
+		int iCustomFontEnd = sContent.indexOf(Constants.CUSTOM_FONT_END);
+		String sCustomFont = sContent.substring(iCustomFontBegin + Constants.CUSTOM_FONT_BEGIN.length(), iCustomFontEnd);
+		FontInfo fontInfo = null;
+		try {
+			fontInfo = fontInfoParser.parseString(sCustomFont, node, parser);
+			node.setCustomFontInfo(fontInfo);
+			node.setCustomFontLineNumInDescription(ctx.start.getLine());
+			node.setCustomFontCharacterPositionInLine(ctx.start.getCharPositionInLine());
+		} catch (FontInfoParserException e) {
+			e.setLineNumberOfError(ctx.start.getLine());
+			e.setCharacterPositionInLineOfError(ctx.start.getCharPositionInLine()
+					+ e.getCharacterPositionInLineOfError() + Constants.CUSTOM_FONT_BEGIN.length());
+			recordFontError(e);
+		}
+		return fontInfo;
+	}
+
+	protected FontInfo processCustomFontInfoForASubOrSuperInANode(DescriptionParser.CustomFontInfoContext ctx, LingTreeNode node) {
+		String sContent = ctx.getText().trim();
+		int iCustomFontBegin = sContent.indexOf(Constants.CUSTOM_FONT_BEGIN);
+		int iCustomFontEnd = sContent.indexOf(Constants.CUSTOM_FONT_END);
+		String sCustomFont = sContent.substring(iCustomFontBegin + Constants.CUSTOM_FONT_BEGIN.length(), iCustomFontEnd);
+		FontInfo fontInfo = null;
+		try {
+			fontInfo = fontInfoParser.parseString(sCustomFont, node, parser);
+			node.setCustomFontInfo(fontInfo);
+			node.setCustomFontLineNumInDescription(ctx.start.getLine());
+			node.setCustomFontCharacterPositionInLine(ctx.start.getCharPositionInLine());
+		} catch (FontInfoParserException e) {
+			e.setLineNumberOfError(ctx.start.getLine());
+			e.setCharacterPositionInLineOfError(ctx.start.getCharPositionInLine()
+					+ e.getCharacterPositionInLineOfError() + Constants.CUSTOM_FONT_BEGIN.length());
+			recordFontError(e);
+		}
+		return fontInfo;
 	}
 
 	protected String adjustTextContent(String sContent) {
@@ -291,39 +373,47 @@ public class BuildTreeFromDescriptionListener extends DescriptionBaseListener {
 
 	@Override
 	public void exitSubscript(DescriptionParser.SubscriptContext ctx) {
-		String sRegularToken = Constants.SUBSCRIPT;
-		String sItalicToken = Constants.SUBSCRIPTITALIC;
 		DescriptionParser.ContentContext parentCtx = (ContentContext) ctx.getParent();
 		DescriptionParser.NodeContext parentsParentCtx = (NodeContext) parentCtx.getParent();
 		LingTreeNode node = nodeMap.get(parentsParentCtx.hashCode());
+		SubscriptText subscriptText = subscriptMap.get(ctx.hashCode());
+		node.setSubscriptText(subscriptText);
 		String sText = ctx.getText().trim();
-		int iRegular = sText.indexOf(sRegularToken);
-		int iItalic = sText.indexOf(sItalicToken);
+		int iRegular = sText.indexOf(Constants.SUBSCRIPT);
+		int iItalic = sText.indexOf(Constants.SUBSCRIPTITALIC);
+		int iFontInfo = sText.indexOf(Constants.CUSTOM_FONT_BEGIN);
+		int iEnd = (iFontInfo > -1) ? iFontInfo : sText.length();
 		if (iItalic > -1) {
 			node.setSubscriptRegular(false);
-			node.setSubscript(sText.substring(sItalicToken.length()));
+			node.setSubscript(sText.substring(Constants.SUBSCRIPTITALIC.length(), iEnd));
 		} else if (iRegular > -1) {
 			node.setSubscriptRegular(true);
-			node.setSubscript(sText.substring(sRegularToken.length()));
+			node.setSubscript(sText.substring(Constants.SUBSCRIPT.length(), iEnd));
 		}
+		subscriptText.setLineNumInDescription(ctx.start.getLine());
+		subscriptText.setCharacterPositionInLine(ctx.start.getCharPositionInLine());;
 	}
 
 	@Override
 	public void exitSuperscript(DescriptionParser.SuperscriptContext ctx) {
-		String sRegularToken = Constants.SUPERSCRIPT;
-		String sItalicToken = Constants.SUPERSCRIPTITALIC;
 		DescriptionParser.ContentContext parentCtx = (ContentContext) ctx.getParent();
 		DescriptionParser.NodeContext parentsParentCtx = (NodeContext) parentCtx.getParent();
 		LingTreeNode node = nodeMap.get(parentsParentCtx.hashCode());
+		SuperscriptText superscriptText = superscriptMap.get(ctx.hashCode());
+		node.setSuperscriptText(superscriptText);
 		String sText = ctx.getText().trim();
-		int iRegular = sText.indexOf(sRegularToken);
-		int iItalic = sText.indexOf(sItalicToken);
+		int iRegular = sText.indexOf(Constants.SUPERSCRIPT);
+		int iItalic = sText.indexOf(Constants.SUPERSCRIPTITALIC);
+		int iFontInfo = sText.indexOf(Constants.CUSTOM_FONT_BEGIN);
+		int iEnd = (iFontInfo > -1) ? iFontInfo : sText.length();
 		if (iItalic > -1) {
 			node.setSuperscriptRegular(false);
-			node.setSuperscript(sText.substring(sItalicToken.length()));
+			node.setSuperscript(sText.substring(Constants.SUPERSCRIPTITALIC.length(), iEnd));
 		} else if (iRegular > -1) {
 			node.setSuperscriptRegular(true);
-			node.setSuperscript(sText.substring(sRegularToken.length()));
+			node.setSuperscript(sText.substring(Constants.SUPERSCRIPT.length(), iEnd));
 		}
+		superscriptText.setLineNumInDescription(ctx.start.getLine());
+		superscriptText.setCharacterPositionInLine(ctx.start.getCharPositionInLine());;
 	}
 }

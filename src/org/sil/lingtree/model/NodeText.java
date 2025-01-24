@@ -41,9 +41,9 @@ public class NodeText {
 
 	public void setText(String text) {
 		fontInfo = (customFontInfo != null) ? customFontInfo : node.getFontInfoFromNodeType(false);
-		textBox.setText(text);
 		textBox.setFont(fontInfo.getFont());
 		textBox.setFill(fontInfo.getColor());
+		textBox.setText(text);
 	}
 
 	public FontInfo getFontInfo() {

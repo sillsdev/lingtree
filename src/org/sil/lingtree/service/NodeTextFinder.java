@@ -8,6 +8,9 @@ package org.sil.lingtree.service;
 
 import org.sil.lingtree.model.LingTreeNode;
 import org.sil.lingtree.model.NodeText;
+import org.sil.lingtree.model.SubOrSuperscriptText;
+import org.sil.lingtree.model.SubscriptText;
+import org.sil.lingtree.model.SuperscriptText;
 
 import javafx.scene.text.Text;
 
@@ -30,9 +33,26 @@ public class NodeTextFinder {
   
 	public NodeText findNodeTextInNodeAround(LingTreeNode node, double xcoord, double ycoord) {
 		NodeText result = null;
-		for (NodeText nodeTtext : node.getContentsAsList()) {
-			if (isWithinBounds(nodeTtext, xcoord, ycoord)) {
-				return nodeTtext;
+		for (NodeText nodeText : node.getContentsAsList()) {
+			if (isWithinBounds(nodeText, xcoord, ycoord)) {
+				return nodeText;
+			}
+		}
+		return result;
+	}
+
+	public SubOrSuperscriptText findSubOrSuperscriptTextInNodeAround(LingTreeNode node, double xcoord, double ycoord) {
+		SubOrSuperscriptText result = null;
+		if (node.hasSubscript()) {
+			SubscriptText sub = node.getSubscriptText();
+			if (isWithinBounds(sub, xcoord, ycoord)) {
+				return sub;
+			}
+		}
+		if (node.hasSuperscript()) {
+			SuperscriptText sup = node.getSuperscriptText();
+			if (isWithinBounds(sup, xcoord, ycoord)) {
+				return sup;
 			}
 		}
 		return result;

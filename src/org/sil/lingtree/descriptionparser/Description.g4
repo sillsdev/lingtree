@@ -60,10 +60,10 @@ nodeType : LEX
          | EMPTY
          ;
         
-content : (TEXT | TEXTWITHSPACES | BACKSLASH | SLASH)+ subscript superscript
-        | (TEXT | TEXTWITHSPACES | BACKSLASH | SLASH)+ superscript subscript
-        | (TEXT | TEXTWITHSPACES | BACKSLASH | SLASH)+ subscript
-        | (TEXT | TEXTWITHSPACES | BACKSLASH | SLASH)+ superscript
+content : (TEXT | TEXTWITHSPACES | BACKSLASH | SLASH)+ customFontInfo? subscript superscript
+        | (TEXT | TEXTWITHSPACES | BACKSLASH | SLASH)+ customFontInfo? superscript subscript
+        | (TEXT | TEXTWITHSPACES | BACKSLASH | SLASH)+ customFontInfo? subscript
+        | (TEXT | TEXTWITHSPACES | BACKSLASH | SLASH)+ customFontInfo? superscript
         | (TEXT | TEXTWITHSPACES | BACKSLASH | SLASH)+
         | subscript superscript
         | superscript subscript
@@ -71,14 +71,14 @@ content : (TEXT | TEXTWITHSPACES | BACKSLASH | SLASH)+ subscript superscript
         | superscript
 		;
 
-subscript : SUBSCRIPT       (TEXT | TEXTWITHSPACES | BACKSLASH | SLASH)+
-		  | SUBSCRIPTITALIC (TEXT | TEXTWITHSPACES | BACKSLASH | SLASH)+
+subscript : SUBSCRIPT       (TEXT | TEXTWITHSPACES | BACKSLASH | SLASH)+ customFontInfo?
+		  | SUBSCRIPTITALIC (TEXT | TEXTWITHSPACES | BACKSLASH | SLASH)+ customFontInfo?
 		  | SUBSCRIPT       {notifyErrorListeners("missingContentAfterSubscript");}
 		  | SUBSCRIPTITALIC {notifyErrorListeners("missingContentAfterSubscript");}
 		  ;
 
-superscript : SUPERSCRIPT       (TEXT | TEXTWITHSPACES | BACKSLASH | SLASH)+
-		    | SUPERSCRIPTITALIC (TEXT | TEXTWITHSPACES | BACKSLASH | SLASH)+
+superscript : SUPERSCRIPT       (TEXT | TEXTWITHSPACES | BACKSLASH | SLASH)+ customFontInfo?
+		    | SUPERSCRIPTITALIC (TEXT | TEXTWITHSPACES | BACKSLASH | SLASH)+ customFontInfo?
 		    | SUPERSCRIPT       {notifyErrorListeners("missingContentAfterSuperscript");}
 		    | SUPERSCRIPTITALIC {notifyErrorListeners("missingContentAfterSuperscript");}
 		    ;

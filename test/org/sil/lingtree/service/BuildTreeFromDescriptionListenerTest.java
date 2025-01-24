@@ -63,6 +63,18 @@ public class BuildTreeFromDescriptionListenerTest extends ServiceBaseTest {
 				Color.BLACK);
 		checkFontInfo(node, node.getSuperscriptTextBox(), "Times New Roman", 8.3999996, "Regular", Color.BLACK);
 
+		ltTree = TreeBuilder.parseAString("(NP/f|b/F/si/f|i/F (N/f|s14.0/F/S'/f|s19.0/F))", ltTree);
+		node = ltTree.getRootNode();
+		checkFontInfo(node, node.getContentTextBox(), "Times New Roman", 12.0, "Bold",
+				Color.BLACK);
+		checkFontInfo(node, node.getSubscriptTextBox(), "Times New Roman", 12.0, "Italic",
+				Color.BLACK);
+		daughters = node.getDaughters();
+		node = daughters.get(0);
+		checkFontInfo(node, node.getContentTextBox(), "Times New Roman", 14.0, "Regular",
+				Color.BLACK);
+		checkFontInfo(node, node.getSuperscriptTextBox(), "Times New Roman", 19.0, "Regular", Color.BLACK);
+
 		// right-to-left
 		origTree.setUseRightToLeftOrientation(false);
 		ltTree = TreeBuilder.parseAString("(NP/si (N/S'))", origTree);

@@ -24,11 +24,9 @@ public class LingTreeNode {
 	// content of the node
 	Text contentTextBox = new Text(0, 0, "");
 	// subscript at the end of the node content
-	Text subscriptTextBox = new Text(0, 0, "");
+	SubscriptText subscriptText; // = new SubscriptText(this);
 	// superscript at the end of the node content
-	Text superscriptTextBox = new Text(0, 0, "");
-	boolean fSubscriptRegular = true;
-	boolean fSuperscriptRegular = true;
+	SuperscriptText superscriptText; // = new SuperscriptText(this);
 	int lineNumInDescription;
 	int characterPositionInLine;
 	int customFontLineNumInDescription;
@@ -97,41 +95,51 @@ public class LingTreeNode {
 	}
 
 	public String getSubscript() {
-		return subscriptTextBox.getText();
+		return subscriptText.getText();
 	}
 
 	public void setSubscript(String subscript) {
-		FontInfo fontInfo = getFontInfoForSubscript();
-		subscriptTextBox.setFont(fontInfo.getFont());
-		subscriptTextBox.setFill(fontInfo.getColor());
-		subscriptTextBox.setText(subscript);
+		subscriptText.setText(subscript);
 	}
 
 	public String getSuperscript() {
-		return superscriptTextBox.getText();
+		return superscriptText.getText();
 	}
 
 	public void setSuperscript(String superscript) {
-		FontInfo fontInfo = getFontInfoForSuperscript();
-		superscriptTextBox.setFont(fontInfo.getFont());
-		superscriptTextBox.setFill(fontInfo.getColor());
-		superscriptTextBox.setText(superscript);
+		superscriptText.setText(superscript);
+	}
+
+	public SubscriptText getSubscriptText() {
+		return subscriptText;
+	}
+
+	public void setSubscriptText(SubscriptText subscriptText) {
+		this.subscriptText = subscriptText;
+	}
+
+	public SuperscriptText getSuperscriptText() {
+		return superscriptText;
+	}
+
+	public void setSuperscriptText(SuperscriptText superscriptText) {
+		this.superscriptText = superscriptText;
 	}
 
 	public boolean isSubscriptRegular() {
-		return fSubscriptRegular;
+		return subscriptText.isRegular();
 	}
 
 	public void setSubscriptRegular(boolean subscriptRegular) {
-		this.fSubscriptRegular = subscriptRegular;
+		subscriptText.setRegular(subscriptRegular);
 	}
 
 	public boolean isSuperscriptRegular() {
-		return fSuperscriptRegular;
+		return superscriptText.isRegular();
 	}
 
 	public void setSuperscriptRegular(boolean superscriptRegular) {
-		this.fSuperscriptRegular = superscriptRegular;
+		superscriptText.setRegular(superscriptRegular);
 	}
 
 	public Text getContentTextBox() {
@@ -139,11 +147,11 @@ public class LingTreeNode {
 	}
 
 	public Text getSubscriptTextBox() {
-		return subscriptTextBox;
+		return subscriptText.getTextBox();
 	}
 
 	public Text getSuperscriptTextBox() {
-		return superscriptTextBox;
+		return superscriptText.getTextBox();
 	}
 
 	public NodeType getNodeType() {
@@ -208,11 +216,19 @@ public class LingTreeNode {
 	}
 
 	public boolean hasSubscript() {
-		return (subscriptTextBox.getText().length() == 0) ? false : true;
+		return subOrSuperHasText(subscriptText);
 	}
 
 	public boolean hasSuperscript() {
-		return (superscriptTextBox.getText().length() == 0) ? false : true;
+		return subOrSuperHasText(superscriptText);
+	}
+
+	private boolean subOrSuperHasText(SubOrSuperscriptText stext) {
+		boolean result = false;
+		if (stext.getTextBox() != null) {
+			result = stext.getText().length() != 0;
+		}
+		return result;
 	}
 
 	public FontInfo getFontInfoForSubscript() {
@@ -257,10 +273,10 @@ public class LingTreeNode {
 		final double dSuperscriptPercentage = 0.333333;
 		FontInfo fontInfo = getFontInfoFromNodeType(false);
 		double dContentFontSize = fontInfo.getFontSize();
-		double dSubscriptHeightAdjust = (subscriptTextBox.getText().length() > 0) ? dSubscriptPercentage
+		double dSubscriptHeightAdjust = (subscriptText.getText().length() > 0) ? dSubscriptPercentage
 				* dContentFontSize
 				: 0.0;
-		double dSuperscriptHeightAdjust = (superscriptTextBox.getText().length() > 0) ? dSuperscriptPercentage
+		double dSuperscriptHeightAdjust = (superscriptText.getText().length() > 0) ? dSuperscriptPercentage
 				* dContentFontSize
 				: 0.0;
 		dHeight = contentTextBox.getBoundsInLocal().getHeight() + dSubscriptHeightAdjust
@@ -315,8 +331,8 @@ public class LingTreeNode {
 	}
 
 	protected double getWidthOfRegularNode() {
-		double dSubscript = subscriptTextBox.getBoundsInLocal().getWidth();
-		double dSuperscript = superscriptTextBox.getBoundsInLocal().getWidth();
+		double dSubscript = subscriptText.getTextBox().getBoundsInLocal().getWidth();
+		double dSuperscript = superscriptText.getTextBox().getBoundsInLocal().getWidth();
 		double dAdjust = Math.max(dSubscript, dSuperscript);
 		dWidth = contentTextBox.getBoundsInLocal().getWidth() + dAdjust;
 		// double d = contentTextBox.getLayoutBounds().getWidth();
@@ -374,10 +390,10 @@ public class LingTreeNode {
 			contentTextBox.setX(dXCoordinate);
 			double dContentWidth = contentTextBox.getBoundsInLocal().getWidth();
 			if (hasSubscript()) {
-				subscriptTextBox.setX(dXCoordinate + dContentWidth);
+				subscriptText.getTextBox().setX(dXCoordinate + dContentWidth);
 			}
 			if (hasSuperscript()) {
-				superscriptTextBox.setX(dXCoordinate + dContentWidth);
+				superscriptText.getTextBox().setX(dXCoordinate + dContentWidth);
 			}
 		}
 	}
@@ -408,10 +424,10 @@ public class LingTreeNode {
 		} else {
 			contentTextBox.setY(dYCoordinate);
 			if (hasSubscript()) {
-				subscriptTextBox.setY(dYCoordinate + adjustHeightForSubscript());
+				subscriptText.getTextBox().setY(dYCoordinate + adjustHeightForSubscript());
 			}
 			if (hasSuperscript()) {
-				superscriptTextBox.setY(dYCoordinate - adjustHeightForSuperscript());
+				superscriptText.getTextBox().setY(dYCoordinate - adjustHeightForSuperscript());
 			}
 			// TODO: fix subscript and superscript text boxes
 			// set y upper mid and lower mid (top of box and bottom of box)

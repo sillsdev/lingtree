@@ -39,6 +39,8 @@ public class LingTreeNodeTest {
 	@Test
 	public void textBoxDimensionsTest() {
 		LingTreeNode node = new LingTreeNode();
+		node.setSubscriptText(new SubscriptText(node));
+		node.setSuperscriptText(new SuperscriptText(node));
 		node.setContent("node");
 		node.setNodeType(NodeType.NonTerminal);
 		assertEquals(23.326171875, node.calculateWidth(), 0.0);

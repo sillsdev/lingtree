@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import org.antlr.v4.parse.ATNBuilder.subrule_return;
 import org.fxmisc.richtext.InlineCssTextArea;
 import org.sil.lingtree.MainApp;
 import org.sil.lingtree.model.AbbreviationFontInfo;
@@ -31,6 +32,9 @@ import org.sil.lingtree.model.LingTreeTree;
 import org.sil.lingtree.model.NodeText;
 import org.sil.lingtree.model.NodeType;
 import org.sil.lingtree.model.NonTerminalFontInfo;
+import org.sil.lingtree.model.SubOrSuperscriptText;
+import org.sil.lingtree.model.SubscriptText;
+import org.sil.lingtree.model.SuperscriptText;
 import org.sil.lingtree.service.NodeTextFinder;
 import org.sil.lingtree.service.DescriptionStyler;
 import org.sil.lingtree.service.FontInfoInserter;
@@ -525,12 +529,20 @@ public class RootLayoutController implements Initializable {
 	}
 
 	protected void processPrimaryClickOnNode(MouseEvent event, LingTreeNode node) {
+		NodeTextFinder finder = NodeTextFinder.getInstance();
+		// The click could be on an abbreviation or on text around one
 		if (node.hasAbbreviation()) {
-			// The click could be on an abbreviation or on text around one
-			NodeTextFinder finder = NodeTextFinder.getInstance();
 			NodeText nodeText = finder.findNodeTextInNodeAround(node, event.getX(), event.getY());
 			if (nodeText != null) {
 				processNodeTextFontInfo(nodeText, node);
+				return;
+			}
+		}
+		// It could also be on a subscript or a superscript
+		if (node.hasSubscript() || node.hasSuperscript()) {
+			SubOrSuperscriptText subSupText = finder.findSubOrSuperscriptTextInNodeAround(node, event.getX(), event.getY());
+			if (subSupText != null ) {
+				processNodeTextFontInfo(subSupText, node);
 				return;
 			}
 		}
@@ -538,17 +550,24 @@ public class RootLayoutController implements Initializable {
 	}
 
 	protected void processSecondaryClickOnNode(MouseEvent event, LingTreeNode node) {
-		if (node.hasCustomFontInfo()) {
+		NodeTextFinder finder = NodeTextFinder.getInstance();
+		if (node.hasSubscript() || node.hasSuperscript()) {
+			SubOrSuperscriptText subSupText = finder.findSubOrSuperscriptTextInNodeAround(node, event.getX(),
+					event.getY());
+			if (subSupText != null) {
+				selectedNodeText = subSupText;
+				nodeFontInfoContextMenu.show(drawingArea, event.getScreenX(), event.getScreenY());
+				return;
+			}
+		}
+		NodeText nodeText = finder.findNodeTextInNodeAround(node, event.getX(), event.getY());
+		if (nodeText != null && nodeText.hasCustomFont()) {
+			selectedNodeText = nodeText;
+			nodeFontInfoContextMenu.show(drawingArea, event.getScreenX(), event.getScreenY());
+		} else if (node.hasCustomFontInfo()) {
 			selectedNode = node;
 			selectedNodeText = null;
 			nodeFontInfoContextMenu.show(drawingArea, event.getScreenX(), event.getScreenY());
-		} else {
-			NodeTextFinder finder = NodeTextFinder.getInstance();
-			NodeText nodeText = finder.findNodeTextInNodeAround(node, event.getX(), event.getY());
-			if (nodeText != null && nodeText.hasCustomFont()) {
-				selectedNodeText = nodeText;
-				nodeFontInfoContextMenu.show(drawingArea, event.getScreenX(), event.getScreenY());
-			}
 		}
 	}
 
@@ -1614,6 +1633,12 @@ public class RootLayoutController implements Initializable {
 			charPos = nodeText.getCharacterPositionInLine() + nodeText.getText().length();
 			if (nodeText instanceof AbbreviationText) {
 				charPos += Constants.ABBREVIATION_END.length();
+			} else if (nodeText instanceof SubscriptText subText) {
+				int codeLength = (subText.isRegular()) ? Constants.SUBSCRIPT.length() : Constants.SUBSCRIPTITALIC.length();
+				charPos += codeLength;
+			} else if (nodeText instanceof SuperscriptText superText) {
+				int codeLength = (superText.isRegular()) ? Constants.SUPERSCRIPT.length() : Constants.SUPERSCRIPTITALIC.length();
+				charPos += codeLength;
 			}
 		} else {
 			charPos = nodeText.getCustomFontCharacterPositionInLine();
