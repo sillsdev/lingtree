@@ -20,7 +20,7 @@ type="tLingTree"
 ><emailAddress
 >lingtree_support@sil.org</emailAddress
 ><date
->January 6, 2025</date
+>January 28, 2025</date
 ><version
 >Version 1.6.0</version
 ><version
@@ -2427,7 +2427,7 @@ type="tMenuItem"
 >. This option is only available when using the column-oriented algorithm (see section <sectionRef
 sec="sUseColumnOrientedAlgorithm"
 ></sectionRef
->). When this has a check mark before it, the tree will be drawn using the column-oriented algorithm but will center each node over the space used by its daughter nodes.  Example <exampleRef
+>). When this has a check mark before it, the tree will be drawn using the column-oriented algorithm but will center each node over the space used by its daughter nodes. Example <exampleRef
 letter="xSampleColumnOrientedCenteredOverDaughters"
 num="xSampleColumnOrientedCenteredOverDaughters"
 ></exampleRef
@@ -2577,6 +2577,212 @@ href="https://www.w3schools.com/cssref/css_colors.asp"
 >.</p
 ><p
 >When you click on the main dialog's OK button, the tree description and tree diagram will reflect the new font and color information.</p
+><section3
+id="sCustomFont"
+><secTitle
+>Setting custom font information for a node</secTitle
+><p
+>Occasionally, you may want to highlight a particular node by color or font type, say.  You can set custom font information for a given node in two ways.  We highly recommend using the first way.</p
+><section4
+id="sCustomFontClick"
+><secTitle
+>Click on the node in the tree diagram</secTitle
+><p
+>The first way is to (left) click on the node you wish to change the font information for.  This will bring up the same font dialog as is used for setting font information discussed above.  When you change the font information for a node, the tree description will also change.  What shows is described in the next section.</p
+></section4
+><section4
+id="sCustomFontManual"
+><secTitle
+>Key custom font information</secTitle
+><p
+>The second way to create custom font information for a node is to type special commands <object
+type="tBold"
+>after</object
+> the text of the node. To indicate custom font information, key <object
+type="tSynTagmeme"
+>/f</object
+> before the font information and key <object
+type="tSynTagmeme"
+>/F</object
+> after it.  Table <tablenumberedRef
+table="ntFontCommands"
+></tablenumberedRef
+>  lists the possible commands.  Notice that they all start with a vertical bar character (<object
+type="tSynTagmeme"
+>|</object
+>).  You can key them in any order.  When you have more than one command, no spaces should appear between them.</p
+><tablenumbered
+id="ntFontCommands"
+><table
+border="1"
+><caption
+>Font commands</caption
+><tr
+><th
+>Command</th
+><th
+>Meaning</th
+><th
+>Example</th
+></tr
+><tr
+><td
+><object
+type="tSynTagmeme"
+>|b</object
+></td
+><td
+>Use bold weight.</td
+><td
+><object
+type="tSynTagmeme"
+>|b</object
+></td
+></tr
+><tr
+><td
+><object
+type="tSynTagmeme"
+>|c</object
+><object
+type="tFontCommand"
+>color code</object
+></td
+><td
+>Use the color indicated by <object
+type="tFontCommand"
+>color code</object
+>.</td
+><td
+><object
+type="tSynTagmeme"
+>|c</object
+>blue, <object
+type="tSynTagmeme"
+>|c</object
+>#4d1a4d</td
+></tr
+><tr
+><td
+><object
+type="tSynTagmeme"
+>|f</object
+><object
+type="tFontCommand"
+>font family</object
+></td
+><td
+>Use the <object
+type="tFontCommand"
+>font family</object
+>.</td
+><td
+><object
+type="tSynTagmeme"
+>|f</object
+>Arial Black</td
+></tr
+><tr
+><td
+><object
+type="tSynTagmeme"
+>|i</object
+></td
+><td
+>Use italic style.</td
+><td
+><object
+type="tSynTagmeme"
+>|i</object
+></td
+></tr
+><tr
+><td
+><object
+type="tSynTagmeme"
+>|r</object
+></td
+><td
+>Use regular weight and style.</td
+><td
+><object
+type="tSynTagmeme"
+>|r</object
+></td
+></tr
+><tr
+><td
+><object
+type="tSynTagmeme"
+>|s</object
+><object
+type="tFontCommand"
+>size</object
+></td
+><td
+>Use a font size of <object
+type="tFontCommand"
+>size</object
+>.</td
+><td
+><object
+type="tSynTagmeme"
+>|s</object
+>12.75</td
+></tr
+></table
+></tablenumbered
+><p
+>For color codes, see <link
+href="https://docs.oracle.com/javase/8/javafx/api/javafx/scene/paint/Color.html"
+>https://​docs.​oracle.​com/​javase/​8/​javafx/​api/​javafx/​scene/​paint/​Color.html</link
+> and scroll down to the Field Summary section.  You will find a list of color names, their codes and an example of the color.  When using the numerical code, you must start it with the hash mark (#) character.</p
+><p
+>For font family names, <object
+type="tLingTree"
+></object
+> will check to see if the font family is one that it knows about.  If not, there will be an error message displayed in the bottom pane.</p
+><p
+>You can use both <object
+type="tSynTagmeme"
+>|b</object
+> and <object
+type="tSynTagmeme"
+>|i</object
+> together.  If you use <object
+type="tSynTagmeme"
+>|r</object
+> after any <object
+type="tSynTagmeme"
+>|b</object
+> or <object
+type="tSynTagmeme"
+>|i</object
+>, then the <object
+type="tSynTagmeme"
+>|r</object
+> will overrule the others.  Similarly, if you key either  <object
+type="tSynTagmeme"
+>|b</object
+> or <object
+type="tSynTagmeme"
+>|i</object
+> after a <object
+type="tSynTagmeme"
+>|r</object
+>, the <object
+type="tSynTagmeme"
+>|r</object
+> will be ignored.</p
+></section4
+><section4
+id="sCustomFontRemoval"
+><secTitle
+>Removing custom font information on a node</secTitle
+><p
+>Whenever you decide to remove any custom font information on a node, you can either erase the font information in the tree description, or you can right-click on the node and choose the “Restore to default font" option.</p
+></section4
+></section3
 ></section2
 ><section2
 id="sKeyboards"
@@ -2613,7 +2819,13 @@ id="nKeymanOnMac"
 >This is a bug in current versions of Java on <object
 type="tmacOS"
 ></object
->. It is a known issue and hopefully will be fixed soon.</p
+>. It is a known issue and hopefully will be fixed soon. In the meantime, you may be able to create a custom keyboard for your needs by using the <object
+type="tTool"
+>Ukelele</object
+> program (see <link
+href="https://software.sil.org/ukelele/"
+>https://software.sil.org/ukelele/</link
+>).</p
 ></endnote
 > When you select this menu item, it brings up a dialog that looks like what is in <exampleRef
 letter="xSetKeyboards"
@@ -3040,7 +3252,7 @@ type="tMenuItem"
 >Settings / Change the interface language</object
 > menu item. This brings up a dialog box showing the current interface language in a drop down chooser. Click on the chooser's drop down button to see other interface language choices. The choices given use the name of the language in the current interface language (so if the current interface language is English, then it will show “Spanish” as an option; if the current interface language is Spanish, it will show English as “inglés”).</p
 ><p
->The current version has English, French and a rough, most likely often inaccurate version of Spanish. Any corrections to the Spanish are welcome.</p
+>The current version has English, French and Spanish. Any corrections to the French or Spanish are welcome.</p
 ></section2
 ><section2
 id="sQuicReferenceGuide"
@@ -3309,7 +3521,7 @@ num="xErrorTypes"
 > lists the error types <object
 type="tLingTree"
 ></object
-> reports along with a brief description of what the error type might mean.</p
+> reports (in alphabetical order) along with a brief description of what the error type might mean.</p
 ><example
 num="xErrorTypes"
 ><table
@@ -3323,6 +3535,76 @@ width="3.25in"
 >Meaning</th
 ></tr
 ><tr
+XeLaTeXSpecial="row-separation='67pt'"
+><td
+><object
+type="tErrorType"
+>Bad bar code</object
+></td
+><td
+>There is something between a beginning custom font marker (<object
+type="tSynTagmeme"
+>/f</object
+>) and its ending custom font marker (<object
+type="tSynTagmeme"
+>/F</object
+>) but it is not recognized as one of the correct bar codes. See section <sectionRef
+sec="sCustomFont"
+></sectionRef
+>, especially table <tablenumberedRef
+table="ntFontCommands"
+></tablenumberedRef
+>.</td
+></tr
+><tr
+XeLaTeXSpecial="row-separation='37pt'"
+><td
+><object
+type="tErrorType"
+>Bad size number</object
+></td
+><td
+>There is a bar s (<object
+type="tSynTagmeme"
+>|s</object
+>) in a custom font definition, but the number after it is not recognized. See section <sectionRef
+sec="sCustomFont"
+></sectionRef
+>.</td
+></tr
+><tr
+XeLaTeXSpecial="row-separation='51pt'"
+><td
+><object
+type="tErrorType"
+>Color definition not found</object
+></td
+><td
+>There is a bar c (<object
+type="tSynTagmeme"
+>|c</object
+>) in a custom font definition but the color definition is not recognized as a legitimate color. See section <sectionRef
+sec="sCustomFont"
+></sectionRef
+>.</td
+></tr
+><tr
+XeLaTeXSpecial="row-separation='37pt'"
+><td
+><object
+type="tErrorType"
+>Font family not found</object
+></td
+><td
+>There is a bar f (<object
+type="tSynTagmeme"
+>|f</object
+>) in a custom font definition but the font family is not found on your computer. See section <sectionRef
+sec="sCustomFont"
+></sectionRef
+>.</td
+></tr
+><tr
 XeLaTeXSpecial="row-separation='37pt'"
 ><td
 ><object
@@ -3330,8 +3612,30 @@ type="tErrorType"
 >Missing abbreviation end marker</object
 ></td
 ><td
->There is a beginning abbreviation marker (/a) but no abbreviation end marker (/A). See section <sectionRef
+>There is a beginning abbreviation marker (<object
+type="tSynTagmeme"
+>/a</object
+>) but no abbreviation end marker (<object
+type="tSynTagmeme"
+>/A</object
+>). See section <sectionRef
 sec="sAbbreviation"
+></sectionRef
+>.</td
+></tr
+><tr
+XeLaTeXSpecial="row-separation='37pt'"
+><td
+><object
+type="tErrorType"
+>Missing bar character</object
+></td
+><td
+>In a custom font definition, a bar character (<object
+type="tSynTagmeme"
+>|</object
+>) is missing. Try inserting one. See section <sectionRef
+sec="sCustomFont"
 ></sectionRef
 >.</td
 ></tr
@@ -3346,6 +3650,22 @@ type="tErrorType"
 >At least one closing parenthesis is missing.</td
 ></tr
 ><tr
+XeLaTeXSpecial="row-separation='51pt'"
+><td
+><object
+type="tErrorType"
+>Missing color definition</object
+></td
+><td
+>In a custom font definition, there is the beginning of a color definition (i.e., <object
+type="tSynTagmeme"
+>|c</object
+>), but nothing more. Add a color definition. See section <sectionRef
+sec="sCustomFont"
+></sectionRef
+>.</td
+></tr
+><tr
 XeLaTeXSpecial="row-separation='53pt'"
 ><td
 ><object
@@ -3353,9 +3673,37 @@ type="tErrorType"
 >Missing content after abbreviation begin marker;</object
 ></td
 ><td
->There is a beginning abbreviation marker (/a) followed immediately by an ending abbreviation marker (/A). Put something between the markers. See section <sectionRef
+>There is a beginning abbreviation marker (<object
+type="tSynTagmeme"
+>/a</object
+>) followed immediately by an ending abbreviation marker (<object
+type="tSynTagmeme"
+>/A</object
+>). Put something between the markers. See section <sectionRef
 sec="sAbbreviation"
 ></sectionRef
+>.</td
+></tr
+><tr
+XeLaTeXSpecial="row-separation='67pt'"
+><td
+><object
+type="tErrorType"
+>Missing content after custom font begin marker</object
+></td
+><td
+>There is a beginning custom font marker (<object
+type="tSynTagmeme"
+>/f</object
+>) followed immediately by an ending custom font marker (<object
+type="tSynTagmeme"
+>/F</object
+>). Put something between the markers. See section <sectionRef
+sec="sCustomFont"
+></sectionRef
+>, especially table <tablenumberedRef
+table="ntFontCommands"
+></tablenumberedRef
 >.</td
 ></tr
 ><tr
@@ -3391,6 +3739,41 @@ sec="sSuperscriptItalic"
 >.</td
 ></tr
 ><tr
+XeLaTeXSpecial="row-separation='37pt'"
+><td
+><object
+type="tErrorType"
+>Missing custom font end marker</object
+></td
+><td
+>There is a beginning custom font marker (<object
+type="tSynTagmeme"
+>/f</object
+>) but no custom font end marker (<object
+type="tSynTagmeme"
+>/F</object
+>). See section <sectionRef
+sec="sCustomFont"
+></sectionRef
+>.</td
+></tr
+><tr
+XeLaTeXSpecial="row-separation='51pt'"
+><td
+><object
+type="tErrorType"
+>Missing font family</object
+></td
+><td
+>In a custom font definition, there is the beginning of a font family definition (i.e., <object
+type="tSynTagmeme"
+>|f</object
+>), but nothing more. Add a font family name. See section <sectionRef
+sec="sCustomFont"
+></sectionRef
+>.</td
+></tr
+><tr
 XeLaTeXSpecial="row-separation='51pt'"
 ><td
 ><object
@@ -3403,6 +3786,22 @@ sec="sNodeTypes"
 ></sectionRef
 > and <sectionRef
 sec="sLiineTypes"
+></sectionRef
+>.</td
+></tr
+><tr
+XeLaTeXSpecial="row-separation='51pt'"
+><td
+><object
+type="tErrorType"
+>Missing size number</object
+></td
+><td
+>In a custom font definition, there is the beginning of a size definition (i.e., <object
+type="tSynTagmeme"
+>|s</object
+>), but nothing more. Add a number. See section <sectionRef
+sec="sCustomFont"
 ></sectionRef
 >.</td
 ></tr
@@ -3727,6 +4126,10 @@ id="tEmpty"
 ><type
 color="red"
 id="tErrorType"
+></type
+><type
+font-style="italic"
+id="tFontCommand"
 ></type
 ><type
 color="blue"
