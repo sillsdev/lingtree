@@ -20,7 +20,7 @@ type="tLingTree"
 ><emailAddress
 >lingtree_support@sil.org</emailAddress
 ><date
->January 28, 2025</date
+>January 29, 2025</date
 ><version
 >Version 1.6.0</version
 ><version
@@ -2582,13 +2582,36 @@ id="sCustomFont"
 ><secTitle
 >Setting custom font information for a node</secTitle
 ><p
->Occasionally, you may want to highlight a particular node by color or font type, say.  You can set custom font information for a given node in two ways.  We highly recommend using the first way.</p
+><indexedItem
+term="iFontCustom"
+></indexedItem
+><indexedItem
+term="iNodeCustomFont"
+></indexedItem
+>Occasionally, you may want to highlight a particular node by, say, color or font type. You can set custom font information for a given node in two ways. We highly recommend using the first way.</p
 ><section4
 id="sCustomFontClick"
 ><secTitle
 >Click on the node in the tree diagram</secTitle
 ><p
->The first way is to (left) click on the node you wish to change the font information for.  This will bring up the same font dialog as is used for setting font information discussed above.  When you change the font information for a node, the tree description will also change.  What shows is described in the next section.</p
+>The first way is to (left) click on the node you wish to change the font information for. This will bring up the same font dialog as is used for setting font information discussed above. When you change the font information for a node, the tree description will also change. What shows is described in the next section <sectionRef
+sec="sCustomFontManual"
+></sectionRef
+>.</p
+><p
+><indexedItem
+term="iSubscript"
+></indexedItem
+><indexedItem
+term="iSuperscript"
+></indexedItem
+>When you click on the main text of a node with a subscript and/or a superscript and change the font information, the font information of the subscript or superscript will also change. If you click on the subscript or superscript instead and change the font information, only the subscript or the superscript portion will change. In addition, the size for the subscript or superscript will be whatever the dialog is set to. <object
+type="tLingTree"
+></object
+> normally sets the size of a subscript or superscript to 70% of the default font size of the node type. Since the dialog box does not allow choices that include fractions (e.g., 12 * .70 = 8.4), you will most likely need to edit the size value by hand as described in section <sectionRef
+sec="sCustomFontManual"
+></sectionRef
+></p
 ></section4
 ><section4
 id="sCustomFontManual"
@@ -2604,19 +2627,18 @@ type="tSynTagmeme"
 > before the font information and key <object
 type="tSynTagmeme"
 >/F</object
-> after it.  Table <tablenumberedRef
-table="ntFontCommands"
-></tablenumberedRef
->  lists the possible commands.  Notice that they all start with a vertical bar character (<object
+> after it. Example <exampleRef
+letter="xFontCommands"
+num="xFontCommands"
+></exampleRef
+> lists the possible commands. Notice that they all start with a vertical bar character (<object
 type="tSynTagmeme"
 >|</object
->).  You can key them in any order.  When you have more than one command, no spaces should appear between them.</p
-><tablenumbered
-id="ntFontCommands"
+>). You can key them in any order. When you have more than one command, no spaces should appear between them.</p
+><example
+num="xFontCommands"
 ><table
 border="1"
-><caption
->Font commands</caption
 ><tr
 ><th
 >Command</th
@@ -2641,6 +2663,9 @@ type="tSynTagmeme"
 ></tr
 ><tr
 ><td
+><indexedItem
+term="iColorText"
+></indexedItem
 ><object
 type="tSynTagmeme"
 >|c</object
@@ -2731,17 +2756,17 @@ type="tSynTagmeme"
 >12.75</td
 ></tr
 ></table
-></tablenumbered
+></example
 ><p
 >For color codes, see <link
 href="https://docs.oracle.com/javase/8/javafx/api/javafx/scene/paint/Color.html"
 >https://​docs.​oracle.​com/​javase/​8/​javafx/​api/​javafx/​scene/​paint/​Color.html</link
-> and scroll down to the Field Summary section.  You will find a list of color names, their codes and an example of the color.  When using the numerical code, you must start it with the hash mark (#) character.</p
+> and scroll down to the Field Summary section. You will find a list of color names, their codes and an example of the color. When using the numerical code, you must start it with the hash mark (#) character.</p
 ><p
 >For font family names, <object
 type="tLingTree"
 ></object
-> will check to see if the font family is one that it knows about.  If not, there will be an error message displayed in the bottom pane.</p
+> will check to see if the font family is one that it knows about. If not, there will be an error message displayed in the bottom pane.</p
 ><p
 >You can use both <object
 type="tSynTagmeme"
@@ -2749,7 +2774,7 @@ type="tSynTagmeme"
 > and <object
 type="tSynTagmeme"
 >|i</object
-> together.  If you use <object
+> together. If you use <object
 type="tSynTagmeme"
 >|r</object
 > after any <object
@@ -2761,7 +2786,7 @@ type="tSynTagmeme"
 >, then the <object
 type="tSynTagmeme"
 >|r</object
-> will overrule the others.  Similarly, if you key either  <object
+> will overrule the others. Similarly, if you key either <object
 type="tSynTagmeme"
 >|b</object
 > or <object
@@ -3551,9 +3576,10 @@ type="tSynTagmeme"
 >) but it is not recognized as one of the correct bar codes. See section <sectionRef
 sec="sCustomFont"
 ></sectionRef
->, especially table <tablenumberedRef
-table="ntFontCommands"
-></tablenumberedRef
+>, especially example <exampleRef
+letter="xFontCommands"
+num="xFontCommands"
+></exampleRef
 >.</td
 ></tr
 ><tr
@@ -3701,9 +3727,10 @@ type="tSynTagmeme"
 >). Put something between the markers. See section <sectionRef
 sec="sCustomFont"
 ></sectionRef
->, especially table <tablenumberedRef
-table="ntFontCommands"
-></tablenumberedRef
+>, especially example <exampleRef
+letter="xFontCommands"
+num="xFontCommands"
+></exampleRef
 >.</td
 ></tr
 ><tr
@@ -3970,6 +3997,14 @@ term="iKeyboards"
 type="tLingTree"
 ></object
 > file from one computer to another, you may well need to reset the keyboards manually. This is because the keyboard settings may be different on the two machines.</li
+><li
+><indexedItem
+term="iGlossNodeSize"
+></indexedItem
+>Increasing the size of a (part of a) gloss node by using the custom font information on a gloss node (see section <sectionRef
+sec="sCustomFont"
+></sectionRef
+>) may result in the gloss text material overlapping the text material of the lexical node above it. We recommend not trying to change the font size. Rather, use color or bold or italic to get the distinction you desire.</li
 ></ul
 ></section1
 ><section1
@@ -4199,6 +4234,11 @@ id="iColorLines"
 ><term
 >Lines</term
 ></indexTerm
+><indexTerm
+id="iColorText"
+><term
+>Text in nodes</term
+></indexTerm
 ></indexTerms
 ></indexTerm
 ><indexTerm
@@ -4257,6 +4297,11 @@ id="iFontAbbreviations"
 >Abbreviations</term
 ></indexTerm
 ><indexTerm
+id="iFontCustom"
+><term
+>Custom font for a node</term
+></indexTerm
+><indexTerm
 id="iFontEmptyElement"
 ><term
 >Empty element node</term
@@ -4300,6 +4345,13 @@ see="iFlatTree"
 id="iGlossNode"
 ><term
 >Gloss node</term
+><indexTerms
+><indexTerm
+id="iGlossNodeSize"
+><term
+>Increasing size of a gloss node</term
+></indexTerm
+></indexTerms
 ></indexTerm
 ><indexTerm
 id="iGraphics"
@@ -4531,6 +4583,11 @@ id="iTreeDescription"
 ><term
 >Tree description</term
 ><indexTerms
+><indexTerm
+id="iNodeCustomFont"
+><term
+>Custom font information</term
+></indexTerm
 ><indexTerm
 id="iNodeTypes"
 ><term
