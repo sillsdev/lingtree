@@ -47,6 +47,7 @@ public class Constants {
 
 	// Unit Testing constants
 	public static final String UNIT_TEST_DATA_FILE_NAME = "test/org/sil/lingtree/testdata/TestData.";
+	public static final String UNIT_TEST_DATA_FILE_PATH = "test/org/sil/lingtree/testdata/";
 	public static final String UNIT_TEST_DATA_FILE = "test/org/sil/lingtree/testdata/TestData.tre";
 	public static final String UNIT_TEST_DATA_FILE_BAD_TREE = "test/org/sil/lingtree/testdata/TestDataBadTree.tre";
 	public static final String UNIT_TEST_DATA_FILE_VERSION_000 = "test/org/sil/lingtree/testdata/TestDataVersion000.tre";

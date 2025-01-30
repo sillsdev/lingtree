@@ -8,9 +8,14 @@ package org.sil.lingtree.service;
 
 import static org.junit.Assert.*;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.HashMap;
 
 import org.junit.Test;
+import org.sil.lingtree.Constants;
 import org.sil.lingtree.model.LingTreeNode;
 import org.sil.lingtree.model.LingTreeTree;
 
@@ -1039,6 +1044,49 @@ public class TreeDrawerTest extends ServiceBaseTest {
 		assertEquals(true, result.contains("Enlhet Norte"));
 //		System.out.println("result='" + result + "'");
 		assertEquals(true, result.contains("<line x1=\"166.2138671875\" y1=\"141.97265625\" x2=\"123.8681640625\" y2=\"158.228515625\" stroke=\"#000000\" stroke-width=\"10.0\"/>"));
+
+		checkSVGContentFor("(S (NP/si (\\L Juan (\\G John))) (VP (V (\\L duerme (\\G sleeps)))))",
+				"SubscriptPlain.svg");
+		checkSVGContentFor(
+				"(S (NP/f|b|i|s12.0|cmaroon/F/si (\\L Juan (\\G John))) (VP (V (\\L duerme (\\G sleeps)))))",
+				"SubscriptNodeWithFont.svg");
+		checkSVGContentFor("(S (NP/si/f|cpink|b/F (\\L Juan (\\G John))) (VP (V (\\L duerme (\\G sleeps)))))",
+				"SubscriptSubscriptWithFont.svg");
+		checkSVGContentFor(
+				"(S (NP/f|b|i|s12.0|cmaroon/F/si/f|cpink|b/F (\\L Juan (\\G John))) (VP (V (\\L duerme (\\G sleeps)))))",
+				"SubscriptNodeWithFontSubscriptWithFont.svg");
+
+		checkSVGContentFor("(S (NP/Si (\\L Juan (\\G John))) (VP (V (\\L duerme (\\G sleeps)))))",
+				"SuperscriptPlain.svg");
+		checkSVGContentFor(
+				"(S (NP/f|b|i|s12.0|cmaroon/F/Si (\\L Juan (\\G John))) (VP (V (\\L duerme (\\G sleeps)))))",
+				"SuperscriptNodeWithFont.svg");
+		checkSVGContentFor("(S (NP/Si/f|cpink|b/F (\\L Juan (\\G John))) (VP (V (\\L duerme (\\G sleeps)))))",
+				"SuperscriptSuperscriptWithFont.svg");
+		checkSVGContentFor(
+				"(S (NP/f|b|i|s12.0|cmaroon/F/Si/f|cpink|b/F (\\L Juan (\\G John))) (VP (V (\\L duerme (\\G sleeps)))))",
+				"SuperscriptNodeWithFontSuperscriptWithFont.svg");
+	}
+
+	private void checkSVGContentFor(String description, String expectedFile) {
+		try {
+			LingTreeTree origTree = new LingTreeTree();
+			origTree.setLineWidth(1);
+			LingTreeTree ltTree = TreeBuilder.parseAString(description, origTree);
+			drawer = new TreeDrawer(ltTree);
+			ltTree.setUseColumnOrientedAlgorithm(false);
+			StringBuilder sb = drawer.drawAsSVG();
+			String result = sb.toString();
+			System.out.println("result='" + result + "'");
+			File svgFile = new File(Constants.UNIT_TEST_DATA_FILE_PATH + expectedFile);
+			assertTrue(svgFile.exists());
+			String expected = new String(Files.readString(svgFile.toPath(), StandardCharsets.UTF_8));
+			expected = expected.replace("\r", "");
+			assertEquals(expected, result);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Test

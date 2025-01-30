@@ -480,10 +480,22 @@ public class TreeDrawer {
 		}
 		if (node.hasSubscript()) {
 			FontInfo fontInfo = node.getFontInfoForSubscript();
+			if (node.getSubscriptText().hasCustomFont()) {
+				fontInfo = node.getSubscriptText().getCustomFontInfo();
+			} else if (node.hasCustomFontInfo()) {
+				fontInfo = node.getCustomFontInfo();
+				fontInfo.setFontSize(fontInfo.getFontSize() * Constants.SUB_SUPER_SCRIPT_FONT_SIZE_FACTOR);
+			}
 			createTextAsSVG(node.getSubscriptTextBox(), fontInfo, sb);
 		}
 		if (node.hasSuperscript()) {
 			FontInfo fontInfo = node.getFontInfoForSuperscript();
+			if (node.getSuperscriptText().hasCustomFont()) {
+				fontInfo = node.getSuperscriptText().getCustomFontInfo();
+			} else if (node.hasCustomFontInfo()) {
+				fontInfo = node.getCustomFontInfo();
+				fontInfo.setFontSize(fontInfo.getFontSize() * Constants.SUB_SUPER_SCRIPT_FONT_SIZE_FACTOR);
+			}
 			createTextAsSVG(node.getSuperscriptTextBox(), fontInfo, sb);
 		}
 		if (node.hasMother() && !node.isOmitLine() && node.getNodeType() != NodeType.Gloss) {
