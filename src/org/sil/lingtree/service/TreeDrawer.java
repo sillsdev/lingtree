@@ -569,9 +569,15 @@ public class TreeDrawer {
 	private void drawNodesAsCollapsibleSVG(LingTreeNode node, StringBuilder sb) {
 		int id = node.hashCode();
 		int motherId = (node.hasMother()) ? node.getMother().hashCode() : 0;
-		if (node.hasAbbreviation()) {
+		if (node.getContentsAsList().size() > 0) {
 			for (NodeText nt : node.getContentsAsList()) {
 				createTextAsCollapsibleSVG(nt.getTextBox(), node, nt.getFontInfo(), sb, nt.hashCode());
+				if (node.getDaughters().size() > 0) {
+					createCollapsedTextAndTriangle(node, sb, nt.hashCode());
+				}
+//				if (node.getNodeType() != NodeType.Gloss) {
+//					createCollapsedTextAndTriangle(node, sb, nt.hashCode());
+//				}
 			}
 		} else {
 			createTextAsCollapsibleSVG(node.getContentTextBox(), node, node.getFontInfoFromNodeType(false), sb, id);
@@ -589,6 +595,7 @@ public class TreeDrawer {
 			}
 			Text sub = node.getSubscriptTextBox();
 			createTextAsCollapsibleSVG(sub, node, fontInfo, sb, sub.hashCode());
+			createCollapsedTextAndTriangle(node, sb, sub.hashCode());
 		}
 		if (node.hasSuperscript()) {
 			FontInfo fontInfo = node.getFontInfoForSuperscript();
@@ -600,13 +607,14 @@ public class TreeDrawer {
 			}
 			Text sup = node.getSuperscriptTextBox();
 			createTextAsCollapsibleSVG(sup, node, fontInfo, sb, sup.hashCode());
+			createCollapsedTextAndTriangle(node, sb, sup.hashCode());
 		}
 		if (node.hasMother() && !node.isOmitLine() && node.getNodeType() != NodeType.Gloss) {
 			LingTreeNode mother = node.getMother();
 			if (!node.isTriangle()) {
 				// need to draw a line between mother and this node
 				createLineAsCollapsibleSVG(mother.getXMid(), mother.getYLowerMid(), node.getXMid(),
-						node.getYUpperMid(), sb, id, motherId);
+						node.getYUpperMid(), sb, id, motherId, "");
 			} else if (node.isTriangle()) {
 				drawTriangleAsCollapsibleSVG(mother, node, sb, id);
 			}
@@ -614,7 +622,7 @@ public class TreeDrawer {
 		if (ltTree.isDrawVerticalLineWithEmptyText() && node.getContentTextBox().getText().length() == 0) {
 			// Need to draw a line from top to bottom of this node
 			createLineAsCollapsibleSVG(node.getXMid(), node.getYLowerMid(), node.getXMid(),
-					node.getYUpperMid(), sb, id, motherId);
+					node.getYUpperMid(), sb, id, motherId, "");
 		}
 		for (LingTreeNode daughterNode : node.getDaughters()) {
 			drawNodesAsCollapsibleSVG(daughterNode, sb);
@@ -675,13 +683,18 @@ public class TreeDrawer {
 	}
 
 	// for collapsed ellipsis
-	private void drawTriangleAsCollapsibleSVG(LingTreeNode mother, LingTreeNode node, StringBuilder sb) {
+	private void drawEllipsisTriangleAsCollapsibleSVG(LingTreeNode mother, LingTreeNode node, StringBuilder sb, int id) {
 		double dLeftmostX = node.getXMid() - dEllipsisXOffset;
 		double dRightmostX = node.getXMid() + dEllipsisXOffset;
 		double dTopX = node.getXMid();
 		double dBottomY = node.getYLowerMid() + ltTree.getVerticalGap();
+		if (ltTree.isShowFlatView() && node.getDaughters().size() == 1) {
+			LingTreeNode daughter = node.getDaughters().get(0);
+			if (daughter.getNodeType() == NodeType.Lex) {
+				dBottomY = daughter.getYUpperMid();
+			}
+		}
 		double dTopY = node.getYLowerMid();
-		int id = node.hashCode();
 		// right part of line
 		createTriangleLineAsCollapsibleSVG(dLeftmostX, dBottomY, dTopX, dTopY, sb, id, "1");
 		// left part of line
@@ -731,7 +744,7 @@ public class TreeDrawer {
 		}
 		sb.append("\" fill=\"");
 		sb.append(StringUtilities.toRGBCode(fontInfo.getColor()));
-		if (!node.hasMother()) {
+		if (!isNodeCollapsible(node)) {
 			sb.append("\">");
 		} else {
 			sb.append("\" onclick=\"ProcessCollapsibleNode('node");
@@ -760,8 +773,23 @@ public class TreeDrawer {
 		sb.append("</text>\n");
 	}
 
+	private boolean isNodeCollapsible(LingTreeNode node) {
+		boolean result = true;
+		if (!node.hasMother()) {
+			result = false;
+		} else if (node.getNodeType() == NodeType.Lex && node.getDaughters().size() > 0) {
+			result = false;
+		}
+		return result;
+	}
 	private String recordCollapsibleNodes(LingTreeNode node) {
 		StringBuilder sb = new StringBuilder();
+		if (node.hasSubscript()) {
+			sb.append("node" + node.getSubscriptTextBox().hashCode() + ",");
+		}
+		if (node.hasSuperscript()) {
+			sb.append("node" + node.getSuperscriptTextBox().hashCode() + ",");
+		}
 		for (LingTreeNode daughter : node.getDaughters()) {
 			if (daughter.getContentsAsList().size() > 0) {
 				for (NodeText nt : daughter.getContentsAsList()) {
@@ -780,6 +808,12 @@ public class TreeDrawer {
 		for (LingTreeNode daughter : node.getDaughters()) {
 			if (daughter.getNodeType() != NodeType.Gloss) {
 				sb.append("line" + daughter.hashCode() + "-" + node.hashCode() + ",");
+				// triangle case
+				if (daughter.isTriangle()) {
+					// include the other two lines
+					sb.append("line" + daughter.hashCode() + "-" + node.hashCode() + "T2,");
+					sb.append("line" + daughter.hashCode() + "-" + node.hashCode() + "T3,");
+				}
 				sb.append(recordCollapsibleLines(daughter));
 			}
 		}
@@ -798,15 +832,16 @@ public class TreeDrawer {
 		}
 		sb.append(y);
 		sb.append("\" font-family=\"Arial\" font-size=\"28.0\" fill=\"#000000\" visibility=\"hidden\">. . .</text>\n");
-		drawTriangleAsCollapsibleSVG(node.getMother(), node, sb);
+		drawEllipsisTriangleAsCollapsibleSVG(node.getMother(), node, sb, id);
 	}
 
-	private void createLineAsCollapsibleSVG(double x1, double y1, double x2, double y2, StringBuilder sb, int id, int motherId) {
+	private void createLineAsCollapsibleSVG(double x1, double y1, double x2, double y2, StringBuilder sb, int id, int motherId, String triangleCode) {
 		sb.append("<line id=\"");
 		sb.append("line");
 		sb.append(id);
 		sb.append("-");
 		sb.append(motherId);
+		sb.append(triangleCode);
 		sb.append("\" x1=\"");
 		sb.append(x1);
 		sb.append("\" y1=\"");
@@ -831,11 +866,11 @@ public class TreeDrawer {
 		double dTopY = mother.getYLowerMid();
 		int motherId = node.getMother().hashCode();
 		// right part of line
-		createLineAsCollapsibleSVG(dLeftmostX, dBottomY, dTopX, dTopY, sb, id, motherId);
+		createLineAsCollapsibleSVG(dLeftmostX, dBottomY, dTopX, dTopY, sb, id, motherId, "");
 		// left part of line
-		createLineAsCollapsibleSVG(dTopX, dTopY, dRightmostX, dBottomY, sb, id, motherId);
+		createLineAsCollapsibleSVG(dTopX, dTopY, dRightmostX, dBottomY, sb, id, motherId, "T2");
 		// bottom part of line
-		createLineAsCollapsibleSVG(dLeftmostX, dBottomY, dRightmostX, dBottomY, sb, id, motherId);
+		createLineAsCollapsibleSVG(dLeftmostX, dBottomY, dRightmostX, dBottomY, sb, id, motherId, "T3");
 	}
 
 	private void doDebugPrint(String msg) {

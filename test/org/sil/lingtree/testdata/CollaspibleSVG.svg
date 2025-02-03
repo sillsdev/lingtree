@@ -1,0 +1,210 @@
+﻿<?xml version='1.0' standalone='no'?>
+<svg width='888.1455078125' height='302.19140225' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:lt='https://software.sil.org/lingtree/' contentScriptType='text/javascript'>
+<script type="text/javascript">
+/**
+ * Copyright (c) 2025 SIL Global
+ * This software is licensed under the LGPL, version 2.1 or later
+ * (http://www.gnu.org/licenses/lgpl-2.1.html)
+ */
+/**
+ * Collaspible SVG javascript code
+ */
+
+function ProcessCollapsibleNode(nodeId) {
+//	alert(nodeId);
+	var text = document.getElementById(nodeId);
+//	alert(text);
+	var widthValue = text.getAttribute('lt:width');
+	/*alert(widthValue);*/
+	var heightValue = text.getAttribute('lt:height');
+	/*alert(heightValue);*/
+	var collapsedNodes = text.getAttribute('lt:collapsedNodes');
+//	alert('cns=' + collapsedNodes);
+	let id = nodeId.substring(4);
+	var nodes = collapsedNodes.split(',');
+//	alert('len=' + nodes.length);
+
+	var collapsedLines = text.getAttribute('lt:collapsedLines');
+//	alert('cls=' + collapsedLines);
+	var lines = collapsedLines.split(',');
+//	alert('len=' + lines.length);
+
+	var isNodeCollapsed = text.getAttribute('lt:collapsed');
+//	alert("collapsed = " + isNodeCollapsed);
+	if (isNodeCollapsed == 'true') {
+		setVisibilityOfNodesAndLines(nodes, lines,'visible');
+//		alert("after nodes and lines to visible");
+		setVisibilityOfCollapsedTo(id, 'hidden');
+//		alert("after collapsed hidden");
+		text.setAttribute('lt:collapsed', 'false');
+	} else {
+		setVisibilityOfNodesAndLines(nodes, lines, 'hidden');
+//		alert("after nodes and lines to hidden");
+		setVisibilityOfCollapsedTo(id, 'visible');
+//		alert("after collapsed visible");
+		text.setAttribute('lt:collapsed', 'true');
+	}
+}
+function setVisibilityOfNodesAndLines(nodes, lines, visibility) {
+	for (let i = 0; i &lt; nodes.length; i++) {
+//		alert("node " + nodes[i] + " to " + visibility);
+		var line = document.getElementById(nodes[i]);
+		if (line != null) {
+			line.setAttribute('visibility', visibility);
+		} else {
+			alert("nodes[i] not found: " + nodes[i]);
+		}
+//		document.getElementById(nodes[i]).setAttribute('visibility', visibility);
+	}
+	for (let i = 0; i &lt; lines.length; i++) {
+//		alert("line " + lines[i] + " to " + visibility);
+		var line = document.getElementById(lines[i]);
+		if (line != null) {
+			line.setAttribute('visibility', visibility);
+		} else {
+			alert("lines[i] not found: " + lines[i]);
+		}
+//		document.getElementById(lines[i]).setAttribute('visibility', visibility);
+	}
+}
+function setVisibilityOfCollapsedTo(id, visibility) {
+//	alert("collapsed: id = " + id + "; visibility = " + visibility);
+	document.getElementById('collapsed' + id).setAttribute('visibility', visibility);
+	document.getElementById('line' + id + 'T1').setAttribute('visibility', visibility);
+	document.getElementById('line' + id + 'T2').setAttribute('visibility', visibility);
+	document.getElementById('line' + id + 'T3').setAttribute('visibility', visibility);
+}
+﻿</script>
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text id="node1451815757" x="433.99609375" y="100.0" font-family="Times New Roman" font-size="12.0" fill="#000000">PT=NP[4]:PF=Objc:PD=det</text>
+<text id="node1856241714" x="159.1416015625" y="133.40625" font-family="Times New Roman" font-size="12.0" fill="#000000" onclick="ProcessCollapsibleNode('node1856241714')" lt:collapsed="false" lt:collapsedNodes="node54893027,node1804379760" lt:collapsedLines="line54893027-1856241714" visibility="visible">part</text>
+<text id="collapsed1856241714" x="149.05078125" y="173.03515625" font-family="Arial" font-size="28.0" fill="#000000" visibility="hidden">. . .</text>
+<line id="line1856241714T1" x1="149.05078125" y1="159.001953125" x2="168.4990234375" y2="139.001953125" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line1856241714T2" x1="168.4990234375" y1="139.001953125" x2="187.947265625" y2="159.001953125" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line1856241714T3" x1="149.05078125" y1="159.001953125" x2="187.947265625" y2="159.001953125" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line1856241714-1451815757" x1="502.4951171875" y1="105.595703125" x2="168.4990234375" y2="119.712890625" stroke="#000000" stroke-width="1.0" visibility="visible"/>
+<text id="node54893027" x="131.5966796875" y="173.03515625" font-family="Charis SIL" font-size="12.0" fill="#0000ff">את/אֶת־[285]</text>
+<text id="collapsed54893027" x="149.05078125" y="190.32421475" font-family="Arial" font-size="28.0" fill="#000000" visibility="hidden">. . .</text>
+<line id="line54893027T1" x1="149.05078125" y1="201.30859375" x2="168.4990234375" y2="181.30859375" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line54893027T2" x1="168.4990234375" y1="181.30859375" x2="187.947265625" y2="201.30859375" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line54893027T3" x1="149.05078125" y1="201.30859375" x2="187.947265625" y2="201.30859375" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line54893027-1856241714" x1="168.4990234375" y1="139.001953125" x2="168.4990234375" y2="155.6796875" stroke="#000000" stroke-width="1.0" visibility="visible"/>
+<text id="node1804379760" x="132.0712890625" y="190.32421475" font-family="Arial" font-size="12.0" fill="#008000" onclick="ProcessCollapsibleNode('node1804379760')" lt:collapsed="false">object marker</text>
+<text id="collapsed1804379760" x="149.05078125" y="215.8671835" font-family="Arial" font-size="28.0" fill="#000000" visibility="hidden">. . .</text>
+<line id="line1804379760T1" x1="149.05078125" y1="215.8671835" x2="168.4990234375" y2="195.8671835" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line1804379760T2" x1="168.4990234375" y1="195.8671835" x2="187.947265625" y2="215.8671835" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line1804379760T3" x1="149.05078125" y1="215.8671835" x2="187.947265625" y2="215.8671835" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<text id="node12163453" x="492.84326171875" y="133.40625" font-family="Times New Roman" font-size="12.0" fill="#000000" onclick="ProcessCollapsibleNode('node12163453')" lt:collapsed="false" lt:collapsedNodes="node1122055499,node418012640,node817695444,node2080575439,node931346025,node2110548004,node637478627,node1097218276,node1870167775,node1911273052,node763317948,node1571746543,node1905062147,node1576656952,node170155925,node540536244,node916784216,node609208980" lt:collapsedLines="line1122055499-296172290,line418012640-1122055499,line2080575439-418012640,line931346025-2080575439,line637478627-418012640,line1097218276-637478627,line213905791-296172290,line1576656952-213905791,line540536244-1576656952,line916784216-540536244" visibility="visible">SP[4:SPR=Appo]</text>
+<text id="collapsed12163453" x="524.79638671875" y="173.03515625" font-family="Arial" font-size="28.0" fill="#000000" visibility="hidden">. . .</text>
+<line id="line12163453T1" x1="524.79638671875" y1="159.001953125" x2="544.24462890625" y2="139.001953125" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line12163453T2" x1="544.24462890625" y1="139.001953125" x2="563.69287109375" y2="159.001953125" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line12163453T3" x1="524.79638671875" y1="159.001953125" x2="563.69287109375" y2="159.001953125" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<text id="node326825745" x="578.30224609375" y="133.40625" font-family="Arial" font-size="12.0" fill="#008000" onclick="ProcessCollapsibleNode('node326825745')" lt:collapsed="false" lt:collapsedNodes="node1122055499,node418012640,node817695444,node2080575439,node931346025,node2110548004,node637478627,node1097218276,node1870167775,node1911273052,node763317948,node1571746543,node1905062147,node1576656952,node170155925,node540536244,node916784216,node609208980" lt:collapsedLines="line1122055499-296172290,line418012640-1122055499,line2080575439-418012640,line931346025-2080575439,line637478627-418012640,line1097218276-637478627,line213905791-296172290,line1576656952-213905791,line540536244-1576656952,line916784216-540536244" visibility="visible">pro</text>
+<text id="collapsed326825745" x="524.79638671875" y="173.03515625" font-family="Arial" font-size="28.0" fill="#000000" visibility="hidden">. . .</text>
+<line id="line326825745T1" x1="524.79638671875" y1="159.001953125" x2="544.24462890625" y2="139.001953125" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line326825745T2" x1="544.24462890625" y1="139.001953125" x2="563.69287109375" y2="159.001953125" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line326825745T3" x1="524.79638671875" y1="159.001953125" x2="563.69287109375" y2="159.001953125" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line296172290-1451815757" x1="502.4951171875" y1="105.595703125" x2="544.24462890625" y2="119.54296875" stroke="#000000" stroke-width="1.0" visibility="visible"/>
+<text id="node1122055499" x="375.9384765625" y="173.03515625" font-family="Times New Roman" font-size="12.0" fill="#000000" onclick="ProcessCollapsibleNode('node1122055499')" lt:collapsed="false" lt:collapsedNodes="node418012640,node817695444,node2080575439,node931346025,node2110548004,node637478627,node1097218276,node1870167775,node1911273052,node763317948" lt:collapsedLines="line418012640-1122055499,line2080575439-418012640,line931346025-2080575439,line637478627-418012640,line1097218276-637478627" visibility="visible">SP[25:SPR=Xatr]</text>
+<text id="collapsed1122055499" x="399.5478515625" y="210.32421475" font-family="Arial" font-size="28.0" fill="#000000" visibility="hidden">. . .</text>
+<line id="line1122055499T1" x1="399.5478515625" y1="198.630859375" x2="418.99609375" y2="178.630859375" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line1122055499T2" x1="418.99609375" y1="178.630859375" x2="438.4443359375" y2="198.630859375" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line1122055499T3" x1="399.5478515625" y1="198.630859375" x2="438.4443359375" y2="198.630859375" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line1122055499-296172290" x1="544.24462890625" y1="139.001953125" x2="418.99609375" y2="159.341796875" stroke="#000000" stroke-width="1.0" visibility="visible"/>
+<text id="node418012640" x="409.22617197036743" y="210.32421475" font-family="Times New Roman" font-size="12.0" fill="#000000" onclick="ProcessCollapsibleNode('node418012640')" lt:collapsed="false" lt:collapsedNodes="node817695444,node2080575439,node931346025,node2110548004,node637478627,node1097218276,node1870167775,node1911273052,node763317948" lt:collapsedLines="line2080575439-418012640,line931346025-2080575439,line637478627-418012640,line1097218276-637478627" visibility="visible">DP</text>
+<text id="collapsed418012640" x="399.5478515625" y="243.61327725" font-family="Arial" font-size="28.0" fill="#000000" visibility="hidden">. . .</text>
+<line id="line418012640T1" x1="399.5478515625" y1="235.919917875" x2="418.99609375" y2="215.919917875" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line418012640T2" x1="418.99609375" y1="215.919917875" x2="438.4443359375" y2="235.919917875" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line418012640T3" x1="399.5478515625" y1="235.919917875" x2="438.4443359375" y2="235.919917875" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<text id="node817695444" x="424.56601572036743" y="212.00421475000002" font-family="Times New Roman" font-size="8.399999999999999" fill="#000000" onclick="ProcessCollapsibleNode('node817695444')" lt:collapsed="false" lt:collapsedNodes="node817695444,node2080575439,node931346025,node2110548004,node637478627,node1097218276,node1870167775,node1911273052,node763317948" lt:collapsedLines="line2080575439-418012640,line931346025-2080575439,line637478627-418012640,line1097218276-637478627" visibility="visible">1</text>
+<text id="collapsed817695444" x="399.5478515625" y="243.61327725" font-family="Arial" font-size="28.0" fill="#000000" visibility="hidden">. . .</text>
+<line id="line817695444T1" x1="399.5478515625" y1="235.919917875" x2="418.99609375" y2="215.919917875" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line817695444T2" x1="418.99609375" y1="215.919917875" x2="438.4443359375" y2="235.919917875" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line817695444T3" x1="399.5478515625" y1="235.919917875" x2="438.4443359375" y2="235.919917875" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line418012640-1122055499" x1="418.99609375" y1="178.630859375" x2="418.99609375" y2="196.630855375" stroke="#000000" stroke-width="1.0" visibility="visible"/>
+<text id="node2080575439" x="326.1689453125" y="243.61327725" font-family="Times New Roman" font-size="12.0" fill="#000000" onclick="ProcessCollapsibleNode('node2080575439')" lt:collapsed="false" lt:collapsedNodes="node931346025,node2110548004" lt:collapsedLines="line931346025-2080575439" visibility="visible">art1</text>
+<text id="collapsed2080575439" x="316.048828125" y="283.2421835" font-family="Arial" font-size="28.0" fill="#000000" visibility="hidden">. . .</text>
+<line id="line2080575439T1" x1="316.048828125" y1="269.208980375" x2="335.4970703125" y2="249.208980375" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line2080575439T2" x1="335.4970703125" y1="249.208980375" x2="354.9453125" y2="269.208980375" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line2080575439T3" x1="316.048828125" y1="269.208980375" x2="354.9453125" y2="269.208980375" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line2080575439-418012640" x1="418.99609375" y1="215.919917875" x2="335.4970703125" y2="229.919917875" stroke="#000000" stroke-width="1.0" visibility="visible"/>
+<text id="node931346025" x="309.21484375" y="283.2421835" font-family="Charis SIL" font-size="12.0" fill="#0000ff">ה/הַ[292]</text>
+<text id="collapsed931346025" x="316.048828125" y="296.6484335" font-family="Arial" font-size="28.0" fill="#000000" visibility="hidden">. . .</text>
+<line id="line931346025T1" x1="316.048828125" y1="311.515621" x2="335.4970703125" y2="291.515621" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line931346025T2" x1="335.4970703125" y1="291.515621" x2="354.9453125" y2="311.515621" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line931346025T3" x1="316.048828125" y1="311.515621" x2="354.9453125" y2="311.515621" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line931346025-2080575439" x1="335.4970703125" y1="249.208980375" x2="335.4970703125" y2="265.88671475" stroke="#000000" stroke-width="1.0" visibility="visible"/>
+<text id="node2110548004" x="323.8193359375" y="296.6484335" font-family="Arial" font-size="12.0" fill="#008000" onclick="ProcessCollapsibleNode('node2110548004')" lt:collapsed="false">the1</text>
+<text id="collapsed2110548004" x="316.048828125" y="322.19140225" font-family="Arial" font-size="28.0" fill="#000000" visibility="hidden">. . .</text>
+<line id="line2110548004T1" x1="316.048828125" y1="322.19140225" x2="335.4970703125" y2="302.19140225" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line2110548004T2" x1="335.4970703125" y1="302.19140225" x2="354.9453125" y2="322.19140225" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line2110548004T3" x1="316.048828125" y1="322.19140225" x2="354.9453125" y2="322.19140225" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<text id="node637478627" x="491.8251953125" y="243.61327725" font-family="Times New Roman" font-size="12.0" fill="#000000" onclick="ProcessCollapsibleNode('node637478627')" lt:collapsed="false" lt:collapsedNodes="node1097218276,node1870167775,node1911273052,node763317948" lt:collapsedLines="line1097218276-637478627" visibility="visible">subs</text>
+<text id="collapsed637478627" x="483.046875" y="283.2421835" font-family="Arial" font-size="28.0" fill="#000000" visibility="hidden">. . .</text>
+<line id="line637478627T1" x1="483.046875" y1="269.208980375" x2="502.4951171875" y2="249.208980375" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line637478627T2" x1="502.4951171875" y1="249.208980375" x2="521.943359375" y2="269.208980375" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line637478627T3" x1="483.046875" y1="269.208980375" x2="521.943359375" y2="269.208980375" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line637478627-418012640" x1="418.99609375" y1="215.919917875" x2="502.4951171875" y2="229.919917875" stroke="#000000" stroke-width="1.0" visibility="visible"/>
+<text id="node1097218276" x="456.9296875" y="283.2421835" font-family="Charis SIL" font-size="12.0" fill="#0000ff">מאור/מָּאֹ֤ור [293]</text>
+<text id="collapsed1097218276" x="483.046875" y="296.6484335" font-family="Arial" font-size="28.0" fill="#000000" visibility="hidden">. . .</text>
+<line id="line1097218276T1" x1="483.046875" y1="311.515621" x2="502.4951171875" y2="291.515621" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line1097218276T2" x1="502.4951171875" y1="291.515621" x2="521.943359375" y2="311.515621" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line1097218276T3" x1="483.046875" y1="311.515621" x2="521.943359375" y2="311.515621" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line1097218276-637478627" x1="502.4951171875" y1="249.208980375" x2="502.4951171875" y2="265.88671475" stroke="#000000" stroke-width="1.0" visibility="visible"/>
+<text id="node1870167775" x="462.818359375" y="296.6484335" font-family="Arial" font-size="12.0" fill="#008000" onclick="ProcessCollapsibleNode('node1870167775')" lt:collapsed="false">lamp [</text>
+<text id="node1911273052" x="495.49609375" y="296.6484335" font-family="Arial" font-size="12.0" fill="#008000" onclick="ProcessCollapsibleNode('node1911273052')" lt:collapsed="false">m sg a -</text>
+<text id="node763317948" x="538.837890625" y="296.6484335" font-family="Arial" font-size="12.0" fill="#008000" onclick="ProcessCollapsibleNode('node763317948')" lt:collapsed="false">]</text>
+<text id="node1571746543" x="622.0966796875" y="173.03515625" font-family="Times New Roman" font-size="12.0" fill="#000000" onclick="ProcessCollapsibleNode('node1571746543')" lt:collapsed="false" lt:collapsedNodes="node1576656952,node170155925,node540536244,node916784216,node609208980" lt:collapsedLines="line1576656952-213905791,line540536244-1576656952,line916784216-540536244" visibility="visible">SP[24:SPR=atr]</text>
+<text id="collapsed1571746543" x="650.044921875" y="210.32421475" font-family="Arial" font-size="28.0" fill="#000000" visibility="hidden">. . .</text>
+<line id="line1571746543T1" x1="650.044921875" y1="198.630859375" x2="669.4931640625" y2="178.630859375" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line1571746543T2" x1="669.4931640625" y1="178.630859375" x2="688.94140625" y2="198.630859375" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line1571746543T3" x1="650.044921875" y1="198.630859375" x2="688.94140625" y2="198.630859375" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<text id="node1905062147" x="699.5458984375" y="173.03515625" font-family="Arial" font-size="12.0" fill="#008000" onclick="ProcessCollapsibleNode('node1905062147')" lt:collapsed="false" lt:collapsedNodes="node1576656952,node170155925,node540536244,node916784216,node609208980" lt:collapsedLines="line1576656952-213905791,line540536244-1576656952,line916784216-540536244" visibility="visible">pro</text>
+<text id="collapsed1905062147" x="650.044921875" y="210.32421475" font-family="Arial" font-size="28.0" fill="#000000" visibility="hidden">. . .</text>
+<line id="line1905062147T1" x1="650.044921875" y1="198.630859375" x2="669.4931640625" y2="178.630859375" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line1905062147T2" x1="669.4931640625" y1="178.630859375" x2="688.94140625" y2="198.630859375" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line1905062147T3" x1="650.044921875" y1="198.630859375" x2="688.94140625" y2="198.630859375" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line213905791-296172290" x1="544.24462890625" y1="139.001953125" x2="669.4931640625" y2="159.171875" stroke="#000000" stroke-width="1.0" visibility="visible"/>
+<text id="node1576656952" x="659.7232422828674" y="210.32421475" font-family="Times New Roman" font-size="12.0" fill="#000000" onclick="ProcessCollapsibleNode('node1576656952')" lt:collapsed="false" lt:collapsedNodes="node170155925,node540536244,node916784216,node609208980" lt:collapsedLines="line540536244-1576656952,line916784216-540536244" visibility="visible">DP</text>
+<text id="collapsed1576656952" x="650.044921875" y="243.61327725" font-family="Arial" font-size="28.0" fill="#000000" visibility="hidden">. . .</text>
+<line id="line1576656952T1" x1="650.044921875" y1="235.919917875" x2="669.4931640625" y2="215.919917875" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line1576656952T2" x1="669.4931640625" y1="215.919917875" x2="688.94140625" y2="235.919917875" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line1576656952T3" x1="650.044921875" y1="235.919917875" x2="688.94140625" y2="235.919917875" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<text id="node170155925" x="675.0630860328674" y="206.32425475000002" font-family="Times New Roman" font-size="8.399999999999999" fill="#000000" onclick="ProcessCollapsibleNode('node170155925')" lt:collapsed="false" lt:collapsedNodes="node170155925,node540536244,node916784216,node609208980" lt:collapsedLines="line540536244-1576656952,line916784216-540536244" visibility="visible">2</text>
+<text id="collapsed170155925" x="650.044921875" y="243.61327725" font-family="Arial" font-size="28.0" fill="#000000" visibility="hidden">. . .</text>
+<line id="line170155925T1" x1="650.044921875" y1="235.919917875" x2="669.4931640625" y2="215.919917875" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line170155925T2" x1="669.4931640625" y1="215.919917875" x2="688.94140625" y2="235.919917875" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line170155925T3" x1="650.044921875" y1="235.919917875" x2="688.94140625" y2="235.919917875" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line1576656952-213905791" x1="669.4931640625" y1="178.630859375" x2="669.4931640625" y2="196.630855375" stroke="#000000" stroke-width="1.0" visibility="visible"/>
+<text id="node540536244" x="660.1650390625" y="243.61327725" font-family="Times New Roman" font-size="12.0" fill="#000000" onclick="ProcessCollapsibleNode('node540536244')" lt:collapsed="false" lt:collapsedNodes="node916784216,node609208980" lt:collapsedLines="line916784216-540536244" visibility="visible">art2</text>
+<text id="collapsed540536244" x="650.044921875" y="283.2421835" font-family="Arial" font-size="28.0" fill="#000000" visibility="hidden">. . .</text>
+<line id="line540536244T1" x1="650.044921875" y1="269.208980375" x2="669.4931640625" y2="249.208980375" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line540536244T2" x1="669.4931640625" y1="249.208980375" x2="688.94140625" y2="269.208980375" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line540536244T3" x1="650.044921875" y1="269.208980375" x2="688.94140625" y2="269.208980375" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line540536244-1576656952" x1="669.4931640625" y1="215.919917875" x2="669.4931640625" y2="229.919917875" stroke="#000000" stroke-width="1.0" visibility="visible"/>
+<text id="node916784216" x="643.2109375" y="283.2421835" font-family="Charis SIL" font-size="12.0" fill="#0000ff">ה/הַ[294]</text>
+<text id="collapsed916784216" x="650.044921875" y="296.6484335" font-family="Arial" font-size="28.0" fill="#000000" visibility="hidden">. . .</text>
+<line id="line916784216T1" x1="650.044921875" y1="311.515621" x2="669.4931640625" y2="291.515621" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line916784216T2" x1="669.4931640625" y1="291.515621" x2="688.94140625" y2="311.515621" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line916784216T3" x1="650.044921875" y1="311.515621" x2="688.94140625" y2="311.515621" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line916784216-540536244" x1="669.4931640625" y1="249.208980375" x2="669.4931640625" y2="265.88671475" stroke="#000000" stroke-width="1.0" visibility="visible"/>
+<text id="node609208980" x="657.8154296875" y="296.6484335" font-family="Arial" font-size="12.0" fill="#008000" onclick="ProcessCollapsibleNode('node609208980')" lt:collapsed="false">the2</text>
+<text id="collapsed609208980" x="650.044921875" y="322.19140225" font-family="Arial" font-size="28.0" fill="#000000" visibility="hidden">. . .</text>
+<line id="line609208980T1" x1="650.044921875" y1="322.19140225" x2="669.4931640625" y2="302.19140225" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line609208980T2" x1="669.4931640625" y1="302.19140225" x2="688.94140625" y2="322.19140225" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line609208980T3" x1="650.044921875" y1="322.19140225" x2="688.94140625" y2="322.19140225" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<text id="node1470289584" x="831.1591796875" y="133.40625" font-family="Times New Roman" font-size="12.0" fill="#000000" onclick="ProcessCollapsibleNode('node1470289584')" lt:collapsed="false" lt:collapsedNodes="node619045170" lt:collapsedLines="line619045170-1470289584,line619045170-1470289584T2,line619045170-1470289584T3" visibility="visible">tri</text>
+<text id="collapsed1470289584" x="817.04296875" y="173.03515625" font-family="Arial" font-size="28.0" fill="#000000" visibility="hidden">. . .</text>
+<line id="line1470289584T1" x1="817.04296875" y1="159.001953125" x2="836.4912109375" y2="139.001953125" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line1470289584T2" x1="836.4912109375" y1="139.001953125" x2="855.939453125" y2="159.001953125" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line1470289584T3" x1="817.04296875" y1="159.001953125" x2="855.939453125" y2="159.001953125" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line1470289584-1451815757" x1="502.4951171875" y1="105.595703125" x2="836.4912109375" y2="119.712890625" stroke="#000000" stroke-width="1.0" visibility="visible"/>
+<text id="node619045170" x="809.8369140625" y="173.03515625" font-family="Times New Roman" font-size="12.0" fill="#000000" onclick="ProcessCollapsibleNode('node619045170')" lt:collapsed="false">abc def ghi</text>
+<text id="collapsed619045170" x="817.04296875" y="198.630859375" font-family="Arial" font-size="28.0" fill="#000000" visibility="hidden">. . .</text>
+<line id="line619045170T1" x1="817.04296875" y1="198.630859375" x2="836.4912109375" y2="178.630859375" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line619045170T2" x1="836.4912109375" y1="178.630859375" x2="855.939453125" y2="198.630859375" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line619045170T3" x1="817.04296875" y1="198.630859375" x2="855.939453125" y2="198.630859375" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line619045170-1470289584" x1="812.8369140625" y1="159.341796875" x2="836.4912109375" y2="139.001953125" stroke="#000000" stroke-width="1.0" visibility="visible"/>
+<line id="line619045170-1470289584T2" x1="836.4912109375" y1="139.001953125" x2="860.1455078125" y2="159.341796875" stroke="#000000" stroke-width="1.0" visibility="visible"/>
+<line id="line619045170-1470289584T3" x1="812.8369140625" y1="159.341796875" x2="860.1455078125" y2="159.341796875" stroke="#000000" stroke-width="1.0" visibility="visible"/>
+</svg>
