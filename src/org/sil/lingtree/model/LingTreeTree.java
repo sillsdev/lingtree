@@ -59,6 +59,7 @@ public class LingTreeTree {
 
 	boolean fSaveAsPng;
 	boolean fSaveAsSVG;
+	boolean fSaveAsCollapsibleSVG;
 	boolean fShowFlatView;
 	boolean fUseRightToLeftOrientation;
 	boolean fDrawVerticalLineWithEmptyText;
@@ -234,6 +235,19 @@ public class LingTreeTree {
 		return fSaveAsSVG;
 	}
 
+	public void setSaveAsSVG(boolean fSaveAsSVG) {
+		this.fSaveAsSVG = fSaveAsSVG;
+	}
+
+	@XmlElement(name = "saveAsCollapsibleSVG")
+	public boolean isSaveAsCollapsibleSVG() {
+		return fSaveAsCollapsibleSVG;
+	}
+
+	public void setSaveAsCollapsibleSVG(boolean fSaveAsCollapsibleSVG) {
+		this.fSaveAsCollapsibleSVG = fSaveAsCollapsibleSVG;
+	}
+
 	@XmlElement(name = "drawVerticalLineWithEmptyText")
 	public boolean isDrawVerticalLineWithEmptyText() {
 		return fDrawVerticalLineWithEmptyText;
@@ -259,10 +273,6 @@ public class LingTreeTree {
 
 	public void setCenterColumnOrientedOnDaughtersWidth(boolean fCenterColumnOrientedOnDaughtersWidth) {
 		this.fCenterColumnOrientedOnDaughtersWidth = fCenterColumnOrientedOnDaughtersWidth;
-	}
-
-	public void setSaveAsSVG(boolean fSaveAsSVG) {
-		this.fSaveAsSVG = fSaveAsSVG;
 	}
 
 	@XmlElement(name = "showFlatView")

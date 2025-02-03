@@ -189,6 +189,8 @@ public class RootLayoutController implements Initializable {
 	@FXML
 	private CheckMenuItem menuItemSaveAsSVG;
 	@FXML
+	private CheckMenuItem menuItemSaveAsCollapsibleSVG;
+	@FXML
 	private MenuItem menuItemFileExit;
 	@FXML
 	private Menu menuEdit;
@@ -579,6 +581,7 @@ public class RootLayoutController implements Initializable {
 		menuItemFileSaveAs.textProperty().bind(RESOURCE_FACTORY.getStringBinding("menu.saveas"));
 		menuItemSaveAsPng.textProperty().bind(RESOURCE_FACTORY.getStringBinding("menu.saveaspng"));
 		menuItemSaveAsSVG.textProperty().bind(RESOURCE_FACTORY.getStringBinding("menu.saveassvg"));
+		menuItemSaveAsCollapsibleSVG.textProperty().bind(RESOURCE_FACTORY.getStringBinding("menu.saveascollapsiblesvg"));
 		menuItemFileExit.textProperty().bind(RESOURCE_FACTORY.getStringBinding("menu.exit"));
 		menuEdit.textProperty().bind(RESOURCE_FACTORY.getStringBinding("menu.edit"));
 		menuItemEditUndo.textProperty().bind(RESOURCE_FACTORY.getStringBinding("menu.undo"));
@@ -712,8 +715,10 @@ public class RootLayoutController implements Initializable {
 		toggleButtonSaveAsPng = setToggleButtonStyle(menuItemSaveAsPng, toggleButtonSaveAsPng);
 		ltTree.setSaveAsPng(menuItemSaveAsPng.isSelected());
 		menuItemSaveAsSVG.setSelected(ltTree.isSaveAsSVG());
+		menuItemSaveAsCollapsibleSVG.setSelected(ltTree.isSaveAsCollapsibleSVG());
 		toggleButtonSaveAsSVG = setToggleButtonStyle(menuItemSaveAsSVG, toggleButtonSaveAsSVG);
 		ltTree.setSaveAsSVG(menuItemSaveAsSVG.isSelected());
+		ltTree.setSaveAsCollapsibleSVG(menuItemSaveAsCollapsibleSVG.isSelected());
 		menuItemUseRightToLeftOrientation.setSelected(ltTree.isUseRightToLeftOrientation());
 		ltTree.setUseRightToLeftOrientation(menuItemUseRightToLeftOrientation.isSelected());
 		menuItemDrawVerticalLineWithEmptyText.setSelected(ltTree.isDrawVerticalLineWithEmptyText());
@@ -1004,6 +1009,7 @@ public class RootLayoutController implements Initializable {
 	private void updateTreeDataToBackEndProvider() {
 		ltTree.setSaveAsPng(menuItemSaveAsPng.isSelected());
 		ltTree.setSaveAsSVG(menuItemSaveAsSVG.isSelected());
+		ltTree.setSaveAsCollapsibleSVG(menuItemSaveAsCollapsibleSVG.isSelected());
 		ltTree.setShowFlatView(menuItemUseFlatTree.isSelected());
 		ltTree.setUseRightToLeftOrientation(menuItemUseRightToLeftOrientation.isSelected());
 		ltTree.setDescription(treeDescription.getText());
@@ -1155,10 +1161,24 @@ public class RootLayoutController implements Initializable {
 	}
 
 	@FXML
+	private void handleMenuSaveAsCollapsibleSVG() {
+		ltTree.setSaveAsCollapsibleSVG(menuItemSaveAsCollapsibleSVG.isSelected());
+		markAsDirty();
+	}
+
+	@FXML
 	private void handleSaveAsSVG() {
 		menuItemSaveAsSVG.setSelected(!menuItemSaveAsSVG.isSelected());
 		toggleButtonSaveAsSVG = setToggleButtonStyle(menuItemSaveAsSVG, toggleButtonSaveAsSVG);
 		ltTree.setSaveAsSVG(menuItemSaveAsSVG.isSelected());
+		markAsDirty();
+		treeDescription.requestFocus();
+	}
+
+	@FXML
+	private void handleSaveAsCollaspibleSVG() {
+		menuItemSaveAsCollapsibleSVG.setSelected(!menuItemSaveAsCollapsibleSVG.isSelected());
+		ltTree.setSaveAsCollapsibleSVG(menuItemSaveAsCollapsibleSVG.isSelected());
 		markAsDirty();
 		treeDescription.requestFocus();
 	}
@@ -1277,6 +1297,7 @@ public class RootLayoutController implements Initializable {
 			toggleButtonSaveAsPng.setSelected(ltTree.isSaveAsPng());
 			menuItemSaveAsSVG.setSelected(ltTree.isSaveAsSVG());
 			toggleButtonSaveAsSVG.setSelected(ltTree.isSaveAsSVG());
+			menuItemSaveAsCollapsibleSVG.setSelected(ltTree.isSaveAsCollapsibleSVG());
 			mainApp.updateStageTitle(fileCreated);
 			cleanDrawingArea();
 			mainApp.getXmlBackEndProvider().setLingTree(ltTree);
@@ -1405,6 +1426,9 @@ public class RootLayoutController implements Initializable {
 		if (menuItemSaveAsSVG.isSelected()) {
 			saveTreeAsSVG();
 		}
+		if (menuItemSaveAsCollapsibleSVG.isSelected()) {
+			saveTreeAsCollapsibleSVG();
+		}
 		treeDescription.requestFocus();
 	}
 
@@ -1427,6 +1451,17 @@ public class RootLayoutController implements Initializable {
 		saver.setFile(file);
 		TreeDrawer drawer = drawTreePrep();
 		saver.saveAsSVG(drawer);
+	}
+
+	private void saveTreeAsCollapsibleSVG() throws IOException {
+		File file = mainApp.getTreeDataFile();
+		if (file == null) {
+			return;
+		}
+		GraphicImageSaver saver = GraphicImageSaver.getInstance();
+		saver.setFile(file);
+		TreeDrawer drawer = drawTreePrep();
+		saver.saveAsCollapsibleSVG(drawer);
 	}
 
 	/**

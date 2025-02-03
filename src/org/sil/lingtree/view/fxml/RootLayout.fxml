@@ -38,6 +38,7 @@
 					<SeparatorMenuItem />
 					<CheckMenuItem fx:id="menuItemSaveAsPng" mnemonicParsing="true" onAction="#handleMenuSaveAsPng" text="%menu.saveaspng" />
 					<CheckMenuItem fx:id="menuItemSaveAsSVG" mnemonicParsing="true" onAction="#handleMenuSaveAsSVG" text="%menu.saveassvg" />
+					<CheckMenuItem fx:id="menuItemSaveAsCollapsibleSVG" mnemonicParsing="true" onAction="#handleMenuSaveAsCollapsibleSVG" text="%menu.saveascollapsiblesvg" />
                     <SeparatorMenuItem />
                     <MenuItem fx:id="menuItemFileExit" mnemonicParsing="true" onAction="#handleExit" text="%menu.exit" />
                   </items>

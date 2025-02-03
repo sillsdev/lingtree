@@ -40,6 +40,10 @@ public class Constants {
 			"</script>\n";
 	public static final String SVG_BACKGROUND_COLOR="<rect width=\"100%\" height=\"100%\" fill=\"{0}\"/>\n";
 	public static final String SVG_END_ELEMENT="</svg>\n";
+	public static final String SVG_COLLAPSIBLE_HEADER_BEGIN="﻿<?xml version='1.0' standalone='no'?>\n" +
+			"<svg width='{0}' height='{1}' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:lt='https://software.sil.org/lingtree/' contentScriptType='text/javascript'>\n" +
+			"<script type=\"text/javascript\">\n";
+	public static final String SVG_COLLAPSIBLE_HEADER_END="﻿</script>\n";
 
 	public static final String UTF8_ENCODING = "UTF8";
 	public static final String MIGRATION_XSLT_FILE_NAME = "resources/DataMigration";

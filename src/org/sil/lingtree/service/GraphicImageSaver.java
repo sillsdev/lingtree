@@ -64,6 +64,20 @@ public class GraphicImageSaver {
 		}
 	}
     
+	public void saveAsCollapsibleSVG(TreeDrawer drawer) throws IOException {
+		if (drawer == null) {
+			return;
+		}
+		StringBuilder sb = drawer.drawAsCollaspibleSVG();
+		Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(sFilePath
+				+ "Collapsible.svg"), "UTF-8"));
+		try {
+			out.write(sb.toString());
+		} finally {
+			out.close();
+		}
+	}
+
     public void saveAsPNG(Pane drawingArea, LingTreeTree ltTree) {
 		WritableImage wim = new WritableImage((int) ltTree.getXSize() + 10,
 				(int) (ltTree.getYSize() + 10));
