@@ -7,7 +7,7 @@
  * Collaspible SVG javascript code
  */
 
-function ProcessCollapsibleNode(nodeId, motherId) {
+function ProcessCollapsibleNode(nodeId) {
 //	alert(nodeId);
 	var text = document.getElementById(nodeId);
 //	alert(text);
@@ -26,18 +26,20 @@ function ProcessCollapsibleNode(nodeId, motherId) {
 	var lines = collapsedLines.split(',');
 //	alert('len=' + lines.length);
 
-	var nodeVisibility = text.getAttribute('visibility');
-	alert("visibility = " + nodeVisibility);
-	if (nodeVisibility == 'hidden') {
+	var isNodeCollapsed = text.getAttribute('lt:collapsed');
+//	alert("collapsed = " + isNodeCollapsed);
+	if (isNodeCollapsed == 'true') {
 		setVisibilityOfNodesAndLines(nodes, lines,'visible');
-		alert("after nodes and lines to visible");
+//		alert("after nodes and lines to visible");
 		setVisibilityOfCollapsedTo(id, 'hidden');
-		alert("after collapsed hidden");
+//		alert("after collapsed hidden");
+		text.setAttribute('lt:collapsed', 'false');
 	} else {
 		setVisibilityOfNodesAndLines(nodes, lines, 'hidden');
-		alert("after nodes and lines to hidden");
+//		alert("after nodes and lines to hidden");
 		setVisibilityOfCollapsedTo(id, 'visible');
-		alert("after collapsed visible");
+//		alert("after collapsed visible");
+		text.setAttribute('lt:collapsed', 'true');
 	}
 }
 function setVisibilityOfNodesAndLines(nodes, lines, visibility) {
@@ -63,7 +65,7 @@ function setVisibilityOfNodesAndLines(nodes, lines, visibility) {
 	}
 }
 function setVisibilityOfCollapsedTo(id, visibility) {
-	alert("collapsed: id = " + id + "; visibility = " + visibility);
+//	alert("collapsed: id = " + id + "; visibility = " + visibility);
 	document.getElementById('collapsed' + id).setAttribute('visibility', visibility);
 	document.getElementById('line' + id + 'T1').setAttribute('visibility', visibility);
 	document.getElementById('line' + id + 'T2').setAttribute('visibility', visibility);

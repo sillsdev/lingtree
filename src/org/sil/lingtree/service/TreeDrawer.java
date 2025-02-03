@@ -13,7 +13,9 @@ import java.nio.file.Files;
 import java.util.HashMap;
 
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 import org.sil.lingtree.Constants;
@@ -32,6 +34,8 @@ public class TreeDrawer {
 	public boolean fDoDebugPrint = false;
 	LingTreeTree ltTree;
 	HashMap<Integer, Double> maxHeightPerLevel = new HashMap<>();
+	Text ellipsis = new Text();
+	double dEllipsisXOffset = dTriangleOffset;
 
 	private static final double dYCoordAdjustment = 3; // adjustment value
 	private static final double dTriangleOffset = 3;
@@ -39,6 +43,15 @@ public class TreeDrawer {
 	public TreeDrawer(LingTreeTree ltTree) {
 		super();
 		this.ltTree = ltTree;
+		createEllipsisText();
+	}
+
+	protected void createEllipsisText() {
+		Font ellipsisFont = Font.font("Arial", 28.0);
+		ellipsis.setFont(ellipsisFont);
+		ellipsis.setFill(Color.BLACK);
+		ellipsis.setText(". . .");
+		dEllipsisXOffset = ellipsis.getLayoutBounds().getWidth() / 2;
 	}
 
 	public HashMap<Integer, Double> getMaxHeightPerLevel() {
@@ -661,12 +674,13 @@ public class TreeDrawer {
 		createLineAsSVG(dLeftmostX, dBottomY, dRightmostX, dBottomY, sb);
 	}
 
+	// for collapsed ellipsis
 	private void drawTriangleAsCollapsibleSVG(LingTreeNode mother, LingTreeNode node, StringBuilder sb) {
-		double dLeftmostX = node.getXCoordinate() + dTriangleOffset;
-		double dRightmostX = node.getXCoordinate() + node.getWidth() - dTriangleOffset;
-		double dTopX = mother.getXMid();
-		double dBottomY = node.getYUpperMid();
-		double dTopY = mother.getYLowerMid();
+		double dLeftmostX = node.getXMid() - dEllipsisXOffset;
+		double dRightmostX = node.getXMid() + dEllipsisXOffset;
+		double dTopX = node.getXMid();
+		double dBottomY = node.getYLowerMid() + ltTree.getVerticalGap();
+		double dTopY = node.getYLowerMid();
 		int id = node.hashCode();
 		// right part of line
 		createTriangleLineAsCollapsibleSVG(dLeftmostX, dBottomY, dTopX, dTopY, sb, id, "1");
@@ -722,9 +736,8 @@ public class TreeDrawer {
 		} else {
 			sb.append("\" onclick=\"ProcessCollapsibleNode('node");
 			sb.append(id);
-			sb.append("','node");
-			sb.append(node.getMother().hashCode());
 			sb.append("')\"");
+			sb.append(" lt:collapsed=\"false\"");
 			if (node.getDaughters().size() > 0) {
 				sb.append(" lt:collapsedNodes=\"");
 				String collapsibleNodes = recordCollapsibleNodes(node);
@@ -732,11 +745,13 @@ public class TreeDrawer {
 				collapsibleNodes = collapsibleNodes.substring(0, collapsibleNodes.length()-1);
 				sb.append(collapsibleNodes);
 				sb.append("\"");
-				sb.append(" lt:collapsedLines=\"");
 				String collapsibleLines = recordCollapsibleLines(node);
-				// remove final comma
-				collapsibleLines = collapsibleLines.substring(0, collapsibleLines.length()-1);
-				sb.append(collapsibleLines);
+					sb.append(" lt:collapsedLines=\"");
+					if (collapsibleLines.length() > 0) {
+						// remove final comma
+						collapsibleLines = collapsibleLines.substring(0, collapsibleLines.length() - 1);
+					}
+					sb.append(collapsibleLines);
 				sb.append("\" visibility=\"visible\"");
 			}
 			sb.append(">");
@@ -748,7 +763,13 @@ public class TreeDrawer {
 	private String recordCollapsibleNodes(LingTreeNode node) {
 		StringBuilder sb = new StringBuilder();
 		for (LingTreeNode daughter : node.getDaughters()) {
-			sb.append("node" + daughter.hashCode() + ",");
+			if (daughter.getContentsAsList().size() > 0) {
+				for (NodeText nt : daughter.getContentsAsList()) {
+					sb.append("node" + nt.hashCode() + ",");
+				}
+			} else {
+				sb.append("node" + daughter.hashCode() + ",");
+			}
 			sb.append(recordCollapsibleNodes(daughter));
 		}
 		return sb.toString();
@@ -757,25 +778,27 @@ public class TreeDrawer {
 	private String recordCollapsibleLines(LingTreeNode node) {
 		StringBuilder sb = new StringBuilder();
 		for (LingTreeNode daughter : node.getDaughters()) {
-			sb.append("line" + daughter.hashCode() + "-" + node.hashCode() + ",");
-			sb.append(recordCollapsibleLines(daughter));
+			if (daughter.getNodeType() != NodeType.Gloss) {
+				sb.append("line" + daughter.hashCode() + "-" + node.hashCode() + ",");
+				sb.append(recordCollapsibleLines(daughter));
+			}
 		}
 		return sb.toString();
 	}
 	private void createCollapsedTextAndTriangle(LingTreeNode node, StringBuilder sb, int id) {
-		double xOffset = 52.0;
 		sb.append("<text id=\"collapsed");
 		sb.append(id);
 		sb.append("\" x=\"");
-		sb.append(node.getXMid() - xOffset);
+		sb.append(node.getXMid() - dEllipsisXOffset);
 		sb.append("\" y=\"");
-		sb.append(node.getYUpperMid() + ltTree.getVerticalGap());
+		double y = node.getYLowerMid() + ltTree.getVerticalGap();
+		if (node.getDaughters().size() > 0) {
+			LingTreeNode daughter = node.getDaughters().get(0);
+			y = daughter.getYCoordinate();
+		}
+		sb.append(y);
 		sb.append("\" font-family=\"Arial\" font-size=\"28.0\" fill=\"#000000\" visibility=\"hidden\">. . .</text>\n");
 		drawTriangleAsCollapsibleSVG(node.getMother(), node, sb);
-//	    <text id="collapsed4" x="45.9912109375" y="131.390625" font-family="Arial" font-size="28.0" fill="#000000" visibility="visible">. . .</text>
-//	    <line id="line4T1" x1="59.6083984375" y1="97.248046875" x2="45.6083984375" y2="115.716796875" stroke="#000000" stroke-width="1.0" visibility="visible"/>
-//	    <line id="line4T2" x1="59.6083984375" y1="97.248046875" x2="80.6083984375" y2="115.716796875" stroke="#000000" stroke-width="1.0" visibility="visible"/>
-//	    <line id="line4T3" x1="45.99121093754375" y1="115.716796875" x2="80.6083984375" y2="115.716796875" stroke="#000000" stroke-width="1.0" visibility="visible"/>
 	}
 
 	private void createLineAsCollapsibleSVG(double x1, double y1, double x2, double y2, StringBuilder sb, int id, int motherId) {
@@ -799,6 +822,7 @@ public class TreeDrawer {
 		sb.append("\" visibility=\"visible\"/>\n");
 	}
 
+	// normal triangle
 	private void drawTriangleAsCollapsibleSVG(LingTreeNode mother, LingTreeNode node, StringBuilder sb, int id) {
 		double dLeftmostX = node.getXCoordinate() + dTriangleOffset;
 		double dRightmostX = node.getXCoordinate() + node.getWidth() - dTriangleOffset;
