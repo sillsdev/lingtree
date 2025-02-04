@@ -45,6 +45,7 @@ public class BuildTreeFromDescriptionListener extends DescriptionBaseListener {
 	FontInfo abbreviationsFontInfo;
 	FontInfo subOrSuperScriptFontInfo = null;
 	LinkedList<FontInfoParserException> fontErrors = new LinkedList<FontInfoParserException>();
+	int itemId = 0;
 
 	public BuildTreeFromDescriptionListener(DescriptionParser parser) {
 		super();
@@ -81,6 +82,7 @@ public class BuildTreeFromDescriptionListener extends DescriptionBaseListener {
 		node.setSuperscriptText(new SuperscriptText(node));
 		node.setLineNumInDescription(ctx.start.getLine());
 		node.setCharacterPositionInLine(ctx.start.getCharPositionInLine());
+		node.setItemId(itemId++);
 		nodeMap.put(ctx.hashCode(), node);
 		if (tree.getRootNode() == null) {
 			node.setiLevel(1);
@@ -104,6 +106,7 @@ public class BuildTreeFromDescriptionListener extends DescriptionBaseListener {
 		SubscriptText subscriptText = new SubscriptText(node);
 		subscriptText.setLineNumInDescription(ctx.start.getLine());
 		subscriptText.setCharacterPositionInLine(ctx.start.getCharPositionInLine());
+		subscriptText.setItemId(itemId++);
 		subscriptMap.put(ctx.hashCode(), subscriptText);
 	}
 
@@ -113,6 +116,7 @@ public class BuildTreeFromDescriptionListener extends DescriptionBaseListener {
 		SuperscriptText superscriptText = new SuperscriptText(node);
 		superscriptText.setLineNumInDescription(ctx.start.getLine());
 		superscriptText.setCharacterPositionInLine(ctx.start.getCharPositionInLine());
+		superscriptText.setItemId(itemId++);
 		superscriptMap.put(ctx.hashCode(), superscriptText);
 	}
 
@@ -198,6 +202,7 @@ public class BuildTreeFromDescriptionListener extends DescriptionBaseListener {
 				abbrNodeText.setText(abbrText);
 				abbrNodeText.setLineNumInDescription(ctx.start.getLine());
 				abbrNodeText.setCharacterPositionInLine(charPos + Constants.ABBREVIATION_BEGIN.length());
+				abbrNodeText.setItemId(itemId++);
 				charPos += iAbbrEnd + Constants.ABBREVIATION_END.length();
 				node.getContentsAsList().add(abbrNodeText);
 			} else if (iFontBegin > -1) {
@@ -207,6 +212,7 @@ public class BuildTreeFromDescriptionListener extends DescriptionBaseListener {
 				nodeText = processCustomFontInfo(daughterText, nodeText, node);
 				nodeText.setCustomFontLineNumInDescription(ctx.start.getLine());
 				nodeText.setCustomFontCharacterPositionInLine(charPos + iFontBegin);
+				nodeText.setItemId(itemId++);
 				// set the text again so the font changes are reflected
 				nodeText.setText(nodeText.getText());
 				node.getContentsAsList().remove(iLast);
@@ -218,6 +224,7 @@ public class BuildTreeFromDescriptionListener extends DescriptionBaseListener {
 				nodeText.setText(daughterText);
 				nodeText.setLineNumInDescription(ctx.start.getLine());
 				nodeText.setCharacterPositionInLine(charPos);
+				nodeText.setItemId(itemId++);
 				charPos += nodeText.getText().length();
 				node.getContentsAsList().add(nodeText);
 			}

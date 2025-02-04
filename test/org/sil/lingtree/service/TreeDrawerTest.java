@@ -1132,9 +1132,8 @@ public class TreeDrawerTest extends ServiceBaseTest {
 			assertTrue(svgFile.exists());
 			String expected = new String(Files.readString(svgFile.toPath(), StandardCharsets.UTF_8));
 			expected = expected.replace("\r", "");
-			// unfortunately, we do not get the same results with each run; the hashcodes change perhaps
-			// depending on when a given class was created.  Sigh.
-//			assertEquals(expected, result);
+			// For some reason, we may get a slightly different x value for node2.  Not sure why...
+			assertEquals(expected, result);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

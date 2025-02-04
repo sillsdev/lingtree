@@ -567,16 +567,16 @@ public class TreeDrawer {
 	}
 
 	private void drawNodesAsCollapsibleSVG(LingTreeNode node, StringBuilder sb) {
-		int id = node.hashCode();
-		int motherId = (node.hasMother()) ? node.getMother().hashCode() : 0;
+		int id = node.getItemId();
+		int motherId = (node.hasMother()) ? node.getMother().getItemId() : 0;
 		if (node.getContentsAsList().size() > 0) {
 			for (NodeText nt : node.getContentsAsList()) {
-				createTextAsCollapsibleSVG(nt.getTextBox(), node, nt.getFontInfo(), sb, nt.hashCode());
+				createTextAsCollapsibleSVG(nt.getTextBox(), node, nt.getFontInfo(), sb, nt.getItemId());
 				if (node.getDaughters().size() > 0) {
-					createCollapsedTextAndTriangle(node, sb, nt.hashCode());
+					createCollapsedTextAndTriangle(node, sb, nt.getItemId());
 				}
 //				if (node.getNodeType() != NodeType.Gloss) {
-//					createCollapsedTextAndTriangle(node, sb, nt.hashCode());
+//					createCollapsedTextAndTriangle(node, sb, nt.getItemId());
 //				}
 			}
 		} else {
@@ -594,8 +594,9 @@ public class TreeDrawer {
 				fontInfo.setFontSize(fontInfo.getFontSize() * Constants.SUB_SUPER_SCRIPT_FONT_SIZE_FACTOR);
 			}
 			Text sub = node.getSubscriptTextBox();
-			createTextAsCollapsibleSVG(sub, node, fontInfo, sb, sub.hashCode());
-			createCollapsedTextAndTriangle(node, sb, sub.hashCode());
+			int itemId = node.getSubscriptText().getItemId();
+			createTextAsCollapsibleSVG(sub, node, fontInfo, sb, itemId);
+			createCollapsedTextAndTriangle(node, sb, itemId);
 		}
 		if (node.hasSuperscript()) {
 			FontInfo fontInfo = node.getFontInfoForSuperscript();
@@ -606,8 +607,9 @@ public class TreeDrawer {
 				fontInfo.setFontSize(fontInfo.getFontSize() * Constants.SUB_SUPER_SCRIPT_FONT_SIZE_FACTOR);
 			}
 			Text sup = node.getSuperscriptTextBox();
-			createTextAsCollapsibleSVG(sup, node, fontInfo, sb, sup.hashCode());
-			createCollapsedTextAndTriangle(node, sb, sup.hashCode());
+			int itemId = node.getSuperscriptText().getItemId();
+			createTextAsCollapsibleSVG(sup, node, fontInfo, sb, itemId);
+			createCollapsedTextAndTriangle(node, sb, itemId);
 		}
 		if (node.hasMother() && !node.isOmitLine() && node.getNodeType() != NodeType.Gloss) {
 			LingTreeNode mother = node.getMother();
@@ -785,18 +787,18 @@ public class TreeDrawer {
 	private String recordCollapsibleNodes(LingTreeNode node) {
 		StringBuilder sb = new StringBuilder();
 		if (node.hasSubscript()) {
-			sb.append("node" + node.getSubscriptTextBox().hashCode() + ",");
+			sb.append("node" + node.getSubscriptText().getItemId() + ",");
 		}
 		if (node.hasSuperscript()) {
-			sb.append("node" + node.getSuperscriptTextBox().hashCode() + ",");
+			sb.append("node" + node.getSuperscriptText().getItemId() + ",");
 		}
 		for (LingTreeNode daughter : node.getDaughters()) {
 			if (daughter.getContentsAsList().size() > 0) {
 				for (NodeText nt : daughter.getContentsAsList()) {
-					sb.append("node" + nt.hashCode() + ",");
+					sb.append("node" + nt.getItemId() + ",");
 				}
 			} else {
-				sb.append("node" + daughter.hashCode() + ",");
+				sb.append("node" + daughter.getItemId() + ",");
 			}
 			sb.append(recordCollapsibleNodes(daughter));
 		}
@@ -807,12 +809,12 @@ public class TreeDrawer {
 		StringBuilder sb = new StringBuilder();
 		for (LingTreeNode daughter : node.getDaughters()) {
 			if (daughter.getNodeType() != NodeType.Gloss) {
-				sb.append("line" + daughter.hashCode() + "-" + node.hashCode() + ",");
+				sb.append("line" + daughter.getItemId() + "-" + node.getItemId() + ",");
 				// triangle case
 				if (daughter.isTriangle()) {
 					// include the other two lines
-					sb.append("line" + daughter.hashCode() + "-" + node.hashCode() + "T2,");
-					sb.append("line" + daughter.hashCode() + "-" + node.hashCode() + "T3,");
+					sb.append("line" + daughter.getItemId() + "-" + node.getItemId() + "T2,");
+					sb.append("line" + daughter.getItemId() + "-" + node.getItemId() + "T3,");
 				}
 				sb.append(recordCollapsibleLines(daughter));
 			}
@@ -864,7 +866,7 @@ public class TreeDrawer {
 		double dTopX = mother.getXMid();
 		double dBottomY = node.getYUpperMid();
 		double dTopY = mother.getYLowerMid();
-		int motherId = node.getMother().hashCode();
+		int motherId = node.getMother().getItemId();
 		// right part of line
 		createLineAsCollapsibleSVG(dLeftmostX, dBottomY, dTopX, dTopY, sb, id, motherId, "");
 		// left part of line

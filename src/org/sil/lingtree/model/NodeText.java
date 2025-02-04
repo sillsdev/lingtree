@@ -22,6 +22,7 @@ public class NodeText {
 	protected FontInfo customFontInfo = null;
 	int customFontLineNumInDescription;
 	int customFontCharacterPositionInLine;
+	int itemId;
 
 	public Text getTextBox() {
 		return textBox;
@@ -93,6 +94,14 @@ public class NodeText {
 
 	public void setCustomFontCharacterPositionInLine(int customFontCharacterPositionInLine) {
 		this.customFontCharacterPositionInLine = customFontCharacterPositionInLine;
+	}
+
+	public int getItemId() {
+		return itemId;
+	}
+
+	public void setItemId(int itemId) {
+		this.itemId = itemId;
 	}
 
 	public boolean hasCustomFont() {
