@@ -690,6 +690,10 @@ public class TreeDrawer {
 		double dRightmostX = node.getXMid() + dEllipsisXOffset;
 		double dTopX = node.getXMid();
 		double dBottomY = node.getYLowerMid() + ltTree.getVerticalGap();
+		if (node.getDaughters().size() > 0) {
+			LingTreeNode daughter = node.getDaughters().get(0);
+			dBottomY = daughter.getYUpperMid();
+		}
 		if (ltTree.isShowFlatView() && node.getDaughters().size() == 1) {
 			LingTreeNode daughter = node.getDaughters().get(0);
 			if (daughter.getNodeType() == NodeType.Lex) {

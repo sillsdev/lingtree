@@ -77,10 +77,15 @@ function hideAnyLowerCollapsedItems(nodes, lines) {
 	for (let i = 0; i < nodes.length; i++) {
 		//		alert("node " + nodes[i] + " to " + visibility);
 		let id = nodes[i].substring(4);
-		var node = document.getElementById('collapsed' + id);
+		var node = document.getElementById(nodes[i]);
+		if (node != null) {
+			node.setAttribute('lt:collapsed', 'false');
+		}
+		node = document.getElementById('collapsed' + id);
 		if (node != null) {
 			//			alert("hiding " + 'collapsed' + id);
 			node.setAttribute('visibility', 'hidden');
+//			text.setAttribute('lt:collapsed', 'false');
 		}
 		var lineId = 'line' + id;
 		hideCollapsedTriangleLine(lineId, "T1");
