@@ -36,11 +36,13 @@ import org.sil.lingtree.model.SubOrSuperscriptText;
 import org.sil.lingtree.model.SubscriptText;
 import org.sil.lingtree.model.SuperscriptText;
 import org.sil.lingtree.service.NodeTextFinder;
+import org.sil.lingtree.service.CollapsibleSVGDrawer;
 import org.sil.lingtree.service.DescriptionStyler;
 import org.sil.lingtree.service.FontInfoInserter;
 import org.sil.lingtree.service.GraphicImageSaver;
 import org.sil.lingtree.service.NodeFinder;
 import org.sil.lingtree.service.NodeTypeDeterminer;
+import org.sil.lingtree.service.SVGDrawer;
 import org.sil.lingtree.service.TreeBuilder;
 import org.sil.lingtree.service.TreeDrawer;
 import org.sil.lingtree.Constants;
@@ -978,12 +980,13 @@ public class RootLayoutController implements Initializable {
 	}
 
 	private void processTreeDrawing() {
-		TreeDrawer drawer = drawTreePrep();
-		if (drawer == null) {
+		boolean isDrawnOK = drawTreePrep();
+		if (!isDrawnOK) {
 			// there was an error in the description; show it
 			reportErrorInDescriptionMessage();
 
 		} else {
+			TreeDrawer drawer = new TreeDrawer(ltTree);
 			drawer.draw(drawingArea);
 		}
 		treeDescription.requestFocus();
@@ -993,17 +996,16 @@ public class RootLayoutController implements Initializable {
 		drawingArea.getChildren().clear();
 	}
 
-	private TreeDrawer drawTreePrep() {
+	private boolean drawTreePrep() {
 		sDescription = treeDescription.getText();
 		ltTree = TreeBuilder.parseAString(sDescription, ltTree);
 		updateTreeDataToBackEndProvider();
 		if (TreeBuilder.getNumberOfErrors() > 0) {
-			return null;
+			return false;
 		} else if (TreeBuilder.getNumberOfFontErrors() > 0) {
-			return null;
+			return false;
 		}
-		TreeDrawer drawer = new TreeDrawer(ltTree);
-		return drawer;
+		return true;
 	}
 
 	private void updateTreeDataToBackEndProvider() {
@@ -1449,8 +1451,10 @@ public class RootLayoutController implements Initializable {
 		}
 		GraphicImageSaver saver = GraphicImageSaver.getInstance();
 		saver.setFile(file);
-		TreeDrawer drawer = drawTreePrep();
-		saver.saveAsSVG(drawer);
+		if (drawTreePrep()) {
+			SVGDrawer drawer = new SVGDrawer(ltTree);
+			saver.saveAsSVG(drawer);
+		}
 	}
 
 	private void saveTreeAsCollapsibleSVG() throws IOException {
@@ -1460,8 +1464,10 @@ public class RootLayoutController implements Initializable {
 		}
 		GraphicImageSaver saver = GraphicImageSaver.getInstance();
 		saver.setFile(file);
-		TreeDrawer drawer = drawTreePrep();
-		saver.saveAsCollapsibleSVG(drawer);
+		if (drawTreePrep()) {
+			CollapsibleSVGDrawer drawer = new CollapsibleSVGDrawer(ltTree);
+			saver.saveAsCollapsibleSVG(drawer);
+		}
 	}
 
 	/**

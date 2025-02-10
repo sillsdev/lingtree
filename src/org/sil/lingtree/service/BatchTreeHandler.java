@@ -76,7 +76,7 @@ public class BatchTreeHandler {
 		}
 		GraphicImageSaver saver = GraphicImageSaver.getInstance();
 		saver.setFile(treeFile);
-		TreeDrawer drawer = new TreeDrawer(ltTree);
+		SVGDrawer drawer = new SVGDrawer(ltTree);
 		if (drawer != null) {
 			if (ltTree.isSaveAsSVG()) {
 				saver.saveAsSVG(drawer);

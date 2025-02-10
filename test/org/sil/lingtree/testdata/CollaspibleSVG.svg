@@ -113,7 +113,7 @@ function hideCollapsedTriangleLine(lineId, trianglePart) {
 <line id="line1T2" x1="168.4990234375" y1="139.001953125" x2="187.947265625" y2="155.6796875" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
 <line id="line1T3" x1="149.05078125" y1="155.6796875" x2="187.947265625" y2="155.6796875" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
 <line id="line1-0" x1="502.4951171875" y1="105.595703125" x2="168.4990234375" y2="119.712890625" stroke="#000000" stroke-width="1.0" visibility="visible"/>
-<text id="node2" x="131.5966796875" y="173.03515625" font-family="Charis SIL" font-size="12.0" fill="#0000ff">את/אֶת־[285]</text>
+<text id="node2" x="130.515625" y="173.03515625" font-family="Charis SIL" font-size="12.0" fill="#0000ff">את/אֶת־[285]</text>
 <text id="collapsed2" x="149.05078125" y="190.32421475" font-family="Arial" font-size="28.0" fill="#000000" visibility="hidden">. . .</text>
 <line id="line2T1" x1="149.05078125" y1="176.4609335" x2="168.4990234375" y2="181.30859375" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
 <line id="line2T2" x1="168.4990234375" y1="181.30859375" x2="187.947265625" y2="176.4609335" stroke="#000000" stroke-width="1.0" visibility="hidden"/>

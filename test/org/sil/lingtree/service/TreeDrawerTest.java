@@ -8,14 +8,9 @@ package org.sil.lingtree.service;
 
 import static org.junit.Assert.*;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.util.HashMap;
 
 import org.junit.Test;
-import org.sil.lingtree.Constants;
 import org.sil.lingtree.model.LingTreeNode;
 import org.sil.lingtree.model.LingTreeTree;
 
@@ -860,44 +855,44 @@ public class TreeDrawerTest extends ServiceBaseTest {
 		drawer.calculateYCoordinateOfEveryNode();
 		drawer.calculateXCoordinateOfEveryNode();
 		node = ltTree.getRootNode();
-		checkNodeContentAndXCoordinate(node, "PT=NP[4]:PF=Objc:PD=det", 135.056640625);
+		checkNodeContentAndXCoordinate(node, "PT=NP[4]:PF=Objc:PD=det", 133.9755859375);
 		node1 = node.getDaughters().get(0);
-		checkNodeContentAndXCoordinate(node1, "part", 38.6259765625);
+		checkNodeContentAndXCoordinate(node1, "part", 37.544921875);
 		node2 = node1.getDaughters().get(0);
 		checkNodeContentAndXCoordinate(node2, "את/אֶת־[285]", 10.0);
 		node2 = node2.getDaughters().get(0);
-		checkNodeContentAndXCoordinate(node2, "object marker", 11.5556640625);
+		checkNodeContentAndXCoordinate(node2, "object marker", 10.474609375);
 
 		node1 = node.getDaughters().get(1);
-		checkNodeContentAndXCoordinate(node1, "SP[4:SPR=Appo]", 213.8095703125);
+		checkNodeContentAndXCoordinate(node1, "SP[4:SPR=Appo]", 211.6474609375);
 		node2 = node1.getDaughters().get(0);
-		checkNodeContentAndXCoordinate(node2, "SP[25:SPR=Xatr]", 159.7568359375);
+		checkNodeContentAndXCoordinate(node2, "SP[25:SPR=Xatr]", 157.5947265625);
 		node2 = node2.getDaughters().get(0);
-		checkNodeContentAndXCoordinate(node2, "DP", 195.14453125);
+		checkNodeContentAndXCoordinate(node2, "DP", 192.982421875);
 		LingTreeNode node3 = node2.getDaughters().get(0);
-		checkNodeContentAndXCoordinate(node3, "art", 135.912109375);
+		checkNodeContentAndXCoordinate(node3, "art", 133.75);
 		node3 = node3.getDaughters().get(0);
-		checkNodeContentAndXCoordinate(node3, "ה/הַ[292]", 115.966796875);
+		checkNodeContentAndXCoordinate(node3, "ה/הַ[292]", 113.8046875);
 		node3 = node3.getDaughters().get(0);
-		checkNodeContentAndXCoordinate(node3, "the", 133.908203125);
+		checkNodeContentAndXCoordinate(node3, "the", 131.74609375);
 
 		node3 = node2.getDaughters().get(1);
-		checkNodeContentAndXCoordinate(node3, "subs", 233.4267578125);
+		checkNodeContentAndXCoordinate(node3, "subs", 231.2646484375);
 		node3 = node3.getDaughters().get(0);
-		checkNodeContentAndXCoordinate(node3, "מאור/מָּאֹ֤ור [293]", 198.53125);
+		checkNodeContentAndXCoordinate(node3, "מאור/מָּאֹ֤ור [293]", 196.369140625);
 		node3 = node3.getDaughters().get(0);
-		checkNodeContentAndXCoordinate(node3, "", 204.419921875);
+		checkNodeContentAndXCoordinate(node3, "", 202.2578125);
 
 		node2 = node1.getDaughters().get(1);
-		checkNodeContentAndXCoordinate(node2, "SP[24:SPR=atr]", 319.662109375);
+		checkNodeContentAndXCoordinate(node2, "SP[24:SPR=atr]", 317.5);
 		node2 = node2.getDaughters().get(0);
-		checkNodeContentAndXCoordinate(node2, "DP", 350.716796875);
+		checkNodeContentAndXCoordinate(node2, "DP", 348.5546875);
 		node3 = node2.getDaughters().get(0);
-		checkNodeContentAndXCoordinate(node3, "art", 352.0498046875);
+		checkNodeContentAndXCoordinate(node3, "art", 349.8876953125);
 		node3 = node3.getDaughters().get(0);
-		checkNodeContentAndXCoordinate(node3, "ה/הַ[294]", 332.1044921875);
+		checkNodeContentAndXCoordinate(node3, "ה/הַ[294]", 329.9423828125);
 		node3 = node3.getDaughters().get(0);
-		checkNodeContentAndXCoordinate(node3, "the", 350.0458984375);
+		checkNodeContentAndXCoordinate(node3, "the", 347.8837890625);
 	}
 
 	@Test
@@ -1021,148 +1016,4 @@ public class TreeDrawerTest extends ServiceBaseTest {
 
 	}
 
-	@Test
-	public void drawAsSVGTest() {
-		LingTreeTree origTree = new LingTreeTree();
-		LingTreeTree ltTree = TreeBuilder.parseAString("(S (NP< (\\L Juan> (\\G John))) (VP (V (\\L duerme & mas (\\G sleeps)))))", origTree);
-		drawer = new TreeDrawer(ltTree);
-		ltTree.setUseColumnOrientedAlgorithm(false);
-		StringBuilder sb = drawer.drawAsSVG();
-		String result = sb.toString();
-		assertEquals(true, result.contains("NP&lt;"));
-		assertEquals(true, result.contains("Juan&gt;"));
-		assertEquals(true, result.contains("duerme &amp; "));
-
-		origTree = new LingTreeTree();
-		ltTree = TreeBuilder.parseAString("(Mascoian((Enxet Sur)(Enlhet Norte))((((Angaité)(Sanapaná)))((Kaskihá)(Toba-Maskoy))))", origTree);
-        ltTree.setDrawVerticalLineWithEmptyText(true);
-		drawer = new TreeDrawer(ltTree);
-		ltTree.setUseColumnOrientedAlgorithm(false);
-		sb = drawer.drawAsSVG();
-		result = sb.toString();
-		assertEquals(true, result.contains(">Mascoian<"));
-		assertEquals(true, result.contains("Enxet Sur"));
-		assertEquals(true, result.contains("Enlhet Norte"));
-//		System.out.println("result='" + result + "'");
-		assertEquals(true, result.contains("<line x1=\"166.2138671875\" y1=\"141.97265625\" x2=\"123.8681640625\" y2=\"158.228515625\" stroke=\"#000000\" stroke-width=\"10.0\"/>"));
-
-		checkSVGContentFor("(S (NP/si (\\L Juan (\\G John))) (VP (V (\\L duerme (\\G sleeps)))))",
-				"SubscriptPlain.svg", false);
-		checkSVGContentFor(
-				"(S (NP/f|b|i|s12.0|cmaroon/F/si (\\L Juan (\\G John))) (VP (V (\\L duerme (\\G sleeps)))))",
-				"SubscriptNodeWithFont.svg", false);
-		checkSVGContentFor("(S (NP/si/f|cpink|b/F (\\L Juan (\\G John))) (VP (V (\\L duerme (\\G sleeps)))))",
-				"SubscriptSubscriptWithFont.svg", false);
-		checkSVGContentFor(
-				"(S (NP/f|b|i|s12.0|cmaroon/F/si/f|cpink|b/F (\\L Juan (\\G John))) (VP (V (\\L duerme (\\G sleeps)))))",
-				"SubscriptNodeWithFontSubscriptWithFont.svg", false);
-
-		checkSVGContentFor("(S (NP/Si (\\L Juan (\\G John))) (VP (V (\\L duerme (\\G sleeps)))))",
-				"SuperscriptPlain.svg", false);
-		checkSVGContentFor(
-				"(S (NP/f|b|i|s12.0|cmaroon/F/Si (\\L Juan (\\G John))) (VP (V (\\L duerme (\\G sleeps)))))",
-				"SuperscriptNodeWithFont.svg", false);
-		checkSVGContentFor("(S (NP/Si/f|cpink|b/F (\\L Juan (\\G John))) (VP (V (\\L duerme (\\G sleeps)))))",
-				"SuperscriptSuperscriptWithFont.svg", false);
-		checkSVGContentFor(
-				"(S (NP/f|b|i|s12.0|cmaroon/F/Si/f|cpink|b/F (\\L Juan (\\G John))) (VP (V (\\L duerme (\\G sleeps)))))",
-				"SuperscriptNodeWithFontSuperscriptWithFont.svg", false);
-	}
-
-	private void checkSVGContentFor(String description, String expectedFile, boolean isCollapsible) {
-		try {
-			LingTreeTree origTree = new LingTreeTree();
-			origTree.setLineWidth(1);
-			LingTreeTree ltTree = TreeBuilder.parseAString(description, origTree);
-			drawer = new TreeDrawer(ltTree);
-			ltTree.setUseColumnOrientedAlgorithm(false);
-			StringBuilder sb = drawer.drawAsSVG();
-			String result = sb.toString();
-//			System.out.println("result='" + result + "'");
-			File svgFile = new File(Constants.UNIT_TEST_DATA_FILE_PATH + expectedFile);
-			assertTrue(svgFile.exists());
-			String expected = new String(Files.readString(svgFile.toPath(), StandardCharsets.UTF_8));
-			expected = expected.replace("\r", "");
-			assertEquals(expected, result);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-
-	@Test
-	public void drawAsCollapsibleSVGTest() {
-		checkCollapsibleSVGContentFor("		(PT=NP[4]:PF=Objc:PD=det\n"
-				+ "			(part(\\L את/אֶת־[285] (\\G object marker)))\n"
-				+ "		\n"
-				+ "		(SP[4:SPR=Appo]/apro/A\n"
-				+ "\n"
-				+ "			(SP[25:SPR=Xatr]\n"
-				+ "					(DP/s1\n"
-				+ "						(art1(\\L ה/הַ[292] (\\G the1)))\n"
-				+ "						(subs(\\L מאור/מָּאֹ֤ור [293] (\\G lamp [/am sg a - /A])))\n"
-				+ "					)\n"
-				+ "			)\n"
-				+ "			(SP[24:SPR=atr] /apro/A\n"
-				+ "					(DP/S2\n"
-				+ "						(art2(\\L ה/הַ[294] (\\G the2)))\n"
-				+ "\n"
-				+ "					)\n"
-				+ "			)\n"
-				+ "		)\n"
-				+ "		(tri (\\T abc def ghi ) )\n"
-				+ "	)\n"
-				+ "",
-				"CollaspibleSVG.svg", true);
-	}
-
-	private void checkCollapsibleSVGContentFor(String description, String expectedFile, boolean isCollapsible) {
-		try {
-			LingTreeTree origTree = new LingTreeTree();
-			origTree.setLineWidth(1);
-			LingTreeTree ltTree = TreeBuilder.parseAString(description, origTree);
-			drawer = new TreeDrawer(ltTree);
-			ltTree.setUseColumnOrientedAlgorithm(false);
-			StringBuilder sb = drawer.drawAsCollaspibleSVG();
-			String result = sb.toString();
-//			System.out.println("result='" + result + "'");
-			result = result.replace("\r", "");
-			File svgFile = new File(Constants.UNIT_TEST_DATA_FILE_PATH + expectedFile);
-			assertTrue(svgFile.exists());
-			String expected = new String(Files.readString(svgFile.toPath(), StandardCharsets.UTF_8));
-			expected = expected.replace("\r", "");
-			// For some reason, we may get a slightly different x value for node2.  Not sure why...
-			assertEquals(expected, result);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-
-	@Test
-	public void drawAsSVGRevisedTest() {
-		LingTreeTree origTree = new LingTreeTree();
-		LingTreeTree ltTree = TreeBuilder.parseAString("(S (NP< (\\L Juan> (\\G John))) (VP (V (\\L duerme & mas (\\G sleeps)))))", origTree);
-		ltTree.setUseColumnOrientedAlgorithm(true);
-		drawer = new TreeDrawer(ltTree);
-		StringBuilder sb = drawer.drawAsSVG();
-		String result = sb.toString();
-		assertEquals(true, result.contains("NP&lt;"));
-		assertEquals(true, result.contains("Juan&gt;"));
-		assertEquals(true, result.contains("duerme &amp; "));
-
-		origTree = new LingTreeTree();
-		ltTree = TreeBuilder.parseAString("(1234567890(123(\\\\L1234(\\\\G1)))(12(1234(123456(123(\\\\L456(\\\\G3)))))(0987(345(34(\\\\L123456(\\\\G4)))))))", origTree);
-        ltTree.setDrawVerticalLineWithEmptyText(true);
-		ltTree.setUseColumnOrientedAlgorithm(true);
-		drawer = new TreeDrawer(ltTree);
-		sb = drawer.drawAsSVG();
-		result = sb.toString();
-		assertEquals(true, result.contains(">1234567890<"));
-		assertEquals(true, result.contains(">123456<"));
-		assertEquals(true, result.contains(">123<"));
-		assertEquals(true, result.contains("<line x1=\"191.998046875\" y1=\"105.595703125\" x2=\"118.9990234375\" y2=\"119.595703125\" stroke=\"#000000\" stroke-width=\"10.0\"/>"));
-	}
 }

@@ -50,7 +50,7 @@ public class GraphicImageSaver {
         return instance;
     }
     
-	public void saveAsSVG(TreeDrawer drawer) throws IOException {
+	public void saveAsSVG(SVGDrawer drawer) throws IOException {
 		if (drawer == null) {
 			return;
 		}
@@ -64,7 +64,7 @@ public class GraphicImageSaver {
 		}
 	}
     
-	public void saveAsCollapsibleSVG(TreeDrawer drawer) throws IOException {
+	public void saveAsCollapsibleSVG(CollapsibleSVGDrawer drawer) throws IOException {
 		if (drawer == null) {
 			return;
 		}
