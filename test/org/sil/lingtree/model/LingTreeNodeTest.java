@@ -123,5 +123,8 @@ public class LingTreeNodeTest {
 		node3.setWidth(99.0);
 		node3.setMother(node2);
 		assertEquals(102.0, node3.calculateMaxInColumnMothersWidth(), 0.0);
+		LingTreeNode node11 = new LingTreeNode();
+		node1.setRightSister(node11);
+		assertEquals(102.0, node3.calculateMaxInColumnMothersWidth(), 0.0);
 	}
 }

@@ -28,7 +28,9 @@ import javafx.scene.text.Text;
  */
 public class CollapsibleSVGDrawer extends TreeDrawer {
 	Text ellipsis = new Text();
+	double dEllipsisWidth = 0.0;
 	double dEllipsisXOffset = dTriangleOffset;
+	final String breakLongLine = "\n\t";
 
 	/**
 	 * @param ltTree
@@ -43,7 +45,8 @@ public class CollapsibleSVGDrawer extends TreeDrawer {
 		ellipsis.setFont(ellipsisFont);
 		ellipsis.setFill(Color.BLACK);
 		ellipsis.setText(". . .");
-		dEllipsisXOffset = ellipsis.getLayoutBounds().getWidth() / 2;
+		dEllipsisWidth = ellipsis.getLayoutBounds().getWidth();
+		dEllipsisXOffset = dEllipsisWidth / 2;
 	}
 
 	public StringBuilder drawAsCollaspibleSVG() {
@@ -51,20 +54,10 @@ public class CollapsibleSVGDrawer extends TreeDrawer {
 		try {
 			recalculateValues();
 			LingTreeNode node = ltTree.getRootNode();
-			// Trying to convert from pixels to mm does not come out right.
-			// So we're going with pixels
-			// final String sMM = "mm";
-			// sb.append(Constants.SVG_HEADER.replace("{0}",
-			// pixelsToMM(ltTree.getXSize()) + sMM).replace(
-			// "{1}", pixelsToMM(ltTree.getYSize()) + sMM));
 			sb.append(Constants.SVG_COLLAPSIBLE_HEADER_BEGIN.replace("{0}", String.valueOf(ltTree.getXSize() + 10)).replace(
 					"{1}", String.valueOf(ltTree.getYSize())));
-//			File scriptFile = new File(Constants.RESOURCE_LOCATION + ".CollapsibleSVG.js");
-			File scriptFile = new File(Constants.RESOURCE_SOURCE_LOCATION + "resources/CollapsibleSVG.js");
-			String script;
-			script = new String(Files.readString(scriptFile.toPath(), StandardCharsets.UTF_8));
-			script = script.replace(" < ", " &lt; ");
-			sb.append(script);
+			insertParameters(sb);
+			insertStaticJavacriptCode(sb);
 			sb.append(Constants.SVG_COLLAPSIBLE_HEADER_END);
 			sb.append(Constants.SVG_BACKGROUND_COLOR.replace("{0}",
 					StringUtilities.toRGBCode(ltTree.getBackgroundColor())));
@@ -77,6 +70,22 @@ public class CollapsibleSVGDrawer extends TreeDrawer {
 		return sb;
 	}
 
+	protected void insertParameters(StringBuilder sb) {
+		sb.append("var dEllipsisWidth = " + dEllipsisWidth + ";\n");
+		sb.append("var dEllipsisXOffset = " + dEllipsisXOffset + ";\n");
+		sb.append("var horizontalGap = " + ltTree.getHorizontalGap() + ";\n");
+		sb.append("var initialXCoord = " + ltTree.getInitialXCoordinate() + ";\n");
+		sb.append("var isCenterColumnOrientedOnDaughtersWidth = " + ltTree.isCenterColumnOrientedOnDaughtersWidth() + ";\n");
+	}
+
+	protected void insertStaticJavacriptCode(StringBuilder sb) throws IOException {
+		File scriptFile = new File(Constants.RESOURCE_SOURCE_LOCATION + "resources/CollapsibleSVG.js");
+		String script = new String(Files.readString(scriptFile.toPath(), StandardCharsets.UTF_8));
+		script = script.replace(" < ", " &lt; ");
+		script = script.replace(" && ", " &amp;&amp; ");
+		sb.append(script);
+	}
+
 	private void drawNodesAsCollapsibleSVG(LingTreeNode node, StringBuilder sb) {
 		int id = node.getItemId();
 		int motherId = (node.hasMother()) ? node.getMother().getItemId() : 0;
@@ -86,9 +95,6 @@ public class CollapsibleSVGDrawer extends TreeDrawer {
 				if (node.getDaughters().size() > 0) {
 					createCollapsedTextAndTriangle(node, sb, nt.getItemId());
 				}
-//				if (node.getNodeType() != NodeType.Gloss) {
-//					createCollapsedTextAndTriangle(node, sb, nt.getItemId());
-//				}
 			}
 		} else {
 			createTextAsCollapsibleSVG(node.getContentTextBox(), node, node.getFontInfoFromNodeType(false), sb, id);
@@ -195,7 +201,70 @@ public class CollapsibleSVGDrawer extends TreeDrawer {
 		sb.append(tb.getX());
 		sb.append("\" y=\"");
 		sb.append(tb.getY());
-		sb.append("\" font-family=\"");
+		sb.append("\"");
+		sb.append(breakLongLine);
+		insertNodesFontInfo(fontInfo, sb);
+		sb.append(breakLongLine);
+		insertNodesMaxValues(node, sb);
+		sb.append(breakLongLine);
+		insertMother(node, sb);
+		sb.append("\"");
+		insertNodesDaughters(node, sb);
+		sb.append("\"");
+		insertRightSister(node, sb);
+		sb.append("\"");
+		if (!isNodeCollapsible(node)) {
+			sb.append(">");
+		} else {
+			sb.append(breakLongLine);
+			sb.append(" onclick=\"ProcessCollapsibleNode('node");
+			sb.append(id);
+			sb.append("')\"");
+			sb.append(" lt:collapsed=\"false\"");
+			sb.append(breakLongLine);
+			insertCollapsedNodesAndLines(node, sb);
+			sb.append(">");
+		}
+		sb.append(tb.getText().replace("<", "&lt;").replace(">", "&gt;").replace(" & ", " &amp; "));
+		sb.append("</text>\n");
+	}
+
+	protected void insertMother(LingTreeNode node, StringBuilder sb) {
+		sb.append(" lt:mother=\"node");
+		if (node.getMother() != null) {
+			sb.append(node.getMother().getItemId());
+		}
+	}
+
+	protected void insertRightSister(LingTreeNode node, StringBuilder sb) {
+		sb.append(" lt:rightSister=\"node");
+		if (node.getRightSister() != null) {
+			sb.append(node.getRightSister().getItemId());
+		}
+	}
+
+	protected void insertCollapsedNodesAndLines(LingTreeNode node, StringBuilder sb) {
+		if (node.getDaughters().size() > 0) {
+			sb.append(" lt:collapsedNodes=\"");
+			String collapsibleNodes = recordCollapsibleNodes(node);
+			// remove final comma
+			collapsibleNodes = collapsibleNodes.substring(0, collapsibleNodes.length()-1);
+			sb.append(collapsibleNodes);
+			sb.append("\"");
+			String collapsibleLines = recordCollapsibleLines(node);
+			sb.append(breakLongLine);
+				sb.append(" lt:collapsedLines=\"");
+				if (collapsibleLines.length() > 0) {
+					// remove final comma
+					collapsibleLines = collapsibleLines.substring(0, collapsibleLines.length() - 1);
+				}
+				sb.append(collapsibleLines);
+			sb.append("\" visibility=\"visible\"");
+		}
+	}
+
+	protected void insertNodesFontInfo(FontInfo fontInfo, StringBuilder sb) {
+		sb.append(" font-family=\"");
 		sb.append(fontInfo.getFontFamily());
 		sb.append("\" font-size=\"");
 		sb.append(fontInfo.getFontSize());
@@ -208,33 +277,38 @@ public class CollapsibleSVGDrawer extends TreeDrawer {
 		}
 		sb.append("\" fill=\"");
 		sb.append(StringUtilities.toRGBCode(fontInfo.getColor()));
-		if (!isNodeCollapsible(node)) {
-			sb.append("\">");
-		} else {
-			sb.append("\" onclick=\"ProcessCollapsibleNode('node");
-			sb.append(id);
-			sb.append("')\"");
-			sb.append(" lt:collapsed=\"false\"");
-			if (node.getDaughters().size() > 0) {
-				sb.append(" lt:collapsedNodes=\"");
-				String collapsibleNodes = recordCollapsibleNodes(node);
-				// remove final comma
-				collapsibleNodes = collapsibleNodes.substring(0, collapsibleNodes.length()-1);
-				sb.append(collapsibleNodes);
-				sb.append("\"");
-				String collapsibleLines = recordCollapsibleLines(node);
-					sb.append(" lt:collapsedLines=\"");
-					if (collapsibleLines.length() > 0) {
-						// remove final comma
-						collapsibleLines = collapsibleLines.substring(0, collapsibleLines.length() - 1);
+		sb.append("\"");
+	}
+
+	protected void insertNodesMaxValues(LingTreeNode node, StringBuilder sb) {
+		sb.append(" lt:width=\"");
+		sb.append(node.getWidth());
+		sb.append("\" lt:maxWidthOfDaughters=\"");
+		sb.append(node.getMaxWidthOfDaughters());
+		sb.append("\" lt:maxWidthInColumn=\"");
+		sb.append(node.getMaxWidthInColumn());
+		sb.append("\" lt:xMid=\"");
+		sb.append(node.getXMid());
+		sb.append("\" lt:maxInColumnMothersWidth=\"");
+		sb.append(node.calculateMaxInColumnMothersWidth());
+		sb.append("\"");
+	}
+
+	protected void insertNodesDaughters(LingTreeNode node, StringBuilder sb) {
+		sb.append(" lt:daughters=\"");
+		if (node.getDaughters().size() > 0) {
+			for (LingTreeNode daughter : node.getDaughters()) {
+				if (daughter.getContentsAsList().size() > 0) {
+					for (NodeText nt : daughter.getContentsAsList()) {
+						sb.append("node" + nt.getItemId() + ",");
 					}
-					sb.append(collapsibleLines);
-				sb.append("\" visibility=\"visible\"");
+				} else {
+					sb.append("node" + daughter.getItemId() + ",");
+				}
 			}
-			sb.append(">");
+		} else {
+			sb.append("node");
 		}
-		sb.append(tb.getText().replace("<", "&lt;").replace(">", "&gt;").replace(" & ", " &amp; "));
-		sb.append("</text>\n");
 	}
 
 	private boolean isNodeCollapsible(LingTreeNode node) {
