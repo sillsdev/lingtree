@@ -284,6 +284,16 @@ public class LingTreeNode {
 				+ dSuperscriptHeightAdjust;
 	}
 
+	public double calculateMaxInColumnMothersWidth() {
+		double dInColumnMothersMaxWidth = 0.0;
+		LingTreeNode mother = getMother();
+		while (mother != null && mother.getRightSister() == null) {
+			dInColumnMothersMaxWidth = Math.max(dInColumnMothersMaxWidth, mother.getWidth());
+			mother = mother.getMother();
+		}
+		return dInColumnMothersMaxWidth;
+	}
+
 	public double calculateWidth() {
 		if (hasAbbreviation()) {
 			getWidthOfNodeWithAbbreviation();

@@ -109,4 +109,19 @@ public class LingTreeNodeTest {
 		assertEquals(21.406242, node.getHeight(), 0.0);
 	}
 
+	@Test
+	public void calculateMaxInColumnMothersWidthTest() {
+		LingTreeNode node1 = new LingTreeNode();
+		node1.setWidth(100.0);
+		LingTreeNode node2 = new LingTreeNode();
+		node2.setWidth(101.0);
+		node2.setMother(node1);
+		assertEquals(100.0, node2.calculateMaxInColumnMothersWidth(), 0.0);
+		node1.setWidth(102.0);
+		assertEquals(102.0, node2.calculateMaxInColumnMothersWidth(), 0.0);
+		LingTreeNode node3 = new LingTreeNode();
+		node3.setWidth(99.0);
+		node3.setMother(node2);
+		assertEquals(102.0, node3.calculateMaxInColumnMothersWidth(), 0.0);
+	}
 }
