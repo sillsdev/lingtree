@@ -213,6 +213,8 @@ public class CollapsibleSVGDrawer extends TreeDrawer {
 		sb.append("\"");
 		insertRightSister(node, sb);
 		sb.append("\"");
+		insertIsTriangle(node, sb);
+		sb.append("\"");
 		if (!isNodeCollapsible(node)) {
 			sb.append(">");
 		} else {
@@ -227,6 +229,15 @@ public class CollapsibleSVGDrawer extends TreeDrawer {
 		}
 		sb.append(tb.getText().replace("<", "&lt;").replace(">", "&gt;").replace(" & ", " &amp; "));
 		sb.append("</text>\n");
+	}
+
+	protected void insertIsTriangle(LingTreeNode node, StringBuilder sb) {
+		sb.append(" lt:isTriangle=\"");
+		if (node.isTriangle()) {
+			sb.append("true");
+		} else {
+			sb.append("false");
+		}
 	}
 
 	protected void insertMother(LingTreeNode node, StringBuilder sb) {

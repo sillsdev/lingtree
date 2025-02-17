@@ -13,6 +13,7 @@ var ltCollapsedLines = "lt:collapsedLines";
 var ltCollapsedNodes = "lt:collapsedNodes";
 var ltDaughters = "lt:daughters";
 var ltHeight = "lt:height";
+var ltIsTriangle = "lt:isTriangle";
 var ltMaxInColumnMothersWidth = "lt:maxInColumnMothersWidth";
 var ltMaxWidthInColumn = "lt:maxWidthInColumn";
 var ltMaxWidthOfDaughters = "lt:maxWidthOfDaughters";
@@ -61,9 +62,14 @@ function resetAllLines(node) {
 		if (daughter == null) {
 			continue;
 		}
-		var dXMid = parseFloat(daughter.getAttribute(ltXMid));
 		var motherId = node.getAttribute(svgId);
-		adjustLineBetweenNodeAndItsMother(daughters[i], dXMid, motherId);
+		var fIsTriangle = daughter.getAttribute(ltIsTriangle);
+		if (fIsTriangle == null || fIsTriangle == "false") {
+			var dXMid = parseFloat(daughter.getAttribute(ltXMid));
+			adjustLineBetweenNodeAndItsMother(daughters[i], dXMid, motherId);
+		} else {
+			adjustTriangleBetweenNodeAndItsMother(daughter, motherId);
+		}
 		resetAllLines(daughter);
 	}
 }
@@ -284,6 +290,26 @@ function adjustLineBetweenNodeAndItsMother(nodeId, dXMid, motherId) {
 			line.setAttribute(svgX1, dMotherXMid);
 			line.setAttribute(svgX2, dXMid);
 		}
+	}
+}
+function adjustTriangleBetweenNodeAndItsMother(node, motherId) {
+	var mother = document.getElementById(motherId);
+	if (mother != null) {
+		var nodeId = node.getAttribute(svgId);
+		var dMotherXMid = parseFloat(mother.getAttribute(ltXMid));
+		var dXCoord = parseFloat(node.getAttribute(svgXCoord));
+		var dXWidth = parseFloat(node.getAttribute(ltWidth));
+		var lineId = "line" + nodeId.substring(4) + "-" + motherId.substring(4);
+		adjustTriangleLineXCoords(lineId, dXCoord, dMotherXMid);
+		adjustTriangleLineXCoords(lineId + "T2", dMotherXMid, dXCoord + dXWidth);
+		adjustTriangleLineXCoords(lineId + "T3", dXCoord, dXCoord + dXWidth);
+	}
+}
+function adjustTriangleLineXCoords(lineId, dX1, dX2) {
+	var line = document.getElementById(lineId);
+	if (line != null) {
+		line.setAttribute(svgX1, dX1);
+		line.setAttribute(svgX2, dX2);
 	}
 }
 function adjustCollapsedText(nodeId, dX) {
