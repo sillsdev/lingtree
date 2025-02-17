@@ -52,6 +52,10 @@ function ProcessCollapsibleNode(nodeId) {
 	var rootNode = document.getElementById("node0");
 	calculateMaxWidthOfNodes(rootNode);
 	calculateXCoordinateAndXMidOfNodes(rootNode, initialXCoord);
+	if (isRightToLeft) {
+		var dAdjust = svgWidth + initialXCoord;
+		adjustForRightToLeftOrientation(rootNode, dAdjust);
+	}
 	resetAllLines(rootNode);
 	showNodeValues(rootNode);
 }
@@ -363,4 +367,47 @@ function showNodeValues(node) {
 	console.log("\txmid      = " + dXMid);
 	console.log("\twidth     = " + width);
 	console.log("\tmax       = " + maxWidthInColumn);
+}
+function adjustForRightToLeftOrientation(node, dAdjust) {
+	var dWidth = parseFloat(node.getAttribute(ltWidth));
+	setRTLXCoord(node, dAdjust, dWidth);
+	var dXMid = parseFloat(node.getAttribute(ltXMid));
+	node.setAttribute(ltXMid, dAdjust - dXMid);
+	adjustCollapsedForRightToLeftOrientration(node, dXMid, dAdjust);
+	var daughtersList = node.getAttribute(ltDaughters);
+	var daughters = daughtersList.split(',');
+	for (var i = 0; i < daughters.length - 1; i++) {
+		var daughter = document.getElementById(daughters[i]);
+		if (daughter == null) {
+			continue;
+		}
+		adjustForRightToLeftOrientation(daughter, dAdjust);
+	}
+}
+function adjustCollapsedForRightToLeftOrientration(node, dXMid, dAdjust) {
+	var nodeId = node.getAttribute(svgId);
+	let id = nodeId.substring(4);
+	var collapsedNode = document.getElementById('collapsed' + id);
+	if (collapsedNode != null) {
+		setRTLXCoord(collapsedNode, dAdjust, dEllipsisWidth);
+	}
+	var lineId = 'line' + id;
+	var dLeftmostX = (dAdjust - dXMid) - dEllipsisXOffset;
+	var dRightmostX = (dAdjust - dXMid) + dEllipsisXOffset;
+	var dTopX = dAdjust - dXMid;
+	setRTLCollapsedTriangleLine(dLeftmostX, dTopX, lineId, "1");
+	setRTLCollapsedTriangleLine(dTopX, dRightmostX, lineId, "2");
+	setRTLCollapsedTriangleLine(dLeftmostX, dRightmostX, lineId, "3");
+}
+function setRTLXCoord(node, dAdjust, dWidth) {
+	var xcoord = parseFloat(node.getAttribute(svgXCoord));
+	var dNewXCoord = (dAdjust - dWidth) - xcoord;
+	node.setAttribute(svgXCoord, dNewXCoord);
+}
+function setRTLCollapsedTriangleLine(dX1, dX2, lineId, trianglePart) {
+	var line = document.getElementById(lineId + "T" + trianglePart);
+	if (line != null) {
+		line.setAttribute(svgX1, dX1);
+		line.setAttribute(svgX2, dX2);
+	}
 }

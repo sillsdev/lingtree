@@ -76,6 +76,8 @@ public class CollapsibleSVGDrawer extends TreeDrawer {
 		sb.append("var horizontalGap = " + ltTree.getHorizontalGap() + ";\n");
 		sb.append("var initialXCoord = " + ltTree.getInitialXCoordinate() + ";\n");
 		sb.append("var isCenterColumnOrientedOnDaughtersWidth = " + ltTree.isCenterColumnOrientedOnDaughtersWidth() + ";\n");
+		sb.append("var isRightToLeft = " + ltTree.isUseRightToLeftOrientation() + ";\n");
+		sb.append("var svgWidth = " + String.valueOf(ltTree.getXSize() + 10) + ";\n");
 	}
 
 	protected void insertStaticJavacriptCode(StringBuilder sb) throws IOException {
