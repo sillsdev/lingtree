@@ -205,7 +205,8 @@ public class CollapsibleSVGDrawer extends TreeDrawer {
 		sb.append(breakLongLine);
 		insertNodesFontInfo(fontInfo, sb);
 		sb.append(breakLongLine);
-		insertNodesMaxValues(node, sb);
+		double dWidth = tb.getBoundsInLocal().getWidth();
+		insertNodesMaxValues(node, sb, dWidth);
 		sb.append(breakLongLine);
 		insertMother(node, sb);
 		sb.append("\"");
@@ -214,6 +215,8 @@ public class CollapsibleSVGDrawer extends TreeDrawer {
 		insertRightSister(node, sb);
 		sb.append("\"");
 		insertIsTriangle(node, sb);
+		sb.append("\"");
+		insertIsNodeText(node, sb);
 		sb.append("\"");
 		if (!isNodeCollapsible(node)) {
 			sb.append(">");
@@ -229,6 +232,15 @@ public class CollapsibleSVGDrawer extends TreeDrawer {
 		}
 		sb.append(tb.getText().replace("<", "&lt;").replace(">", "&gt;").replace(" & ", " &amp; "));
 		sb.append("</text>\n");
+	}
+
+	protected void insertIsNodeText(LingTreeNode node, StringBuilder sb) {
+		sb.append(" lt:isNodeText=\"");
+		if (node.getContentsAsList().size() > 0) {
+			sb.append("true");
+		} else {
+			sb.append("false");
+		}
 	}
 
 	protected void insertIsTriangle(LingTreeNode node, StringBuilder sb) {
@@ -291,9 +303,9 @@ public class CollapsibleSVGDrawer extends TreeDrawer {
 		sb.append("\"");
 	}
 
-	protected void insertNodesMaxValues(LingTreeNode node, StringBuilder sb) {
+	protected void insertNodesMaxValues(LingTreeNode node, StringBuilder sb, double dWidth) {
 		sb.append(" lt:width=\"");
-		sb.append(node.getWidth());
+		sb.append(dWidth);
 		sb.append("\" lt:maxWidthOfDaughters=\"");
 		sb.append(node.getMaxWidthOfDaughters());
 		sb.append("\" lt:maxWidthInColumn=\"");

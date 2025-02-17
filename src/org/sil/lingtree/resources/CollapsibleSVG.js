@@ -13,6 +13,7 @@ var ltCollapsedLines = "lt:collapsedLines";
 var ltCollapsedNodes = "lt:collapsedNodes";
 var ltDaughters = "lt:daughters";
 var ltHeight = "lt:height";
+var ltIsNodeText = "lt:isNodeText";
 var ltIsTriangle = "lt:isTriangle";
 var ltMaxInColumnMothersWidth = "lt:maxInColumnMothersWidth";
 var ltMaxWidthInColumn = "lt:maxWidthInColumn";
@@ -235,13 +236,14 @@ function calculateXCoordinateAndXMidOfNodes(node, leftOffset) {
 		daughtersLeftOffset += (maxWidthInColumn - maxWidthOfDaughters) / 2;
 	}
 	for (let i = 0; i < numDaughters; i++) {
-		var gap = horizontalGap;
 		var daughterId = daughters[i];
 		var daughter = document.getElementById(daughterId);
 		if (daughter == null) {
 			continue;
 		}
-		if (i == 0) {
+		var isNodeText = daughter.getAttribute(ltIsNodeText);
+		var gap = horizontalGap;
+		if (i == 0 || isNodeText == "true") {
 			gap = 0.0;
 		}
 		calculateXCoordinateAndXMidOfNodes(daughter, daughtersLeftOffset + gap);
