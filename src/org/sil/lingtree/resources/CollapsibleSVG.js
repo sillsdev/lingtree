@@ -214,8 +214,17 @@ function calculateXCoordinateAndXMidOfNodes(node, leftOffset) {
 	var isNodeCollapsed = node.getAttribute(ltCollapsed);
 	if (isNodeCollapsed == "true") {
 		node.setAttribute(ltMaxWidthOfDaughters, dEllipsisWidth);
+		var motherId = node.getAttribute(ltMother);
+		var dMaxInlineMothersWidth = 0.0;
+		var mother = document.getElementById(motherId);
+		if (mother != null) {
+			var mothersDaughtersList = mother.getAttribute(ltDaughters);
+			var mothersDaughters = mothersDaughtersList.split(',');
+			if (mothersDaughters.length == 2) {
+				dMaxInlineMothersWidth = parseFloat(node.getAttribute(ltMaxInColumnMothersWidth));
+			}
+		}
 		var dWidth = parseFloat(node.getAttribute(ltWidth));
-		var dMaxInlineMothersWidth = parseFloat(node.getAttribute(ltMaxInColumnMothersWidth));
 		var dMaxWidthInColumn = Math.max(dWidth, dEllipsisWidth, dMaxInlineMothersWidth);
 		node.setAttribute(ltMaxWidthInColumn, dMaxWidthInColumn);
 		var xcoord = leftOffset;
@@ -229,7 +238,6 @@ function calculateXCoordinateAndXMidOfNodes(node, leftOffset) {
 		node.setAttribute(ltXMid, dXMid);
 		var nodeId = node.getAttribute(svgId);
 		adjustEllipsisTriangleAndTextLocation(nodeId, dXMid);
-		var motherId = node.getAttribute(ltMother);
 		adjustLineBetweenNodeAndItsMother(nodeId, dXMid, motherId);
 		return;
 	}
