@@ -73,6 +73,7 @@ public class CollapsibleSVGDrawer extends TreeDrawer {
 	protected void insertParameters(StringBuilder sb) {
 		sb.append("var dEllipsisWidth = " + dEllipsisWidth + ";\n");
 		sb.append("var dEllipsisXOffset = " + dEllipsisXOffset + ";\n");
+		sb.append("var dTriangleXOffset = " + dTriangleOffset + ";\n");
 		sb.append("var horizontalGap = " + ltTree.getHorizontalGap() + ";\n");
 		sb.append("var initialXCoord = " + ltTree.getInitialXCoordinate() + ";\n");
 		sb.append("var isCenterColumnOrientedOnDaughtersWidth = " + ltTree.isCenterColumnOrientedOnDaughtersWidth() + ";\n");

@@ -322,10 +322,12 @@ function adjustTriangleBetweenNodeAndItsMother(node, motherId) {
 		var dMotherXMid = parseFloat(mother.getAttribute(ltXMid));
 		var dXCoord = parseFloat(node.getAttribute(svgXCoord));
 		var dXWidth = parseFloat(node.getAttribute(ltWidth));
+		var dX1 = dXCoord + dTriangleXOffset;
+		var dX2 = dXCoord + dXWidth- dTriangleXOffset;
 		var lineId = "line" + nodeId.substring(4) + "-" + motherId.substring(4);
-		adjustTriangleLineXCoords(lineId, dXCoord, dMotherXMid);
-		adjustTriangleLineXCoords(lineId + "T2", dMotherXMid, dXCoord + dXWidth);
-		adjustTriangleLineXCoords(lineId + "T3", dXCoord, dXCoord + dXWidth);
+		adjustTriangleLineXCoords(lineId, dX1, dMotherXMid);
+		adjustTriangleLineXCoords(lineId + "T2", dMotherXMid, dX2);
+		adjustTriangleLineXCoords(lineId + "T3", dX1, dX2);
 	}
 }
 function adjustTriangleLineXCoords(lineId, dX1, dX2) {
