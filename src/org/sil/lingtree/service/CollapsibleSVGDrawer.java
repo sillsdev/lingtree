@@ -92,9 +92,11 @@ public class CollapsibleSVGDrawer extends TreeDrawer {
 		int id = node.getItemId();
 		int motherId = (node.hasMother()) ? node.getMother().getItemId() : 0;
 		if (node.getContentsAsList().size() > 0) {
+			createTextAsCollapsibleSVG(node.getContentTextBox(), node, node.getFontInfoFromNodeType(false), sb, id);
 			for (NodeText nt : node.getContentsAsList()) {
-				createTextAsCollapsibleSVG(nt.getTextBox(), node, nt.getFontInfo(), sb, nt.getItemId());
+				createNodeTextItemAsCollapsibleSVG(nt, node, sb, id);
 				if (node.getDaughters().size() > 0) {
+					// TODO: is this right?
 					createCollapsedTextAndTriangle(node, sb, nt.getItemId());
 				}
 			}
@@ -208,6 +210,10 @@ public class CollapsibleSVGDrawer extends TreeDrawer {
 		insertNodesFontInfo(fontInfo, sb);
 		sb.append(breakLongLine);
 		double dWidth = tb.getBoundsInLocal().getWidth();
+		if (dWidth == 0.0) {
+			// a node containing NodeText items will not have any width via its Text.
+			dWidth = node.getWidth();
+		}
 		insertNodesMaxValues(node, sb, dWidth);
 		sb.append(breakLongLine);
 		insertMother(node, sb);
@@ -218,8 +224,7 @@ public class CollapsibleSVGDrawer extends TreeDrawer {
 		sb.append("\"");
 		insertIsTriangle(node, sb);
 		sb.append("\"");
-		insertIsNodeText(node, sb);
-		sb.append("\"");
+		insertNodeTextItems(node, sb);
 		if (!isNodeCollapsible(node)) {
 			sb.append(">");
 		} else {
@@ -236,12 +241,55 @@ public class CollapsibleSVGDrawer extends TreeDrawer {
 		sb.append("</text>\n");
 	}
 
-	protected void insertIsNodeText(LingTreeNode node, StringBuilder sb) {
-		sb.append(" lt:isNodeText=\"");
+	private void createNodeTextItemAsCollapsibleSVG(NodeText nt, LingTreeNode node, StringBuilder sb, int id) {
+		sb.append("<text id=\"node");
+		sb.append(id);
+		sb.append("nt");
+		sb.append(nt.getItemId());
+		sb.append("\" x=\"");
+		sb.append(nt.getTextBox().getX());
+		sb.append("\" y=\"");
+		sb.append(nt.getTextBox().getY());
+		sb.append("\"");
+		sb.append(breakLongLine);
+		insertNodesFontInfo(nt.getFontInfo(), sb);
+		sb.append(breakLongLine);
+		double dWidth = nt.getTextBox().getBoundsInLocal().getWidth();
+		insertNodesMaxValues(node, sb, dWidth);
+		sb.append(breakLongLine);
+		insertMother(node, sb);
+		sb.append("\"");
+		insertNodesDaughters(node, sb);
+		sb.append("\"");
+//		insertRightSister(node, sb);
+//		sb.append("\"");
+//		insertIsTriangle(node, sb);
+//		sb.append("\"");
+//		insertIsNodeText(node, sb);
+//		sb.append("\"");
+		sb.append(">");
+//		} else {
+//			sb.append(breakLongLine);
+//			sb.append(" onclick=\"ProcessCollapsibleNode('node");
+//			sb.append(id);
+//			sb.append("')\"");
+//			sb.append(" lt:collapsed=\"false\"");
+//			sb.append(breakLongLine);
+//			insertCollapsedNodesAndLines(node, sb);
+//			sb.append(">");
+//		}
+		sb.append(nt.getTextBox().getText().replace("<", "&lt;").replace(">", "&gt;").replace(" & ", " &amp; "));
+		sb.append("</text>\n");
+	}
+
+	protected void insertNodeTextItems(LingTreeNode node, StringBuilder sb) {
 		if (node.getContentsAsList().size() > 0) {
-			sb.append("true");
-		} else {
-			sb.append("false");
+			sb.append(" lt:nodeTextItems=\"");
+			String nodeTextItems = recordNodeTextItems(node);
+			// remove final comma
+			nodeTextItems = nodeTextItems.substring(0, nodeTextItems.length()-1);
+			sb.append(nodeTextItems);
+			sb.append("\"");
 		}
 	}
 
@@ -323,17 +371,25 @@ public class CollapsibleSVGDrawer extends TreeDrawer {
 		sb.append(" lt:daughters=\"");
 		if (node.getDaughters().size() > 0) {
 			for (LingTreeNode daughter : node.getDaughters()) {
-				if (daughter.getContentsAsList().size() > 0) {
-					for (NodeText nt : daughter.getContentsAsList()) {
-						sb.append("node" + nt.getItemId() + ",");
-					}
-				} else {
+//				if (daughter.getContentsAsList().size() > 0) {
+//					for (NodeText nt : daughter.getContentsAsList()) {
+//						createNodeTextId(daughter, nt, sb);
+//					}
+//				} else {
 					sb.append("node" + daughter.getItemId() + ",");
-				}
+//				}
 			}
 		} else {
 			sb.append("node");
 		}
+	}
+
+	protected void createNodeTextId(LingTreeNode node, NodeText nt, StringBuilder sb) {
+		sb.append("node");
+		sb.append(node.getItemId());
+		sb.append("nt");
+		sb.append(nt.getItemId());
+		sb.append(",");
 	}
 
 	private boolean isNodeCollapsible(LingTreeNode node) {
@@ -356,11 +412,17 @@ public class CollapsibleSVGDrawer extends TreeDrawer {
 		for (LingTreeNode daughter : node.getDaughters()) {
 			if (daughter.getContentsAsList().size() > 0) {
 				for (NodeText nt : daughter.getContentsAsList()) {
-					sb.append("node" + nt.getItemId() + ",");
+					createNodeTextId(daughter, nt, sb);
 				}
-			} else {
-				sb.append("node" + daughter.getItemId() + ",");
 			}
+				sb.append("node" + daughter.getItemId() + ",");
+//			if (daughter.getContentsAsList().size() > 0) {
+//				for (NodeText nt : daughter.getContentsAsList()) {
+//					sb.append("node" + nt.getItemId() + ",");
+//				}
+//			} else {
+//				sb.append("node" + daughter.getItemId() + ",");
+//			}
 			sb.append(recordCollapsibleNodes(daughter));
 		}
 		return sb.toString();
@@ -382,6 +444,15 @@ public class CollapsibleSVGDrawer extends TreeDrawer {
 		}
 		return sb.toString();
 	}
+
+	private String recordNodeTextItems(LingTreeNode node) {
+		StringBuilder sb = new StringBuilder();
+		for (NodeText nt : node.getContentsAsList()) {
+			createNodeTextId(node, nt, sb);
+		}
+		return sb.toString();
+	}
+
 	private void createCollapsedTextAndTriangle(LingTreeNode node, StringBuilder sb, int id) {
 		sb.append("<text id=\"collapsed");
 		sb.append(id);

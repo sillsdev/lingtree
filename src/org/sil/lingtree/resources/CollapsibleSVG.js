@@ -13,7 +13,7 @@ var ltCollapsedLines = "lt:collapsedLines";
 var ltCollapsedNodes = "lt:collapsedNodes";
 var ltDaughters = "lt:daughters";
 var ltHeight = "lt:height";
-var ltIsNodeText = "lt:isNodeText";
+var ltNodeTextItems = "lt:nodeTextItems";
 var ltIsTriangle = "lt:isTriangle";
 var ltMaxInColumnMothersWidth = "lt:maxInColumnMothersWidth";
 var ltMaxWidthInColumn = "lt:maxWidthInColumn";
@@ -30,6 +30,9 @@ var svgXCoord = "x";
 
 // Code for handling collapsing nodes
 function ProcessCollapsibleNode(nodeId) {
+	var rootNode = document.getElementById("node0");
+	console.log("before recalculations");
+	showNodeValues(rootNode);
 	var text = document.getElementById(nodeId);
 	var collapsedNodes = text.getAttribute(ltCollapsedNodes);
 	let id = nodeId.substring(4);
@@ -49,14 +52,23 @@ function ProcessCollapsibleNode(nodeId) {
 		text.setAttribute(ltCollapsed, 'true');
 		hideAnyLowerCollapsedItems(nodes, lines);
 	}
-	var rootNode = document.getElementById("node0");
 	calculateMaxWidthOfNodes(rootNode);
-	calculateXCoordinateAndXMidOfNodes(rootNode, initialXCoord);
 	if (isRightToLeft) {
-		var dAdjust = svgWidth + initialXCoord;
-		adjustForRightToLeftOrientation(rootNode, dAdjust);
+		var dMaxWidthInColumn = parseFloat(rootNode.getAttribute(ltMaxWidthInColumn));
+		var dWidth = parseFloat(rootNode.getAttribute(ltWidth));
+		var dWidthToUse = Math.max(dWidth, dMaxWidthInColumn);
+//		console.log("max in column = " + dMaxWidthInColumn);
+//		console.log("width         = " + dWidth);
+//		console.log("width to use  = " + dWidthToUse);
+		calculateXCoordinateAndXMidOfNodes(rootNode, dWidthToUse + initialXCoord);
+//				var dAdjust = svgWidth + initialXCoord;
+//				console.log("dAdjust = " + dAdjust);
+//				adjustForRightToLeftOrientation(rootNode, dAdjust);
+	} else {
+		calculateXCoordinateAndXMidOfNodes(rootNode, initialXCoord);
 	}
 	resetAllLines(rootNode);
+	console.log("after recalculations");
 	showNodeValues(rootNode);
 }
 function resetAllLines(node) {
@@ -163,10 +175,6 @@ function calculateMaxWidthOfNodes(node) {
 	dMaxWidthOfNode = Math.max(dMaxWidthOfNode, dMaxWidthOfDaughters);
 	node.setAttribute(ltMaxWidthInColumn, dMaxWidthOfNode);
 	node.setAttribute(ltMaxWidthOfDaughters, dMaxWidthOfDaughters);
-	console.log("calcMaxWidth for " + node.innerHTML);
-	console.log("\tdMaxWidthOfDaughters = " + dMaxWidthOfDaughters);
-	console.log("\tdWidth               = " + dWidth);
-	console.log("\tnumDaughters         = " + numDaughters);
 	if (dMaxWidthOfDaughters < dWidth && numDaughters == 1) {
 		var daughter = document.getElementById(daughters[0]);
 		if (daughter != null) {
@@ -180,8 +188,6 @@ function calculateMaxWidthOfNodes(node) {
 // we need to set the maximum width of the daughters to that node's maximum width
 // so the x-coordinate and x-mid values are correct.
 function setDaughtersMaxWidth(node, newMaxWidth) {
-	console.log("setDaughtersMaxWidth for " + node.innerHTML);
-	console.log("\tnewMaxWidth = " + newMaxWidth);
 	node.setAttribute(ltMaxWidthInColumn, newMaxWidth);
 	var daughtersList = node.getAttribute(ltDaughters);
 	var daughters = daughtersList.split(',');
@@ -197,6 +203,7 @@ function setDaughtersMaxWidth(node, newMaxWidth) {
 // We use the maximum width of a node in its column (and its daughter's width) to
 // set the x-coordinate and x-mid values.
 // The left offset value needs to be maintained for the x-coordinate of where the column begins.
+// For right-to-left, we use subrraction to go from right edge to left
 function calculateXCoordinateAndXMidOfNodes(node, leftOffset) {
 	if (node == null) {
 		return;
@@ -204,7 +211,7 @@ function calculateXCoordinateAndXMidOfNodes(node, leftOffset) {
 	var daughtersLeftOffset = leftOffset;
 	var maxWidthInColumn = parseFloat(node.getAttribute(ltMaxWidthInColumn));
 	var maxWidthOfDaughters = parseFloat(node.getAttribute(ltMaxWidthOfDaughters));
-		var isNodeCollapsed = node.getAttribute(ltCollapsed);
+	var isNodeCollapsed = node.getAttribute(ltCollapsed);
 	if (isNodeCollapsed == "true") {
 		node.setAttribute(ltMaxWidthOfDaughters, dEllipsisWidth);
 		var dWidth = parseFloat(node.getAttribute(ltWidth));
@@ -212,7 +219,11 @@ function calculateXCoordinateAndXMidOfNodes(node, leftOffset) {
 		var dMaxWidthInColumn = Math.max(dWidth, dEllipsisWidth, dMaxInlineMothersWidth);
 		node.setAttribute(ltMaxWidthInColumn, dMaxWidthInColumn);
 		var xcoord = leftOffset;
-		xcoord += (dMaxWidthInColumn - dWidth) / 2;
+		if (isRightToLeft) {
+			xcoord -= (dMaxWidthInColumn + dWidth) / 2;
+		} else {
+			xcoord += (dMaxWidthInColumn - dWidth) / 2;
+		}
 		node.setAttribute(svgXCoord, xcoord);
 		var dXMid = xcoord + (dWidth / 2);
 		node.setAttribute(ltXMid, dXMid);
@@ -220,22 +231,12 @@ function calculateXCoordinateAndXMidOfNodes(node, leftOffset) {
 		adjustEllipsisTriangleAndTextLocation(nodeId, dXMid);
 		var motherId = node.getAttribute(ltMother);
 		adjustLineBetweenNodeAndItsMother(nodeId, dXMid, motherId);
-		console.log("Collapsed: node = " + node.innerHTML);
-		console.log("\twidth         = " + dWidth);
-		console.log("\tmomsmaxwidth  = " + dMaxInlineMothersWidth);
-		console.log("\tmaxwidthincol = " + dMaxWidthInColumn);
-		console.log("\tellipsis      = " + dEllipsisWidth);
-		console.log("\toffset        = " + leftOffset);
-		console.log("\txcoord        = " + xcoord);
 		return;
 	}
 
 	var daughtersList = node.getAttribute(ltDaughters);
 	var daughters = daughtersList.split(',');
 	var numDaughters = daughters.length - 1;
-	console.log("cxx: node = " + node.innerHTML);
-	console.log("\tdaughtersList = " + daughtersList);
-	console.log("\tnum daughters = " + numDaughters);
 	if (maxWidthInColumn > maxWidthOfDaughters && numDaughters > 1) {
 		daughtersLeftOffset += (maxWidthInColumn - maxWidthOfDaughters) / 2;
 	}
@@ -245,26 +246,42 @@ function calculateXCoordinateAndXMidOfNodes(node, leftOffset) {
 		if (daughter == null) {
 			continue;
 		}
-		var isNodeText = daughter.getAttribute(ltIsNodeText);
+		var nodeTextList = daughter.getAttribute(ltNodeTextItems);
+		if (nodeTextList != null) {
+			var nodeTexts = nodeTextList.split(',');
+			var numNodeTexts = nodeTexts.length - 1;
+			var nodeProperXCoord = daughter.getAttribute(svgXCoord);
+			for (let j = 0; j < numNodeTexts; j++) {
+				var nodeText = document.getElementById(nodeTexts[j]);
+				if (nodeText != null) {
+//					nodeText.setAttribute(svgXCoord, nodeProperXCoord);
+					var dntWidth = nodeText.getAttribute(ltWidth);
+					nodeProperXCoord += dntWidth;
+				}
+			}
+			continue;
+		}
 		var gap = horizontalGap;
-		if (i == 0 || isNodeText == "true") {
+		if (i == 0 || nodeTextList == "true") {
 			gap = 0.0;
 		}
-		calculateXCoordinateAndXMidOfNodes(daughter, daughtersLeftOffset + gap);
+		var newLeftOffset = daughtersLeftOffset + gap;
+		if (isRightToLeft) {
+			newLeftOffset = daughtersLeftOffset - gap;
+		}
+		calculateXCoordinateAndXMidOfNodes(daughter, newLeftOffset);
 		var daughtersMaxWidthInColumn = parseFloat(daughter.getAttribute(ltMaxWidthInColumn));
-		daughtersLeftOffset += daughtersMaxWidthInColumn + gap;
+		if (isRightToLeft) {
+			daughtersLeftOffset -= (daughtersMaxWidthInColumn + gap);
+		} else {
+			daughtersLeftOffset += daughtersMaxWidthInColumn + gap;
+		}
 	}
 	var dXMid = calculateXMidOfNode(maxWidthInColumn, daughters, leftOffset);
-//	console.log("dXmid after calc = " + dXMid);
 	node.setAttribute(ltXMid, dXMid);
 	var width = parseFloat(node.getAttribute(ltWidth));
 	var xcoord = dXMid - (width / 2);
 	node.setAttribute(svgXCoord, xcoord);
-//	console.log("node = "+ node.getAttribute(svgId) + "; " + node.innerHTML);
-//	console.log("\tx-coord   = " + xcoord);
-//	console.log("\txmid      = " + dXMid);
-//	console.log("\twidth     = " + width);
-//	console.log("\tmax       = " + maxWidthInColumn);
 }
 function adjustEllipsisTriangleAndTextLocation(nodeId, dXMid) {
 	var dLeftmostX = dXMid - dEllipsisXOffset;
@@ -326,7 +343,9 @@ function adjustCollapsedText(nodeId, dX) {
 }
 function calculateXMidOfNode(maxWidthInColumn, daughters, leftOffset) {
 	var dXMid = leftOffset + (maxWidthInColumn / 2);
-	console.log("calc at beginning: dXmid = " + dXMid);
+	if (isRightToLeft) {
+		dXMid = leftOffset - (maxWidthInColumn / 2);
+	}
 	var numDaughters = daughters.length - 1;
 	if (isCenterColumnOrientedOnDaughtersWidth && numDaughters > 0) {
 		var firstDaughter = document.getElementById(daughters[0]);
@@ -345,7 +364,6 @@ function calculateXMidOfNode(maxWidthInColumn, daughters, leftOffset) {
 			}
 		}
 	}
-	console.log("calc at end      : dXmid = " + dXMid);
 	return dXMid;
 }
 function showNodeValues(node) {
@@ -362,16 +380,54 @@ function showNodeValues(node) {
 	var dXMid = parseFloat(node.getAttribute(ltXMid));
 	var width = parseFloat(node.getAttribute(ltWidth));
 	var maxWidthInColumn = parseFloat(node.getAttribute(ltMaxWidthInColumn));
-	console.log("node = "+ node.getAttribute(svgId) + "; " + node.innerHTML);
-	console.log("\tx-coord   = " + xcoord);
-	console.log("\txmid      = " + dXMid);
-	console.log("\twidth     = " + width);
-	console.log("\tmax       = " + maxWidthInColumn);
+//	console.log("node = "+ node.getAttribute(svgId) + "; " + node.innerHTML);
+//	console.log("\tx-coord   = " + xcoord);
+//	console.log("\txmid      = " + dXMid);
+//	console.log("\twidth     = " + width);
+//	console.log("\tmax       = " + maxWidthInColumn);
 }
 function adjustForRightToLeftOrientation(node, dAdjust) {
+	console.log("Adjusting for " + node.innerHTML);
 	var dWidth = parseFloat(node.getAttribute(ltWidth));
-	setRTLXCoord(node, dAdjust, dWidth);
+	var xcoord = parseFloat(node.getAttribute(svgXCoord));
+	var dAdjustedXCoord = (dAdjust - dWidth) - xcoord;
+	node.setAttribute(svgXCoord, dAdjustedXCoord);
+//	var isNodeText = node.getAttribute(ltNodeTextItems);
+//	if (isNodeText == "false") {
+//		setRTLXCoord(node, dAdjust, dWidth);
+//	} else {
+//		var dNodeTextsWidth = 0.0;
+//		var motherId = node.getAttribute(ltMother);
+//		var mother = document.getElementById(motherId);
+//		if (mother != null) {
+//			var mothersDaughtersList = mother.getAttribute(ltDaughters);
+//			var mothersDaughters = mothersDaughtersList.split(',');
+//			for (var i = 0; i < mothersDaughters.length - 1; i++) {
+//				var mothersDaughter = document.getElementById(mothersDaughters[i]);
+//				if (mothersDaughter != null && mothersDaughter != node) {
+//					var thisOneIsNodeText = mothersDaughter.getAttribute(ltNodeTextItems);
+//					if (thisOneIsNodeText == "true") {
+//						dNodeTextsWidth += dWidth;
+//					}
+//				}
+//			}
+//			console.log("node = " + node.innerHTML);
+//			console.log("\tdWidth          = " + dWidth);
+//			console.log("\tdAdjust         = " + dAdjust);
+//			console.log("\tdNodeTextsWidth = " + dNodeTextsWidth);
+//			var xcoord = parseFloat(node.getAttribute(svgXCoord));
+//			console.log("\txcoord before   = " + xcoord);
+//			setRTLXCoord(node, dAdjust, dWidth + dNodeTextsWidth);
+//			xcoord = parseFloat(node.getAttribute(svgXCoord));
+//			console.log("\txcoord after    = " + xcoord);
+//		}
+//	}
 	var dXMid = parseFloat(node.getAttribute(ltXMid));
+	var dAdjustedXMid = dAdjust - dXMid;
+	console.log("\txcoord before = " + xcoord);
+	console.log("\txcoord after  = " + dAdjustedXCoord);
+	console.log("\txmid before = " + dXMid);
+	console.log("\txmid after  = " + dAdjustedXMid);
 	node.setAttribute(ltXMid, dAdjust - dXMid);
 	adjustCollapsedForRightToLeftOrientration(node, dXMid, dAdjust);
 	var daughtersList = node.getAttribute(ltDaughters);
