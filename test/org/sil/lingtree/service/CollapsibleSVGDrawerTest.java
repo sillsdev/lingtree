@@ -40,7 +40,7 @@ public class CollapsibleSVGDrawerTest extends ServiceBaseTest {
 	public void drawAsCollapsibleSVGTest() {
 		checkCollapsibleSVGContentFor("(S 		(SP[66:SPR=par]\n"
 				+ "				(prep(\\L ל/לְ[629] (\\G to)))\n"
-				+ "(under me (\\Tis all of this material ) )\n"
+				+ "(under /ame/A (\\Tis all of this material ) )\n"
 				+ "			(SP[147:SPR=Xrec]\n"
 				+ "					(subs1(\\L כל/כָל־[630] (\\G wholea [/am sg c -/A])))\n"
 				+ "		(subs2(\\L כל/כָל־[630a] (\\G wholeb [m sg c -])))\n"

@@ -98,7 +98,7 @@ public class CollapsibleSVGDrawer extends TreeDrawer {
 				createNodeTextItemAsCollapsibleSVG(nt, node, sb, id);
 				if (node.getDaughters().size() > 0) {
 					// TODO: is this right?
-					createCollapsedTextAndTriangle(node, sb, nt.getItemId());
+					createCollapsedTextAndTriangle(node, sb, id);
 				}
 			}
 		} else {
@@ -268,6 +268,15 @@ public class CollapsibleSVGDrawer extends TreeDrawer {
 //		sb.append("\"");
 //		insertIsNodeText(node, sb);
 //		sb.append("\"");
+		if (node.getDaughters().size() > 0) {
+			sb.append(breakLongLine);
+			sb.append(" onclick=\"ProcessCollapsibleNode('node");
+			sb.append(id);
+			sb.append("')\"");
+			sb.append(" lt:collapsed=\"false\"");
+			sb.append(breakLongLine);
+			insertCollapsedNodesAndLines(node, sb);
+		}
 		sb.append(">");
 //		} else {
 //			sb.append(breakLongLine);

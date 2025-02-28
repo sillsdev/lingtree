@@ -237,6 +237,7 @@ function calculateXCoordinateAndXMidOfNodes(node, leftOffset) {
 		var nodeId = node.getAttribute(svgId);
 		adjustEllipsisTriangleAndTextLocation(nodeId, dXMid);
 		adjustLineBetweenNodeAndItsMother(nodeId, dXMid, motherId);
+		adjustAnyNodeTextItems(node, xcoord);
 		return;
 	}
 
@@ -273,7 +274,10 @@ function calculateXCoordinateAndXMidOfNodes(node, leftOffset) {
 	var width = parseFloat(node.getAttribute(ltWidth));
 	var xcoord = dXMid - (width / 2);
 	node.setAttribute(svgXCoord, xcoord);
-// now adjust any node texts
+	var nodeTextList = node.getAttribute(ltNodeTextItems);
+	adjustAnyNodeTextItems(node, xcoord);
+}
+function adjustAnyNodeTextItems(node, xcoord) {
 	var nodeTextList = node.getAttribute(ltNodeTextItems);
 	if (nodeTextList != null) {
 		var dNodesXCoord = xcoord;
@@ -288,7 +292,6 @@ function calculateXCoordinateAndXMidOfNodes(node, leftOffset) {
 			}
 		}
 	}
-
 }
 function adjustEllipsisTriangleAndTextLocation(nodeId, dXMid) {
 	var dLeftmostX = dXMid - dEllipsisXOffset;
