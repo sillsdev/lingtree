@@ -288,7 +288,7 @@ public class LingTreeNode {
 		double dInColumnMothersMaxWidth = 0.0;
 		LingTreeNode mother = getMother();
 		LingTreeNode thisNode = this;
-		while (mother != null && thisNode.getRightSister() == null) {
+		while (mother != null && mother.getDaughters().size() == 1) {
 			dInColumnMothersMaxWidth = Math.max(dInColumnMothersMaxWidth, mother.getWidth());
 			thisNode = mother;
 			mother = mother.getMother();

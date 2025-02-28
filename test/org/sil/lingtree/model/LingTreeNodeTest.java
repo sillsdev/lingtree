@@ -115,16 +115,29 @@ public class LingTreeNodeTest {
 		node1.setWidth(100.0);
 		LingTreeNode node2 = new LingTreeNode();
 		node2.setWidth(101.0);
+		node1.getDaughters().add(node2);
 		node2.setMother(node1);
 		assertEquals(100.0, node2.calculateMaxInColumnMothersWidth(), 0.0);
 		node1.setWidth(102.0);
 		assertEquals(102.0, node2.calculateMaxInColumnMothersWidth(), 0.0);
 		LingTreeNode node3 = new LingTreeNode();
 		node3.setWidth(99.0);
+		node2.getDaughters().add(node3);
 		node3.setMother(node2);
 		assertEquals(102.0, node3.calculateMaxInColumnMothersWidth(), 0.0);
 		LingTreeNode node11 = new LingTreeNode();
+		node11.setWidth(95.0);
 		node1.setRightSister(node11);
 		assertEquals(102.0, node3.calculateMaxInColumnMothersWidth(), 0.0);
+		LingTreeNode node4 = new LingTreeNode();
+		node4.setWidth(200.0);
+		node1.getDaughters().add(node4);
+		node4.setMother(node1);
+		node2.setRightSister(node4);
+		LingTreeNode node2RightSister = node2.getRightSister();
+		assertNotNull(node2RightSister);
+		assertEquals(node4, node2RightSister);
+		assertEquals(0.0, node2.calculateMaxInColumnMothersWidth(), 0.0);
+		assertEquals(0.0, node4.calculateMaxInColumnMothersWidth(), 0.0);
 	}
 }
