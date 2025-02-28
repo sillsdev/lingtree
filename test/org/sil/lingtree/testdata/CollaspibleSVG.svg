@@ -1,11 +1,14 @@
 ﻿<?xml version='1.0' standalone='no'?>
-<svg width='888.1455078125' height='302.19140225' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:lt='https://software.sil.org/lingtree/' contentScriptType='text/javascript'>
+<svg width='934.203125' height='344.04296875' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:lt='https://software.sil.org/lingtree/' contentScriptType='text/javascript'>
 <script type="text/javascript">
 var dEllipsisWidth = 38.896484375;
 var dEllipsisXOffset = 19.4482421875;
+var dTriangleXOffset = 3.0;
 var horizontalGap = 30.0;
 var initialXCoord = 100.0;
 var isCenterColumnOrientedOnDaughtersWidth = false;
+var isRightToLeft = false;
+var svgWidth = 934.203125;
 /**
  * Copyright (c) 2025 SIL Global
  * This software is licensed under the LGPL, version 2.1 or later
@@ -21,7 +24,7 @@ var ltCollapsedLines = "lt:collapsedLines";
 var ltCollapsedNodes = "lt:collapsedNodes";
 var ltDaughters = "lt:daughters";
 var ltHeight = "lt:height";
-var ltIsNodeText = "lt:isNodeText";
+var ltNodeTextItems = "lt:nodeTextItems";
 var ltIsTriangle = "lt:isTriangle";
 var ltMaxInColumnMothersWidth = "lt:maxInColumnMothersWidth";
 var ltMaxWidthInColumn = "lt:maxWidthInColumn";
@@ -38,6 +41,8 @@ var svgXCoord = "x";
 
 // Code for handling collapsing nodes
 function ProcessCollapsibleNode(nodeId) {
+	var rootNode = document.getElementById("node0");
+	showNodeValues(rootNode);
 	var text = document.getElementById(nodeId);
 	var collapsedNodes = text.getAttribute(ltCollapsedNodes);
 	let id = nodeId.substring(4);
@@ -57,9 +62,21 @@ function ProcessCollapsibleNode(nodeId) {
 		text.setAttribute(ltCollapsed, 'true');
 		hideAnyLowerCollapsedItems(nodes, lines);
 	}
-	var rootNode = document.getElementById("node0");
 	calculateMaxWidthOfNodes(rootNode);
-	calculateXCoordinateAndXMidOfNodes(rootNode, initialXCoord);
+	if (isRightToLeft) {
+		var dMaxWidthInColumn = parseFloat(rootNode.getAttribute(ltMaxWidthInColumn));
+		var dWidth = parseFloat(rootNode.getAttribute(ltWidth));
+		var dWidthToUse = Math.max(dWidth, dMaxWidthInColumn);
+//		console.log("max in column = " + dMaxWidthInColumn);
+//		console.log("width         = " + dWidth);
+//		console.log("width to use  = " + dWidthToUse);
+		calculateXCoordinateAndXMidOfNodes(rootNode, dWidthToUse + initialXCoord);
+//				var dAdjust = svgWidth + initialXCoord;
+//				console.log("dAdjust = " + dAdjust);
+//				adjustForRightToLeftOrientation(rootNode, dAdjust);
+	} else {
+		calculateXCoordinateAndXMidOfNodes(rootNode, initialXCoord);
+	}
 	resetAllLines(rootNode);
 	showNodeValues(rootNode);
 }
@@ -167,10 +184,6 @@ function calculateMaxWidthOfNodes(node) {
 	dMaxWidthOfNode = Math.max(dMaxWidthOfNode, dMaxWidthOfDaughters);
 	node.setAttribute(ltMaxWidthInColumn, dMaxWidthOfNode);
 	node.setAttribute(ltMaxWidthOfDaughters, dMaxWidthOfDaughters);
-	console.log("calcMaxWidth for " + node.innerHTML);
-	console.log("\tdMaxWidthOfDaughters = " + dMaxWidthOfDaughters);
-	console.log("\tdWidth               = " + dWidth);
-	console.log("\tnumDaughters         = " + numDaughters);
 	if (dMaxWidthOfDaughters &lt; dWidth &amp;&amp; numDaughters == 1) {
 		var daughter = document.getElementById(daughters[0]);
 		if (daughter != null) {
@@ -184,8 +197,6 @@ function calculateMaxWidthOfNodes(node) {
 // we need to set the maximum width of the daughters to that node's maximum width
 // so the x-coordinate and x-mid values are correct.
 function setDaughtersMaxWidth(node, newMaxWidth) {
-	console.log("setDaughtersMaxWidth for " + node.innerHTML);
-	console.log("\tnewMaxWidth = " + newMaxWidth);
 	node.setAttribute(ltMaxWidthInColumn, newMaxWidth);
 	var daughtersList = node.getAttribute(ltDaughters);
 	var daughters = daughtersList.split(',');
@@ -201,6 +212,7 @@ function setDaughtersMaxWidth(node, newMaxWidth) {
 // We use the maximum width of a node in its column (and its daughter's width) to
 // set the x-coordinate and x-mid values.
 // The left offset value needs to be maintained for the x-coordinate of where the column begins.
+// For right-to-left, we use subrraction to go from right edge to left
 function calculateXCoordinateAndXMidOfNodes(node, leftOffset) {
 	if (node == null) {
 		return;
@@ -208,38 +220,40 @@ function calculateXCoordinateAndXMidOfNodes(node, leftOffset) {
 	var daughtersLeftOffset = leftOffset;
 	var maxWidthInColumn = parseFloat(node.getAttribute(ltMaxWidthInColumn));
 	var maxWidthOfDaughters = parseFloat(node.getAttribute(ltMaxWidthOfDaughters));
-		var isNodeCollapsed = node.getAttribute(ltCollapsed);
+	var isNodeCollapsed = node.getAttribute(ltCollapsed);
 	if (isNodeCollapsed == "true") {
 		node.setAttribute(ltMaxWidthOfDaughters, dEllipsisWidth);
+		var motherId = node.getAttribute(ltMother);
+		var dMaxInlineMothersWidth = 0.0;
+		var mother = document.getElementById(motherId);
+		if (mother != null) {
+			var mothersDaughtersList = mother.getAttribute(ltDaughters);
+			var mothersDaughters = mothersDaughtersList.split(',');
+			if (mothersDaughters.length == 2) {
+				dMaxInlineMothersWidth = parseFloat(node.getAttribute(ltMaxInColumnMothersWidth));
+			}
+		}
 		var dWidth = parseFloat(node.getAttribute(ltWidth));
-		var dMaxInlineMothersWidth = parseFloat(node.getAttribute(ltMaxInColumnMothersWidth));
 		var dMaxWidthInColumn = Math.max(dWidth, dEllipsisWidth, dMaxInlineMothersWidth);
 		node.setAttribute(ltMaxWidthInColumn, dMaxWidthInColumn);
 		var xcoord = leftOffset;
-		xcoord += (dMaxWidthInColumn - dWidth) / 2;
+		if (isRightToLeft) {
+			xcoord -= (dMaxWidthInColumn + dWidth) / 2;
+		} else {
+			xcoord += (dMaxWidthInColumn - dWidth) / 2;
+		}
 		node.setAttribute(svgXCoord, xcoord);
 		var dXMid = xcoord + (dWidth / 2);
 		node.setAttribute(ltXMid, dXMid);
 		var nodeId = node.getAttribute(svgId);
 		adjustEllipsisTriangleAndTextLocation(nodeId, dXMid);
-		var motherId = node.getAttribute(ltMother);
 		adjustLineBetweenNodeAndItsMother(nodeId, dXMid, motherId);
-		console.log("Collapsed: node = " + node.innerHTML);
-		console.log("\twidth         = " + dWidth);
-		console.log("\tmomsmaxwidth  = " + dMaxInlineMothersWidth);
-		console.log("\tmaxwidthincol = " + dMaxWidthInColumn);
-		console.log("\tellipsis      = " + dEllipsisWidth);
-		console.log("\toffset        = " + leftOffset);
-		console.log("\txcoord        = " + xcoord);
 		return;
 	}
 
 	var daughtersList = node.getAttribute(ltDaughters);
 	var daughters = daughtersList.split(',');
 	var numDaughters = daughters.length - 1;
-	console.log("cxx: node = " + node.innerHTML);
-	console.log("\tdaughtersList = " + daughtersList);
-	console.log("\tnum daughters = " + numDaughters);
 	if (maxWidthInColumn > maxWidthOfDaughters &amp;&amp; numDaughters > 1) {
 		daughtersLeftOffset += (maxWidthInColumn - maxWidthOfDaughters) / 2;
 	}
@@ -249,26 +263,43 @@ function calculateXCoordinateAndXMidOfNodes(node, leftOffset) {
 		if (daughter == null) {
 			continue;
 		}
-		var isNodeText = daughter.getAttribute(ltIsNodeText);
 		var gap = horizontalGap;
-		if (i == 0 || isNodeText == "true") {
+		if (i == 0 || nodeTextList == "true") {
 			gap = 0.0;
 		}
-		calculateXCoordinateAndXMidOfNodes(daughter, daughtersLeftOffset + gap);
+		var newLeftOffset = daughtersLeftOffset + gap;
+		if (isRightToLeft) {
+			newLeftOffset = daughtersLeftOffset - gap;
+		}
+		calculateXCoordinateAndXMidOfNodes(daughter, newLeftOffset);
 		var daughtersMaxWidthInColumn = parseFloat(daughter.getAttribute(ltMaxWidthInColumn));
-		daughtersLeftOffset += daughtersMaxWidthInColumn + gap;
+		if (isRightToLeft) {
+			daughtersLeftOffset -= (daughtersMaxWidthInColumn + gap);
+		} else {
+			daughtersLeftOffset += daughtersMaxWidthInColumn + gap;
+		}
 	}
 	var dXMid = calculateXMidOfNode(maxWidthInColumn, daughters, leftOffset);
-//	console.log("dXmid after calc = " + dXMid);
 	node.setAttribute(ltXMid, dXMid);
 	var width = parseFloat(node.getAttribute(ltWidth));
 	var xcoord = dXMid - (width / 2);
 	node.setAttribute(svgXCoord, xcoord);
-//	console.log("node = "+ node.getAttribute(svgId) + "; " + node.innerHTML);
-//	console.log("\tx-coord   = " + xcoord);
-//	console.log("\txmid      = " + dXMid);
-//	console.log("\twidth     = " + width);
-//	console.log("\tmax       = " + maxWidthInColumn);
+	
+	var nodeTextList = node.getAttribute(ltNodeTextItems);
+	if (nodeTextList != null) {
+		var dNodesXCoord = xcoord;
+		var nodeTexts = nodeTextList.split(',');
+		var numNodeTexts = nodeTexts.length - 1;
+		for (let j = 0; j &lt; numNodeTexts; j++) {
+			var nodeText = document.getElementById(nodeTexts[j]);
+			if (nodeText != null) {
+				nodeText.setAttribute(svgXCoord, dNodesXCoord);
+				var dntWidth = parseFloat(nodeText.getAttribute(ltWidth));
+				dNodesXCoord += dntWidth;
+			}
+		}
+	}
+
 }
 function adjustEllipsisTriangleAndTextLocation(nodeId, dXMid) {
 	var dLeftmostX = dXMid - dEllipsisXOffset;
@@ -309,10 +340,12 @@ function adjustTriangleBetweenNodeAndItsMother(node, motherId) {
 		var dMotherXMid = parseFloat(mother.getAttribute(ltXMid));
 		var dXCoord = parseFloat(node.getAttribute(svgXCoord));
 		var dXWidth = parseFloat(node.getAttribute(ltWidth));
+		var dX1 = dXCoord + dTriangleXOffset;
+		var dX2 = dXCoord + dXWidth- dTriangleXOffset;
 		var lineId = "line" + nodeId.substring(4) + "-" + motherId.substring(4);
-		adjustTriangleLineXCoords(lineId, dXCoord, dMotherXMid);
-		adjustTriangleLineXCoords(lineId + "T2", dMotherXMid, dXCoord + dXWidth);
-		adjustTriangleLineXCoords(lineId + "T3", dXCoord, dXCoord + dXWidth);
+		adjustTriangleLineXCoords(lineId, dX1, dMotherXMid);
+		adjustTriangleLineXCoords(lineId + "T2", dMotherXMid, dX2);
+		adjustTriangleLineXCoords(lineId + "T3", dX1, dX2);
 	}
 }
 function adjustTriangleLineXCoords(lineId, dX1, dX2) {
@@ -330,7 +363,9 @@ function adjustCollapsedText(nodeId, dX) {
 }
 function calculateXMidOfNode(maxWidthInColumn, daughters, leftOffset) {
 	var dXMid = leftOffset + (maxWidthInColumn / 2);
-	console.log("calc at beginning: dXmid = " + dXMid);
+	if (isRightToLeft) {
+		dXMid = leftOffset - (maxWidthInColumn / 2);
+	}
 	var numDaughters = daughters.length - 1;
 	if (isCenterColumnOrientedOnDaughtersWidth &amp;&amp; numDaughters > 0) {
 		var firstDaughter = document.getElementById(daughters[0]);
@@ -349,7 +384,6 @@ function calculateXMidOfNode(maxWidthInColumn, daughters, leftOffset) {
 			}
 		}
 	}
-	console.log("calc at end      : dXmid = " + dXMid);
 	return dXMid;
 }
 function showNodeValues(node) {
@@ -366,277 +400,404 @@ function showNodeValues(node) {
 	var dXMid = parseFloat(node.getAttribute(ltXMid));
 	var width = parseFloat(node.getAttribute(ltWidth));
 	var maxWidthInColumn = parseFloat(node.getAttribute(ltMaxWidthInColumn));
-	console.log("node = "+ node.getAttribute(svgId) + "; " + node.innerHTML);
-	console.log("\tx-coord   = " + xcoord);
-	console.log("\txmid      = " + dXMid);
-	console.log("\twidth     = " + width);
-	console.log("\tmax       = " + maxWidthInColumn);
+//	console.log("node = "+ node.getAttribute(svgId) + "; " + node.innerHTML);
+//	console.log("\tx-coord   = " + xcoord);
+//	console.log("\txmid      = " + dXMid);
+//	console.log("\twidth     = " + width);
+//	console.log("\tmax       = " + maxWidthInColumn);
+}
+function adjustForRightToLeftOrientation(node, dAdjust) {
+	console.log("Adjusting for " + node.innerHTML);
+	var dWidth = parseFloat(node.getAttribute(ltWidth));
+	var xcoord = parseFloat(node.getAttribute(svgXCoord));
+	var dAdjustedXCoord = (dAdjust - dWidth) - xcoord;
+	node.setAttribute(svgXCoord, dAdjustedXCoord);
+//	var isNodeText = node.getAttribute(ltNodeTextItems);
+//	if (isNodeText == "false") {
+//		setRTLXCoord(node, dAdjust, dWidth);
+//	} else {
+//		var dNodeTextsWidth = 0.0;
+//		var motherId = node.getAttribute(ltMother);
+//		var mother = document.getElementById(motherId);
+//		if (mother != null) {
+//			var mothersDaughtersList = mother.getAttribute(ltDaughters);
+//			var mothersDaughters = mothersDaughtersList.split(',');
+//			for (var i = 0; i &lt; mothersDaughters.length - 1; i++) {
+//				var mothersDaughter = document.getElementById(mothersDaughters[i]);
+//				if (mothersDaughter != null &amp;&amp; mothersDaughter != node) {
+//					var thisOneIsNodeText = mothersDaughter.getAttribute(ltNodeTextItems);
+//					if (thisOneIsNodeText == "true") {
+//						dNodeTextsWidth += dWidth;
+//					}
+//				}
+//			}
+//			console.log("node = " + node.innerHTML);
+//			console.log("\tdWidth          = " + dWidth);
+//			console.log("\tdAdjust         = " + dAdjust);
+//			console.log("\tdNodeTextsWidth = " + dNodeTextsWidth);
+//			var xcoord = parseFloat(node.getAttribute(svgXCoord));
+//			console.log("\txcoord before   = " + xcoord);
+//			setRTLXCoord(node, dAdjust, dWidth + dNodeTextsWidth);
+//			xcoord = parseFloat(node.getAttribute(svgXCoord));
+//			console.log("\txcoord after    = " + xcoord);
+//		}
+//	}
+	var dXMid = parseFloat(node.getAttribute(ltXMid));
+	var dAdjustedXMid = dAdjust - dXMid;
+	console.log("\txcoord before = " + xcoord);
+	console.log("\txcoord after  = " + dAdjustedXCoord);
+	console.log("\txmid before = " + dXMid);
+	console.log("\txmid after  = " + dAdjustedXMid);
+	node.setAttribute(ltXMid, dAdjust - dXMid);
+	adjustCollapsedForRightToLeftOrientration(node, dXMid, dAdjust);
+	var daughtersList = node.getAttribute(ltDaughters);
+	var daughters = daughtersList.split(',');
+	for (var i = 0; i &lt; daughters.length - 1; i++) {
+		var daughter = document.getElementById(daughters[i]);
+		if (daughter == null) {
+			continue;
+		}
+		adjustForRightToLeftOrientation(daughter, dAdjust);
+	}
+}
+function adjustCollapsedForRightToLeftOrientration(node, dXMid, dAdjust) {
+	var nodeId = node.getAttribute(svgId);
+	let id = nodeId.substring(4);
+	var collapsedNode = document.getElementById('collapsed' + id);
+	if (collapsedNode != null) {
+		setRTLXCoord(collapsedNode, dAdjust, dEllipsisWidth);
+	}
+	var lineId = 'line' + id;
+	var dLeftmostX = (dAdjust - dXMid) - dEllipsisXOffset;
+	var dRightmostX = (dAdjust - dXMid) + dEllipsisXOffset;
+	var dTopX = dAdjust - dXMid;
+	setRTLCollapsedTriangleLine(dLeftmostX, dTopX, lineId, "1");
+	setRTLCollapsedTriangleLine(dTopX, dRightmostX, lineId, "2");
+	setRTLCollapsedTriangleLine(dLeftmostX, dRightmostX, lineId, "3");
+}
+function setRTLXCoord(node, dAdjust, dWidth) {
+	var xcoord = parseFloat(node.getAttribute(svgXCoord));
+	var dNewXCoord = (dAdjust - dWidth) - xcoord;
+	node.setAttribute(svgXCoord, dNewXCoord);
+}
+function setRTLCollapsedTriangleLine(dX1, dX2, lineId, trianglePart) {
+	var line = document.getElementById(lineId + "T" + trianglePart);
+	if (line != null) {
+		line.setAttribute(svgX1, dX1);
+		line.setAttribute(svgX2, dX2);
+	}
 }
 ﻿</script>
 <rect width="100%" height="100%" fill="#ffffff"/>
-<text id="node0" x="433.99609375" y="100.0"
+<text id="node0" x="428.8438720703125" y="100.0"
 	 font-family="Times New Roman" font-size="12.0" fill="#000000"
-	 lt:width="136.998046875" lt:maxWidthOfDaughters="0.0" lt:maxWidthInColumn="0.0" lt:xMid="502.4951171875" lt:maxInColumnMothersWidth="0.0"
-	 lt:mother="node" lt:daughters="node1,node5,node6,node27," lt:rightSister="node" lt:isTriangle="false" lt:isNodeText="false">PT=NP[4]:PF=Objc:PD=det</text>
-<text id="node1" x="159.1416015625" y="133.40625"
+	 lt:width="6.673828125" lt:maxWidthOfDaughters="0.0" lt:maxWidthInColumn="0.0" lt:xMid="432.1807861328125" lt:maxInColumnMothersWidth="0.0"
+	 lt:mother="node" lt:daughters="node1," lt:rightSister="node" lt:isTriangle="false">S</text>
+<text id="node1" x="392.1231689453125" y="133.2890625"
 	 font-family="Times New Roman" font-size="12.0" fill="#000000"
-	 lt:width="18.71484375" lt:maxWidthOfDaughters="0.0" lt:maxWidthInColumn="0.0" lt:xMid="168.4990234375" lt:maxInColumnMothersWidth="0.0"
-	 lt:mother="node0" lt:daughters="node2," lt:rightSister="node4" lt:isTriangle="false" lt:isNodeText="false"
+	 lt:width="80.115234375" lt:maxWidthOfDaughters="0.0" lt:maxWidthInColumn="0.0" lt:xMid="432.1807861328125" lt:maxInColumnMothersWidth="6.673828125"
+	 lt:mother="node0" lt:daughters="node2,node5,node7,node17," lt:rightSister="node" lt:isTriangle="false"
 	 onclick="ProcessCollapsibleNode('node1')" lt:collapsed="false"
-	 lt:collapsedNodes="node2,node3"
-	 lt:collapsedLines="line2-1" visibility="visible">part</text>
-<text id="collapsed1" x="149.05078125" y="173.03515625" font-family="Arial" font-size="28.0" fill="#000000" visibility="hidden">. . .</text>
-<line id="line1T1" x1="149.05078125" y1="155.6796875" x2="168.4990234375" y2="139.001953125" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
-<line id="line1T2" x1="168.4990234375" y1="139.001953125" x2="187.947265625" y2="155.6796875" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
-<line id="line1T3" x1="149.05078125" y1="155.6796875" x2="187.947265625" y2="155.6796875" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
-<line id="line1-0" x1="502.4951171875" y1="105.595703125" x2="168.4990234375" y2="119.712890625" stroke="#000000" stroke-width="1.0" visibility="visible"/>
-<text id="node2" x="130.515625" y="173.03515625"
-	 font-family="Charis SIL" font-size="12.0" fill="#0000ff"
-	 lt:width="75.966796875" lt:maxWidthOfDaughters="0.0" lt:maxWidthInColumn="0.0" lt:xMid="168.4990234375" lt:maxInColumnMothersWidth="18.71484375"
-	 lt:mother="node1" lt:daughters="node3," lt:rightSister="node" lt:isTriangle="false" lt:isNodeText="false">את/אֶת־[285]</text>
-<text id="collapsed2" x="149.05078125" y="190.32421475" font-family="Arial" font-size="28.0" fill="#000000" visibility="hidden">. . .</text>
-<line id="line2T1" x1="149.05078125" y1="176.4609335" x2="168.4990234375" y2="181.30859375" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
-<line id="line2T2" x1="168.4990234375" y1="181.30859375" x2="187.947265625" y2="176.4609335" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
-<line id="line2T3" x1="149.05078125" y1="176.4609335" x2="187.947265625" y2="176.4609335" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
-<line id="line2-1" x1="168.4990234375" y1="139.001953125" x2="168.4990234375" y2="155.6796875" stroke="#000000" stroke-width="1.0" visibility="visible"/>
-<text id="node3" x="132.0712890625" y="190.32421475"
-	 font-family="Arial" font-size="12.0" fill="#008000"
-	 lt:width="72.85546875" lt:maxWidthOfDaughters="0.0" lt:maxWidthInColumn="0.0" lt:xMid="168.4990234375" lt:maxInColumnMothersWidth="75.966796875"
-	 lt:mother="node2" lt:daughters="node" lt:rightSister="node" lt:isTriangle="false" lt:isNodeText="false"
-	 onclick="ProcessCollapsibleNode('node3')" lt:collapsed="false"
-	>object marker</text>
-<text id="collapsed3" x="149.05078125" y="215.8671835" font-family="Arial" font-size="28.0" fill="#000000" visibility="hidden">. . .</text>
-<line id="line3T1" x1="149.05078125" y1="215.8671835" x2="168.4990234375" y2="195.8671835" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
-<line id="line3T2" x1="168.4990234375" y1="195.8671835" x2="187.947265625" y2="215.8671835" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
-<line id="line3T3" x1="149.05078125" y1="215.8671835" x2="187.947265625" y2="215.8671835" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
-<text id="node5" x="492.84326171875" y="133.40625"
+	 lt:collapsedNodes="node2,node3,node4,node5,node6,node7,node8,node9,node10nt11,node10nt12,node10nt13,node10,node14,node15,node16,node17,node18,node19,node20,node21nt22,node21nt23,node21nt24,node21,node25,node26,node27,node28,node29,node30,node31,node32nt33,node32nt34,node32nt35,node32"
+	 lt:collapsedLines="line2-1,line3-2,line5-1,line6-5,line6-5T2,line6-5T3,line7-1,line8-7,line9-8,line14-7,line15-14,line17-1,line18-17,line19-18,line20-19,line25-17,line26-25,line27-26,line28-27,line30-26,line31-30" visibility="visible">SP[66:SPR=par]</text>
+<text id="collapsed1" x="412.7325439453125" y="166.578125" font-family="Arial" font-size="28.0" fill="#000000" visibility="hidden">. . .</text>
+<line id="line1T1" x1="412.7325439453125" y1="152.884765625" x2="432.1807861328125" y2="138.884765625" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line1T2" x1="432.1807861328125" y1="138.884765625" x2="451.6290283203125" y2="152.884765625" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line1T3" x1="412.7325439453125" y1="152.884765625" x2="451.6290283203125" y2="152.884765625" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line1-0" x1="432.1807861328125" y1="105.595703125" x2="432.1807861328125" y2="119.595703125" stroke="#000000" stroke-width="1.0" visibility="visible"/>
+<text id="node2" x="129.3759765625" y="166.578125"
 	 font-family="Times New Roman" font-size="12.0" fill="#000000"
-	 lt:width="85.458984375" lt:maxWidthOfDaughters="0.0" lt:maxWidthInColumn="0.0" lt:xMid="544.24462890625" lt:maxInColumnMothersWidth="0.0"
-	 lt:mother="node0" lt:daughters="node7,node20,node21," lt:rightSister="node27" lt:isTriangle="false" lt:isNodeText="true"
+	 lt:width="21.36328125" lt:maxWidthOfDaughters="0.0" lt:maxWidthInColumn="0.0" lt:xMid="140.0576171875" lt:maxInColumnMothersWidth="0.0"
+	 lt:mother="node1" lt:daughters="node3," lt:rightSister="node5" lt:isTriangle="false"
+	 onclick="ProcessCollapsibleNode('node2')" lt:collapsed="false"
+	 lt:collapsedNodes="node3,node4"
+	 lt:collapsedLines="line3-2" visibility="visible">prep</text>
+<text id="collapsed2" x="120.609375" y="206.20703125" font-family="Arial" font-size="28.0" fill="#000000" visibility="hidden">. . .</text>
+<line id="line2T1" x1="120.609375" y1="188.8515625" x2="140.0576171875" y2="172.173828125" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line2T2" x1="140.0576171875" y1="172.173828125" x2="159.505859375" y2="188.8515625" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line2T3" x1="120.609375" y1="188.8515625" x2="159.505859375" y2="188.8515625" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line2-1" x1="432.1807861328125" y1="138.884765625" x2="140.0576171875" y2="152.884765625" stroke="#000000" stroke-width="1.0" visibility="visible"/>
+<text id="node3" x="115.298828125" y="206.20703125"
+	 font-family="Charis SIL" font-size="12.0" fill="#0000ff"
+	 lt:width="49.517578125" lt:maxWidthOfDaughters="0.0" lt:maxWidthInColumn="0.0" lt:xMid="140.0576171875" lt:maxInColumnMothersWidth="21.36328125"
+	 lt:mother="node2" lt:daughters="node4," lt:rightSister="node" lt:isTriangle="false">ל/לְ[629]</text>
+<text id="collapsed3" x="120.609375" y="225.8359375" font-family="Arial" font-size="28.0" fill="#000000" visibility="hidden">. . .</text>
+<line id="line3T1" x1="120.609375" y1="211.97265625" x2="140.0576171875" y2="214.48046875" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line3T2" x1="140.0576171875" y1="214.48046875" x2="159.505859375" y2="211.97265625" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line3T3" x1="120.609375" y1="211.97265625" x2="159.505859375" y2="211.97265625" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line3-2" x1="140.0576171875" y1="172.173828125" x2="140.0576171875" y2="188.8515625" stroke="#000000" stroke-width="1.0" visibility="visible"/>
+<text id="node4" x="135.0537109375" y="225.8359375"
+	 font-family="Arial" font-size="12.0" fill="#008000"
+	 lt:width="10.0078125" lt:maxWidthOfDaughters="0.0" lt:maxWidthInColumn="0.0" lt:xMid="140.0576171875" lt:maxInColumnMothersWidth="49.517578125"
+	 lt:mother="node3" lt:daughters="node" lt:rightSister="node" lt:isTriangle="false"
+	 onclick="ProcessCollapsibleNode('node4')" lt:collapsed="false"
+	>to</text>
+<text id="collapsed4" x="120.609375" y="251.37890625" font-family="Arial" font-size="28.0" fill="#000000" visibility="hidden">. . .</text>
+<line id="line4T1" x1="120.609375" y1="251.37890625" x2="140.0576171875" y2="231.37890625" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line4T2" x1="140.0576171875" y1="231.37890625" x2="159.505859375" y2="251.37890625" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line4T3" x1="120.609375" y1="251.37890625" x2="159.505859375" y2="251.37890625" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<text id="node5" x="236.9453125" y="166.578125"
+	 font-family="Times New Roman" font-size="12.0" fill="#000000"
+	 lt:width="44.982421875" lt:maxWidthOfDaughters="0.0" lt:maxWidthInColumn="0.0" lt:xMid="259.4365234375" lt:maxInColumnMothersWidth="0.0"
+	 lt:mother="node1" lt:daughters="node6," lt:rightSister="node7" lt:isTriangle="false"
 	 onclick="ProcessCollapsibleNode('node5')" lt:collapsed="false"
-	 lt:collapsedNodes="node7,node8,node9,node10,node11,node12,node13,node14,node16,node17,node18,node20,node21,node22,node23,node24,node25,node26"
-	 lt:collapsedLines="line7-4,line8-7,line10-8,line11-10,line13-8,line14-13,line19-4,line22-19,line24-22,line25-24" visibility="visible">SP[4:SPR=Appo]</text>
-<text id="collapsed5" x="524.79638671875" y="173.03515625" font-family="Arial" font-size="28.0" fill="#000000" visibility="hidden">. . .</text>
-<line id="line5T1" x1="524.79638671875" y1="159.341796875" x2="544.24462890625" y2="139.001953125" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
-<line id="line5T2" x1="544.24462890625" y1="139.001953125" x2="563.69287109375" y2="159.341796875" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
-<line id="line5T3" x1="524.79638671875" y1="159.341796875" x2="563.69287109375" y2="159.341796875" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
-<text id="node6" x="578.30224609375" y="133.40625"
-	 font-family="Arial" font-size="12.0" fill="#008000"
-	 lt:width="17.34375" lt:maxWidthOfDaughters="0.0" lt:maxWidthInColumn="0.0" lt:xMid="544.24462890625" lt:maxInColumnMothersWidth="0.0"
-	 lt:mother="node0" lt:daughters="node7,node20,node21," lt:rightSister="node27" lt:isTriangle="false" lt:isNodeText="true"
+	 lt:collapsedNodes="node6"
+	 lt:collapsedLines="line6-5,line6-5T2,line6-5T3" visibility="visible">under me</text>
+<text id="collapsed5" x="239.98828125" y="206.20703125" font-family="Arial" font-size="28.0" fill="#000000" visibility="hidden">. . .</text>
+<line id="line5T1" x1="239.98828125" y1="192.513671875" x2="259.4365234375" y2="172.173828125" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line5T2" x1="259.4365234375" y1="172.173828125" x2="278.884765625" y2="192.513671875" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line5T3" x1="239.98828125" y1="192.513671875" x2="278.884765625" y2="192.513671875" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line5-1" x1="432.1807861328125" y1="138.884765625" x2="259.4365234375" y2="152.884765625" stroke="#000000" stroke-width="1.0" visibility="visible"/>
+<text id="node6" x="210.115234375" y="206.20703125"
+	 font-family="Times New Roman" font-size="12.0" fill="#000000"
+	 lt:width="98.642578125" lt:maxWidthOfDaughters="0.0" lt:maxWidthInColumn="0.0" lt:xMid="259.4365234375" lt:maxInColumnMothersWidth="44.982421875"
+	 lt:mother="node5" lt:daughters="node" lt:rightSister="node" lt:isTriangle="true"
 	 onclick="ProcessCollapsibleNode('node6')" lt:collapsed="false"
-	 lt:collapsedNodes="node7,node8,node9,node10,node11,node12,node13,node14,node16,node17,node18,node20,node21,node22,node23,node24,node25,node26"
-	 lt:collapsedLines="line7-4,line8-7,line10-8,line11-10,line13-8,line14-13,line19-4,line22-19,line24-22,line25-24" visibility="visible">pro</text>
-<text id="collapsed6" x="524.79638671875" y="173.03515625" font-family="Arial" font-size="28.0" fill="#000000" visibility="hidden">. . .</text>
-<line id="line6T1" x1="524.79638671875" y1="159.341796875" x2="544.24462890625" y2="139.001953125" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
-<line id="line6T2" x1="544.24462890625" y1="139.001953125" x2="563.69287109375" y2="159.341796875" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
-<line id="line6T3" x1="524.79638671875" y1="159.341796875" x2="563.69287109375" y2="159.341796875" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
-<line id="line4-0" x1="502.4951171875" y1="105.595703125" x2="544.24462890625" y2="119.54296875" stroke="#000000" stroke-width="1.0" visibility="visible"/>
-<text id="node7" x="375.9384765625" y="173.03515625"
+	>is all of this material</text>
+<text id="collapsed6" x="239.98828125" y="231.802734375" font-family="Arial" font-size="28.0" fill="#000000" visibility="hidden">. . .</text>
+<line id="line6T1" x1="239.98828125" y1="231.802734375" x2="259.4365234375" y2="211.802734375" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line6T2" x1="259.4365234375" y1="211.802734375" x2="278.884765625" y2="231.802734375" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line6T3" x1="239.98828125" y1="231.802734375" x2="278.884765625" y2="231.802734375" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line6-5" x1="213.115234375" y1="192.513671875" x2="259.4365234375" y2="172.173828125" stroke="#000000" stroke-width="1.0" visibility="visible"/>
+<line id="line6-5T2" x1="259.4365234375" y1="172.173828125" x2="305.7578125" y2="192.513671875" stroke="#000000" stroke-width="1.0" visibility="visible"/>
+<line id="line6-5T3" x1="213.115234375" y1="192.513671875" x2="305.7578125" y2="192.513671875" stroke="#000000" stroke-width="1.0" visibility="visible"/>
+<text id="node7" x="400.8115234375" y="166.578125"
 	 font-family="Times New Roman" font-size="12.0" fill="#000000"
-	 lt:width="86.115234375" lt:maxWidthOfDaughters="0.0" lt:maxWidthInColumn="0.0" lt:xMid="418.99609375" lt:maxInColumnMothersWidth="0.0"
-	 lt:mother="node4" lt:daughters="node8," lt:rightSister="node19" lt:isTriangle="false" lt:isNodeText="false"
+	 lt:width="94.107421875" lt:maxWidthOfDaughters="0.0" lt:maxWidthInColumn="0.0" lt:xMid="447.865234375" lt:maxInColumnMothersWidth="0.0"
+	 lt:mother="node1" lt:daughters="node8,node14," lt:rightSister="node17" lt:isTriangle="false"
 	 onclick="ProcessCollapsibleNode('node7')" lt:collapsed="false"
-	 lt:collapsedNodes="node8,node9,node10,node11,node12,node13,node14,node16,node17,node18"
-	 lt:collapsedLines="line8-7,line10-8,line11-10,line13-8,line14-13" visibility="visible">SP[25:SPR=Xatr]</text>
-<text id="collapsed7" x="399.5478515625" y="210.32421475" font-family="Arial" font-size="28.0" fill="#000000" visibility="hidden">. . .</text>
-<line id="line7T1" x1="399.5478515625" y1="196.630855375" x2="418.99609375" y2="178.630859375" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
-<line id="line7T2" x1="418.99609375" y1="178.630859375" x2="438.4443359375" y2="196.630855375" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
-<line id="line7T3" x1="399.5478515625" y1="196.630855375" x2="438.4443359375" y2="196.630855375" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
-<line id="line7-4" x1="544.24462890625" y1="139.001953125" x2="418.99609375" y2="159.341796875" stroke="#000000" stroke-width="1.0" visibility="visible"/>
-<text id="node8" x="409.22617197036743" y="210.32421475"
+	 lt:collapsedNodes="node8,node9,node10nt11,node10nt12,node10nt13,node10,node14,node15,node16"
+	 lt:collapsedLines="line8-7,line9-8,line14-7,line15-14" visibility="visible">SP[147:SPR=Xrec]</text>
+<text id="collapsed7" x="428.4169921875" y="206.20703125" font-family="Arial" font-size="28.0" fill="#000000" visibility="hidden">. . .</text>
+<line id="line7T1" x1="428.4169921875" y1="192.513671875" x2="447.865234375" y2="172.173828125" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line7T2" x1="447.865234375" y1="172.173828125" x2="467.3134765625" y2="192.513671875" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line7T3" x1="428.4169921875" y1="192.513671875" x2="467.3134765625" y2="192.513671875" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line7-1" x1="432.1807861328125" y1="138.884765625" x2="447.865234375" y2="152.884765625" stroke="#000000" stroke-width="1.0" visibility="visible"/>
+<text id="node8" x="372.1416015625" y="206.20703125"
 	 font-family="Times New Roman" font-size="12.0" fill="#000000"
-	 lt:width="15.33984375" lt:maxWidthOfDaughters="0.0" lt:maxWidthInColumn="0.0" lt:xMid="418.99609375" lt:maxInColumnMothersWidth="86.115234375"
-	 lt:mother="node7" lt:daughters="node10,node13," lt:rightSister="node" lt:isTriangle="false" lt:isNodeText="false"
+	 lt:width="27.33984375" lt:maxWidthOfDaughters="0.0" lt:maxWidthInColumn="0.0" lt:xMid="385.8115234375" lt:maxInColumnMothersWidth="0.0"
+	 lt:mother="node7" lt:daughters="node9," lt:rightSister="node14" lt:isTriangle="false"
 	 onclick="ProcessCollapsibleNode('node8')" lt:collapsed="false"
-	 lt:collapsedNodes="node9,node10,node11,node12,node13,node14,node16,node17,node18"
-	 lt:collapsedLines="line10-8,line11-10,line13-8,line14-13" visibility="visible">DP</text>
-<text id="collapsed8" x="399.5478515625" y="243.61327725" font-family="Arial" font-size="28.0" fill="#000000" visibility="hidden">. . .</text>
-<line id="line8T1" x1="399.5478515625" y1="229.919917875" x2="418.99609375" y2="215.919917875" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
-<line id="line8T2" x1="418.99609375" y1="215.919917875" x2="438.4443359375" y2="229.919917875" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
-<line id="line8T3" x1="399.5478515625" y1="229.919917875" x2="438.4443359375" y2="229.919917875" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
-<text id="node9" x="424.56601572036743" y="212.00421475000002"
-	 font-family="Times New Roman" font-size="8.399999999999999" fill="#000000"
-	 lt:width="4.20001220703125" lt:maxWidthOfDaughters="0.0" lt:maxWidthInColumn="0.0" lt:xMid="418.99609375" lt:maxInColumnMothersWidth="86.115234375"
-	 lt:mother="node7" lt:daughters="node10,node13," lt:rightSister="node" lt:isTriangle="false" lt:isNodeText="false"
-	 onclick="ProcessCollapsibleNode('node9')" lt:collapsed="false"
-	 lt:collapsedNodes="node9,node10,node11,node12,node13,node14,node16,node17,node18"
-	 lt:collapsedLines="line10-8,line11-10,line13-8,line14-13" visibility="visible">1</text>
-<text id="collapsed9" x="399.5478515625" y="243.61327725" font-family="Arial" font-size="28.0" fill="#000000" visibility="hidden">. . .</text>
-<line id="line9T1" x1="399.5478515625" y1="229.919917875" x2="418.99609375" y2="215.919917875" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
-<line id="line9T2" x1="418.99609375" y1="215.919917875" x2="438.4443359375" y2="229.919917875" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
-<line id="line9T3" x1="399.5478515625" y1="229.919917875" x2="438.4443359375" y2="229.919917875" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
-<line id="line8-7" x1="418.99609375" y1="178.630859375" x2="418.99609375" y2="196.630855375" stroke="#000000" stroke-width="1.0" visibility="visible"/>
-<text id="node10" x="326.1689453125" y="243.61327725"
-	 font-family="Times New Roman" font-size="12.0" fill="#000000"
-	 lt:width="18.65625" lt:maxWidthOfDaughters="0.0" lt:maxWidthInColumn="0.0" lt:xMid="335.4970703125" lt:maxInColumnMothersWidth="0.0"
-	 lt:mother="node8" lt:daughters="node11," lt:rightSister="node13" lt:isTriangle="false" lt:isNodeText="false"
+	 lt:collapsedNodes="node9,node10nt11,node10nt12,node10nt13,node10"
+	 lt:collapsedLines="line9-8" visibility="visible">subs1</text>
+<text id="collapsed8" x="366.36328125" y="245.8359375" font-family="Arial" font-size="28.0" fill="#000000" visibility="hidden">. . .</text>
+<line id="line8T1" x1="366.36328125" y1="228.48046875" x2="385.8115234375" y2="211.802734375" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line8T2" x1="385.8115234375" y1="211.802734375" x2="405.259765625" y2="228.48046875" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line8T3" x1="366.36328125" y1="228.48046875" x2="405.259765625" y2="228.48046875" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line8-7" x1="447.865234375" y1="172.173828125" x2="385.8115234375" y2="192.513671875" stroke="#000000" stroke-width="1.0" visibility="visible"/>
+<text id="node9" x="352.1142578125" y="245.8359375"
+	 font-family="Charis SIL" font-size="12.0" fill="#0000ff"
+	 lt:width="67.39453125" lt:maxWidthOfDaughters="0.0" lt:maxWidthInColumn="0.0" lt:xMid="385.8115234375" lt:maxInColumnMothersWidth="27.33984375"
+	 lt:mother="node8" lt:daughters="node10," lt:rightSister="node" lt:isTriangle="false">כל/כָל־[630]</text>
+<text id="collapsed9" x="366.36328125" y="265.46484375" font-family="Arial" font-size="28.0" fill="#000000" visibility="hidden">. . .</text>
+<line id="line9T1" x1="366.36328125" y1="251.6015625" x2="385.8115234375" y2="254.109375" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line9T2" x1="385.8115234375" y1="254.109375" x2="405.259765625" y2="251.6015625" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line9T3" x1="366.36328125" y1="251.6015625" x2="405.259765625" y2="251.6015625" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line9-8" x1="385.8115234375" y1="211.802734375" x2="385.8115234375" y2="228.48046875" stroke="#000000" stroke-width="1.0" visibility="visible"/>
+<text id="node10" x="0.0" y="0.0"
+	 font-family="Arial" font-size="12.0" fill="#008000"
+	 lt:width="90.697265625" lt:maxWidthOfDaughters="0.0" lt:maxWidthInColumn="0.0" lt:xMid="385.8115234375" lt:maxInColumnMothersWidth="67.39453125"
+	 lt:mother="node9" lt:daughters="node" lt:rightSister="node" lt:isTriangle="false" lt:nodeTextItems="node10nt11,node10nt12,node10nt13,"
 	 onclick="ProcessCollapsibleNode('node10')" lt:collapsed="false"
-	 lt:collapsedNodes="node11,node12"
-	 lt:collapsedLines="line11-10" visibility="visible">art1</text>
-<text id="collapsed10" x="316.048828125" y="283.2421835" font-family="Arial" font-size="28.0" fill="#000000" visibility="hidden">. . .</text>
-<line id="line10T1" x1="316.048828125" y1="265.88671475" x2="335.4970703125" y2="249.208980375" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
-<line id="line10T2" x1="335.4970703125" y1="249.208980375" x2="354.9453125" y2="265.88671475" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
-<line id="line10T3" x1="316.048828125" y1="265.88671475" x2="354.9453125" y2="265.88671475" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
-<line id="line10-8" x1="418.99609375" y1="215.919917875" x2="335.4970703125" y2="229.919917875" stroke="#000000" stroke-width="1.0" visibility="visible"/>
-<text id="node11" x="309.21484375" y="283.2421835"
-	 font-family="Charis SIL" font-size="12.0" fill="#0000ff"
-	 lt:width="52.564453125" lt:maxWidthOfDaughters="0.0" lt:maxWidthInColumn="0.0" lt:xMid="335.4970703125" lt:maxInColumnMothersWidth="18.65625"
-	 lt:mother="node10" lt:daughters="node12," lt:rightSister="node" lt:isTriangle="false" lt:isNodeText="false">ה/הַ[292]</text>
-<text id="collapsed11" x="316.048828125" y="296.6484335" font-family="Arial" font-size="28.0" fill="#000000" visibility="hidden">. . .</text>
-<line id="line11T1" x1="316.048828125" y1="282.78515225" x2="335.4970703125" y2="291.515621" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
-<line id="line11T2" x1="335.4970703125" y1="291.515621" x2="354.9453125" y2="282.78515225" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
-<line id="line11T3" x1="316.048828125" y1="282.78515225" x2="354.9453125" y2="282.78515225" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
-<line id="line11-10" x1="335.4970703125" y1="249.208980375" x2="335.4970703125" y2="265.88671475" stroke="#000000" stroke-width="1.0" visibility="visible"/>
-<text id="node12" x="323.8193359375" y="296.6484335"
+	></text>
+<text id="node10nt11" x="340.462890625" y="265.46484375"
 	 font-family="Arial" font-size="12.0" fill="#008000"
-	 lt:width="23.35546875" lt:maxWidthOfDaughters="0.0" lt:maxWidthInColumn="0.0" lt:xMid="335.4970703125" lt:maxInColumnMothersWidth="52.564453125"
-	 lt:mother="node11" lt:daughters="node" lt:rightSister="node" lt:isTriangle="false" lt:isNodeText="false"
-	 onclick="ProcessCollapsibleNode('node12')" lt:collapsed="false"
-	>the1</text>
-<text id="collapsed12" x="316.048828125" y="322.19140225" font-family="Arial" font-size="28.0" fill="#000000" visibility="hidden">. . .</text>
-<line id="line12T1" x1="316.048828125" y1="322.19140225" x2="335.4970703125" y2="302.19140225" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
-<line id="line12T2" x1="335.4970703125" y1="302.19140225" x2="354.9453125" y2="322.19140225" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
-<line id="line12T3" x1="316.048828125" y1="322.19140225" x2="354.9453125" y2="322.19140225" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
-<text id="node13" x="491.8251953125" y="243.61327725"
+	 lt:width="44.6953125" lt:maxWidthOfDaughters="0.0" lt:maxWidthInColumn="0.0" lt:xMid="385.8115234375" lt:maxInColumnMothersWidth="67.39453125"
+	 lt:mother="node9" lt:daughters="node">wholea [</text>
+<text id="node10nt12" x="385.158203125" y="265.46484375"
+	 font-family="Arial" font-size="12.0" fill="#008000"
+	 lt:width="42.66796875" lt:maxWidthOfDaughters="0.0" lt:maxWidthInColumn="0.0" lt:xMid="385.8115234375" lt:maxInColumnMothersWidth="67.39453125"
+	 lt:mother="node9" lt:daughters="node">m sg c -</text>
+<text id="node10nt13" x="427.826171875" y="265.46484375"
+	 font-family="Arial" font-size="12.0" fill="#008000"
+	 lt:width="3.333984375" lt:maxWidthOfDaughters="0.0" lt:maxWidthInColumn="0.0" lt:xMid="385.8115234375" lt:maxInColumnMothersWidth="67.39453125"
+	 lt:mother="node9" lt:daughters="node">]</text>
+<text id="node14" x="496.2490234375" y="206.20703125"
 	 font-family="Times New Roman" font-size="12.0" fill="#000000"
-	 lt:width="21.33984375" lt:maxWidthOfDaughters="0.0" lt:maxWidthInColumn="0.0" lt:xMid="502.4951171875" lt:maxInColumnMothersWidth="86.115234375"
-	 lt:mother="node8" lt:daughters="node14," lt:rightSister="node" lt:isTriangle="false" lt:isNodeText="false"
-	 onclick="ProcessCollapsibleNode('node13')" lt:collapsed="false"
-	 lt:collapsedNodes="node14,node16,node17,node18"
-	 lt:collapsedLines="line14-13" visibility="visible">subs</text>
-<text id="collapsed13" x="483.046875" y="283.2421835" font-family="Arial" font-size="28.0" fill="#000000" visibility="hidden">. . .</text>
-<line id="line13T1" x1="483.046875" y1="265.88671475" x2="502.4951171875" y2="249.208980375" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
-<line id="line13T2" x1="502.4951171875" y1="249.208980375" x2="521.943359375" y2="265.88671475" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
-<line id="line13T3" x1="483.046875" y1="265.88671475" x2="521.943359375" y2="265.88671475" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
-<line id="line13-8" x1="418.99609375" y1="215.919917875" x2="502.4951171875" y2="229.919917875" stroke="#000000" stroke-width="1.0" visibility="visible"/>
-<text id="node14" x="456.9296875" y="283.2421835"
+	 lt:width="27.33984375" lt:maxWidthOfDaughters="0.0" lt:maxWidthInColumn="0.0" lt:xMid="509.9189453125" lt:maxInColumnMothersWidth="0.0"
+	 lt:mother="node7" lt:daughters="node15," lt:rightSister="node" lt:isTriangle="false"
+	 onclick="ProcessCollapsibleNode('node14')" lt:collapsed="false"
+	 lt:collapsedNodes="node15,node16"
+	 lt:collapsedLines="line15-14" visibility="visible">subs2</text>
+<text id="collapsed14" x="490.470703125" y="245.8359375" font-family="Arial" font-size="28.0" fill="#000000" visibility="hidden">. . .</text>
+<line id="line14T1" x1="490.470703125" y1="228.48046875" x2="509.9189453125" y2="211.802734375" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line14T2" x1="509.9189453125" y1="211.802734375" x2="529.3671875" y2="228.48046875" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line14T3" x1="490.470703125" y1="228.48046875" x2="529.3671875" y2="228.48046875" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line14-7" x1="447.865234375" y1="172.173828125" x2="509.9189453125" y2="192.513671875" stroke="#000000" stroke-width="1.0" visibility="visible"/>
+<text id="node15" x="473.1689453125" y="245.8359375"
 	 font-family="Charis SIL" font-size="12.0" fill="#0000ff"
-	 lt:width="91.130859375" lt:maxWidthOfDaughters="0.0" lt:maxWidthInColumn="0.0" lt:xMid="502.4951171875" lt:maxInColumnMothersWidth="86.115234375"
-	 lt:mother="node13" lt:daughters="node16,node17,node18," lt:rightSister="node" lt:isTriangle="false" lt:isNodeText="false">מאור/מָּאֹ֤ור [293]</text>
-<text id="collapsed14" x="483.046875" y="296.6484335" font-family="Arial" font-size="28.0" fill="#000000" visibility="hidden">. . .</text>
-<line id="line14T1" x1="483.046875" y1="282.78515225" x2="502.4951171875" y2="291.515621" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
-<line id="line14T2" x1="502.4951171875" y1="291.515621" x2="521.943359375" y2="282.78515225" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
-<line id="line14T3" x1="483.046875" y1="282.78515225" x2="521.943359375" y2="282.78515225" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
-<line id="line14-13" x1="502.4951171875" y1="249.208980375" x2="502.4951171875" y2="265.88671475" stroke="#000000" stroke-width="1.0" visibility="visible"/>
-<text id="node16" x="462.818359375" y="296.6484335"
+	 lt:width="73.5" lt:maxWidthOfDaughters="0.0" lt:maxWidthInColumn="0.0" lt:xMid="509.9189453125" lt:maxInColumnMothersWidth="27.33984375"
+	 lt:mother="node14" lt:daughters="node16," lt:rightSister="node" lt:isTriangle="false">כל/כָל־[630a]</text>
+<text id="collapsed15" x="490.470703125" y="265.46484375" font-family="Arial" font-size="28.0" fill="#000000" visibility="hidden">. . .</text>
+<line id="line15T1" x1="490.470703125" y1="251.6015625" x2="509.9189453125" y2="254.109375" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line15T2" x1="509.9189453125" y1="254.109375" x2="529.3671875" y2="251.6015625" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line15T3" x1="490.470703125" y1="251.6015625" x2="529.3671875" y2="251.6015625" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line15-14" x1="509.9189453125" y1="211.802734375" x2="509.9189453125" y2="228.48046875" stroke="#000000" stroke-width="1.0" visibility="visible"/>
+<text id="node16" x="464.5703125" y="265.46484375"
 	 font-family="Arial" font-size="12.0" fill="#008000"
-	 lt:width="32.677734375" lt:maxWidthOfDaughters="0.0" lt:maxWidthInColumn="0.0" lt:xMid="502.4951171875" lt:maxInColumnMothersWidth="91.130859375"
-	 lt:mother="node14" lt:daughters="node" lt:rightSister="node" lt:isTriangle="false" lt:isNodeText="true"
+	 lt:width="90.697265625" lt:maxWidthOfDaughters="0.0" lt:maxWidthInColumn="0.0" lt:xMid="509.9189453125" lt:maxInColumnMothersWidth="73.5"
+	 lt:mother="node15" lt:daughters="node" lt:rightSister="node" lt:isTriangle="false"
 	 onclick="ProcessCollapsibleNode('node16')" lt:collapsed="false"
-	>lamp [</text>
-<text id="node17" x="495.49609375" y="296.6484335"
-	 font-family="Arial" font-size="12.0" fill="#008000"
-	 lt:width="43.341796875" lt:maxWidthOfDaughters="0.0" lt:maxWidthInColumn="0.0" lt:xMid="502.4951171875" lt:maxInColumnMothersWidth="91.130859375"
-	 lt:mother="node14" lt:daughters="node" lt:rightSister="node" lt:isTriangle="false" lt:isNodeText="true"
+	>wholeb [m sg c -]</text>
+<text id="collapsed16" x="490.470703125" y="291.0078125" font-family="Arial" font-size="28.0" fill="#000000" visibility="hidden">. . .</text>
+<line id="line16T1" x1="490.470703125" y1="291.0078125" x2="509.9189453125" y2="271.0078125" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line16T2" x1="509.9189453125" y1="271.0078125" x2="529.3671875" y2="291.0078125" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line16T3" x1="490.470703125" y1="291.0078125" x2="529.3671875" y2="291.0078125" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<text id="node17" x="681.583251953125" y="166.578125"
+	 font-family="Times New Roman" font-size="12.0" fill="#000000"
+	 lt:width="85.44140625" lt:maxWidthOfDaughters="0.0" lt:maxWidthInColumn="0.0" lt:xMid="724.303955078125" lt:maxInColumnMothersWidth="0.0"
+	 lt:mother="node1" lt:daughters="node18,node25," lt:rightSister="node" lt:isTriangle="false"
 	 onclick="ProcessCollapsibleNode('node17')" lt:collapsed="false"
-	>m sg a -</text>
-<text id="node18" x="538.837890625" y="296.6484335"
-	 font-family="Arial" font-size="12.0" fill="#008000"
-	 lt:width="3.333984375" lt:maxWidthOfDaughters="0.0" lt:maxWidthInColumn="0.0" lt:xMid="502.4951171875" lt:maxInColumnMothersWidth="91.130859375"
-	 lt:mother="node14" lt:daughters="node" lt:rightSister="node" lt:isTriangle="false" lt:isNodeText="true"
+	 lt:collapsedNodes="node18,node19,node20,node21nt22,node21nt23,node21nt24,node21,node25,node26,node27,node28,node29,node30,node31,node32nt33,node32nt34,node32nt35,node32"
+	 lt:collapsedLines="line18-17,line19-18,line20-19,line25-17,line26-25,line27-26,line28-27,line30-26,line31-30" visibility="visible">SP[146:SPR=rec]</text>
+<text id="collapsed17" x="704.855712890625" y="206.20703125" font-family="Arial" font-size="28.0" fill="#000000" visibility="hidden">. . .</text>
+<line id="line17T1" x1="704.855712890625" y1="192.513671875" x2="724.303955078125" y2="172.173828125" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line17T2" x1="724.303955078125" y1="172.173828125" x2="743.752197265625" y2="192.513671875" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line17T3" x1="704.855712890625" y1="192.513671875" x2="743.752197265625" y2="192.513671875" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line17-1" x1="432.1807861328125" y1="138.884765625" x2="724.303955078125" y2="152.884765625" stroke="#000000" stroke-width="1.0" visibility="visible"/>
+<text id="node18" x="586.97265625" y="206.20703125"
+	 font-family="Times New Roman" font-size="12.0" fill="#000000"
+	 lt:width="94.107421875" lt:maxWidthOfDaughters="0.0" lt:maxWidthInColumn="0.0" lt:xMid="634.0263671875" lt:maxInColumnMothersWidth="0.0"
+	 lt:mother="node17" lt:daughters="node19," lt:rightSister="node25" lt:isTriangle="false"
 	 onclick="ProcessCollapsibleNode('node18')" lt:collapsed="false"
-	>]</text>
-<text id="node20" x="622.0966796875" y="173.03515625"
+	 lt:collapsedNodes="node19,node20,node21nt22,node21nt23,node21nt24,node21"
+	 lt:collapsedLines="line19-18,line20-19" visibility="visible">SP[149:SPR=Xrec]</text>
+<text id="collapsed18" x="614.578125" y="245.8359375" font-family="Arial" font-size="28.0" fill="#000000" visibility="hidden">. . .</text>
+<line id="line18T1" x1="614.578125" y1="232.142578125" x2="634.0263671875" y2="211.802734375" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line18T2" x1="634.0263671875" y1="211.802734375" x2="653.474609375" y2="232.142578125" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line18T3" x1="614.578125" y1="232.142578125" x2="653.474609375" y2="232.142578125" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line18-17" x1="724.303955078125" y1="172.173828125" x2="634.0263671875" y2="192.513671875" stroke="#000000" stroke-width="1.0" visibility="visible"/>
+<text id="node19" x="620.3564453125" y="245.8359375"
 	 font-family="Times New Roman" font-size="12.0" fill="#000000"
-	 lt:width="77.44921875" lt:maxWidthOfDaughters="0.0" lt:maxWidthInColumn="0.0" lt:xMid="669.4931640625" lt:maxInColumnMothersWidth="102.802734375"
-	 lt:mother="node4" lt:daughters="node22," lt:rightSister="node" lt:isTriangle="false" lt:isNodeText="true"
-	 onclick="ProcessCollapsibleNode('node20')" lt:collapsed="false"
-	 lt:collapsedNodes="node22,node23,node24,node25,node26"
-	 lt:collapsedLines="line22-19,line24-22,line25-24" visibility="visible">SP[24:SPR=atr]</text>
-<text id="collapsed20" x="650.044921875" y="210.32421475" font-family="Arial" font-size="28.0" fill="#000000" visibility="hidden">. . .</text>
-<line id="line20T1" x1="650.044921875" y1="196.630855375" x2="669.4931640625" y2="178.630859375" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
-<line id="line20T2" x1="669.4931640625" y1="178.630859375" x2="688.94140625" y2="196.630855375" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
-<line id="line20T3" x1="650.044921875" y1="196.630855375" x2="688.94140625" y2="196.630855375" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
-<text id="node21" x="699.5458984375" y="173.03515625"
-	 font-family="Arial" font-size="12.0" fill="#008000"
-	 lt:width="17.34375" lt:maxWidthOfDaughters="0.0" lt:maxWidthInColumn="0.0" lt:xMid="669.4931640625" lt:maxInColumnMothersWidth="102.802734375"
-	 lt:mother="node4" lt:daughters="node22," lt:rightSister="node" lt:isTriangle="false" lt:isNodeText="true"
-	 onclick="ProcessCollapsibleNode('node21')" lt:collapsed="false"
-	 lt:collapsedNodes="node22,node23,node24,node25,node26"
-	 lt:collapsedLines="line22-19,line24-22,line25-24" visibility="visible">pro</text>
-<text id="collapsed21" x="650.044921875" y="210.32421475" font-family="Arial" font-size="28.0" fill="#000000" visibility="hidden">. . .</text>
-<line id="line21T1" x1="650.044921875" y1="196.630855375" x2="669.4931640625" y2="178.630859375" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
-<line id="line21T2" x1="669.4931640625" y1="178.630859375" x2="688.94140625" y2="196.630855375" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
-<line id="line21T3" x1="650.044921875" y1="196.630855375" x2="688.94140625" y2="196.630855375" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
-<line id="line19-4" x1="544.24462890625" y1="139.001953125" x2="669.4931640625" y2="159.171875" stroke="#000000" stroke-width="1.0" visibility="visible"/>
-<text id="node22" x="659.7232422828674" y="210.32421475"
-	 font-family="Times New Roman" font-size="12.0" fill="#000000"
-	 lt:width="15.33984375" lt:maxWidthOfDaughters="0.0" lt:maxWidthInColumn="0.0" lt:xMid="669.4931640625" lt:maxInColumnMothersWidth="102.802734375"
-	 lt:mother="node19" lt:daughters="node24," lt:rightSister="node" lt:isTriangle="false" lt:isNodeText="false"
-	 onclick="ProcessCollapsibleNode('node22')" lt:collapsed="false"
-	 lt:collapsedNodes="node23,node24,node25,node26"
-	 lt:collapsedLines="line24-22,line25-24" visibility="visible">DP</text>
-<text id="collapsed22" x="650.044921875" y="243.61327725" font-family="Arial" font-size="28.0" fill="#000000" visibility="hidden">. . .</text>
-<line id="line22T1" x1="650.044921875" y1="229.919917875" x2="669.4931640625" y2="215.919917875" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
-<line id="line22T2" x1="669.4931640625" y1="215.919917875" x2="688.94140625" y2="229.919917875" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
-<line id="line22T3" x1="650.044921875" y1="229.919917875" x2="688.94140625" y2="229.919917875" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
-<text id="node23" x="675.0630860328674" y="206.32425475000002"
-	 font-family="Times New Roman" font-size="8.399999999999999" fill="#000000"
-	 lt:width="4.20001220703125" lt:maxWidthOfDaughters="0.0" lt:maxWidthInColumn="0.0" lt:xMid="669.4931640625" lt:maxInColumnMothersWidth="102.802734375"
-	 lt:mother="node19" lt:daughters="node24," lt:rightSister="node" lt:isTriangle="false" lt:isNodeText="false"
-	 onclick="ProcessCollapsibleNode('node23')" lt:collapsed="false"
-	 lt:collapsedNodes="node23,node24,node25,node26"
-	 lt:collapsedLines="line24-22,line25-24" visibility="visible">2</text>
-<text id="collapsed23" x="650.044921875" y="243.61327725" font-family="Arial" font-size="28.0" fill="#000000" visibility="hidden">. . .</text>
-<line id="line23T1" x1="650.044921875" y1="229.919917875" x2="669.4931640625" y2="215.919917875" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
-<line id="line23T2" x1="669.4931640625" y1="215.919917875" x2="688.94140625" y2="229.919917875" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
-<line id="line23T3" x1="650.044921875" y1="229.919917875" x2="688.94140625" y2="229.919917875" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
-<line id="line22-19" x1="669.4931640625" y1="178.630859375" x2="669.4931640625" y2="196.630855375" stroke="#000000" stroke-width="1.0" visibility="visible"/>
-<text id="node24" x="660.1650390625" y="243.61327725"
-	 font-family="Times New Roman" font-size="12.0" fill="#000000"
-	 lt:width="18.65625" lt:maxWidthOfDaughters="0.0" lt:maxWidthInColumn="0.0" lt:xMid="669.4931640625" lt:maxInColumnMothersWidth="102.802734375"
-	 lt:mother="node22" lt:daughters="node25," lt:rightSister="node" lt:isTriangle="false" lt:isNodeText="false"
-	 onclick="ProcessCollapsibleNode('node24')" lt:collapsed="false"
-	 lt:collapsedNodes="node25,node26"
-	 lt:collapsedLines="line25-24" visibility="visible">art2</text>
-<text id="collapsed24" x="650.044921875" y="283.2421835" font-family="Arial" font-size="28.0" fill="#000000" visibility="hidden">. . .</text>
-<line id="line24T1" x1="650.044921875" y1="265.88671475" x2="669.4931640625" y2="249.208980375" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
-<line id="line24T2" x1="669.4931640625" y1="249.208980375" x2="688.94140625" y2="265.88671475" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
-<line id="line24T3" x1="650.044921875" y1="265.88671475" x2="688.94140625" y2="265.88671475" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
-<line id="line24-22" x1="669.4931640625" y1="215.919917875" x2="669.4931640625" y2="229.919917875" stroke="#000000" stroke-width="1.0" visibility="visible"/>
-<text id="node25" x="643.2109375" y="283.2421835"
+	 lt:width="27.33984375" lt:maxWidthOfDaughters="0.0" lt:maxWidthInColumn="0.0" lt:xMid="634.0263671875" lt:maxInColumnMothersWidth="94.107421875"
+	 lt:mother="node18" lt:daughters="node20," lt:rightSister="node" lt:isTriangle="false"
+	 onclick="ProcessCollapsibleNode('node19')" lt:collapsed="false"
+	 lt:collapsedNodes="node20,node21nt22,node21nt23,node21nt24,node21"
+	 lt:collapsedLines="line20-19" visibility="visible">subs3</text>
+<text id="collapsed19" x="614.578125" y="285.46484375" font-family="Arial" font-size="28.0" fill="#000000" visibility="hidden">. . .</text>
+<line id="line19T1" x1="614.578125" y1="268.109375" x2="634.0263671875" y2="251.431640625" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line19T2" x1="634.0263671875" y1="251.431640625" x2="653.474609375" y2="268.109375" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line19T3" x1="614.578125" y1="268.109375" x2="653.474609375" y2="268.109375" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line19-18" x1="634.0263671875" y1="211.802734375" x2="634.0263671875" y2="232.142578125" stroke="#000000" stroke-width="1.0" visibility="visible"/>
+<text id="node20" x="596.3125" y="285.46484375"
 	 font-family="Charis SIL" font-size="12.0" fill="#0000ff"
-	 lt:width="52.564453125" lt:maxWidthOfDaughters="0.0" lt:maxWidthInColumn="0.0" lt:xMid="669.4931640625" lt:maxInColumnMothersWidth="102.802734375"
-	 lt:mother="node24" lt:daughters="node26," lt:rightSister="node" lt:isTriangle="false" lt:isNodeText="false">ה/הַ[294]</text>
-<text id="collapsed25" x="650.044921875" y="296.6484335" font-family="Arial" font-size="28.0" fill="#000000" visibility="hidden">. . .</text>
-<line id="line25T1" x1="650.044921875" y1="282.78515225" x2="669.4931640625" y2="291.515621" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
-<line id="line25T2" x1="669.4931640625" y1="291.515621" x2="688.94140625" y2="282.78515225" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
-<line id="line25T3" x1="650.044921875" y1="282.78515225" x2="688.94140625" y2="282.78515225" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
-<line id="line25-24" x1="669.4931640625" y1="249.208980375" x2="669.4931640625" y2="265.88671475" stroke="#000000" stroke-width="1.0" visibility="visible"/>
-<text id="node26" x="657.8154296875" y="296.6484335"
+	 lt:width="75.427734375" lt:maxWidthOfDaughters="0.0" lt:maxWidthInColumn="0.0" lt:xMid="634.0263671875" lt:maxInColumnMothersWidth="94.107421875"
+	 lt:mother="node19" lt:daughters="node21," lt:rightSister="node" lt:isTriangle="false">עוף/עֹ֨וף [631]</text>
+<text id="collapsed20" x="614.578125" y="305.09375" font-family="Arial" font-size="28.0" fill="#000000" visibility="hidden">. . .</text>
+<line id="line20T1" x1="614.578125" y1="291.23046875" x2="634.0263671875" y2="293.73828125" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line20T2" x1="634.0263671875" y1="293.73828125" x2="653.474609375" y2="291.23046875" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line20T3" x1="614.578125" y1="291.23046875" x2="653.474609375" y2="291.23046875" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line20-19" x1="634.0263671875" y1="251.431640625" x2="634.0263671875" y2="268.109375" stroke="#000000" stroke-width="1.0" visibility="visible"/>
+<text id="node21" x="0.0" y="0.0"
 	 font-family="Arial" font-size="12.0" fill="#008000"
-	 lt:width="23.35546875" lt:maxWidthOfDaughters="0.0" lt:maxWidthInColumn="0.0" lt:xMid="669.4931640625" lt:maxInColumnMothersWidth="102.802734375"
-	 lt:mother="node25" lt:daughters="node" lt:rightSister="node" lt:isTriangle="false" lt:isNodeText="false"
+	 lt:width="78.6796875" lt:maxWidthOfDaughters="0.0" lt:maxWidthInColumn="0.0" lt:xMid="634.0263671875" lt:maxInColumnMothersWidth="94.107421875"
+	 lt:mother="node20" lt:daughters="node" lt:rightSister="node" lt:isTriangle="false" lt:nodeTextItems="node21nt22,node21nt23,node21nt24,"
+	 onclick="ProcessCollapsibleNode('node21')" lt:collapsed="false"
+	></text>
+<text id="node21nt22" x="594.6865234375" y="305.09375"
+	 font-family="Arial" font-size="12.0" fill="#008000"
+	 lt:width="32.677734375" lt:maxWidthOfDaughters="0.0" lt:maxWidthInColumn="0.0" lt:xMid="634.0263671875" lt:maxInColumnMothersWidth="94.107421875"
+	 lt:mother="node20" lt:daughters="node">birds [</text>
+<text id="node21nt23" x="627.3642578125" y="305.09375"
+	 font-family="Arial" font-size="12.0" fill="#008000"
+	 lt:width="42.66796875" lt:maxWidthOfDaughters="0.0" lt:maxWidthInColumn="0.0" lt:xMid="634.0263671875" lt:maxInColumnMothersWidth="94.107421875"
+	 lt:mother="node20" lt:daughters="node">m sg c -</text>
+<text id="node21nt24" x="670.0322265625" y="305.09375"
+	 font-family="Arial" font-size="12.0" fill="#008000"
+	 lt:width="3.333984375" lt:maxWidthOfDaughters="0.0" lt:maxWidthInColumn="0.0" lt:xMid="634.0263671875" lt:maxInColumnMothersWidth="94.107421875"
+	 lt:mother="node20" lt:daughters="node">]</text>
+<text id="node25" x="771.86083984375" y="206.20703125"
+	 font-family="Times New Roman" font-size="12.0" fill="#000000"
+	 lt:width="85.44140625" lt:maxWidthOfDaughters="0.0" lt:maxWidthInColumn="0.0" lt:xMid="814.58154296875" lt:maxInColumnMothersWidth="0.0"
+	 lt:mother="node17" lt:daughters="node26," lt:rightSister="node" lt:isTriangle="false"
+	 onclick="ProcessCollapsibleNode('node25')" lt:collapsed="false"
+	 lt:collapsedNodes="node26,node27,node28,node29,node30,node31,node32nt33,node32nt34,node32nt35,node32"
+	 lt:collapsedLines="line26-25,line27-26,line28-27,line30-26,line31-30" visibility="visible">SP[148:SPR=rec]</text>
+<text id="collapsed25" x="795.13330078125" y="245.8359375" font-family="Arial" font-size="28.0" fill="#000000" visibility="hidden">. . .</text>
+<line id="line25T1" x1="795.13330078125" y1="232.142578125" x2="814.58154296875" y2="211.802734375" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line25T2" x1="814.58154296875" y1="211.802734375" x2="834.02978515625" y2="232.142578125" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line25T3" x1="795.13330078125" y1="232.142578125" x2="834.02978515625" y2="232.142578125" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line25-17" x1="724.303955078125" y1="172.173828125" x2="814.58154296875" y2="192.513671875" stroke="#000000" stroke-width="1.0" visibility="visible"/>
+<text id="node26" x="806.91162109375" y="245.8359375"
+	 font-family="Times New Roman" font-size="12.0" fill="#000000"
+	 lt:width="15.33984375" lt:maxWidthOfDaughters="0.0" lt:maxWidthInColumn="0.0" lt:xMid="814.58154296875" lt:maxInColumnMothersWidth="85.44140625"
+	 lt:mother="node25" lt:daughters="node27,node30," lt:rightSister="node" lt:isTriangle="false"
 	 onclick="ProcessCollapsibleNode('node26')" lt:collapsed="false"
-	>the2</text>
-<text id="collapsed26" x="650.044921875" y="322.19140225" font-family="Arial" font-size="28.0" fill="#000000" visibility="hidden">. . .</text>
-<line id="line26T1" x1="650.044921875" y1="322.19140225" x2="669.4931640625" y2="302.19140225" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
-<line id="line26T2" x1="669.4931640625" y1="302.19140225" x2="688.94140625" y2="322.19140225" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
-<line id="line26T3" x1="650.044921875" y1="322.19140225" x2="688.94140625" y2="322.19140225" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
-<text id="node27" x="831.1591796875" y="133.40625"
+	 lt:collapsedNodes="node27,node28,node29,node30,node31,node32nt33,node32nt34,node32nt35,node32"
+	 lt:collapsedLines="line27-26,line28-27,line30-26,line31-30" visibility="visible">DP</text>
+<text id="collapsed26" x="795.13330078125" y="285.46484375" font-family="Arial" font-size="28.0" fill="#000000" visibility="hidden">. . .</text>
+<line id="line26T1" x1="795.13330078125" y1="271.771484375" x2="814.58154296875" y2="251.431640625" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line26T2" x1="814.58154296875" y1="251.431640625" x2="834.02978515625" y2="271.771484375" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line26T3" x1="795.13330078125" y1="271.771484375" x2="834.02978515625" y2="271.771484375" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line26-25" x1="814.58154296875" y1="211.802734375" x2="814.58154296875" y2="232.142578125" stroke="#000000" stroke-width="1.0" visibility="visible"/>
+<text id="node27" x="747.4638671875" y="285.46484375"
 	 font-family="Times New Roman" font-size="12.0" fill="#000000"
-	 lt:width="10.6640625" lt:maxWidthOfDaughters="0.0" lt:maxWidthInColumn="0.0" lt:xMid="836.4912109375" lt:maxInColumnMothersWidth="136.998046875"
-	 lt:mother="node0" lt:daughters="node28," lt:rightSister="node" lt:isTriangle="false" lt:isNodeText="false"
+	 lt:width="12.673828125" lt:maxWidthOfDaughters="0.0" lt:maxWidthInColumn="0.0" lt:xMid="753.80078125" lt:maxInColumnMothersWidth="0.0"
+	 lt:mother="node26" lt:daughters="node28," lt:rightSister="node30" lt:isTriangle="false"
 	 onclick="ProcessCollapsibleNode('node27')" lt:collapsed="false"
-	 lt:collapsedNodes="node28"
-	 lt:collapsedLines="line28-27,line28-27T2,line28-27T3" visibility="visible">tri</text>
-<text id="collapsed27" x="817.04296875" y="173.03515625" font-family="Arial" font-size="28.0" fill="#000000" visibility="hidden">. . .</text>
-<line id="line27T1" x1="817.04296875" y1="159.341796875" x2="836.4912109375" y2="139.001953125" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
-<line id="line27T2" x1="836.4912109375" y1="139.001953125" x2="855.939453125" y2="159.341796875" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
-<line id="line27T3" x1="817.04296875" y1="159.341796875" x2="855.939453125" y2="159.341796875" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
-<line id="line27-0" x1="502.4951171875" y1="105.595703125" x2="836.4912109375" y2="119.712890625" stroke="#000000" stroke-width="1.0" visibility="visible"/>
-<text id="node28" x="809.8369140625" y="173.03515625"
+	 lt:collapsedNodes="node28,node29"
+	 lt:collapsedLines="line28-27" visibility="visible">art</text>
+<text id="collapsed27" x="734.3525390625" y="325.09375" font-family="Arial" font-size="28.0" fill="#000000" visibility="hidden">. . .</text>
+<line id="line27T1" x1="734.3525390625" y1="307.73828125" x2="753.80078125" y2="291.060546875" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line27T2" x1="753.80078125" y1="291.060546875" x2="773.2490234375" y2="307.73828125" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line27T3" x1="734.3525390625" y1="307.73828125" x2="773.2490234375" y2="307.73828125" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line27-26" x1="814.58154296875" y1="251.431640625" x2="753.80078125" y2="271.771484375" stroke="#000000" stroke-width="1.0" visibility="visible"/>
+<text id="node28" x="727.5185546875" y="325.09375"
+	 font-family="Charis SIL" font-size="12.0" fill="#0000ff"
+	 lt:width="52.564453125" lt:maxWidthOfDaughters="0.0" lt:maxWidthInColumn="0.0" lt:xMid="753.80078125" lt:maxInColumnMothersWidth="12.673828125"
+	 lt:mother="node27" lt:daughters="node29," lt:rightSister="node" lt:isTriangle="false">ה/הַ[632]</text>
+<text id="collapsed28" x="734.3525390625" y="338.5" font-family="Arial" font-size="28.0" fill="#000000" visibility="hidden">. . .</text>
+<line id="line28T1" x1="734.3525390625" y1="324.63671875" x2="753.80078125" y2="333.3671875" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line28T2" x1="753.80078125" y1="333.3671875" x2="773.2490234375" y2="324.63671875" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line28T3" x1="734.3525390625" y1="324.63671875" x2="773.2490234375" y2="324.63671875" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line28-27" x1="753.80078125" y1="291.060546875" x2="753.80078125" y2="307.73828125" stroke="#000000" stroke-width="1.0" visibility="visible"/>
+<text id="node29" x="745.4599609375" y="338.5"
+	 font-family="Arial" font-size="12.0" fill="#008000"
+	 lt:width="16.681640625" lt:maxWidthOfDaughters="0.0" lt:maxWidthInColumn="0.0" lt:xMid="753.80078125" lt:maxInColumnMothersWidth="52.564453125"
+	 lt:mother="node28" lt:daughters="node" lt:rightSister="node" lt:isTriangle="false"
+	 onclick="ProcessCollapsibleNode('node29')" lt:collapsed="false"
+	>the</text>
+<text id="collapsed29" x="734.3525390625" y="364.04296875" font-family="Arial" font-size="28.0" fill="#000000" visibility="hidden">. . .</text>
+<line id="line29T1" x1="734.3525390625" y1="364.04296875" x2="753.80078125" y2="344.04296875" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line29T2" x1="753.80078125" y1="344.04296875" x2="773.2490234375" y2="364.04296875" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line29T3" x1="734.3525390625" y1="364.04296875" x2="773.2490234375" y2="364.04296875" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<text id="node30" x="861.6923828125" y="285.46484375"
 	 font-family="Times New Roman" font-size="12.0" fill="#000000"
-	 lt:width="53.30859375" lt:maxWidthOfDaughters="0.0" lt:maxWidthInColumn="0.0" lt:xMid="836.4912109375" lt:maxInColumnMothersWidth="136.998046875"
-	 lt:mother="node27" lt:daughters="node" lt:rightSister="node" lt:isTriangle="true" lt:isNodeText="false"
-	 onclick="ProcessCollapsibleNode('node28')" lt:collapsed="false"
-	>abc def ghi</text>
-<text id="collapsed28" x="817.04296875" y="198.630859375" font-family="Arial" font-size="28.0" fill="#000000" visibility="hidden">. . .</text>
-<line id="line28T1" x1="817.04296875" y1="198.630859375" x2="836.4912109375" y2="178.630859375" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
-<line id="line28T2" x1="836.4912109375" y1="178.630859375" x2="855.939453125" y2="198.630859375" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
-<line id="line28T3" x1="817.04296875" y1="198.630859375" x2="855.939453125" y2="198.630859375" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
-<line id="line28-27" x1="812.8369140625" y1="159.341796875" x2="836.4912109375" y2="139.001953125" stroke="#000000" stroke-width="1.0" visibility="visible"/>
-<line id="line28-27T2" x1="836.4912109375" y1="139.001953125" x2="860.1455078125" y2="159.341796875" stroke="#000000" stroke-width="1.0" visibility="visible"/>
-<line id="line28-27T3" x1="812.8369140625" y1="159.341796875" x2="860.1455078125" y2="159.341796875" stroke="#000000" stroke-width="1.0" visibility="visible"/>
+	 lt:width="27.33984375" lt:maxWidthOfDaughters="0.0" lt:maxWidthInColumn="0.0" lt:xMid="875.3623046875" lt:maxInColumnMothersWidth="0.0"
+	 lt:mother="node26" lt:daughters="node31," lt:rightSister="node" lt:isTriangle="false"
+	 onclick="ProcessCollapsibleNode('node30')" lt:collapsed="false"
+	 lt:collapsedNodes="node31,node32nt33,node32nt34,node32nt35,node32"
+	 lt:collapsedLines="line31-30" visibility="visible">subs4</text>
+<text id="collapsed30" x="855.9140625" y="325.09375" font-family="Arial" font-size="28.0" fill="#000000" visibility="hidden">. . .</text>
+<line id="line30T1" x1="855.9140625" y1="307.73828125" x2="875.3623046875" y2="291.060546875" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line30T2" x1="875.3623046875" y1="291.060546875" x2="894.810546875" y2="307.73828125" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line30T3" x1="855.9140625" y1="307.73828125" x2="894.810546875" y2="307.73828125" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line30-26" x1="814.58154296875" y1="251.431640625" x2="875.3623046875" y2="271.771484375" stroke="#000000" stroke-width="1.0" visibility="visible"/>
+<text id="node31" x="826.521484375" y="325.09375"
+	 font-family="Charis SIL" font-size="12.0" fill="#0000ff"
+	 lt:width="97.681640625" lt:maxWidthOfDaughters="0.0" lt:maxWidthInColumn="0.0" lt:xMid="875.3623046875" lt:maxInColumnMothersWidth="27.33984375"
+	 lt:mother="node30" lt:daughters="node32," lt:rightSister="node" lt:isTriangle="false">שׁמים/שָּׁמַ֜יִם [633]</text>
+<text id="collapsed31" x="855.9140625" y="338.5" font-family="Arial" font-size="28.0" fill="#000000" visibility="hidden">. . .</text>
+<line id="line31T1" x1="855.9140625" y1="324.63671875" x2="875.3623046875" y2="333.3671875" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line31T2" x1="875.3623046875" y1="333.3671875" x2="894.810546875" y2="324.63671875" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line31T3" x1="855.9140625" y1="324.63671875" x2="894.810546875" y2="324.63671875" stroke="#000000" stroke-width="1.0" visibility="hidden"/>
+<line id="line31-30" x1="875.3623046875" y1="291.060546875" x2="875.3623046875" y2="307.73828125" stroke="#000000" stroke-width="1.0" visibility="visible"/>
+<text id="node32" x="0.0" y="0.0"
+	 font-family="Arial" font-size="12.0" fill="#008000"
+	 lt:width="95.37890625" lt:maxWidthOfDaughters="0.0" lt:maxWidthInColumn="0.0" lt:xMid="875.3623046875" lt:maxInColumnMothersWidth="97.681640625"
+	 lt:mother="node31" lt:daughters="node" lt:rightSister="node" lt:isTriangle="false" lt:nodeTextItems="node32nt33,node32nt34,node32nt35,"
+	 onclick="ProcessCollapsibleNode('node32')" lt:collapsed="false"
+	></text>
+<text id="node32nt33" x="827.6728515625" y="338.5"
+	 font-family="Arial" font-size="12.0" fill="#008000"
+	 lt:width="52.037109375" lt:maxWidthOfDaughters="0.0" lt:maxWidthInColumn="0.0" lt:xMid="875.3623046875" lt:maxInColumnMothersWidth="97.681640625"
+	 lt:mother="node31" lt:daughters="node">heavens [</text>
+<text id="node32nt34" x="879.7099609375" y="338.5"
+	 font-family="Arial" font-size="12.0" fill="#008000"
+	 lt:width="40.0078125" lt:maxWidthOfDaughters="0.0" lt:maxWidthInColumn="0.0" lt:xMid="875.3623046875" lt:maxInColumnMothersWidth="97.681640625"
+	 lt:mother="node31" lt:daughters="node">m pl a -</text>
+<text id="node32nt35" x="919.7177734375" y="338.5"
+	 font-family="Arial" font-size="12.0" fill="#008000"
+	 lt:width="3.333984375" lt:maxWidthOfDaughters="0.0" lt:maxWidthInColumn="0.0" lt:xMid="875.3623046875" lt:maxInColumnMothersWidth="97.681640625"
+	 lt:mother="node31" lt:daughters="node">]</text>
 </svg>

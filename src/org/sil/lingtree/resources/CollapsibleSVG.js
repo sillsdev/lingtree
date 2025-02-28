@@ -31,7 +31,6 @@ var svgXCoord = "x";
 // Code for handling collapsing nodes
 function ProcessCollapsibleNode(nodeId) {
 	var rootNode = document.getElementById("node0");
-	console.log("before recalculations");
 	showNodeValues(rootNode);
 	var text = document.getElementById(nodeId);
 	var collapsedNodes = text.getAttribute(ltCollapsedNodes);
@@ -68,7 +67,6 @@ function ProcessCollapsibleNode(nodeId) {
 		calculateXCoordinateAndXMidOfNodes(rootNode, initialXCoord);
 	}
 	resetAllLines(rootNode);
-	console.log("after recalculations");
 	showNodeValues(rootNode);
 }
 function resetAllLines(node) {
@@ -254,21 +252,6 @@ function calculateXCoordinateAndXMidOfNodes(node, leftOffset) {
 		if (daughter == null) {
 			continue;
 		}
-		var nodeTextList = daughter.getAttribute(ltNodeTextItems);
-		if (nodeTextList != null) {
-			var nodeTexts = nodeTextList.split(',');
-			var numNodeTexts = nodeTexts.length - 1;
-			var nodeProperXCoord = daughter.getAttribute(svgXCoord);
-			for (let j = 0; j < numNodeTexts; j++) {
-				var nodeText = document.getElementById(nodeTexts[j]);
-				if (nodeText != null) {
-//					nodeText.setAttribute(svgXCoord, nodeProperXCoord);
-					var dntWidth = nodeText.getAttribute(ltWidth);
-					nodeProperXCoord += dntWidth;
-				}
-			}
-			continue;
-		}
 		var gap = horizontalGap;
 		if (i == 0 || nodeTextList == "true") {
 			gap = 0.0;
@@ -290,6 +273,22 @@ function calculateXCoordinateAndXMidOfNodes(node, leftOffset) {
 	var width = parseFloat(node.getAttribute(ltWidth));
 	var xcoord = dXMid - (width / 2);
 	node.setAttribute(svgXCoord, xcoord);
+// now adjust any node texts
+	var nodeTextList = node.getAttribute(ltNodeTextItems);
+	if (nodeTextList != null) {
+		var dNodesXCoord = xcoord;
+		var nodeTexts = nodeTextList.split(',');
+		var numNodeTexts = nodeTexts.length - 1;
+		for (let j = 0; j < numNodeTexts; j++) {
+			var nodeText = document.getElementById(nodeTexts[j]);
+			if (nodeText != null) {
+				nodeText.setAttribute(svgXCoord, dNodesXCoord);
+				var dntWidth = parseFloat(nodeText.getAttribute(ltWidth));
+				dNodesXCoord += dntWidth;
+			}
+		}
+	}
+
 }
 function adjustEllipsisTriangleAndTextLocation(nodeId, dXMid) {
 	var dLeftmostX = dXMid - dEllipsisXOffset;

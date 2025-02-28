@@ -287,8 +287,6 @@ public class CollapsibleSVGDrawer extends TreeDrawer {
 		if (node.getContentsAsList().size() > 0) {
 			sb.append(" lt:nodeTextItems=\"");
 			String nodeTextItems = recordNodeTextItems(node);
-			// remove final comma
-			nodeTextItems = nodeTextItems.substring(0, nodeTextItems.length()-1);
 			sb.append(nodeTextItems);
 			sb.append("\"");
 		}
