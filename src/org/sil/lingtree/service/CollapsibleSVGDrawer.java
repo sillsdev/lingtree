@@ -57,6 +57,7 @@ public class CollapsibleSVGDrawer extends TreeDrawer {
 			LingTreeNode node = ltTree.getRootNode();
 			sb.append(Constants.SVG_COLLAPSIBLE_HEADER_BEGIN.replace("{0}", String.valueOf(ltTree.getXSize() + 10)).replace(
 					"{1}", String.valueOf(ltTree.getYSize())));
+			insertPreamble(sb);
 			insertParameters(sb);
 			insertStaticJavacriptCode(sb);
 			sb.append(Constants.SVG_COLLAPSIBLE_HEADER_END);
@@ -69,6 +70,17 @@ public class CollapsibleSVGDrawer extends TreeDrawer {
 			e.printStackTrace();
 		}
 		return sb;
+	}
+
+	protected void insertPreamble(StringBuilder sb) {
+		sb.append("/**\n");
+		sb.append(" * Copyright (c) 2025 SIL Global\n");
+		sb.append(" * This software is licensed under the LGPL, version 2.1 or later\n");
+		sb.append(" * (http://www.gnu.org/licenses/lgpl-2.1.html)\n");
+		sb.append(" */\n");
+		sb.append("/**\n");
+		sb.append(" * Collaspible SVG javascript code\n");
+		sb.append(" */\n");
 	}
 
 	protected void insertParameters(StringBuilder sb) {
