@@ -50,9 +50,9 @@ function ProcessCollapsibleNode(nodeId) {
 		var dMaxWidthInColumn = parseFloat(rootNode.getAttribute(ltMaxWidthInColumn));
 		var dWidth = parseFloat(rootNode.getAttribute(ltWidth));
 		var dWidthToUse = Math.max(dWidth, dMaxWidthInColumn);
-		calculateXCoordinateAndXMidOfNodes(rootNode, dWidthToUse + initialXCoord);
+		calculateXCoordinateAndXMidOfNodes(rootNode, dWidthToUse + dInitialXCoord);
 	} else {
-		calculateXCoordinateAndXMidOfNodes(rootNode, initialXCoord);
+		calculateXCoordinateAndXMidOfNodes(rootNode, dInitialXCoord);
 	}
 	resetAllLines(rootNode);
 //	showNodeValues(rootNode);
@@ -66,8 +66,8 @@ function resetAllLines(node) {
 			continue;
 		}
 		var motherId = node.getAttribute(svgId);
-		var fIsTriangle = daughter.getAttribute(ltIsTriangle);
-		if (fIsTriangle == null || fIsTriangle == "false") {
+		var isTriangle = daughter.getAttribute(ltIsTriangle);
+		if (isTriangle == null || isTriangle == "false") {
 			var dXMid = parseFloat(daughter.getAttribute(ltXMid));
 			adjustLineBetweenNodeAndItsMother(daughters[i], dXMid, motherId);
 		} else {
@@ -150,7 +150,7 @@ function calculateMaxWidthOfNodes(node) {
 		dMaxWidthOfDaughters += calculateMaxWidthOfNodes(daughter);
 		var rightSister = daughter.getAttribute(ltRightSister);
 		if (rightSister != "node") {
-			dMaxWidthOfDaughters += horizontalGap;
+			dMaxWidthOfDaughters += dHorizontalGap;
 		}
 	}
 	dMaxWidthOfNode = Math.max(dMaxWidthOfNode, dMaxWidthOfDaughters);
@@ -205,13 +205,13 @@ function setDaughtersMaxWidth(node, newMaxWidth) {
 // set the x-coordinate and x-mid values.
 // The left offset value needs to be maintained for the x-coordinate of where the column begins.
 // For right-to-left, we use subrraction to go from right edge to left
-function calculateXCoordinateAndXMidOfNodes(node, leftOffset) {
+function calculateXCoordinateAndXMidOfNodes(node, dLeftOffset) {
 	if (node == null) {
 		return;
 	}
-	var daughtersLeftOffset = leftOffset;
-	var maxWidthInColumn = parseFloat(node.getAttribute(ltMaxWidthInColumn));
-	var maxWidthOfDaughters = parseFloat(node.getAttribute(ltMaxWidthOfDaughters));
+	var dDaughtersLeftOffset = dLeftOffset;
+	var dMaxWidthInColumn = parseFloat(node.getAttribute(ltMaxWidthInColumn));
+	var dMaxWidthOfDaughters = parseFloat(node.getAttribute(ltMaxWidthOfDaughters));
 	var isNodeCollapsed = node.getAttribute(ltCollapsed);
 	if (isNodeCollapsed == "true") {
 		node.setAttribute(ltMaxWidthOfDaughters, dEllipsisWidth);
@@ -230,30 +230,30 @@ function calculateXCoordinateAndXMidOfNodes(node, leftOffset) {
 		var dWidthToUse = dNodesWidth + dSubOrSuperscriptWidth;
 		var dMaxWidthInColumn = Math.max(dWidthToUse, dEllipsisWidth, dMaxInlineMothersWidth);
 		node.setAttribute(ltMaxWidthInColumn, dMaxWidthInColumn);
-		var xcoord = leftOffset;
+		var dXCoord = dLeftOffset;
 		if (isRightToLeft) {
-			xcoord -= (dMaxWidthInColumn + dWidthToUse) / 2;
+			dXCoord -= (dMaxWidthInColumn + dWidthToUse) / 2;
 		} else {
-			xcoord += (dMaxWidthInColumn - dWidthToUse) / 2;
+			dXCoord += (dMaxWidthInColumn - dWidthToUse) / 2;
 		}
-		node.setAttribute(svgXCoord, xcoord);
-		var dXMid = xcoord + (dWidthToUse / 2);
+		node.setAttribute(svgXCoord, dXCoord);
+		var dXMid = dXCoord + (dWidthToUse / 2);
 		node.setAttribute(ltXMid, dXMid);
 		var nodeId = node.getAttribute(svgId);
 		adjustEllipsisTriangleAndTextLocation(nodeId, dXMid);
 		adjustLineBetweenNodeAndItsMother(nodeId, dXMid, motherId);
 		if (dSubOrSuperscriptWidth > 0.0) {
-			adjustAnySubOrSuperscript(node, xcoord + dNodesWidth);
+			adjustAnySubOrSuperscript(node, dXCoord + dNodesWidth);
 		}
-		adjustAnyNodeTextItems(node, xcoord);
+		adjustAnyNodeTextItems(node, dXCoord);
 		return;
 	}
 
 	var daughtersList = node.getAttribute(ltDaughters);
 	var daughters = daughtersList.split(',');
 	var numDaughters = daughters.length - 1;
-	if (maxWidthInColumn > maxWidthOfDaughters && numDaughters > 1) {
-		daughtersLeftOffset += (maxWidthInColumn - maxWidthOfDaughters) / 2;
+	if (dMaxWidthInColumn > dMaxWidthOfDaughters && numDaughters > 1) {
+		dDaughtersLeftOffset += (dMaxWidthInColumn - dMaxWidthOfDaughters) / 2;
 	}
 	for (let i = 0; i < numDaughters; i++) {
 		var daughterId = daughters[i];
@@ -261,34 +261,34 @@ function calculateXCoordinateAndXMidOfNodes(node, leftOffset) {
 		if (daughter == null) {
 			continue;
 		}
-		var gap = horizontalGap;
+		var dGap = dHorizontalGap;
 		if (i == 0 || nodeTextList == "true") {
-			gap = 0.0;
+			dGap = 0.0;
 		}
-		var newLeftOffset = daughtersLeftOffset + gap;
+		var newLeftOffset = dDaughtersLeftOffset + dGap;
 		if (isRightToLeft) {
-			newLeftOffset = daughtersLeftOffset - gap;
+			newLeftOffset = dDaughtersLeftOffset - dGap;
 		}
 		calculateXCoordinateAndXMidOfNodes(daughter, newLeftOffset);
 		var daughtersMaxWidthInColumn = parseFloat(daughter.getAttribute(ltMaxWidthInColumn));
 		if (isRightToLeft) {
-			daughtersLeftOffset -= (daughtersMaxWidthInColumn + gap);
+			dDaughtersLeftOffset -= (daughtersMaxWidthInColumn + dGap);
 		} else {
-			daughtersLeftOffset += daughtersMaxWidthInColumn + gap;
+			dDaughtersLeftOffset += daughtersMaxWidthInColumn + dGap;
 		}
 	}
-	var dXMid = calculateXMidOfNode(maxWidthInColumn, daughters, leftOffset);
+	var dXMid = calculateXMidOfNode(dMaxWidthInColumn, daughters, dLeftOffset);
 	node.setAttribute(ltXMid, dXMid);
 	var dNodesWidth = parseFloat(node.getAttribute(ltWidth));
 	var dSubOrSuperscriptWidth = calculateWidthOfSubOrSuperscript(node);
 	var dWidthToUse = dNodesWidth + dSubOrSuperscriptWidth;
-	var xcoord = dXMid - (dWidthToUse / 2);
-	node.setAttribute(svgXCoord, xcoord);
+	var dXCoord = dXMid - (dWidthToUse / 2);
+	node.setAttribute(svgXCoord, dXCoord);
 	if (dSubOrSuperscriptWidth > 0.0) {
-		adjustAnySubOrSuperscript(node, xcoord + dNodesWidth);
+		adjustAnySubOrSuperscript(node, dXCoord + dNodesWidth);
 	}
 	var nodeTextList = node.getAttribute(ltNodeTextItems);
-	adjustAnyNodeTextItems(node, xcoord);
+	adjustAnyNodeTextItems(node, dXCoord);
 }
 function adjustAnySubOrSuperscript(node, xcoord) {
 	var sub = node.getAttribute(ltSubscript);
@@ -397,8 +397,8 @@ function calculateXMidOfNode(maxWidthInColumn, daughters, leftOffset) {
 				if (lastDaughter != null) {
 					var dLastDaughterXMid = parseFloat(lastDaughter.getAttribute(ltXMid));
 					var dWidthToUse = dLastDaughterXMid - dFirstDaughterXMid;
-					var result = dFirstDaughterXMid + (dWidthToUse / 2);
-					dXMid = result;
+					var dResult = dFirstDaughterXMid + (dWidthToUse / 2);
+					dXMid = dResult;
 				}
 			} else if (numDaughters == 1) {
 				dXMid = dFirstDaughterXMid;

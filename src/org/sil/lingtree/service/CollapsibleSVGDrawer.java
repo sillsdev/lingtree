@@ -87,8 +87,8 @@ public class CollapsibleSVGDrawer extends TreeDrawer {
 		sb.append("var dEllipsisWidth = " + dEllipsisWidth + ";\n");
 		sb.append("var dEllipsisXOffset = " + dEllipsisXOffset + ";\n");
 		sb.append("var dTriangleXOffset = " + dTriangleOffset + ";\n");
-		sb.append("var horizontalGap = " + ltTree.getHorizontalGap() + ";\n");
-		sb.append("var initialXCoord = " + ltTree.getInitialXCoordinate() + ";\n");
+		sb.append("var dHorizontalGap = " + ltTree.getHorizontalGap() + ";\n");
+		sb.append("var dInitialXCoord = " + ltTree.getInitialXCoordinate() + ";\n");
 		sb.append("var isCenterColumnOrientedOnDaughtersWidth = " + ltTree.isCenterColumnOrientedOnDaughtersWidth() + ";\n");
 		sb.append("var isRightToLeft = " + ltTree.isUseRightToLeftOrientation() + ";\n");
 		sb.append("var svgWidth = " + String.valueOf(ltTree.getXSize() + 10) + ";\n");
