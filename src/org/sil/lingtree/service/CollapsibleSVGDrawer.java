@@ -12,6 +12,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 
 import org.sil.lingtree.Constants;
+import org.sil.lingtree.MainApp;
 import org.sil.lingtree.model.FontInfo;
 import org.sil.lingtree.model.LingTreeNode;
 import org.sil.lingtree.model.LingTreeTree;
@@ -96,6 +97,10 @@ public class CollapsibleSVGDrawer extends TreeDrawer {
 
 	protected void insertStaticJavacriptCode(StringBuilder sb) throws IOException {
 		File scriptFile = new File(Constants.RESOURCE_SOURCE_LOCATION + "resources/CollapsibleSVG.js");
+		if (!Files.exists(scriptFile.toPath())) {
+			scriptFile = new File("resources/CollapsibleSVG.js");
+		}
+		MainApp.showDebugMessage("scriptFile is '" + scriptFile.getAbsolutePath());
 		String script = new String(Files.readString(scriptFile.toPath(), StandardCharsets.UTF_8));
 		script = script.replace(" < ", " &lt; ");
 		script = script.replace(" && ", " &amp;&amp; ");
