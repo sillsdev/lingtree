@@ -20,7 +20,7 @@ type="tLingTree"
 ><emailAddress
 >lingtree_support@sil.org</emailAddress
 ><date
->January 29, 2025</date
+>March 3, 2025</date
 ><version
 >Version 1.6.0</version
 ><version
@@ -3450,6 +3450,23 @@ type="tTool"
 >.</p
 ><p
 ><indexedItem
+term="iSVGCollapsible"
+></indexedItem
+><object
+type="tLingTree"
+></object
+> also has a third option under the <object
+type="tMenuItem"
+>File</object
+> menu item: <object
+type="tMenuItem"
+>Save tree as a collapsible .svg file</object
+>.  When this option has a check mark by it, <object
+type="tLingTree"
+></object
+> will create an SVG file whose name is the same as the file name with “Collapsible” appended to it.  When this file is loaded into a web browser, you can click on a non-root (and non-terminal) node in the tree and it will collapse what is under that node into an ellipse text with a triangle over it.  This can be useful for someone reading a very wide tree diagram with many nodes.</p
+><p
+><indexedItem
 term="iGraphics"
 ></indexedItem
 >If you do find yourself in a situation where you absolutely must have a pure graphics image file and the Portable Network Graphics (*.png) form is not acceptable, you can use various tools to convert your PNG file to some other graphics image format. Example <exampleRef
@@ -4572,6 +4589,13 @@ id="iWithSubscript"
 id="iSVG"
 ><term
 >SVG format</term
+><indexTerms
+><indexTerm
+id="iSVGCollapsible"
+><term
+>Collapsible</term
+></indexTerm
+></indexTerms
 ></indexTerm
 ><indexTerm
 id="iTrace"
