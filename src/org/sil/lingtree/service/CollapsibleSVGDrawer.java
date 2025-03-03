@@ -100,7 +100,6 @@ public class CollapsibleSVGDrawer extends TreeDrawer {
 		if (!Files.exists(scriptFile.toPath())) {
 			scriptFile = new File("resources/CollapsibleSVG.js");
 		}
-		MainApp.showDebugMessage("scriptFile is '" + scriptFile.getAbsolutePath());
 		String script = new String(Files.readString(scriptFile.toPath(), StandardCharsets.UTF_8));
 		script = script.replace(" < ", " &lt; ");
 		script = script.replace(" && ", " &amp;&amp; ");
