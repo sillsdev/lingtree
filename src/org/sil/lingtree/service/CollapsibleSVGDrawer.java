@@ -17,6 +17,7 @@ import org.sil.lingtree.model.LingTreeNode;
 import org.sil.lingtree.model.LingTreeTree;
 import org.sil.lingtree.model.NodeText;
 import org.sil.lingtree.model.NodeType;
+import org.sil.lingtree.model.SubOrSuperscriptText;
 import org.sil.utility.StringUtilities;
 
 import javafx.scene.paint.Color;
@@ -109,29 +110,15 @@ public class CollapsibleSVGDrawer extends TreeDrawer {
 		}
 		if (node.hasSubscript()) {
 			FontInfo fontInfo = node.getFontInfoForSubscript();
-			if (node.getSubscriptText().hasCustomFont()) {
-				fontInfo = node.getSubscriptText().getCustomFontInfo();
-			} else if (node.hasCustomFontInfo()) {
-				fontInfo = node.getCustomFontInfo();
-				fontInfo.setFontSize(fontInfo.getFontSize() * Constants.SUB_SUPER_SCRIPT_FONT_SIZE_FACTOR);
-			}
-			Text sub = node.getSubscriptTextBox();
-			int itemId = node.getSubscriptText().getItemId();
-			createTextAsCollapsibleSVG(sub, node, fontInfo, sb, itemId);
-			createCollapsedTextAndTriangle(node, sb, itemId);
+			SubOrSuperscriptText st = node.getSubscriptText();
+			String stType = "sub";
+			processNodeWithSubOrSuperscript(node, st, fontInfo, stType, sb);
 		}
 		if (node.hasSuperscript()) {
 			FontInfo fontInfo = node.getFontInfoForSuperscript();
-			if (node.getSuperscriptText().hasCustomFont()) {
-				fontInfo = node.getSuperscriptText().getCustomFontInfo();
-			} else if (node.hasCustomFontInfo()) {
-				fontInfo = node.getCustomFontInfo();
-				fontInfo.setFontSize(fontInfo.getFontSize() * Constants.SUB_SUPER_SCRIPT_FONT_SIZE_FACTOR);
-			}
-			Text sup = node.getSuperscriptTextBox();
-			int itemId = node.getSuperscriptText().getItemId();
-			createTextAsCollapsibleSVG(sup, node, fontInfo, sb, itemId);
-			createCollapsedTextAndTriangle(node, sb, itemId);
+			SubOrSuperscriptText st = node.getSuperscriptText();
+			String stType = "sup";
+			processNodeWithSubOrSuperscript(node, st, fontInfo, stType, sb);
 		}
 		if (node.hasMother() && !node.isOmitLine() && node.getNodeType() != NodeType.Gloss) {
 			LingTreeNode mother = node.getMother();
@@ -151,6 +138,18 @@ public class CollapsibleSVGDrawer extends TreeDrawer {
 		for (LingTreeNode daughterNode : node.getDaughters()) {
 			drawNodesAsCollapsibleSVG(daughterNode, sb);
 		}
+	}
+
+	protected void processNodeWithSubOrSuperscript(LingTreeNode node, SubOrSuperscriptText st, FontInfo fontInfo,
+			String stType, StringBuilder sb) {
+		if (st.hasCustomFont()) {
+			fontInfo = st.getCustomFontInfo();
+		} else if (node.hasCustomFontInfo()) {
+			fontInfo = node.getCustomFontInfo();
+			fontInfo.setFontSize(fontInfo.getFontSize() * Constants.SUB_SUPER_SCRIPT_FONT_SIZE_FACTOR);
+		}
+		String sId = "node" + node.getItemId() + stType;
+		createSubSuperScriptAsCollapsibleSVG(st, node, fontInfo, sb, sId);
 	}
 
 	// for collapsed ellipsis
@@ -217,14 +216,11 @@ public class CollapsibleSVGDrawer extends TreeDrawer {
 		}
 		insertNodesMaxValues(node, sb, dWidth);
 		sb.append(breakLongLine);
+		insertSubOrSuperscript(node, sb);
 		insertMother(node, sb);
-		sb.append("\"");
 		insertNodesDaughters(node, sb);
-		sb.append("\"");
 		insertRightSister(node, sb);
-		sb.append("\"");
 		insertIsTriangle(node, sb);
-		sb.append("\"");
 		insertNodeTextItems(node, sb);
 		if (!isNodeCollapsible(node)) {
 			sb.append(">");
@@ -259,9 +255,9 @@ public class CollapsibleSVGDrawer extends TreeDrawer {
 		insertNodesMaxValues(node, sb, dWidth);
 		sb.append(breakLongLine);
 		insertMother(node, sb);
-		sb.append("\"");
+//		sb.append("\"");
 		insertNodesDaughters(node, sb);
-		sb.append("\"");
+//		sb.append("\"");
 //		insertRightSister(node, sb);
 //		sb.append("\"");
 //		insertIsTriangle(node, sb);
@@ -292,6 +288,54 @@ public class CollapsibleSVGDrawer extends TreeDrawer {
 		sb.append("</text>\n");
 	}
 
+	private void createSubSuperScriptAsCollapsibleSVG(SubOrSuperscriptText st, LingTreeNode node, FontInfo fontInfo, StringBuilder sb, String sId) {
+		sb.append("<text id=\"");
+		sb.append(sId);
+		sb.append("\" x=\"");
+		sb.append(st.getTextBox().getX());
+		sb.append("\" y=\"");
+		sb.append(st.getTextBox().getY());
+		sb.append("\"");
+		sb.append(breakLongLine);
+		insertNodesFontInfo(fontInfo, sb);
+		sb.append(breakLongLine);
+		double dWidth = st.getTextBox().getBoundsInLocal().getWidth();
+		insertNodesMaxValues(node, sb, dWidth);
+		sb.append(breakLongLine);
+		insertMother(node, sb);
+//		sb.append("\"");
+//		insertNodesDaughters(node, sb);
+//		sb.append("\"");
+//		insertRightSister(node, sb);
+//		sb.append("\"");
+//		insertIsTriangle(node, sb);
+//		sb.append("\"");
+//		insertIsNodeText(node, sb);
+//		sb.append("\"");
+//		if (node.getDaughters().size() > 0) {
+			sb.append(breakLongLine);
+			sb.append(" onclick=\"ProcessCollapsibleNode('node");
+			sb.append(node.getItemId());
+			sb.append("')\"");
+			sb.append(" lt:collapsed=\"false\"");
+			sb.append(breakLongLine);
+//			insertCollapsedNodesAndLines(node, sb);
+//	}
+		sb.append(">");
+//		} else {
+//			sb.append(breakLongLine);
+//			sb.append(" onclick=\"ProcessCollapsibleNode('node");
+//			sb.append(id);
+//			sb.append("')\"");
+//			sb.append(" lt:collapsed=\"false\"");
+//			sb.append(breakLongLine);
+//			insertCollapsedNodesAndLines(node, sb);
+//			sb.append(">");
+//		}
+		sb.append(st.getTextBox().getText().replace("<", "&lt;").replace(">", "&gt;").replace(" & ", " &amp; "));
+		sb.append("</text>\n");
+	}
+
 	protected void insertNodeTextItems(LingTreeNode node, StringBuilder sb) {
 		if (node.getContentsAsList().size() > 0) {
 			sb.append(" lt:nodeTextItems=\"");
@@ -308,6 +352,20 @@ public class CollapsibleSVGDrawer extends TreeDrawer {
 		} else {
 			sb.append("false");
 		}
+		sb.append("\"");
+	}
+
+	protected void insertSubOrSuperscript(LingTreeNode node, StringBuilder sb) {
+		if (node.hasSubscript()) {
+			sb.append(" lt:subscript=\"node");
+			sb.append(node.getItemId());
+			sb.append("sub\"");
+		}
+		if (node.hasSuperscript()) {
+			sb.append(" lt:superscript=\"node");
+			sb.append(node.getItemId());
+			sb.append("sup\"");
+		}
 	}
 
 	protected void insertMother(LingTreeNode node, StringBuilder sb) {
@@ -315,6 +373,7 @@ public class CollapsibleSVGDrawer extends TreeDrawer {
 		if (node.getMother() != null) {
 			sb.append(node.getMother().getItemId());
 		}
+		sb.append("\"");
 	}
 
 	protected void insertRightSister(LingTreeNode node, StringBuilder sb) {
@@ -322,6 +381,7 @@ public class CollapsibleSVGDrawer extends TreeDrawer {
 		if (node.getRightSister() != null) {
 			sb.append(node.getRightSister().getItemId());
 		}
+		sb.append("\"");
 	}
 
 	protected void insertCollapsedNodesAndLines(LingTreeNode node, StringBuilder sb) {
@@ -390,6 +450,7 @@ public class CollapsibleSVGDrawer extends TreeDrawer {
 		} else {
 			sb.append("node");
 		}
+		sb.append("\"");
 	}
 
 	protected void createNodeTextId(LingTreeNode node, NodeText nt, StringBuilder sb) {
@@ -411,13 +472,13 @@ public class CollapsibleSVGDrawer extends TreeDrawer {
 	}
 	private String recordCollapsibleNodes(LingTreeNode node) {
 		StringBuilder sb = new StringBuilder();
-		if (node.hasSubscript()) {
-			sb.append("node" + node.getSubscriptText().getItemId() + ",");
-		}
-		if (node.hasSuperscript()) {
-			sb.append("node" + node.getSuperscriptText().getItemId() + ",");
-		}
 		for (LingTreeNode daughter : node.getDaughters()) {
+			if (daughter.hasSubscript()) {
+				sb.append("node" + daughter.getItemId() + "sub,");
+			}
+			if (daughter.hasSuperscript()) {
+				sb.append("node" + daughter.getItemId() + "sup,");
+			}
 			if (daughter.getContentsAsList().size() > 0) {
 				for (NodeText nt : daughter.getContentsAsList()) {
 					createNodeTextId(daughter, nt, sb);

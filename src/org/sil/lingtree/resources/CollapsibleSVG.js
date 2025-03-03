@@ -20,6 +20,8 @@ var ltMaxWidthInColumn = "lt:maxWidthInColumn";
 var ltMaxWidthOfDaughters = "lt:maxWidthOfDaughters";
 var ltMother = "lt:mother";
 var ltRightSister = "lt:rightSister";
+var ltSubscript = "lt:subscript";
+var ltSuperscript = "lt:superscript";
 var ltWidth = "lt:width";
 var ltXMid = "lt:xMid";
 // SVG attributes
@@ -147,6 +149,7 @@ function hideCollapsedTriangleLine(lineId, trianglePart) {
 // The revised algorithm calculates the maximum width of a node in its column
 function calculateMaxWidthOfNodes(node) {
 	var dWidth = parseFloat(node.getAttribute(ltWidth));
+	dWidth += calculateWidthOfSubOrSuperscript(node);
 	var isNodeCollapsed = node.getAttribute(ltCollapsed);
 	if (isNodeCollapsed == "true") {
 		var dMax = Math.max(dWidth, dEllipsisWidth);
@@ -181,7 +184,27 @@ function calculateMaxWidthOfNodes(node) {
 	}
 	return dMaxWidthOfNode;
 }
-
+function calculateWidthOfSubOrSuperscript(node) {
+	var dMaxWidth = 0.0;
+	var dSubWidth = 0.0;
+	var dSuperWidth = 0.0;
+	var sub = node.getAttribute(ltSubscript);
+	if (sub != null) {
+		var subscriptNode = document.getElementById(sub);
+		if (subscriptNode != null) {
+			dSubWidth = parseFloat(subscriptNode.getAttribute(ltWidth));
+		}
+	}
+	var sup = node.getAttribute(ltSuperscript);
+	if (sup != null) {
+		var superscriptNode = document.getElementById(sup);
+		if (superscriptNode != null) {
+			dSuperWidth = parseFloat(superscriptNode.getAttribute(ltWidth));
+		}
+	}
+	dMaxWidth = Math.max(dSubWidth, dSuperWidth);
+	return dMaxWidth;
+}
 // When a higher node's width is wider than any of its daughters' width in its column,
 // we need to set the maximum width of the daughters to that node's maximum width
 // so the x-coordinate and x-mid values are correct.
@@ -222,21 +245,26 @@ function calculateXCoordinateAndXMidOfNodes(node, leftOffset) {
 				dMaxInlineMothersWidth = parseFloat(node.getAttribute(ltMaxInColumnMothersWidth));
 			}
 		}
-		var dWidth = parseFloat(node.getAttribute(ltWidth));
-		var dMaxWidthInColumn = Math.max(dWidth, dEllipsisWidth, dMaxInlineMothersWidth);
+		var dNodesWidth = parseFloat(node.getAttribute(ltWidth));
+		var dSubOrSuperscriptWidth = calculateWidthOfSubOrSuperscript(node);
+		var dWidthToUse = dNodesWidth + dSubOrSuperscriptWidth;
+		var dMaxWidthInColumn = Math.max(dWidthToUse, dEllipsisWidth, dMaxInlineMothersWidth);
 		node.setAttribute(ltMaxWidthInColumn, dMaxWidthInColumn);
 		var xcoord = leftOffset;
 		if (isRightToLeft) {
-			xcoord -= (dMaxWidthInColumn + dWidth) / 2;
+			xcoord -= (dMaxWidthInColumn + dWidthToUse) / 2;
 		} else {
-			xcoord += (dMaxWidthInColumn - dWidth) / 2;
+			xcoord += (dMaxWidthInColumn - dWidthToUse) / 2;
 		}
 		node.setAttribute(svgXCoord, xcoord);
-		var dXMid = xcoord + (dWidth / 2);
+		var dXMid = xcoord + (dWidthToUse / 2);
 		node.setAttribute(ltXMid, dXMid);
 		var nodeId = node.getAttribute(svgId);
 		adjustEllipsisTriangleAndTextLocation(nodeId, dXMid);
 		adjustLineBetweenNodeAndItsMother(nodeId, dXMid, motherId);
+		if (dSubOrSuperscriptWidth > 0.0) {
+			adjustAnySubOrSuperscript(node, xcoord + dNodesWidth);
+		}
 		adjustAnyNodeTextItems(node, xcoord);
 		return;
 	}
@@ -271,11 +299,32 @@ function calculateXCoordinateAndXMidOfNodes(node, leftOffset) {
 	}
 	var dXMid = calculateXMidOfNode(maxWidthInColumn, daughters, leftOffset);
 	node.setAttribute(ltXMid, dXMid);
-	var width = parseFloat(node.getAttribute(ltWidth));
-	var xcoord = dXMid - (width / 2);
+	var dNodesWidth = parseFloat(node.getAttribute(ltWidth));
+	var dSubOrSuperscriptWidth = calculateWidthOfSubOrSuperscript(node);
+	var dWidthToUse = dNodesWidth + dSubOrSuperscriptWidth;
+	var xcoord = dXMid - (dWidthToUse / 2);
 	node.setAttribute(svgXCoord, xcoord);
+	if (dSubOrSuperscriptWidth > 0.0) {
+		adjustAnySubOrSuperscript(node, xcoord + dNodesWidth);
+	}
 	var nodeTextList = node.getAttribute(ltNodeTextItems);
 	adjustAnyNodeTextItems(node, xcoord);
+}
+function adjustAnySubOrSuperscript(node, xcoord) {
+	var sub = node.getAttribute(ltSubscript);
+	if (sub != null) {
+		var subscriptNode = document.getElementById(sub);
+		if (subscriptNode != null) {
+			subscriptNode.setAttribute(svgXCoord, xcoord);
+		}
+	}
+	var sup = node.getAttribute(ltSuperscript);
+	if (sup != null) {
+		var superscriptNode = document.getElementById(sup);
+		if (superscriptNode != null) {
+			superscriptNode.setAttribute(svgXCoord, xcoord);
+		}
+	}
 }
 function adjustAnyNodeTextItems(node, xcoord) {
 	var nodeTextList = node.getAttribute(ltNodeTextItems);
