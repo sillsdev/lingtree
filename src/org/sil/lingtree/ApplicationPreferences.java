@@ -12,7 +12,9 @@ import org.sil.lingtree.model.LingTreeTree;
 import org.sil.utility.*;
 import org.sil.utility.service.keyboards.KeyboardInfo;
 
+import javafx.geometry.Rectangle2D;
 import javafx.scene.paint.Color;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class ApplicationPreferences extends ApplicationPreferencesUtilities {
@@ -216,17 +218,43 @@ public class ApplicationPreferences extends ApplicationPreferencesUtilities {
 
 	public Stage getLastWindowParameters(String sWindow, Stage stage, Double defaultHeight,
 			Double defaultWidth) {
-		Double value = prefs.getDouble(sWindow + HEIGHT, defaultHeight);
-		stage.setHeight(value);
-		value = prefs.getDouble(sWindow + WIDTH, defaultWidth);
-		stage.setWidth(value);
-		value = prefs.getDouble(sWindow + POSITION_X, 10);
-		stage.setX(value);
-		value = prefs.getDouble(sWindow + POSITION_Y, 10);
-		stage.setY(value);
+		double dHeight = prefs.getDouble(sWindow + HEIGHT, defaultHeight);
+		double dWidth = prefs.getDouble(sWindow + WIDTH, defaultWidth);
+		double dX = prefs.getDouble(sWindow + POSITION_X, 10);
+		double dY = prefs.getDouble(sWindow + POSITION_Y, 10);
+		if (!isXOnAScreen(dX) || !isYOnAScreen(dY)) {
+			dX = 10;
+			dY = 10;
+			dHeight = defaultHeight;
+			dWidth = defaultWidth;
+		}
+		stage.setHeight(dHeight);
+		stage.setWidth(dWidth);
+		stage.setX(dX);
+		stage.setY(dY);
 		boolean fValue = prefs.getBoolean(sWindow + MAXIMIZED, false);
 		stage.setMaximized(fValue);
 		return stage;
+	}
+
+	boolean isXOnAScreen(double dX) {
+		for (Screen screen : Screen.getScreens()) {
+			Rectangle2D bounds = screen.getVisualBounds();
+			if (dX >= bounds.getMinX() && dX <= bounds.getMaxX()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	boolean isYOnAScreen(double dY) {
+		for (Screen screen : Screen.getScreens()) {
+			Rectangle2D bounds = screen.getVisualBounds();
+			if (dY >= bounds.getMinY() && dY <= bounds.getMaxY()) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public void setLastWindowParameters(String sWindow, Stage stage) {

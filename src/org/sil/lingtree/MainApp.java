@@ -298,7 +298,7 @@ public class MainApp extends Application implements MainAppUtilities {
 
 	private void restoreWindowSettings() {
 		primaryStage = applicationPreferences.getLastWindowParameters(
-				ApplicationPreferences.LAST_WINDOW, primaryStage, 660.0, 1000.);
+				ApplicationPreferences.LAST_WINDOW, primaryStage, 660.0, 1000.0);
 	}
 
 	/**
