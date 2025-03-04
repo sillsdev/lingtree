@@ -20,6 +20,7 @@ import org.sil.lingtree.model.NodeText;
 import org.sil.lingtree.model.NodeType;
 import org.sil.lingtree.model.SubOrSuperscriptText;
 import org.sil.utility.StringUtilities;
+import org.sil.utility.view.ControllerUtilities;
 
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -96,9 +97,13 @@ public class CollapsibleSVGDrawer extends TreeDrawer {
 	}
 
 	protected void insertStaticJavacriptCode(StringBuilder sb) throws IOException {
-		File scriptFile = new File(Constants.RESOURCE_SOURCE_LOCATION + "resources/CollapsibleSVG.js");
+		String sUriOfProgram = ControllerUtilities.getUriOfProgram(MainApp.class);
+		String sPathToTry = sUriOfProgram + "resources/CollapsibleSVG.js";
+
+		File scriptFile = new File(sPathToTry.substring(5));
 		if (!Files.exists(scriptFile.toPath())) {
-			scriptFile = new File("resources/CollapsibleSVG.js");
+			// Need this when running from Eclipse
+			scriptFile = new File(Constants.RESOURCE_SOURCE_LOCATION + "resources/CollapsibleSVG.js");
 		}
 		String script = new String(Files.readString(scriptFile.toPath(), StandardCharsets.UTF_8));
 		script = script.replace(" < ", " &lt; ");
