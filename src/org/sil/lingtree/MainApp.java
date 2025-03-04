@@ -390,6 +390,7 @@ public class MainApp extends Application implements MainAppUtilities {
 			@Override
 			public void run() {
 				Alert alert = new Alert(AlertType.CONFIRMATION);
+				alert.setResizable(true);
 				alert.setTitle("Debug message");
 				alert.setHeaderText("debugging");
 				alert.setContentText(msg);

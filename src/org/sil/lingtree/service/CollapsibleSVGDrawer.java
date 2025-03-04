@@ -99,11 +99,16 @@ public class CollapsibleSVGDrawer extends TreeDrawer {
 	protected void insertStaticJavacriptCode(StringBuilder sb) throws IOException {
 		String sUriOfProgram = ControllerUtilities.getUriOfProgram(MainApp.class);
 		String sPathToTry = sUriOfProgram + "resources/CollapsibleSVG.js";
-
 		File scriptFile = new File(sPathToTry.substring(5));
 		if (!Files.exists(scriptFile.toPath())) {
-			// Need this when running from Eclipse
-			scriptFile = new File(Constants.RESOURCE_SOURCE_LOCATION + "resources/CollapsibleSVG.js");
+			String sWinTry = scriptFile.toPath().toString().replaceAll("%20", " ");
+			File winTry = new File(sWinTry);
+			if (Files.exists(winTry.toPath())) {
+				scriptFile= winTry;
+			} else {
+				// Need this when running from Eclipse
+				scriptFile = new File(Constants.RESOURCE_SOURCE_LOCATION + "resources/CollapsibleSVG.js");
+			}
 		}
 		String script = new String(Files.readString(scriptFile.toPath(), StandardCharsets.UTF_8));
 		script = script.replace(" < ", " &lt; ");
