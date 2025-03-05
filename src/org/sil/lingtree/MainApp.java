@@ -95,9 +95,12 @@ public class MainApp extends Application implements MainAppUtilities {
 
 	@Override
 	public void stop() throws IOException {
-		applicationPreferences.setLastWindowParameters(ApplicationPreferences.LAST_WINDOW,
-				primaryStage);
-		applicationPreferences.setLastSplitPaneDividerPosition(dividerPosition);
+		if (applicationPreferences.isXOnAScreen(primaryStage.getX()) &&
+				applicationPreferences.isYOnAScreen(primaryStage.getY())) {
+			applicationPreferences.setLastWindowParameters(ApplicationPreferences.LAST_WINDOW,
+					primaryStage);
+			applicationPreferences.setLastSplitPaneDividerPosition(dividerPosition);
+		}
 		applicationPreferences.setLastLocaleLanguage(locale.getLanguage());
 		if (controller.isDirty()) {
 			controller.askAboutSaving();

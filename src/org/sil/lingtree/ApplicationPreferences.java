@@ -237,7 +237,7 @@ public class ApplicationPreferences extends ApplicationPreferencesUtilities {
 		return stage;
 	}
 
-	boolean isXOnAScreen(double dX) {
+	public boolean isXOnAScreen(double dX) {
 		for (Screen screen : Screen.getScreens()) {
 			Rectangle2D bounds = screen.getVisualBounds();
 			if (dX >= bounds.getMinX() && dX <= bounds.getMaxX()) {
@@ -247,7 +247,7 @@ public class ApplicationPreferences extends ApplicationPreferencesUtilities {
 		return false;
 	}
 
-	boolean isYOnAScreen(double dY) {
+	public boolean isYOnAScreen(double dY) {
 		for (Screen screen : Screen.getScreens()) {
 			Rectangle2D bounds = screen.getVisualBounds();
 			if (dY >= bounds.getMinY() && dY <= bounds.getMaxY()) {
