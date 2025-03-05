@@ -10,7 +10,7 @@ package org.sil.lingtree;
  *
  */
 public class Constants {
-	public static final String VERSION_NUMBER = "1.6.0.0";
+	public static final String VERSION_NUMBER = "1.6.1.0";
 	public static final int CURRENT_DATABASE_VERSION = 4;
 
 	public static final String ABBREVIATION_BEGIN = "/a";
