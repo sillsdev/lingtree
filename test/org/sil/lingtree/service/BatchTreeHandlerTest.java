@@ -27,11 +27,14 @@ public class BatchTreeHandlerTest {
 	BatchTreeHandler handler;
 	String pngFilePath;
 	String svgFilePath;
+	String collapsibleSvgFilePath;
 
 	@Before
 	public void setUp() throws Exception {
 		pngFilePath = Constants.UNIT_TEST_DATA_FILE_NAME + "png";
 		svgFilePath = Constants.UNIT_TEST_DATA_FILE_NAME + "svg";
+		int i = Constants.UNIT_TEST_DATA_FILE_NAME.lastIndexOf(".");
+		collapsibleSvgFilePath = Constants.UNIT_TEST_DATA_FILE_NAME.substring(0, i) + "Collapsible.svg";
 		deleteGraphicFiles();
 	}
 
@@ -39,6 +42,8 @@ public class BatchTreeHandlerTest {
 		File file = new File(pngFilePath);
 		Files.deleteIfExists(file.toPath().toAbsolutePath());
 		file = new File(svgFilePath);
+		Files.deleteIfExists(file.toPath().toAbsolutePath());
+		file = new File(collapsibleSvgFilePath);
 		Files.deleteIfExists(file.toPath().toAbsolutePath());
 	}
 
@@ -72,11 +77,15 @@ public class BatchTreeHandlerTest {
 		assertFalse(file.exists());
 		file = new File(pngFilePath);
 		assertFalse(file.exists());
+		file = new File(collapsibleSvgFilePath);
+		assertFalse(file.exists());
 		// file is good; tree description is well-formed
 		handler = new BatchTreeHandler(Constants.UNIT_TEST_DATA_FILE, null);
 		assertTrue(handler.fileExists());
 		handler.processTree(true);
 		file = new File(svgFilePath);
+		assertTrue(file.exists());
+		file = new File(collapsibleSvgFilePath);
 		assertTrue(file.exists());
 		// we use runLater to allow time for the drawer to work
 		Platform.runLater(new Runnable() {

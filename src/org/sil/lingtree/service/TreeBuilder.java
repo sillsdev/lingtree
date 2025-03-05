@@ -189,6 +189,7 @@ public class TreeBuilder {
 		ltTree.setNonTerminalKeyboard(origTree.getNonTerminalKeyboard());
 		ltTree.setSaveAsPng(origTree.isSaveAsPng());
 		ltTree.setSaveAsSVG(origTree.isSaveAsSVG());
+		ltTree.setSaveAsCollapsibleSVG(origTree.isSaveAsCollapsibleSVG());
 		ltTree.setShowFlatView(origTree.isShowFlatView());
 		ltTree.setSyntagmemeKeyboard(origTree.getSyntagmemeKeyboard());
 		ltTree.setVerticalGap(origTree.getVerticalGap());

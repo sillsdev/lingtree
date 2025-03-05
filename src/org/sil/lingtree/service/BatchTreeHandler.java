@@ -68,6 +68,9 @@ public class BatchTreeHandler {
 		}
 		xmlBackEndProvider.loadTreeDataFromFile(treeFile);
 		ltTree = xmlBackEndProvider.getLingTree();
+		if (fTesting) {
+			ltTree.setSaveAsCollapsibleSVG(true);
+		}
 		ltTree.setFontsAndColors();
 		ltTree = TreeBuilder.parseAString(ltTree.getDescription(), ltTree);
 		if (TreeBuilder.getNumberOfErrors() > 0) {
@@ -89,6 +92,10 @@ public class BatchTreeHandler {
 	    				saver.saveAsPNG(drawingArea, ltTree);
 	                 }
 	             });
+			}
+			if (ltTree.isSaveAsCollapsibleSVG()) {
+				CollapsibleSVGDrawer csvgDrawer = new CollapsibleSVGDrawer(ltTree);
+				saver.saveAsCollapsibleSVG(csvgDrawer);
 			}
 		}
 	}

@@ -855,44 +855,44 @@ public class TreeDrawerTest extends ServiceBaseTest {
 		drawer.calculateYCoordinateOfEveryNode();
 		drawer.calculateXCoordinateOfEveryNode();
 		node = ltTree.getRootNode();
-		checkNodeContentAndXCoordinate(node, "PT=NP[4]:PF=Objc:PD=det", 133.9755859375);
+		checkNodeContentAndXCoordinate(node, "PT=NP[4]:PF=Objc:PD=det", 135.056640625);
 		node1 = node.getDaughters().get(0);
-		checkNodeContentAndXCoordinate(node1, "part", 37.544921875);
+		checkNodeContentAndXCoordinate(node1, "part", 38.6259765625);
 		node2 = node1.getDaughters().get(0);
 		checkNodeContentAndXCoordinate(node2, "את/אֶת־[285]", 10.0);
 		node2 = node2.getDaughters().get(0);
-		checkNodeContentAndXCoordinate(node2, "object marker", 10.474609375);
+		checkNodeContentAndXCoordinate(node2, "object marker", 11.5556640625);
 
 		node1 = node.getDaughters().get(1);
-		checkNodeContentAndXCoordinate(node1, "SP[4:SPR=Appo]", 211.6474609375);
+		checkNodeContentAndXCoordinate(node1, "SP[4:SPR=Appo]", 213.8095703125);
 		node2 = node1.getDaughters().get(0);
-		checkNodeContentAndXCoordinate(node2, "SP[25:SPR=Xatr]", 157.5947265625);
+		checkNodeContentAndXCoordinate(node2, "SP[25:SPR=Xatr]", 159.7568359375);
 		node2 = node2.getDaughters().get(0);
-		checkNodeContentAndXCoordinate(node2, "DP", 192.982421875);
+		checkNodeContentAndXCoordinate(node2, "DP", 195.14453125);
 		LingTreeNode node3 = node2.getDaughters().get(0);
-		checkNodeContentAndXCoordinate(node3, "art", 133.75);
+		checkNodeContentAndXCoordinate(node3, "art", 135.912109375);
 		node3 = node3.getDaughters().get(0);
-		checkNodeContentAndXCoordinate(node3, "ה/הַ[292]", 113.8046875);
+		checkNodeContentAndXCoordinate(node3, "ה/הַ[292]", 115.966796875);
 		node3 = node3.getDaughters().get(0);
-		checkNodeContentAndXCoordinate(node3, "the", 131.74609375);
+		checkNodeContentAndXCoordinate(node3, "the", 133.908203125);
 
 		node3 = node2.getDaughters().get(1);
-		checkNodeContentAndXCoordinate(node3, "subs", 231.2646484375);
+		checkNodeContentAndXCoordinate(node3, "subs", 233.4267578125);
 		node3 = node3.getDaughters().get(0);
-		checkNodeContentAndXCoordinate(node3, "מאור/מָּאֹ֤ור [293]", 196.369140625);
+		checkNodeContentAndXCoordinate(node3, "מאור/מָּאֹ֤ור [293]", 198.53125);
 		node3 = node3.getDaughters().get(0);
-		checkNodeContentAndXCoordinate(node3, "", 202.2578125);
+		checkNodeContentAndXCoordinate(node3, "", 204.419921875);
 
 		node2 = node1.getDaughters().get(1);
-		checkNodeContentAndXCoordinate(node2, "SP[24:SPR=atr]", 317.5);
+		checkNodeContentAndXCoordinate(node2, "SP[24:SPR=atr]", 319.662109375);
 		node2 = node2.getDaughters().get(0);
-		checkNodeContentAndXCoordinate(node2, "DP", 348.5546875);
+		checkNodeContentAndXCoordinate(node2, "DP", 350.716796875);
 		node3 = node2.getDaughters().get(0);
-		checkNodeContentAndXCoordinate(node3, "art", 349.8876953125);
+		checkNodeContentAndXCoordinate(node3, "art", 352.0498046875);
 		node3 = node3.getDaughters().get(0);
-		checkNodeContentAndXCoordinate(node3, "ה/הַ[294]", 329.9423828125);
+		checkNodeContentAndXCoordinate(node3, "ה/הַ[294]", 332.1044921875);
 		node3 = node3.getDaughters().get(0);
-		checkNodeContentAndXCoordinate(node3, "the", 347.8837890625);
+		checkNodeContentAndXCoordinate(node3, "the", 350.0458984375);
 	}
 
 	@Test
