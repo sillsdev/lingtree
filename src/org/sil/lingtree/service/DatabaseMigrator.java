@@ -34,6 +34,7 @@ import javax.xml.transform.stream.StreamSource;
 import org.sil.lingtree.Constants;
 import org.sil.lingtree.MainApp;
 import org.sil.utility.HandleExceptionMessage;
+import org.sil.utility.view.ControllerUtilities;
 import org.sil.utility.xml.XsltParameter;
 import org.w3c.dom.Document;
 
@@ -154,9 +155,21 @@ public class DatabaseMigrator {
 		}
 
 		try {
-			File xslt = new File(stylesheet);
-			if (!xslt.exists()) {
-				throw new DataMigrationException(xslt.getPath());
+			String sUriOfProgram = ControllerUtilities.getUriOfProgram(MainApp.class);
+			String sPathToTry = sUriOfProgram + stylesheet;
+			File xsltFile = new File(sPathToTry.substring(5));
+			if (!Files.exists(xsltFile.toPath())) {
+				String sWinTry = xsltFile.toPath().toString().replaceAll("%20", " ");
+				File winTry = new File(sWinTry);
+				if (Files.exists(winTry.toPath())) {
+					xsltFile= winTry;
+				} else {
+					// Need this when running from Eclipse
+					xsltFile = new File(Constants.RESOURCE_SOURCE_LOCATION + "resources/CollapsibleSVG.js");
+				}
+			}
+			if (!xsltFile.exists()) {
+				throw new DataMigrationException(xsltFile.getPath());
 			}
 			if (version == 1) {
 				file = fixDescriptionXML(file);
