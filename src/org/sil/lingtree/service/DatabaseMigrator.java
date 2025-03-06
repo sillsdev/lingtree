@@ -32,6 +32,7 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import org.sil.lingtree.Constants;
+import org.sil.lingtree.MainApp;
 import org.sil.utility.HandleExceptionMessage;
 import org.sil.utility.xml.XsltParameter;
 import org.w3c.dom.Document;
@@ -178,6 +179,7 @@ public class DatabaseMigrator {
 			transformer.transform(source, result);
 		} catch (Exception e) {
 			e.printStackTrace();
+			MainApp.reportException(e, null);
 			HandleExceptionMessage.show("Migration Error", "Failed to transform", e.getMessage(),
 					true);
 		}
