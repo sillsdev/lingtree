@@ -13,7 +13,7 @@ public class DataMigrationException extends Exception {
 		sFileName = filename;
 	}
 
-	public String getsFileName() {
+	public String getFileName() {
 		return sFileName;
 	}
 

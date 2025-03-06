@@ -179,9 +179,11 @@ public class DatabaseMigrator {
 			transformer.transform(source, result);
 		} catch (Exception e) {
 			e.printStackTrace();
+			if (e instanceof DataMigrationException exc) {
+				HandleExceptionMessage.show("Migration Error", "Failed to transform", exc.getFileName(),
+						false);
+			}
 			MainApp.reportException(e, null);
-			HandleExceptionMessage.show("Migration Error", "Failed to transform", e.getMessage(),
-					true);
 		}
 		return tempSaveFile;
 	}
