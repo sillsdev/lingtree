@@ -179,7 +179,7 @@ public class DatabaseMigrator {
 			Document document = builder.parse(file);
 			// Use a Transformer for output
 			TransformerFactory tFactory = TransformerFactory.newInstance();
-			StreamSource stylesource = new StreamSource(stylesheet);
+			StreamSource stylesource = new StreamSource(xsltFile.toString());
 			Transformer transformer = tFactory.newTransformer(stylesource);
 			if (params.size() > 0) {
 				for (XsltParameter param : params) {
