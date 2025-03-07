@@ -13,8 +13,8 @@ on:
 jobs:
   build-installer:
 
-    runs-on: ubuntu-latest
-
+#    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -26,8 +26,10 @@ jobs:
           VERSION="${GITHUB_REF#refs/tags/v}"
           SHORT_SHA=$(git rev-parse --short HEAD)
           FULL_VERSION="${VERSION}-${SHORT_SHA}"
+          LINUXTARGET="22.04"
           echo "VERSION=${VERSION}" >> $GITHUB_ENV
           echo "FULL_VERSION=${FULL_VERSION}" >> $GITHUB_ENV
+          echo "LINUXTARGET=${LINUXTARGET}" >> $GITHUB_ENV
         shell: bash
 
       - name: Validate version format
@@ -60,7 +62,7 @@ jobs:
         env:
           PUBLISH_PATH: 'installer/linux'
         run: |
-          mv ${{env.PUBLISH_PATH}}/lingtree_${{ env.VERSION }}-1_amd64.deb LingTree-${{ env.VERSION }}.deb
+          mv ${{env.PUBLISH_PATH}}/lingtree_${{ env.VERSION }}-${{ env.LINUXTARGET }}-1_amd64.deb LingTree-${{ env.VERSION }}-${{ env.LINUXTARGET }}.deb
 
       - uses: actions/upload-artifact@v4
         with:
@@ -71,8 +73,8 @@ jobs:
   create-release:
     name: Create Release
     needs: build-installer
-    runs-on: ubuntu-latest
-
+#    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/download-artifact@v4
         with:
