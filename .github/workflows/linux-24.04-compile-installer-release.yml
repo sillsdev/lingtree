@@ -61,7 +61,7 @@ jobs:
         env:
           PUBLISH_PATH: 'installer/linux'
         run: |
-          mv ${{env.PUBLISH_PATH}}/lingtree_${{ env.VERSION }}-${{ env.LINUXTARGET }}-1_amd64.deb LingTree-${{ env.VERSION }}-${{ env.LINUXTARGET }}.deb
+          mv ${{env.PUBLISH_PATH}}/lingtree_${{ env.VERSION }}-1_amd64.deb LingTree-${{ env.VERSION }}-${{ env.LINUXTARGET }}.deb
 
       - uses: actions/upload-artifact@v4
         with:
