@@ -29,6 +29,7 @@ jobs:
           LINUXTARGET="22.04"
           echo "VERSION=${VERSION}" >> $GITHUB_ENV
           echo "FULL_VERSION=${FULL_VERSION}" >> $GITHUB_ENV
+          echo "LINUXTARGET=${LINUXTARGET}" >> $GITHUB_ENV
         shell: bash
 
       - name: Validate version format
