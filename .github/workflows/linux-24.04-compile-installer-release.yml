@@ -1,6 +1,6 @@
 # This workflow will build a Java project with Ant
 
-name: Linux Build Installer with Version
+name: Linux (24.04) Build Installer with Version
 
 on:
   push:
