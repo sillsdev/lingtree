@@ -116,7 +116,7 @@ jobs:
           echo "PACKAGE_VERSION=$(/bin/cat ./uploads/build-version.txt)" >> $GITHUB_ENV
 
       - name: Upload packages to Workflow Artifacts
-        uses: actions/upload-artifact@v3.1.1
+        uses: actions/upload-artifact@v4
         with:
           name: ${{env.PACKAGE_NAME}}-${{env.PACKAGE_VERSION}}
           path: |
