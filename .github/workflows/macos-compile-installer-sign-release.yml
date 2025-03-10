@@ -107,7 +107,7 @@ jobs:
         run: ./.github/workflows/helpers/install_munkipkg.sh
 
       - name: Run the build_package script 
-        run: ./helpers/build_package.sh $NOTARIZE_PASSWORD $NOTARIZE_APPLE_ID $NOTARIZE_TEAM_ID
+        run: ./.github/workflows/helpers/build_package.sh $NOTARIZE_PASSWORD $NOTARIZE_APPLE_ID $NOTARIZE_TEAM_ID
 
       - name: Get Package Details
         id: get_package_details
