@@ -90,30 +90,41 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
+      - uses: actions/download-artifact@v4
+        with:
+          name: LingTree
 
+      - name: Add certificatee to Keychain
+        run:
+          security list-keychains -s `security list-keychains | xargs` ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT }}
+
+      - name: Sign dmg
+
+        run: |
+          codesign -s "Developer ID Application: Summer Institute of Linguistics, Inc (SIL) (3YE4W86L3G)" LingTree-*.dmg
       # Install PKG Signing Certificate
       # NOTE: Working fork of the original apple-actions/import-codesign-certs
-      - name: Install Apple Developer PKG certificates
-        uses: ssrobins/import-codesign-certs@04ce695a5e6002f1971a8ed78fedd676318f950f
-        with:
-          keychain-password: ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }}
-          p12-file-base64: ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT }}
-          p12-password: ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }}
-#          keychain-password: ${{ secrets.PKG_KEYCHAIN_PASSWORD }}
-#          p12-file-base64: ${{ secrets.PKG_CERTIFICATES_P12 }}
-#          p12-password: ${{ secrets.PKG_CERTIFICATES_P12_PASSWORD }}
-
-      - name: Download munkipkg and test it can execute with python3 
-        run: ./.github/workflows/helpers/install_munkipkg.sh
-
-      - name: Run the build_package script 
-        run: ./.github/workflows/helpers/build_package.sh $NOTARIZE_PASSWORD $NOTARIZE_APPLE_ID $NOTARIZE_TEAM_ID
-
-      - name: Get Package Details
-        id: get_package_details
-        run: |
-          echo "PACKAGE_NAME=$(/bin/cat ./uploads/build-name.txt)" >> $GITHUB_ENV
-          echo "PACKAGE_VERSION=$(/bin/cat ./uploads/build-version.txt)" >> $GITHUB_ENV
+#      - name: Install Apple Developer PKG certificates
+#        uses: ssrobins/import-codesign-certs@04ce695a5e6002f1971a8ed78fedd676318f950f
+#        with:
+#          keychain-password: ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }}
+#          p12-file-base64: ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT }}
+#          p12-password: ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }}
+##          keychain-password: ${{ secrets.PKG_KEYCHAIN_PASSWORD }}
+##          p12-file-base64: ${{ secrets.PKG_CERTIFICATES_P12 }}
+##          p12-password: ${{ secrets.PKG_CERTIFICATES_P12_PASSWORD }}
+#
+#      - name: Download munkipkg and test it can execute with python3 
+#        run: ./.github/workflows/helpers/install_munkipkg.sh
+#
+#      - name: Run the build_package script 
+#        run: ./.github/workflows/helpers/build_package.sh $NOTARIZE_PASSWORD $NOTARIZE_APPLE_ID $NOTARIZE_TEAM_ID
+#
+#      - name: Get Package Details
+#        id: get_package_details
+#        run: |
+#          echo "PACKAGE_NAME=$(/bin/cat ./uploads/build-name.txt)" >> $GITHUB_ENV
+#          echo "PACKAGE_VERSION=$(/bin/cat ./uploads/build-version.txt)" >> $GITHUB_ENV
 
       - name: Upload packages to Workflow Artifacts
         uses: actions/upload-artifact@v4
