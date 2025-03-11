@@ -111,7 +111,7 @@ jobs:
       - name: Sign dmg and app
 
         run: |
-          cp /Volumes/LingTree/LingTree.app .
+          cp -R /Volumes/LingTree/LingTree.app .
           codesign -s "Developer ID Application: Summer Institute of Linguistics, Inc (SIL) (3YE4W86L3G)" LingTree.app
           codesign -s "Developer ID Application: Summer Institute of Linguistics, Inc (SIL) (3YE4W86L3G)" LingTree-*.dmg
       # Install PKG Signing Certificate
