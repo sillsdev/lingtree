@@ -96,8 +96,8 @@ jobs:
 
       - name: Add certificatee to Keychain
         run: |
-          #security list-keychains
-          security add-certificate ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT }}
+          security list-keychains
+          #security add-certificate ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT }}
 
       - name: Attach dmg
         run: |
@@ -109,11 +109,13 @@ jobs:
       - name: Sign dmg and app
 
         run: |
-          cp -R /Volumes/LingTree/LingTree.app LingTree.app
-          hdiutil create -volname LingTreeInstaller -srcfolder LingTree.app -ov -format UDZO LingTreeNew.dmg
+          mkdir dmgContent
+          cp -R /Volumes/LingTree dmgContents
+          # sign the .app,but cannot yet do that
+          hdiutil create -volname LingTreeInstaller -srcfolder dmgContents -ov -format UDZO LingTreeNew.dmg
           ls -l
           codesign -s "Developer ID Application: Summer Institute of Linguistics, Inc (SIL) (3YE4W86L3G)" LingTree.app
-          codesign -s "Developer ID Application: Summer Institute of Linguistics, Inc (SIL) (3YE4W86L3G)" LingTree-*.dmg
+          codesign -s "Developer ID Application: Summer Institute of Linguistics, Inc (SIL) (3YE4W86L3G)" LingTreeNew.dmg
       # Install PKG Signing Certificate
       # NOTE: Working fork of the original apple-actions/import-codesign-certs
 #      - name: Install Apple Developer PKG certificates
