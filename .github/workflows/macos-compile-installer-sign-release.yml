@@ -103,7 +103,7 @@ jobs:
 
       - name: Attach dmg
         run: |
-          y | PAGER=cat hdiutil attach LingTree-*.dmg
+          yes | PAGER=cat hdiutil attach LingTree-*.dmg
           echo
           echo ls
           ls /Volumes/LingTree
