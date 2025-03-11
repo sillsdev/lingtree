@@ -98,8 +98,13 @@ jobs:
         run: |
           security list-keychains
           #security list-keychains -s `security list-keychains | xargs` ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT }}
-          security add-certificate ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT }}
-          security list-keychains
+          #security add-certificate ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT }}
+          #security list-keychains
+
+      - name: Attach dmg
+        run: |
+          yes | PAGER=cat hdiutil attach LingTree-*.dmg
+          ls /Volumes/LingTree
 
       - name: Sign dmg
 
