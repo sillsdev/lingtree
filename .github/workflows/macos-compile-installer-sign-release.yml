@@ -95,8 +95,10 @@ jobs:
           name: LingTree
 
       - name: Add certificatee to Keychain
-        run:
+        run: |
+          security list-keychains
           security list-keychains -s `security list-keychains | xargs` ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT }}
+          security list-keychains
 
       - name: Sign dmg
 
