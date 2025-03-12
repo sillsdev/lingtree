@@ -109,12 +109,12 @@ jobs:
       - name: Sign dmg and app
 
         run: |
-          mkdir dmgContent
+          mkdir dmgContents
           cp -R /Volumes/LingTree dmgContents
-          # sign the .app,but cannot yet do that
+          # next we need to sign the .app in dmgContents, but cannot yet do that so it is commented off
+          #codesign -s "Developer ID Application: Summer Institute of Linguistics, Inc (SIL) (3YE4W86L3G)" dmgContents/LingTree.app
           hdiutil create -volname LingTreeInstaller -srcfolder dmgContents -ov -format UDZO LingTreeNew.dmg
-          ls -l
-          codesign -s "Developer ID Application: Summer Institute of Linguistics, Inc (SIL) (3YE4W86L3G)" LingTree.app
+          ls -l dmgContents
           codesign -s "Developer ID Application: Summer Institute of Linguistics, Inc (SIL) (3YE4W86L3G)" LingTreeNew.dmg
       # Install PKG Signing Certificate
       # NOTE: Working fork of the original apple-actions/import-codesign-certs
