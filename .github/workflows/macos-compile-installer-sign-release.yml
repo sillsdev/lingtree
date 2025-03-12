@@ -97,6 +97,8 @@ jobs:
       - name: Add certificatee to Keychain
         run: |
           security list-keychains
+          #security verify-cert ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT }}
+          security add-certificate < `echo ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT }}`
           #security add-certificate ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT }}
 
       - name: Attach dmg
@@ -114,8 +116,9 @@ jobs:
           # next we need to sign the .app in dmgContents, but cannot yet do that so it is commented off
           #codesign -s ${{ secrets.SIL_APPLE_CODESIGN_IDENTITY}} dmgContents/LingTree.app
           hdiutil create -volname LingTreeInstaller -srcfolder dmgContents -ov -format UDZO LingTreeNew.dmg
-          ls -l -R
-          codesign -s $SIL_APPLE_CODESIGN_IDENTITY LingTreeNew.dmg
+          #ls -l -R
+          echo ${SIL_APPLE_CODESIGN_IDENTITY}
+          codesign -s ${SIL_APPLE_CODESIGN_IDENTITY} LingTreeNew.dmg
       # Install PKG Signing Certificate
       # NOTE: Working fork of the original apple-actions/import-codesign-certs
 #      - name: Install Apple Developer PKG certificates
