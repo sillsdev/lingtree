@@ -115,7 +115,7 @@ jobs:
 
       - name: Sign dmg and app
         env:
-          CODESIGN_ID: ${{ SIL_APPLE_CODESIGN_IDENTITY }}
+          CODESIGN_ID: $SIL_APPLE_CODESIGN_IDENTITY
         run: |
           mkdir dmgContents
           cp -R /Volumes/LingTree dmgContents
