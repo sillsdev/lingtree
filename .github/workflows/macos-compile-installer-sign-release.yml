@@ -103,7 +103,7 @@ jobs:
           #ls -l cert*.*
           #cat cert.p12
           #security verify-cert ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT }}
-          security add-certificate cert.p12
+          #security add-certificate cert.p12
           #security add-certificate ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT }}
 
       - name: Attach dmg
