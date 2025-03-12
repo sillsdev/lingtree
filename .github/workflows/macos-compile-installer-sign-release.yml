@@ -95,9 +95,13 @@ jobs:
           name: LingTree
 
       - name: Add certificatee to Keychain
+        env:
+          CERT: ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT }}
         run: |
           security list-keychains
-          echo ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT }} > cert.p12
+          echo "$CERT" >> cert.p12
+          ls -l cert*.*
+          #cat cert.p12
           #security verify-cert ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT }}
           security add-certificate cert.p12
           #security add-certificate ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT }}
