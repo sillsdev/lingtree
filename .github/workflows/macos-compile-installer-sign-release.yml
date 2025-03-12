@@ -114,7 +114,7 @@ jobs:
           # next we need to sign the .app in dmgContents, but cannot yet do that so it is commented off
           #codesign -s "Developer ID Application: Summer Institute of Linguistics, Inc (SIL) (3YE4W86L3G)" dmgContents/LingTree.app
           hdiutil create -volname LingTreeInstaller -srcfolder dmgContents -ov -format UDZO LingTreeNew.dmg
-          ls -l dmgContents
+          ls -l -R
           codesign -s "Developer ID Application: Summer Institute of Linguistics, Inc (SIL) (3YE4W86L3G)" LingTreeNew.dmg
       # Install PKG Signing Certificate
       # NOTE: Working fork of the original apple-actions/import-codesign-certs
