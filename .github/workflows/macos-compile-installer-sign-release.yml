@@ -117,9 +117,9 @@ jobs:
         env:
           CODESIGN_ID: $SIL_APPLE_CODESIGN_IDENTITY
         run: |
-          CODESIGN_PLAIN_ID = ${{ SIL_APPLE_CODESIGN_IDENTITY }}
-          CODESIGN_ENV_ID = ${{ env.SIL_APPLE_CODESIGN_IDENTITY }}
-          CODESIGN_SECRETS_ID = ${{ secrets.SIL_APPLE_CODESIGN_IDENTITY }}
+          CODESIGN_PLAIN_ID=${{ SIL_APPLE_CODESIGN_IDENTITY }}
+          CODESIGN_ENV_ID=${{ env.SIL_APPLE_CODESIGN_IDENTITY }}
+          CODESIGN_SECRETS_ID=${{ secrets.SIL_APPLE_CODESIGN_IDENTITY }}
           echo id= ${CODESIGN_ID}
           echo idplain= ${CODESIGN_PLAIN_ID}
           echo idenv= ${CODESIGN_ENV_ID}
