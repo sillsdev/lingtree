@@ -99,9 +99,8 @@ jobs:
           CERT: ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT }}
         run: |
           security list-keychains
-          echo "$CERT" >> cert.p12
+          echo "$CERT" | base64 --decode > cert.p12
           ls -l cert*.*
-          cat cert.p12
           #security verify-cert ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT }}
           #security add-certificate cert.p12
           #security add-certificate ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT }}
@@ -115,15 +114,15 @@ jobs:
 
       - name: Sign dmg and app
         env:
-          CODESIGN_ID: ${SIL_APPLE_CODESIGN_IDENTITY}
+          CODESIGN_ID: ${{ env.SIL_APPLE_CODESIGN_IDENTITY }}
         run: |
+          echo id= ${CODESIGN_ID}
           mkdir dmgContents
           cp -R /Volumes/LingTree dmgContents
           # next we need to sign the .app in dmgContents, but cannot yet do that so it is commented off
           #codesign -s ${{ secrets.SIL_APPLE_CODESIGN_IDENTITY}} dmgContents/LingTree.app
           hdiutil create -volname LingTreeInstaller -srcfolder dmgContents -ov -format UDZO LingTreeNew.dmg
           #ls -l -R
-          echo id= ${CODESIGN_ID}
           codesign -s ${CODESIGN_ID} LingTreeNew.dmg
       # Install PKG Signing Certificate
       # NOTE: Working fork of the original apple-actions/import-codesign-certs
