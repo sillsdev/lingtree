@@ -100,7 +100,10 @@ jobs:
         run: |
           security list-keychains
           echo "$CERT" >> cert1.p12
+          echo "before decode"
+          ls -l cert*.*
           base64 --decode -i cert1.p12 -o cert.p12 
+          echo "after decode"
           ls -l cert*.*
           #security verify-cert ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT }}
           #security add-certificate cert.p12
