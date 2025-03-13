@@ -121,11 +121,11 @@ jobs:
           #CODESIGN_PLAIN_ID=${{ SIL_APPLE_CODESIGN_IDENTITY }}
           #CODESIGN_ENV_ID=${{ env.SIL_APPLE_CODESIGN_IDENTITY }}
           #CODESIGN_SECRETS_ID=${{ secrets.SIL_APPLE_CODESIGN_IDENTITY }}
-          echo var= ${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}
-          echo id= ${CODESIGN_ID}
-          echo idplain= ${CODESIGN_PLAIN_ID}
-          echo idenv= ${CODESIGN_ENV_ID}
-          echo idsecrets= ${CODESIGN_SECRETS_ID}
+          #echo var= ${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}
+          #echo id= ${CODESIGN_ID}
+          #echo idplain= ${CODESIGN_PLAIN_ID}
+          #echo idenv= ${CODESIGN_ENV_ID}
+          #echo idsecrets= ${CODESIGN_SECRETS_ID}
           cp -R /Volumes/LingTree dmgContents
           # next we need to sign the .app in dmgContents, but cannot yet do that so it is commented off
           #codesign -s ${{ secrets.SIL_APPLE_CODESIGN_IDENTITY}} dmgContents/LingTree.app
