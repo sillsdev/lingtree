@@ -99,7 +99,8 @@ jobs:
           CERT: ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT }}
         run: |
           security list-keychains
-          echo "$CERT" | base64 --decode > cert.p12
+          echo "$CERT" >> cert1.p12
+          base64 --decode -i cert1.p12 -o cert.p12 
           ls -l cert*.*
           #security verify-cert ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT }}
           #security add-certificate cert.p12
@@ -114,9 +115,15 @@ jobs:
 
       - name: Sign dmg and app
         env:
-          CODESIGN_ID: ${{ env.SIL_APPLE_CODESIGN_IDENTITY }}
+          CODESIGN_ID: $SIL_APPLE_CODESIGN_IDENTITY
+          CODESIGN_PLAIN_ID: ${{ SIL_APPLE_CODESIGN_IDENTITY }}
+          CODESIGN_ENV_ID: ${{ env.SIL_APPLE_CODESIGN_IDENTITY }}
+          CODESIGN_SECRETS_ID: ${{ secrets.SIL_APPLE_CODESIGN_IDENTITY }}
         run: |
           echo id= ${CODESIGN_ID}
+          echo idplain= ${CODESIGN_PLAIN_ID}
+          echo idenv= ${CODESIGN_ENV_ID}
+          echo idsecrets= ${CODESIGN_SECRETS_ID}
           mkdir dmgContents
           cp -R /Volumes/LingTree dmgContents
           # next we need to sign the .app in dmgContents, but cannot yet do that so it is commented off
