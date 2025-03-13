@@ -99,12 +99,12 @@ jobs:
           CERT: ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT }}
         run: |
           security list-keychains
-          echo "$CERT" >> cert1.p12
-          echo "before decode"
-          ls -l cert*.*
-          base64 --decode -i cert1.p12 -o cert.p12 
-          echo "after decode"
-          ls -l cert*.*
+          #echo "$CERT" >> cert1.p12
+          #echo "before decode"
+          #ls -l cert*.*
+          #base64 --decode -i cert1.p12 -o cert.p12
+          #echo "after decode"
+          #ls -l cert*.*
           #security verify-cert ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT }}
           #security add-certificate cert.p12
           #security add-certificate ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT }}
@@ -123,7 +123,7 @@ jobs:
           mkdir dmgContents
           cp -R /Volumes/LingTree dmgContents
           # next we need to sign the .app in dmgContents, but cannot yet do that so it is commented off
-          codesign -s "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" dmgContents/LingTree.app
+          #codesign -s "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" dmgContents/LingTree.app
           hdiutil create -volname LingTreeInstaller -srcfolder dmgContents -ov -format UDZO LingTreeNew.dmg
           #ls -l -R
           #codesign -s ${CODESIGN_ID} LingTreeNew.dmg
@@ -151,14 +151,14 @@ jobs:
 #          echo "PACKAGE_NAME=$(/bin/cat ./uploads/build-name.txt)" >> $GITHUB_ENV
 #          echo "PACKAGE_VERSION=$(/bin/cat ./uploads/build-version.txt)" >> $GITHUB_ENV
 
-      - name: Upload packages to Workflow Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{env.PACKAGE_NAME}}-${{env.PACKAGE_VERSION}}
-          path: |
-            uploads
-            !uploads/*.txt
-          if-no-files-found: error
+#      - name: Upload packages to Workflow Artifacts
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: ${{env.PACKAGE_NAME}}-${{env.PACKAGE_VERSION}}
+#          path: |
+#            uploads
+#            !uploads/*.txt
+#          if-no-files-found: error
 #    uses: sillsdev/codesign/.github/workflows/sign.yml@v2
 #    with:
 #      artifact: LingTree
