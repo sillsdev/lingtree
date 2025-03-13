@@ -114,13 +114,14 @@ jobs:
           ls /Volumes/LingTree
 
       - name: Sign dmg and app
-        env:
-          CODESIGN_ID: ${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}
+        #env:
+          #CODESIGN_ID: ${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}
         run: |
           mkdir dmgContents
           #CODESIGN_PLAIN_ID=${{ SIL_APPLE_CODESIGN_IDENTITY }}
           #CODESIGN_ENV_ID=${{ env.SIL_APPLE_CODESIGN_IDENTITY }}
           #CODESIGN_SECRETS_ID=${{ secrets.SIL_APPLE_CODESIGN_IDENTITY }}
+          echo var= ${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}
           echo id= ${CODESIGN_ID}
           echo idplain= ${CODESIGN_PLAIN_ID}
           echo idenv= ${CODESIGN_ENV_ID}
