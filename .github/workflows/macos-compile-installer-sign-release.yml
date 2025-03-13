@@ -115,6 +115,8 @@ jobs:
 
       - name: Sign dmg and app
         run: |
+          echo "organization variable : $ORGANIZATION_VAR"
+          echo "it is = ${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}"
           mkdir dmgContents
           cp -R /Volumes/LingTree dmgContents
           # next we need to sign the .app in dmgContents, but cannot yet do that so it is commented off
@@ -122,8 +124,6 @@ jobs:
           hdiutil create -volname LingTreeInstaller -srcfolder dmgContents -ov -format UDZO LingTreeNew.dmg
           #ls -l -R
           #codesign -s ${CODESIGN_ID} LingTreeNew.dmg
-          echo "organization variable : $ORGANIZATION_VAR"
-          echo "it is = ${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}"
       # Install PKG Signing Certificate
       # NOTE: Working fork of the original apple-actions/import-codesign-certs
 #      - name: Install Apple Developer PKG certificates
