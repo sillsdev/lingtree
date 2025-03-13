@@ -114,8 +114,6 @@ jobs:
           ls /Volumes/LingTree
 
       - name: Sign dmg and app
-        #env:
-          #CODESIGN_ID: ${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}
         run: |
           mkdir dmgContents
           #CODESIGN_PLAIN_ID=${{ SIL_APPLE_CODESIGN_IDENTITY }}
@@ -131,7 +129,7 @@ jobs:
           #codesign -s ${{ secrets.SIL_APPLE_CODESIGN_IDENTITY}} dmgContents/LingTree.app
           hdiutil create -volname LingTreeInstaller -srcfolder dmgContents -ov -format UDZO LingTreeNew.dmg
           #ls -l -R
-          codesign -s ${CODESIGN_ID} LingTreeNew.dmg
+          #codesign -s ${CODESIGN_ID} LingTreeNew.dmg
       # Install PKG Signing Certificate
       # NOTE: Working fork of the original apple-actions/import-codesign-certs
 #      - name: Install Apple Developer PKG certificates
