@@ -99,6 +99,8 @@ jobs:
           CERT: ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT }}
         run: |
           security list-keychains
+          curl -O "${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT_URL}}" --user ":${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }}" -o cert.p12
+          #curl -O "${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT_URL}}" --user "anonymous:${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }}" -o cert.p12
           #echo "$CERT" >> cert1.p12
           #echo "before decode"
           #ls -l cert*.*
@@ -106,7 +108,7 @@ jobs:
           #echo "after decode"
           #ls -l cert*.*
           #security verify-cert ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT }}
-          #security add-certificate cert.p12
+          security add-certificate cert.p12
           #security add-certificate ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT }}
 
       - name: Attach dmg
@@ -123,10 +125,10 @@ jobs:
           mkdir dmgContents
           cp -R /Volumes/LingTree dmgContents
           # next we need to sign the .app in dmgContents, but cannot yet do that so it is commented off
-          #codesign -s "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" dmgContents/LingTree.app
+          codesign -s "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" dmgContents/LingTree.app
           hdiutil create -volname LingTreeInstaller -srcfolder dmgContents -ov -format UDZO LingTreeSigned.dmg
           #ls -l -R
-          #codesign -s ${CODESIGN_ID} LingTreeSigned.dmg
+          codesign -s "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" LingTreeSigned.dmg
           mv LingTreeSigned.dmg LingTree-${{ env.VERSION }}.dmg
       # Install PKG Signing Certificate
       # NOTE: Working fork of the original apple-actions/import-codesign-certs
