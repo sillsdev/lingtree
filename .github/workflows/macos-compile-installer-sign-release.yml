@@ -99,11 +99,11 @@ jobs:
           CERT: ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT }}
         run: |
           security list-keychains
-          curl -O "${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT_URL}}" --user ":${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }}" -o cert.p12
+          curl -O "${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT_URL}}" --user ":${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }}"
           #curl -O "${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT_URL}}" --user "anonymous:${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }}" -o cert.p12
           #echo "$CERT" >> cert1.p12
           #echo "before decode"
-          #ls -l cert*.*
+          ls -l *.*
           #base64 --decode -i cert1.p12 -o cert.p12
           #echo "after decode"
           #ls -l cert*.*
