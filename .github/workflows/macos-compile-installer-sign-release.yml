@@ -97,6 +97,7 @@ jobs:
       - name: Add certificatee to Keychain
         env:
           CERT: ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT }}
+          CERT_PW: ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }}
         run: |
           #security list-keychains
           curl -O "${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT_URL}}" --user ":${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }}"
@@ -111,7 +112,8 @@ jobs:
           #ls -l cert*.*
           #security verify-cert ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT }}
           echo trying to import
-          security import sil_developer_id_application_cert.p12 -P ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }}
+          security import sil_developer_id_application_cert.p12 -P $CERT_PW
+          #security import sil_developer_id_application_cert.p12 -P ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }}
           echo import done
           #security add-certificate sil_developer_id_application_cert.p12
           #security add-certificate ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT }}
