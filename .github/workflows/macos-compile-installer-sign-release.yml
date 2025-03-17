@@ -114,17 +114,17 @@ jobs:
 
       - name: Sign dmg and app
         run: |
-          #echo "organization variable : $ORGANIZATION_VAR"
-          #echo "it is = ${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}"
+          echo /Volumes/LingTree has
+          ls -l /Volumes/LingTree 
           mkdir dmgContents
           cp -R /Volumes/LingTree dmgContents
-          ls -l ./dmgContents
-          echo chmod
-          chmod a+w ./dmgContents/LingTree.app
-          ls -l ./dmgContents
+          echo dmgContents has
+          ls -l dmgContents
           # next we need to sign the .app in dmgContents, but cannot yet do that so it is commented off
+          cd dmgContents
           echo sign app
-          codesign -s "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" ./dmgContents/LingTree.app
+          codesign -sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" LingTree.app
+          cd ..
           echo recreate dmg
           hdiutil create -volname LingTreeInstaller -srcfolder dmgContents -ov -format UDZO LingTreeSigned.dmg
           #ls -l -R
