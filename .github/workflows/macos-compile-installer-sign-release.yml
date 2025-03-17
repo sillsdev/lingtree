@@ -118,12 +118,16 @@ jobs:
           #echo "it is = ${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}"
           mkdir dmgContents
           cp -R /Volumes/LingTree dmgContents
-          ls -l -R
+          ls -l -R ./dmgContents
           # next we need to sign the .app in dmgContents, but cannot yet do that so it is commented off
-          codesign -s "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" dmgContents/LingTree.app
+          echo sign app
+          codesign -s "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" ./dmgContents/LingTree.app
+          echo recreate dmg
           hdiutil create -volname LingTreeInstaller -srcfolder dmgContents -ov -format UDZO LingTreeSigned.dmg
           #ls -l -R
+          echo sign dmg
           codesign -s "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" LingTreeSigned.dmg
+          echo rename to include version number
           mv LingTreeSigned.dmg LingTree-${{ env.VERSION }}.dmg
       # Install PKG Signing Certificate
       # NOTE: Working fork of the original apple-actions/import-codesign-certs
