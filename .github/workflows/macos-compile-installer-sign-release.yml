@@ -108,7 +108,7 @@ jobs:
           #echo "after decode"
           #ls -l cert*.*
           #security verify-cert ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT }}
-          sudo -S security import sil_developer_id_application_cert.p12
+          echo "${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }}" | security import sil_developer_id_application_cert.p12
           #security add-certificate sil_developer_id_application_cert.p12
           #security add-certificate ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT }}
 
