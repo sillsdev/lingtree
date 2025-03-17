@@ -111,9 +111,10 @@ jobs:
           #sleep 5
           #echo curl succeeded
           ls -l
+          mv TestTemp.txt TestTemp.p12
           echo trying to import
           #security import sil_developer_id_application_cert.p12 -P "$CERT_PW"
-          security import TestTemp.txt -P ${{ secrets.TEST_TEMP2 }}
+          security import TestTemp.p12 -P ${{ secrets.TEST_TEMP2 }}
           #security import sil_developer_id_application_cert.p12 -P ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }}
           echo import done
           #security add-certificate sil_developer_id_application_cert.p12
