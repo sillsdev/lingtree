@@ -94,25 +94,22 @@ jobs:
         with:
           name: LingTree
 
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }}
+          aws-secret-access-key: ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }}
+          aws-region: us-east-1  # Change this to your region of your bucket
+
+      - name: Sync to S3
+        run: aws s3 sync "${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT_URL}}" .
+
       - name: Add certificatee to Keychain
-        env:
-          CERT: ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT }}
-          CERT_PW: ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }}
         run: |
-          #security list-keychains
-          time curl -O "${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT_URL}}" --user ":${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }}"
-          sleep 5
-          echo curl succeeded
+          #time curl -O "${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT_URL}}" --user ":${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }}"
+          #sleep 5
+          #echo curl succeeded
           ls -l
-          #curl -O "${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT_URL}}" --user "anonymous:${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }}" -o cert.p12
-          #echo "$CERT" >> cert1.p12
-          #echo "before decode"
-          #ls -l *.*
-          #base64 --decode -i cert1.p12 -o cert.p12
-          #echo "after decode"
-          #ls -l cert*.*
-          #security verify-cert ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT }}
-          echo Cert_PW = $CERT_PW
           echo trying to import
           #security import sil_developer_id_application_cert.p12 -P "$CERT_PW"
           security import sil_developer_id_application_cert.p12 -P $"{{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }}"
