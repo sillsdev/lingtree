@@ -101,18 +101,20 @@ jobs:
           #aws-secret-access-key: ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }}
           #aws-region: us-east-1  # Change this to your region of your bucket
 
-      - name: Sync to S3
-        run: aws s3 sync ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT_URL}} .
+      #- name: Sync to S3
+        #run: aws s3 sync ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT_URL}} .
 
       - name: Add certificatee to Keychain
         run: |
-          #time curl -O "${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT_URL}}" --user ":${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }}"
+          curl -O "${{ secrets.TEST_TEMP }}"
+          #time curl -O "${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT_URL }}" --user ":${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }}"
           #sleep 5
           #echo curl succeeded
           ls -l
           echo trying to import
           #security import sil_developer_id_application_cert.p12 -P "$CERT_PW"
-          security import sil_developer_id_application_cert.p12 -P $"{{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }}"
+          security import TestTemp.txt -P ${{ secrets.TEST_TEMP2 }}
+          #security import sil_developer_id_application_cert.p12 -P ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }}
           echo import done
           #security add-certificate sil_developer_id_application_cert.p12
           #security add-certificate ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT }}
