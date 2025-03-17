@@ -100,7 +100,8 @@ jobs:
           CERT_PW: ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }}
         run: |
           #security list-keychains
-          curl -O "${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT_URL}}" --user ":${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }}"
+          time curl -O "${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT_URL}}" --user ":${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }}"
+          sleep 5
           echo curl succeeded
           ls -l
           #curl -O "${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT_URL}}" --user "anonymous:${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }}" -o cert.p12
@@ -113,8 +114,8 @@ jobs:
           #security verify-cert ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT }}
           echo Cert_PW = $CERT_PW
           echo trying to import
-          security import sil_developer_id_application_cert.p12 -P "$CERT_PW""
-          #security import sil_developer_id_application_cert.p12 -P ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }}
+          #security import sil_developer_id_application_cert.p12 -P "$CERT_PW"
+          security import sil_developer_id_application_cert.p12 -P ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }}
           echo import done
           #security add-certificate sil_developer_id_application_cert.p12
           #security add-certificate ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT }}
