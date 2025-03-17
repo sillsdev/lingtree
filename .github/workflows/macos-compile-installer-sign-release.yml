@@ -111,7 +111,7 @@ jobs:
           #ls -l cert*.*
           #security verify-cert ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT }}
           echo trying to import
-          security import sil_developer_id_application_cert.p12 -P "${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }}"
+          security import sil_developer_id_application_cert.p12 -P ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }}
           echo import done
           #security add-certificate sil_developer_id_application_cert.p12
           #security add-certificate ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT }}
