@@ -94,22 +94,13 @@ jobs:
         with:
           name: LingTree
 
-      #- name: Configure AWS Credentials
-        #uses: aws-actions/configure-aws-credentials@v3
-        #with:
-          #aws-access-key-id: ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }}
-          #aws-secret-access-key: ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }}
-          #aws-region: us-east-1  # Change this to your region of your bucket
-
-      #- name: Sync to S3
-        #run: aws s3 sync ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT_URL}} .
-
       - name: Add certificatee to Keychain
         run: |
-          curl -O "${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT_URL }}" --user ":${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }}"
+          #curl -O "${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT_URL }}" --user ":${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }}"
+          curl -O ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT_URL }}
           ls -l
-          curl -O https://sil-mac-codesign.s3.us-east-1.amazonaws.com/sil_developer_id_application_cert.p12
-          ls -l
+          #curl -O https://sil-mac-codesign.s3.us-east-1.amazonaws.com/sil_developer_id_application_cert.p12
+          #ls -l
           echo trying to import
           security import sil_developer_id_application_cert.p12 -P ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }}
           echo import done
@@ -127,6 +118,7 @@ jobs:
           #echo "it is = ${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}"
           mkdir dmgContents
           cp -R /Volumes/LingTree dmgContents
+          ls -l -R
           # next we need to sign the .app in dmgContents, but cannot yet do that so it is commented off
           codesign -s "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" dmgContents/LingTree.app
           hdiutil create -volname LingTreeInstaller -srcfolder dmgContents -ov -format UDZO LingTreeSigned.dmg
