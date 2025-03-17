@@ -118,10 +118,10 @@ jobs:
           #echo "it is = ${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}"
           mkdir dmgContents
           cp -R /Volumes/LingTree dmgContents
-          ls -l -R ./dmgContents
+          #ls -l -R ./dmgContents
           # next we need to sign the .app in dmgContents, but cannot yet do that so it is commented off
           echo sign app
-          codesign -s "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" ./dmgContents/LingTree.app
+          codesign -s ${{ vars.SIL_APPLE_CODESIGN_IDENTITY }} ./dmgContents/LingTree.app
           echo recreate dmg
           hdiutil create -volname LingTreeInstaller -srcfolder dmgContents -ov -format UDZO LingTreeSigned.dmg
           #ls -l -R
