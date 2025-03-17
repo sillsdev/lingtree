@@ -102,7 +102,7 @@ jobs:
           #aws-region: us-east-1  # Change this to your region of your bucket
 
       - name: Sync to S3
-        run: aws s3 sync "${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT_URL}}" .
+        run: aws s3 sync ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT_URL}} .
 
       - name: Add certificatee to Keychain
         run: |
