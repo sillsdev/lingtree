@@ -98,17 +98,21 @@ jobs:
         env:
           CERT: ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT }}
         run: |
-          security list-keychains
+          #security list-keychains
           curl -O "${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT_URL}}" --user ":${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }}"
+          echo curl succeeded
+          ls -l
           #curl -O "${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT_URL}}" --user "anonymous:${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }}" -o cert.p12
           #echo "$CERT" >> cert1.p12
           #echo "before decode"
-          ls -l *.*
+          #ls -l *.*
           #base64 --decode -i cert1.p12 -o cert.p12
           #echo "after decode"
           #ls -l cert*.*
           #security verify-cert ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT }}
-          echo ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }} | security import sil_developer_id_application_cert.p12
+          echo trying to import
+          ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }} | security import sil_developer_id_application_cert.p12
+          echo import done
           #security add-certificate sil_developer_id_application_cert.p12
           #security add-certificate ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT }}
 
