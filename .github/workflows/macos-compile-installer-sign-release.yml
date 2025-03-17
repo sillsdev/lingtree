@@ -94,12 +94,12 @@ jobs:
         with:
           name: LingTree
 
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v3
-        with:
-          aws-access-key-id: ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }}
-          aws-secret-access-key: ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }}
-          aws-region: us-east-1  # Change this to your region of your bucket
+      #- name: Configure AWS Credentials
+        #uses: aws-actions/configure-aws-credentials@v3
+        #with:
+          #aws-access-key-id: ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }}
+          #aws-secret-access-key: ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }}
+          #aws-region: us-east-1  # Change this to your region of your bucket
 
       - name: Sync to S3
         run: aws s3 sync "${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT_URL}}" .
