@@ -141,7 +141,7 @@ jobs:
           #codesign --sign --force --deep "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" LingTreeSigned.dmg
           #codesign -s "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" LingTreeSigned.dmg
           echo rename to include version number
-          mv LingTreeSigned.dmg LingTree-${{ env.VERSION }}.dmg
+          #mv LingTreeSigned.dmg LingTree-${{ env.VERSION }}.dmg
 
       - name: "Notarize app bundle"
         # Extract the secrets we defined earlier as environment variables
@@ -161,10 +161,11 @@ jobs:
           # notarization service
 
           echo "Creating temp notarization archive"
-          ditto -c -k --keepParent "dmgContents/LingTree/LingTree.app" "notarization.zip"
+          ditto -c -k --keepParent "LingTreeSigned.dmg" "notarization.zip"
+          #ditto -c -k --keepParent "dmgContents/LingTree/LingTree.app" "notarization.zip"
           #ditto -c -k --keepParent "target/mac/Espanso.app" "notarization.zip"
           echo app file is
-          ls -l dmgContents/LingTree/LingTree.app
+          ls -l LingTreeSigned.dmg
           echo zipped file is
           ls -l notarization.zip
 
@@ -179,7 +180,7 @@ jobs:
           # Finally, we need to "attach the staple" to our executable, which will allow our app to be
           # validated by macOS even when an internet connection is not available.
           echo "Attach staple"
-          xcrun stapler staple "dmgContents/LingTree/LingTree.app"
+          xcrun stapler staple "LingTreeSigned.dmg"
 
       # Install PKG Signing Certificate
       # NOTE: Working fork of the original apple-actions/import-codesign-certs
