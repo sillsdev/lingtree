@@ -123,7 +123,7 @@ jobs:
           # next we need to sign the .app in dmgContents, but cannot yet do that so it is commented off
           cd dmgContents/LingTree
           echo sign app
-          codesign -sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" LingTree.app
+          codesign -s "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" LingTree.app
           cd ../..
           echo recreate dmg
           hdiutil create -volname LingTreeInstaller -srcfolder dmgContents -ov -format UDZO LingTreeSigned.dmg
