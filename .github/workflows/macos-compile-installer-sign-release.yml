@@ -69,7 +69,7 @@ jobs:
           chmod +x *.sh
           ./BuildMacOS.sh ${{ env.VERSION }}
         shell: bash
-      - name: Rename deb file with version and architecture
+      - name: Rename dmg file with version and architecture
         env:
           PUBLISH_PATH: 'installer/macos'
         run: |
@@ -94,15 +94,23 @@ jobs:
         with:
           name: LingTree
 
+      - name: Sign and notarize the release build
+        run: |
+          curl -O ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT_URL }}
+          CERTIFICATE: `echo sil_developer_id_application_cert.p12`
+
+      - uses: toitlang/action-macos-sign-notarize@v1.2.0
+        with:
+          certificate: ${{ CERTIFICATE }}
+          certificate-password: ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }}
+          username: ${{ secrets.SIL_APPLE_NOTARIZATION_USERNAME }}
+          password: ${{ secrets.SIL_APPLE_NOTARIZATION_PASSWORD }}
+          apple-team-id: "3YE4W86L3G" # ${{ vars.APPLE_TEAM_ID }}
+          app-path: LingTree-${{ env.VERSION }}.dmg
+
       - name: Add certificatee to Keychain
         run: |
           #curl -O "${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT_URL }}" --user ":${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }}"
-          echo The keychains available are
-          security list-keychains
-          echo The default keychain is
-          security default-keychain
-          echo The login keychain is
-          security login-keychain
           curl -O ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT_URL }}
           #ls -l
           #curl -O https://sil-mac-codesign.s3.us-east-1.amazonaws.com/sil_developer_id_application_cert.p12
