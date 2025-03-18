@@ -139,7 +139,7 @@ jobs:
           #ls -l -R
           echo sign dmg
           #codesign --sign --force --deep "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" LingTreeSigned.dmg
-          #codesign -s "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" LingTreeSigned.dmg
+          codesign -s "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" LingTreeSigned.dmg
           echo rename to include version number
           #mv LingTreeSigned.dmg LingTree-${{ env.VERSION }}.dmg
 
