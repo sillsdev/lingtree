@@ -109,7 +109,7 @@ jobs:
           #ls -l
           #echo trying to import
           echo trying to use the system keychain now
-          security import sil_developer_id_application_cert.p12 -P ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }} -k "/Library/Keychains/System.keychain"
+          sudo security import sil_developer_id_application_cert.p12 -P ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }} -k "/Library/Keychains/System.keychain"
           #echo import done
 
       - name: Attach dmg
