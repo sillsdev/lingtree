@@ -94,19 +94,20 @@ jobs:
         with:
           name: LingTree
 
-      - name: Sign and notarize the release build
-        run: |
-          curl -O ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT_URL }}
-          CERTIFICATE: `echo sil_developer_id_application_cert.p12`
-
-      - uses: toitlang/action-macos-sign-notarize@v1.2.0
-        with:
-          certificate: ${{ CERTIFICATE }}
-          certificate-password: ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }}
-          username: ${{ secrets.SIL_APPLE_NOTARIZATION_USERNAME }}
-          password: ${{ secrets.SIL_APPLE_NOTARIZATION_PASSWORD }}
-          apple-team-id: "3YE4W86L3G" # ${{ vars.APPLE_TEAM_ID }}
-          app-path: LingTree-${{ env.VERSION }}.dmg
+#      - name: Sign and notarize the release build
+#        run: |
+#          curl -O ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT_URL }}
+#          CERTIFICATE: `cat sil_developer_id_application_cert.p12`
+#          echo $CERTIFICATE
+#
+#      - uses: toitlang/action-macos-sign-notarize@v1.2.0
+#        with:
+#          certificate: $CERTIFICATE
+#          certificate-password: ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }}
+#          username: ${{ secrets.SIL_APPLE_NOTARIZATION_USERNAME }}
+#          password: ${{ secrets.SIL_APPLE_NOTARIZATION_PASSWORD }}
+#          apple-team-id: "3YE4W86L3G" # ${{ vars.APPLE_TEAM_ID }}
+#          app-path: LingTree-${{ env.VERSION }}.dmg
 
       - name: Add certificatee to Keychain
         run: |
@@ -147,7 +148,7 @@ jobs:
           #ls -l -R
           echo sign dmg
           #codesign --sign --force --deep "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" LingTreeSigned.dmg
-          codesign --force --deep --options runtime --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" LingTreeSigned.dmg
+          #codesign --force --deep --options runtime --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" LingTreeSigned.dmg
           echo rename to include version number
           #mv LingTreeSigned.dmg LingTree-${{ env.VERSION }}.dmg
 
@@ -177,7 +178,7 @@ jobs:
           echo zipped file is
           ls -l notarization.zip
           echo check signature
-          codesign -vvv --deep --strict LingTreeSigned.dmg 
+          #codesign -vvv --deep --strict LingTreeSigned.dmg 
 
           echo Download a log file from a prviously failed run
           xcrun notarytool log c43c4c48-517e-4796-835c-8100aa281aa6 --keychain-profile "notarytool-password" developer_log.json
