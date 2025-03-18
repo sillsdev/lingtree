@@ -98,12 +98,12 @@ jobs:
         run: |
           #curl -O "${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT_URL }}" --user ":${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }}"
           curl -O ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT_URL }}
-          ls -l
+          #ls -l
           #curl -O https://sil-mac-codesign.s3.us-east-1.amazonaws.com/sil_developer_id_application_cert.p12
           #ls -l
-          echo trying to import
+          #echo trying to import
           security import sil_developer_id_application_cert.p12 -P ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }}
-          echo import done
+          #echo import done
 
       - name: Attach dmg
         run: |
@@ -119,12 +119,12 @@ jobs:
           mkdir dmgContents
           cp -R /Volumes/LingTree dmgContents
           echo dmgContents has
-          ls -l dmgContents
+          ls -l dmgContents/LingTree
           # next we need to sign the .app in dmgContents, but cannot yet do that so it is commented off
-          cd dmgContents
+          cd dmgContents/LingTree
           echo sign app
           codesign -sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" LingTree.app
-          cd ..
+          cd ../..
           echo recreate dmg
           hdiutil create -volname LingTreeInstaller -srcfolder dmgContents -ov -format UDZO LingTreeSigned.dmg
           #ls -l -R
