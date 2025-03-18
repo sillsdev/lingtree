@@ -181,7 +181,8 @@ jobs:
           #codesign -vvv --deep --strict LingTreeSigned.dmg 
 
           echo Download a log file from a prviously failed run
-          xcrun notarytool log c43c4c48-517e-4796-835c-8100aa281aa6 --keychain-profile "notarytool-password" developer_log.json
+          xcrun notarytool log c43c4c48-517e-4796-835c-8100aa281aa6 --keychain-profile "notarytool-profile" developer_log.json
+          #xcrun notarytool log c43c4c48-517e-4796-835c-8100aa281aa6 --keychain-profile "notarytool-password" developer_log.json
           echo Here it is
           echo ----------------------
           cat developer_log.json
