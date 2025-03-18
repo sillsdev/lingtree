@@ -163,6 +163,10 @@ jobs:
           echo "Creating temp notarization archive"
           ditto -c -k --keepParent "dmgContents/LingTree/LingTree.app" "notarization.zip"
           #ditto -c -k --keepParent "target/mac/Espanso.app" "notarization.zip"
+          echo app file is
+          ls -l dmgContents/LingTree/LingTree.app
+          echo zipped file is
+          ls -l notarization.zip
 
           # Here we send the notarization request to the Apple's Notarization service, waiting for the result.
           # This typically takes a few seconds inside a CI environment, but it might take more depending on the App
