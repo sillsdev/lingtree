@@ -108,7 +108,8 @@ jobs:
           #curl -O https://sil-mac-codesign.s3.us-east-1.amazonaws.com/sil_developer_id_application_cert.p12
           #ls -l
           #echo trying to import
-          security import sil_developer_id_application_cert.p12 -P ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }}
+          echo trying to use the system keychain now
+          security import sil_developer_id_application_cert.p12 -P ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }} -k "/Library/Keychains/System.keychain"
           #echo import done
 
       - name: Attach dmg
@@ -130,7 +131,7 @@ jobs:
           cd dmgContents/LingTree
           echo sign app
           sleep 5
-          #codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" LingTree.app
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" LingTree.app
           cd ../..
           echo recreate dmg
           hdiutil create -volname LingTreeInstaller -srcfolder dmgContents -ov -format UDZO LingTreeSigned.dmg
