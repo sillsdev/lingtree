@@ -121,15 +121,16 @@ jobs:
           echo dmgContents has
           ls -l dmgContents/LingTree
           # next we need to sign the .app in dmgContents, but cannot yet do that so it is commented off
-          #cd dmgContents/LingTree
-          #echo sign app
-          #codesign -s "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" LingTree.app
-          #cd ../..
+          cd dmgContents/LingTree
+          echo sign app
+          codesign --sign --force "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" LingTree.app
+          cd ../..
           echo recreate dmg
           hdiutil create -volname LingTreeInstaller -srcfolder dmgContents -ov -format UDZO LingTreeSigned.dmg
           #ls -l -R
           echo sign dmg
-          codesign -s "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" LingTreeSigned.dmg
+          #codesign --sign --force --deep "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" LingTreeSigned.dmg
+          #codesign -s "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" LingTreeSigned.dmg
           echo rename to include version number
           mv LingTreeSigned.dmg LingTree-${{ env.VERSION }}.dmg
       # Install PKG Signing Certificate
