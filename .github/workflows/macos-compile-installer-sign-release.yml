@@ -33,7 +33,7 @@ jobs:
 
       - name: Set VERSION (e.g. 1.0.0) and FULL_VERSION (e.g. 1.0.0-abcdef4)
         run: |
-          VERSION="1.6.2"
+          VERSION="1.6.3"
           SHORT_SHA=$(git rev-parse --short HEAD)
           FULL_VERSION="-macOS"
           echo "VERSION=${VERSION}" >> $GITHUB_ENV
@@ -109,7 +109,8 @@ jobs:
           #ls -l
           #echo trying to import
           echo trying to use the system keychain now
-          sudo security import sil_developer_id_application_cert.p12 -P ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }} -k "/Library/Keychains/System.keychain"
+          security import sil_developer_id_application_cert.p12 -P ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }}
+          #sudo security import sil_developer_id_application_cert.p12 -P ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }} -k "/Library/Keychains/System.keychain"
           #echo import done
 
       - name: Attach dmg
@@ -131,7 +132,7 @@ jobs:
           cd dmgContents/LingTree
           echo sign app
           sleep 5
-          sudo codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" LingTree.app
+          #sudo codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" LingTree.app
           cd ../..
           echo recreate dmg
           hdiutil create -volname LingTreeInstaller -srcfolder dmgContents -ov -format UDZO LingTreeSigned.dmg
