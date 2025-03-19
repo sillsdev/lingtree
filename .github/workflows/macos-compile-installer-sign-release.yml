@@ -133,7 +133,9 @@ jobs:
           echo dmgContents has
           ls -l dmgContents/LingTree
           cd dmgContents/LingTree
-          echo ls -l of macOS
+          echo ls -l of `pwd`
+          ls -l -R
+          echo now for what is not there
           ls -l LingTree.app/Contents/app/lingtree.jar/org/sil/lingtree/resources/Keyboards/macOS
           echo sign macOS dir
           codesign --force --options runtime --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" LingTree.app/Contents/app/lingtree.jar/org/sil/lingtree/resources/Keyboards/macOS
