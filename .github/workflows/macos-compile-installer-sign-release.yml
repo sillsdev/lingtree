@@ -104,97 +104,97 @@ jobs:
           apple-team-id: "3YE4W86L3G" # ${{ vars.APPLE_TEAM_ID }}
           app-path: LingTree-${{ env.VERSION }}.dmg
 
-      - name: Add certificatee to Keychain
-        run: |
-          #curl -O "${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT_URL }}" --user ":${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }}"
-          curl -O ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT_URL }}
-          #ls -l
-          #curl -O https://sil-mac-codesign.s3.us-east-1.amazonaws.com/sil_developer_id_application_cert.p12
-          #ls -l
-          #echo trying to import
-          echo trying to use the system keychain now
-          security import sil_developer_id_application_cert.p12 -P ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }}
-          #sudo security import sil_developer_id_application_cert.p12 -P ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }} -k "/Library/Keychains/System.keychain"
-          #echo import done
-
-      - name: Attach dmg
-        run: |
-          yes | PAGER=cat hdiutil attach LingTree-*.dmg
-          echo
-          echo ls
-          ls /Volumes/LingTree
-
-      - name: Sign dmg and app
-        run: |
-          echo /Volumes/LingTree has
-          ls -l /Volumes/LingTree 
-          mkdir dmgContents
-          cp -R /Volumes/LingTree dmgContents
-          echo dmgContents has
-          ls -l dmgContents/LingTree
-          # next we need to sign the .app in dmgContents, but cannot yet do that so it is commented off
-          cd dmgContents/LingTree
-          echo sign app
-          sleep 5
-          #sudo codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" LingTree.app
-          cd ../..
-          echo recreate dmg
-          hdiutil create -volname LingTreeInstaller -srcfolder dmgContents -ov -format UDZO LingTreeSigned.dmg
-          #ls -l -R
-          echo sign dmg
-          #codesign --sign --force --deep "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" LingTreeSigned.dmg
-          #codesign --force --deep --options runtime --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" LingTreeSigned.dmg
-          echo rename to include version number
-          #mv LingTreeSigned.dmg LingTree-${{ env.VERSION }}.dmg
-
-      - name: "Notarize app bundle"
-        # Extract the secrets we defined earlier as environment variables
-        env:
-          PROD_MACOS_NOTARIZATION_APPLE_ID: ${{ secrets.SIL_APPLE_NOTARIZATION_USERNAME }}
-          PROD_MACOS_NOTARIZATION_TEAM_ID: "3YE4W86L3G"
-          PROD_MACOS_NOTARIZATION_PWD: ${{ secrets.SIL_APPLE_NOTARIZATION_PASSWORD }}
-        run: |
-          # Store the notarization credentials so that we can prevent a UI password dialog
-          # from blocking the CI
-
-          echo "Create keychain profile"
-          xcrun notarytool store-credentials "notarytool-profile" --apple-id "$PROD_MACOS_NOTARIZATION_APPLE_ID" --team-id "$PROD_MACOS_NOTARIZATION_TEAM_ID" --password "$PROD_MACOS_NOTARIZATION_PWD"
-
-          # We can't notarize an app bundle directly, but we need to compress it as an archive.
-          # Therefore, we create a zip file containing our app bundle, so that we can send it to the
-          # notarization service
-
-          echo "Creating temp notarization archive"
-          ditto -c -k --keepParent "LingTreeSigned.dmg" "notarization.zip"
-          #ditto -c -k --keepParent "dmgContents/LingTree/LingTree.app" "notarization.zip"
-          #ditto -c -k --keepParent "target/mac/Espanso.app" "notarization.zip"
-          echo app file is
-          ls -l LingTreeSigned.dmg
-          echo zipped file is
-          ls -l notarization.zip
-          echo check signature
-          #codesign -vvv --deep --strict LingTreeSigned.dmg 
-
-#          echo Download a log file from a previously failed run
-#          xcrun notarytool log c43c4c48-517e-4796-835c-8100aa281aa6 --keychain-profile "notarytool-profile" developer_log.json
-#          #xcrun notarytool log c43c4c48-517e-4796-835c-8100aa281aa6 --keychain-profile "notarytool-password" developer_log.json
-#          echo Here it is
-#          echo ----------------------
-#          cat developer_log.json
-#          echo ----------------------
-
-          # Here we send the notarization request to the Apple's Notarization service, waiting for the result.
-          # This typically takes a few seconds inside a CI environment, but it might take more depending on the App
-          # characteristics. Visit the Notarization docs for more information and strategies on how to optimize it if
-          # you're curious
-
-          echo "Notarize app"
-          xcrun notarytool submit "notarization.zip" --keychain-profile "notarytool-profile" --wait
-
-          # Finally, we need to "attach the staple" to our executable, which will allow our app to be
-          # validated by macOS even when an internet connection is not available.
-          echo "Attach staple"
-          xcrun stapler staple "LingTreeSigned.dmg"
+#      - name: Add certificatee to Keychain
+#        run: |
+#          #curl -O "${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT_URL }}" --user ":${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }}"
+#          curl -O ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT_URL }}
+#          #ls -l
+#          #curl -O https://sil-mac-codesign.s3.us-east-1.amazonaws.com/sil_developer_id_application_cert.p12
+#          #ls -l
+#          #echo trying to import
+#          echo trying to use the system keychain now
+#          security import sil_developer_id_application_cert.p12 -P ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }}
+#          #sudo security import sil_developer_id_application_cert.p12 -P ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }} -k "/Library/Keychains/System.keychain"
+#          #echo import done
+#
+#      - name: Attach dmg
+#        run: |
+#          yes | PAGER=cat hdiutil attach LingTree-*.dmg
+#          echo
+#          echo ls
+#          ls /Volumes/LingTree
+#
+#      - name: Sign dmg and app
+#        run: |
+#          echo /Volumes/LingTree has
+#          ls -l /Volumes/LingTree 
+#          mkdir dmgContents
+#          cp -R /Volumes/LingTree dmgContents
+#          echo dmgContents has
+#          ls -l dmgContents/LingTree
+#          # next we need to sign the .app in dmgContents, but cannot yet do that so it is commented off
+#          cd dmgContents/LingTree
+#          echo sign app
+#          sleep 5
+#          #sudo codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" LingTree.app
+#          cd ../..
+#          echo recreate dmg
+#          hdiutil create -volname LingTreeInstaller -srcfolder dmgContents -ov -format UDZO LingTreeSigned.dmg
+#          #ls -l -R
+#          echo sign dmg
+#          #codesign --sign --force --deep "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" LingTreeSigned.dmg
+#          #codesign --force --deep --options runtime --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" LingTreeSigned.dmg
+#          echo rename to include version number
+#          #mv LingTreeSigned.dmg LingTree-${{ env.VERSION }}.dmg
+#
+#      - name: "Notarize app bundle"
+#        # Extract the secrets we defined earlier as environment variables
+#        env:
+#          PROD_MACOS_NOTARIZATION_APPLE_ID: ${{ secrets.SIL_APPLE_NOTARIZATION_USERNAME }}
+#          PROD_MACOS_NOTARIZATION_TEAM_ID: "3YE4W86L3G"
+#          PROD_MACOS_NOTARIZATION_PWD: ${{ secrets.SIL_APPLE_NOTARIZATION_PASSWORD }}
+#        run: |
+#          # Store the notarization credentials so that we can prevent a UI password dialog
+#          # from blocking the CI
+#
+#          echo "Create keychain profile"
+#          xcrun notarytool store-credentials "notarytool-profile" --apple-id "$PROD_MACOS_NOTARIZATION_APPLE_ID" --team-id "$PROD_MACOS_NOTARIZATION_TEAM_ID" --password "$PROD_MACOS_NOTARIZATION_PWD"
+#
+#          # We can't notarize an app bundle directly, but we need to compress it as an archive.
+#          # Therefore, we create a zip file containing our app bundle, so that we can send it to the
+#          # notarization service
+#
+#          echo "Creating temp notarization archive"
+#          ditto -c -k --keepParent "LingTreeSigned.dmg" "notarization.zip"
+#          #ditto -c -k --keepParent "dmgContents/LingTree/LingTree.app" "notarization.zip"
+#          #ditto -c -k --keepParent "target/mac/Espanso.app" "notarization.zip"
+#          echo app file is
+#          ls -l LingTreeSigned.dmg
+#          echo zipped file is
+#          ls -l notarization.zip
+#          echo check signature
+#          #codesign -vvv --deep --strict LingTreeSigned.dmg 
+#
+##          echo Download a log file from a previously failed run
+##          xcrun notarytool log c43c4c48-517e-4796-835c-8100aa281aa6 --keychain-profile "notarytool-profile" developer_log.json
+##          #xcrun notarytool log c43c4c48-517e-4796-835c-8100aa281aa6 --keychain-profile "notarytool-password" developer_log.json
+##          echo Here it is
+##          echo ----------------------
+##          cat developer_log.json
+##          echo ----------------------
+#
+#          # Here we send the notarization request to the Apple's Notarization service, waiting for the result.
+#          # This typically takes a few seconds inside a CI environment, but it might take more depending on the App
+#          # characteristics. Visit the Notarization docs for more information and strategies on how to optimize it if
+#          # you're curious
+#
+#          echo "Notarize app"
+#          xcrun notarytool submit "notarization.zip" --keychain-profile "notarytool-profile" --wait
+#
+#          # Finally, we need to "attach the staple" to our executable, which will allow our app to be
+#          # validated by macOS even when an internet connection is not available.
+#          echo "Attach staple"
+#          xcrun stapler staple "LingTreeSigned.dmg"
 
       # Install PKG Signing Certificate
       # NOTE: Working fork of the original apple-actions/import-codesign-certs
