@@ -138,7 +138,7 @@ jobs:
           echo now for what is not there
           ls -l LingTree.app/Contents/app/resources/Keyboards/macOS
           echo sign macOS dir
-          codesign --force --options runtime --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" LingTree.app/Contents/app/resources/Keyboards/macOS/xkbswitch
+          yes | codesign --force --options runtime --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" LingTree.app/Contents/app/resources/Keyboards/macOS/xkbswitch
           echo codesign of macOS dir finished
           cd ../..
           echo recreate dmg
