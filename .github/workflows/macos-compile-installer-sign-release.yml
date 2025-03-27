@@ -137,9 +137,14 @@ jobs:
           #ls -l -R
           echo now for what is not there
           #ls -l LingTree.app/Contents/app/resources/Keyboards/macOS
-          echo sign macOS dir
-          echo yes | codesign --force --options runtime --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" LingTree.app/Contents/app/resources/Keyboards/macOS/xkbswitch
-          echo codesign of macOS dir finished
+          echo show xkbswitch
+          ls -l LingTree.app/Contents/app/resources/Keyboards/macOS/xkbswitch
+          chmod a+w LingTree.app/Contents/app/resources/Keyboards/macOS/xkbswitch
+          echo after setting write privileges to xkbswitch
+          ls -l LingTree.app/Contents/app/resources/Keyboards/macOS/xkbswitch
+          echo sign xkbswitch
+          codesign --force --options runtime --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" LingTree.app/Contents/app/resources/Keyboards/macOS/xkbswitch
+          echo codesign of xkbswitch finished
           cd ../..
           echo recreate dmg
           hdiutil create -volname LingTreeInstaller -srcfolder dmgContents -ov -format UDZO LingTreeSigned.dmg
