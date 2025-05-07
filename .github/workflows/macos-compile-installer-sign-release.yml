@@ -104,6 +104,25 @@ jobs:
 #          apple-team-id: "3YE4W86L3G" # ${{ vars.APPLE_TEAM_ID }}
 #          app-path: LingTree-${{ env.VERSION }}.dmg
 
+#      # Set up keychain and import certificate
+#      - name: Set up keychain
+#        env:
+#          MACOS_CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE }}
+#          MACOS_CERTIFICATE_PWD: ${{ secrets.MACOS_CERTIFICATE_PWD }}
+#          KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
+#        run: |
+#          # Create a temporary keychain
+#          security create-keychain -p "$KEYCHAIN_PASSWORD" build.keychain
+#          security default-keychain -s build.keychain
+#          security unlock-keychain -p "$KEYCHAIN_PASSWORD" build.keychain
+#
+#          # Import the certificate
+#          echo "$MACOS_CERTIFICATE" | base64 --decode > certificate.p12
+#          security import certificate.p12 -k build.keychain -P "$MACOS_CERTIFICATE_PWD" -T /usr/bin/codesign
+#
+#          # Allow codesign to access the certificate without prompts
+#          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KEYCHAIN_PASSWORD" build.keychain
+
       - name: Add certificatee to Keychain
         run: |
           #curl -O "${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT_URL }}" --user ":${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }}"
@@ -116,6 +135,8 @@ jobs:
           security import sil_developer_id_application_cert.p12 -P ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }}
           #sudo security import sil_developer_id_application_cert.p12 -P ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }} -k "/Library/Keychains/System.keychain"
           #echo import done
+          # Allow codesign to access the certificate without prompts
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD" build.keychain
 
       - name: Attach dmg
         run: |
@@ -142,18 +163,29 @@ jobs:
           chmod a+w LingTree.app/Contents/app/resources/Keyboards/macOS/xkbswitch
           echo after setting write privileges to xkbswitch
           ls -l LingTree.app/Contents/app/resources/Keyboards/macOS/xkbswitch
-          echo sign xkbswitch
-          codesign --force --options runtime --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" LingTree.app/Contents/app/resources/Keyboards/macOS/xkbswitch
-          echo codesign of xkbswitch finished
+          #echo sign xkbswitch
+          #codesign --force --options runtime --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" LingTree.app/Contents/app/resources/Keyboards/macOS/xkbswitch
+          #echo codesign of xkbswitch finished
           cd ../..
           echo recreate dmg
           hdiutil create -volname LingTreeInstaller -srcfolder dmgContents -ov -format UDZO LingTreeSigned.dmg
           #ls -l -R
           echo sign dmg
-          #codesign --sign --force --deep "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" LingTreeSigned.dmg
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTreeSigned.dmg -v
           #codesign --force --deep --options runtime --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" LingTreeSigned.dmg
           echo rename to include version number
           #mv LingTreeSigned.dmg LingTree-${{ env.VERSION }}.dmg
+
+      # Verify the signature
+      - name: Verify signature
+        run: |
+          codesign --verify --verbose LingTreeSigned.dmg
+
+      # Clean up keychain
+      - name: Clean up keychain
+        if: always()
+        run: |
+          security delete-keychain build.keychain || true
 
       - name: "Notarize app bundle"
         # Extract the secrets we defined earlier as environment variables
