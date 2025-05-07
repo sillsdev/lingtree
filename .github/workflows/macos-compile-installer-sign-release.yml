@@ -123,7 +123,7 @@ jobs:
 #          # Allow codesign to access the certificate without prompts
 #          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KEYCHAIN_PASSWORD" build.keychain
 
-      - name: Add certificatee to Keychain
+      - name: Add certificate to Keychain
         env:
           MACOS_CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE }}
           MACOS_CERTIFICATE_PWD: ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }}
@@ -136,16 +136,12 @@ jobs:
 
           # Import the certificate
           curl -O ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT_URL }}
-          echo trying to use the system keychain now
           security import sil_developer_id_application_cert.p12 -k build.keychain -P ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }} -T /usr/bin/codesign
-          echo import done
-          #echo "$MACOS_CERTIFICATE" | base64 --decode > certificate.p12
-          #security import certificate.p12 -k build.keychain -P "$MACOS_CERTIFICATE_PWD" -T /usr/bin/codesign
 
           # Allow codesign to access the certificate without prompts
-          echo before allow codesign to access the certificate without prompts
+          #echo before allow codesign to access the certificate without prompts
           security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KEYCHAIN_PASSWORD" build.keychain
-          echo after allow codesign to access the certificate without prompts
+          #echo after allow codesign to access the certificate without prompts
 
       - name: Attach dmg
         run: |
@@ -156,33 +152,33 @@ jobs:
 
       - name: Sign dmg and app
         run: |
-          echo /Volumes/LingTree has
-          ls -l /Volumes/LingTree 
+          #echo /Volumes/LingTree has
+          #ls -l /Volumes/LingTree 
           mkdir dmgContents
           cp -R /Volumes/LingTree dmgContents
-          echo dmgContents has
-          ls -l dmgContents/LingTree
+          #echo dmgContents has
+          #ls -l dmgContents/LingTree
           cd dmgContents/LingTree
-          echo ls -l of `pwd`
+          #echo ls -l of `pwd`
           #ls -l -R
-          echo now for what is not there
+          #echo now for what is not there
           #ls -l LingTree.app/Contents/app/resources/Keyboards/macOS
-          echo show xkbswitch
-          ls -l LingTree.app/Contents/app/resources/Keyboards/macOS/xkbswitch
+          #echo show xkbswitch
+          #ls -l LingTree.app/Contents/app/resources/Keyboards/macOS/xkbswitch
           chmod a+w LingTree.app/Contents/app/resources/Keyboards/macOS/xkbswitch
-          echo after setting write privileges to xkbswitch
-          ls -l LingTree.app/Contents/app/resources/Keyboards/macOS/xkbswitch
+          #echo after setting write privileges to xkbswitch
+          #ls -l LingTree.app/Contents/app/resources/Keyboards/macOS/xkbswitch
           #echo sign xkbswitch
           #codesign --force --options runtime --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" LingTree.app/Contents/app/resources/Keyboards/macOS/xkbswitch
           #echo codesign of xkbswitch finished
           cd ../..
-          echo recreate dmg
+          #echo recreate dmg
           hdiutil create -volname LingTreeInstaller -srcfolder dmgContents -ov -format UDZO LingTreeSigned.dmg
           #ls -l -R
-          echo sign dmg
+          #echo sign dmg
           codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTreeSigned.dmg -v
           #codesign --force --deep --options runtime --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" LingTreeSigned.dmg
-          echo rename to include version number
+          #echo rename to include version number
           #mv LingTreeSigned.dmg LingTree-${{ env.VERSION }}.dmg
 
       # Verify the signature
@@ -196,6 +192,23 @@ jobs:
         run: |
           security delete-keychain build.keychain || true
 
+     # Notarize the DMG
+      - name: Notarize DMG
+        uses: lando/notarize-action@v2
+        with:
+          product-path: LingTreeSigned.dmg
+          appstore-connect-username: ${{ secrets.SIL_APPLE_NOTARIZATION_USERNAME }}
+          appstore-connect-password: ${{ secrets.SIL_APPLE_NOTARIZATION_PASSWORD }}
+          appstore-connect-team-id: "3YE4W86L3G"
+#          appstore-connect-team-id: ${{ secrets.APPLE_TEAM_ID }}
+
+      # Staple the notarization ticket
+      - name: Staple Notarization Ticket
+        run: |
+          echo before stapling
+          xcrun stapler staple LingTreeSigned.dmg
+          echo after stapling
+
 #      - name: "Notarize app bundle"
 #        # Extract the secrets we defined earlier as environment variables
 #        env:
@@ -203,6 +216,8 @@ jobs:
 #          PROD_MACOS_NOTARIZATION_TEAM_ID: "3YE4W86L3G"
 #          PROD_MACOS_NOTARIZATION_PWD: ${{ secrets.SIL_APPLE_NOTARIZATION_PASSWORD }}
 #        run: |
+#          xcrun notarytool submit LingTreeSigned.dmg --keychain-profile "notary-profile" --wait
+#          xcrun stapler staple LingTreeSigned.dmg
 #          # Store the notarization credentials so that we can prevent a UI password dialog
 #          # from blocking the CI
 #
@@ -222,7 +237,7 @@ jobs:
 #          echo zipped file is
 #          ls -l notarization.zip
 #          echo check signature
-#          #codesign -vvv --deep --strict LingTreeSigned.dmg 
+#          #codesign -vvv --deep --strict LingTreeSigned.dmg
 
 ##          echo Download a log file from a previously failed run
 ##          xcrun notarytool log c43c4c48-517e-4796-835c-8100aa281aa6 --keychain-profile "notarytool-profile" developer_log.json
