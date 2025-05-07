@@ -136,7 +136,8 @@ jobs:
           #sudo security import sil_developer_id_application_cert.p12 -P ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }} -k "/Library/Keychains/System.keychain"
           #echo import done
           # Allow codesign to access the certificate without prompts
-          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD" build.keychain
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD"
+          #security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD" build.keychain
 
       - name: Attach dmg
         run: |
