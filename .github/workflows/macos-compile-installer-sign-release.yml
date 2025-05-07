@@ -184,6 +184,7 @@ jobs:
           appstore-connect-username: ${{ secrets.SIL_APPLE_NOTARIZATION_USERNAME }}
           appstore-connect-password: ${{ secrets.SIL_APPLE_NOTARIZATION_PASSWORD }}
           appstore-connect-team-id: "3YE4W86L3G"
+          verbose: true
 #          appstore-connect-team-id: ${{ secrets.APPLE_TEAM_ID }}
 
       # Staple the notarization ticket
