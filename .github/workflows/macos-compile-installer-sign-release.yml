@@ -152,32 +152,16 @@ jobs:
 
       - name: Sign dmg and app
         run: |
-          #echo /Volumes/LingTree has
-          #ls -l /Volumes/LingTree 
+          #echo make sure xkbswitch is executable
           mkdir dmgContents
           cp -R /Volumes/LingTree dmgContents
-          #echo dmgContents has
-          #ls -l dmgContents/LingTree
           cd dmgContents/LingTree
-          #echo ls -l of `pwd`
-          #ls -l -R
-          #echo now for what is not there
-          #ls -l LingTree.app/Contents/app/resources/Keyboards/macOS
-          #echo show xkbswitch
-          #ls -l LingTree.app/Contents/app/resources/Keyboards/macOS/xkbswitch
           chmod a+w LingTree.app/Contents/app/resources/Keyboards/macOS/xkbswitch
-          #echo after setting write privileges to xkbswitch
-          #ls -l LingTree.app/Contents/app/resources/Keyboards/macOS/xkbswitch
-          #echo sign xkbswitch
-          #codesign --force --options runtime --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" LingTree.app/Contents/app/resources/Keyboards/macOS/xkbswitch
-          #echo codesign of xkbswitch finished
           cd ../..
           #echo recreate dmg
           hdiutil create -volname LingTreeInstaller -srcfolder dmgContents -ov -format UDZO LingTreeSigned.dmg
-          #ls -l -R
           #echo sign dmg
           codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTreeSigned.dmg -v
-          #codesign --force --deep --options runtime --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" LingTreeSigned.dmg
           #echo rename to include version number
           #mv LingTreeSigned.dmg LingTree-${{ env.VERSION }}.dmg
 
@@ -186,11 +170,11 @@ jobs:
         run: |
           codesign --verify --verbose LingTreeSigned.dmg
 
-      # Clean up keychain
-      - name: Clean up keychain
-        if: always()
-        run: |
-          security delete-keychain build.keychain || true
+#      # Clean up keychain
+#      - name: Clean up keychain
+#        if: always()
+#        run: |
+#          security delete-keychain build.keychain || true
 
      # Notarize the DMG
       - name: Notarize DMG
