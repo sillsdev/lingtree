@@ -139,8 +139,8 @@ jobs:
           echo trying to use the system keychain now
           security import sil_developer_id_application_cert.p12 -k build.keychain -P ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }} -T /usr/bin/codesign
           echo import done
-#          echo "$MACOS_CERTIFICATE" | base64 --decode > certificate.p12
-#          security import certificate.p12 -k build.keychain -P "$MACOS_CERTIFICATE_PWD" -T /usr/bin/codesign
+          #echo "$MACOS_CERTIFICATE" | base64 --decode > certificate.p12
+          #security import certificate.p12 -k build.keychain -P "$MACOS_CERTIFICATE_PWD" -T /usr/bin/codesign
 
           # Allow codesign to access the certificate without prompts
           security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KEYCHAIN_PASSWORD" build.keychain
