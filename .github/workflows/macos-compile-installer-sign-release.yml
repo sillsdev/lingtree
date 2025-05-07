@@ -143,7 +143,9 @@ jobs:
           #security import certificate.p12 -k build.keychain -P "$MACOS_CERTIFICATE_PWD" -T /usr/bin/codesign
 
           # Allow codesign to access the certificate without prompts
+          echo before allow codesign to access the certificate without prompts
           security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KEYCHAIN_PASSWORD" build.keychain
+          echo after allow codesign to access the certificate without prompts
 
       - name: Attach dmg
         run: |
@@ -194,33 +196,33 @@ jobs:
         run: |
           security delete-keychain build.keychain || true
 
-      - name: "Notarize app bundle"
-        # Extract the secrets we defined earlier as environment variables
-        env:
-          PROD_MACOS_NOTARIZATION_APPLE_ID: ${{ secrets.SIL_APPLE_NOTARIZATION_USERNAME }}
-          PROD_MACOS_NOTARIZATION_TEAM_ID: "3YE4W86L3G"
-          PROD_MACOS_NOTARIZATION_PWD: ${{ secrets.SIL_APPLE_NOTARIZATION_PASSWORD }}
-        run: |
-          # Store the notarization credentials so that we can prevent a UI password dialog
-          # from blocking the CI
-
-          echo "Create keychain profile"
-          xcrun notarytool store-credentials "notarytool-profile" --apple-id "$PROD_MACOS_NOTARIZATION_APPLE_ID" --team-id "$PROD_MACOS_NOTARIZATION_TEAM_ID" --password "$PROD_MACOS_NOTARIZATION_PWD"
-
-          # We can't notarize an app bundle directly, but we need to compress it as an archive.
-          # Therefore, we create a zip file containing our app bundle, so that we can send it to the
-          # notarization service
-
-          echo "Creating temp notarization archive"
-          ditto -c -k --keepParent "LingTreeSigned.dmg" "notarization.zip"
-          #ditto -c -k --keepParent "dmgContents/LingTree/LingTree.app" "notarization.zip"
-          #ditto -c -k --keepParent "target/mac/Espanso.app" "notarization.zip"
-          echo app file is
-          ls -l LingTreeSigned.dmg
-          echo zipped file is
-          ls -l notarization.zip
-          echo check signature
-          #codesign -vvv --deep --strict LingTreeSigned.dmg 
+#      - name: "Notarize app bundle"
+#        # Extract the secrets we defined earlier as environment variables
+#        env:
+#          PROD_MACOS_NOTARIZATION_APPLE_ID: ${{ secrets.SIL_APPLE_NOTARIZATION_USERNAME }}
+#          PROD_MACOS_NOTARIZATION_TEAM_ID: "3YE4W86L3G"
+#          PROD_MACOS_NOTARIZATION_PWD: ${{ secrets.SIL_APPLE_NOTARIZATION_PASSWORD }}
+#        run: |
+#          # Store the notarization credentials so that we can prevent a UI password dialog
+#          # from blocking the CI
+#
+#          echo "Create keychain profile"
+#          xcrun notarytool store-credentials "notarytool-profile" --apple-id "$PROD_MACOS_NOTARIZATION_APPLE_ID" --team-id "$PROD_MACOS_NOTARIZATION_TEAM_ID" --password "$PROD_MACOS_NOTARIZATION_PWD"
+#
+#          # We can't notarize an app bundle directly, but we need to compress it as an archive.
+#          # Therefore, we create a zip file containing our app bundle, so that we can send it to the
+#          # notarization service
+#
+#          echo "Creating temp notarization archive"
+#          ditto -c -k --keepParent "LingTreeSigned.dmg" "notarization.zip"
+#          #ditto -c -k --keepParent "dmgContents/LingTree/LingTree.app" "notarization.zip"
+#          #ditto -c -k --keepParent "target/mac/Espanso.app" "notarization.zip"
+#          echo app file is
+#          ls -l LingTreeSigned.dmg
+#          echo zipped file is
+#          ls -l notarization.zip
+#          echo check signature
+#          #codesign -vvv --deep --strict LingTreeSigned.dmg 
 
 ##          echo Download a log file from a previously failed run
 ##          xcrun notarytool log c43c4c48-517e-4796-835c-8100aa281aa6 --keychain-profile "notarytool-profile" developer_log.json
