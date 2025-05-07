@@ -124,20 +124,26 @@ jobs:
 #          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KEYCHAIN_PASSWORD" build.keychain
 
       - name: Add certificatee to Keychain
+        env:
+          MACOS_CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE }}
+          MACOS_CERTIFICATE_PWD: ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }}
+          KEYCHAIN_PASSWORD: ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }}
         run: |
-          #curl -O "${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT_URL }}" --user ":${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }}"
+          # Create a temporary keychain
+          security create-keychain -p "$KEYCHAIN_PASSWORD" build.keychain
+          security default-keychain -s build.keychain
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" build.keychain
+
+          # Import the certificate
           curl -O ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT_URL }}
-          #ls -l
-          #curl -O https://sil-mac-codesign.s3.us-east-1.amazonaws.com/sil_developer_id_application_cert.p12
-          #ls -l
-          #echo trying to import
           echo trying to use the system keychain now
-          security import sil_developer_id_application_cert.p12 -P ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }}
-          #sudo security import sil_developer_id_application_cert.p12 -P ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }} -k "/Library/Keychains/System.keychain"
-          #echo import done
+          security import sil_developer_id_application_cert.p12 -k build.keychain -P ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }} -T /usr/bin/codesign
+          echo import done
+#          echo "$MACOS_CERTIFICATE" | base64 --decode > certificate.p12
+#          security import certificate.p12 -k build.keychain -P "$MACOS_CERTIFICATE_PWD" -T /usr/bin/codesign
+
           # Allow codesign to access the certificate without prompts
-          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD"
-          #security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD" build.keychain
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KEYCHAIN_PASSWORD" build.keychain
 
       - name: Attach dmg
         run: |
