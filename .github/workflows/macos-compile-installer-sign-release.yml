@@ -160,10 +160,9 @@ jobs:
           echo sign xkbswitch
           codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime  LingTree.app/Contents/app/resources/Keyboards/macOS/xkbswitch -v
           echo sign of xkbswitch finished
-          echo sign libjnidispatch.jnilib
-          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime  LingTree.app/Contents/app/libs/jna/jna-5.11.0.jar/com/sun/jna/darwin-aarch64/ -v
-          #codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime  LingTree.app/Contents/app/libs/jna/jna-5.11.0.jar/com/sun/jna/darwin-aarch64/libjnidispatch.jnilib -v
-          echo sign of libjnidispatch.jnilib finished
+          echo sign jna
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime  LingTree.app/Contents/app/libs/jna/jna-5.11.0.jar -v
+          echo sign of jna finished
           echo sign LingTree.app/Contents/MacOS/LingTree
           codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/MacOS/LingTree -v
           echo sign LingTree.app/Contents/runtime/Contents/Home/lib/libnet.dylib
