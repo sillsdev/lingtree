@@ -127,7 +127,7 @@ jobs:
       - name: Get notarization log
         run: |
           echo Before trying to get notarization log of last run
-          xcrun notarytool log e633b937-f552-431f-bc2c-16be7fe7d60f --apple-id ${{ secrets.SIL_APPLE_NOTARIZATION_USERNAME }} --team-id "3YE4W86L3G" --password ${{ secrets.SIL_APPLE_NOTARIZATION_PASSWORD }}
+          xcrun notarytool log 48767c4e-bc1b-4ce3-b967-6aa418527778 --apple-id ${{ secrets.SIL_APPLE_NOTARIZATION_USERNAME }} --team-id "3YE4W86L3G" --password ${{ secrets.SIL_APPLE_NOTARIZATION_PASSWORD }}
 
       - name: Add certificate to Keychain
         env:
@@ -162,22 +162,22 @@ jobs:
           mkdir dmgContents
           cp -R /Volumes/LingTree dmgContents
           cd dmgContents/LingTree
-          pwd
+          #pwd
           chmod a+w LingTree.app/Contents/app/resources/Keyboards/macOS/xkbswitch
-          echo sign xkbswitch
+          #echo sign xkbswitch
           codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime  LingTree.app/Contents/app/resources/Keyboards/macOS/xkbswitch -v
-          echo before updating xkbswitch in lingtree.jar
+          #echo before updating xkbswitch in lingtree.jar
           cd LingTree.app/Contents/app/
           jar uf lingtree.jar resources/Keyboards/macOS/xkbswitch
-          echo before updating libjnidispatch.jnilib in jna
+          #echo before updating libjnidispatch.jnilib in jna
           cd libs/jna/
           jar xf jna-5.11.0.jar com/sun/jna/darwin-aarch64/libjnidispatch.jnilib
-          echo sign jna
+          #echo sign jna
           codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime com/sun/jna/darwin-aarch64/libjnidispatch.jnilib -v
-          echo update jna
+          #echo update jna
           jar uf jna-5.11.0.jar com/sun/jna/darwin-aarch64/libjnidispatch.jnilib
           cd ../../../../..
-          pwd
+          #pwd
           echo sign LingTree.app/Contents/MacOS/LingTree
           codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/MacOS/LingTree -v
           echo sign LingTree.app/Contents/runtime/Contents/Home/lib/libnet.dylib
