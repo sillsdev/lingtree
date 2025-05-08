@@ -296,7 +296,7 @@ jobs:
           codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --deep LingTree.app -v
           echo verify the app
           codesign -vvv --deep --strict LingTree.app
-          cd ../..
+          #cd ../..
           #echo recreate dmg
           hdiutil create -volname LingTreeInstaller -srcfolder LingTree.app -ov -format UDZO LingTreeSigned.dmg
           echo sign dmg
