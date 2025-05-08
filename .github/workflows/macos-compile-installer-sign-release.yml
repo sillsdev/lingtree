@@ -162,13 +162,22 @@ jobs:
           mkdir dmgContents
           cp -R /Volumes/LingTree dmgContents
           cd dmgContents/LingTree
+          pwd
           chmod a+w LingTree.app/Contents/app/resources/Keyboards/macOS/xkbswitch
           echo sign xkbswitch
           codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime  LingTree.app/Contents/app/resources/Keyboards/macOS/xkbswitch -v
-          echo sign of xkbswitch finished
+          echo before updating xkbswitch in lingtree.jar
+          cd LingTree.app/Contents/app/
+          jar uf lingtree.jar resources/Keyboards/macOS/xkbswitch
+          echo before updating libjnidispatch.jnilib in jna
+          cd libs/jna/
+          jar xf jna-5.11.0.jar com/sun/jna/darwin-aarch64/libjnidispatch.jnilib
           echo sign jna
-          codesign --deep --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime  LingTree.app/Contents/app/libs/jna/jna-5.11.0.jar -v
-          echo sign of jna finished
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime com/sun/jna/darwin-aarch64/libjnidispatch.jnilib -v
+          echo update jna
+          jar uf jna-5.11.0.jar com/sun/jna/darwin-aarch64/libjnidispatch.jnilib
+          cd ../../../../..
+          pwd
           echo sign LingTree.app/Contents/MacOS/LingTree
           codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/MacOS/LingTree -v
           echo sign LingTree.app/Contents/runtime/Contents/Home/lib/libnet.dylib
