@@ -123,6 +123,12 @@ jobs:
 #          # Allow codesign to access the certificate without prompts
 #          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KEYCHAIN_PASSWORD" build.keychain
 
+      # Get notarization log of last run
+      - name: Get notarization log
+        run: |
+          echo Before trying to get notarization log of last run
+          xcrun notarytool log 495e8fb1-c639-47de-b9f4-ed1546f8dcb3 --apple-id ${{ secrets.SIL_APPLE_NOTARIZATION_USERNAME }} --team-id "3YE4W86L3G" --password ${{ secrets.SIL_APPLE_NOTARIZATION_PASSWORD }}
+
       - name: Add certificate to Keychain
         env:
           MACOS_CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE }}
