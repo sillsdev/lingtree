@@ -292,9 +292,13 @@ jobs:
           codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/server/libjsig.dylib -v
           echo sign LingTree.app/Contents/runtime/Contents/MacOS/libjli.dylib
           codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/MacOS/libjli.dylib -v
+          echo sign LingTree.app
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --deep LingTree.app -v
+          echo verify the app
+          codesign -vvv --deep --strict LingTree.app
           cd ../..
           #echo recreate dmg
-          hdiutil create -volname LingTreeInstaller -srcfolder dmgContents -ov -format UDZO LingTreeSigned.dmg
+          hdiutil create -volname LingTreeInstaller -srcfolder LingTree.app -ov -format UDZO LingTreeSigned.dmg
           echo sign dmg
           codesign --deep --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTreeSigned.dmg -v
           #echo rename to include version number
