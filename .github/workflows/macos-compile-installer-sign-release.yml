@@ -234,6 +234,8 @@ jobs:
           codesign --deep --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTreeSigned.dmg -v
           #echo rename to include version number
           #mv LingTreeSigned.dmg LingTree-${{ env.VERSION }}.dmg
+          echo time stamp for signed dmg:
+          ls -l LingTreeSigned.dmg
 
       # Verify the signature
       - name: Verify signature
@@ -260,9 +262,18 @@ jobs:
       # Staple the notarization ticket
       - name: Staple Notarization Ticket
         run: |
+          echo time stamp for stapling
+          ls -l LingTreeSigned.dmg
           echo before stapling
           xcrun stapler staple LingTreeSigned.dmg
           echo after stapling
+          ls -l LingTreeSigned.dmg
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: LingTree
+          path: LingTree-*.dmg
+          if-no-files-found: error
 
 #      - name: "Notarize app bundle"
 #        # Extract the secrets we defined earlier as environment variables
