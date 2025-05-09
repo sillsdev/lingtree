@@ -127,7 +127,7 @@ jobs:
       - name: Get notarization log
         run: |
           echo Before trying to get notarization log of last run
-          xcrun notarytool log d00b2253-4209-4edb-823e-c3be075323fc --apple-id ${{ secrets.SIL_APPLE_NOTARIZATION_USERNAME }} --team-id "3YE4W86L3G" --password ${{ secrets.SIL_APPLE_NOTARIZATION_PASSWORD }}
+          xcrun notarytool log d5be5631-7cf8-4840-9751-e78e7d28b1cd --apple-id ${{ secrets.SIL_APPLE_NOTARIZATION_USERNAME }} --team-id "3YE4W86L3G" --password ${{ secrets.SIL_APPLE_NOTARIZATION_PASSWORD }}
 
       - name: Add certificate to Keychain
         env:
@@ -246,6 +246,8 @@ jobs:
           hdiutil create -volname LingTreeInstaller -srcfolder LingTree.app -ov -format UDZO LingTreeSigned.dmg
           mv LingTreeSigned.dmg ../../LingTreeSigned.dmg
           cd ../..
+          echo the signed dmg is located at
+          pwd
           echo sign dmg
           codesign --deep --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTreeSigned.dmg -v
           #echo rename to include version number
