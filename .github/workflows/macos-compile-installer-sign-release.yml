@@ -269,121 +269,8 @@ jobs:
           #echo after stapling
           #ls -l LingTreeSigned.dmg
           echo rename to include version number
-          mv LingTreeSigned.dmg LingTree-${{ env.VERSION }}.dmg
+          cp LingTreeSigned.dmg LingTree-${{ env.VERSION }}.dmg
 
-      - name: Create Release
-        uses: softprops/action-gh-release@v2
-        with:
-          files: LingTree-*.dmg
-          body: |
-            Release for version ${{ github.ref }}
-          draft: true
-
-#      - uses: actions/upload-artifact@v4
-#        with:
-#          name: LingTreeSigned
-#          path: LingTree-*.dmg
-#          if-no-files-found: error
-
-#      - name: "Notarize app bundle"
-#        # Extract the secrets we defined earlier as environment variables
-#        env:
-#          PROD_MACOS_NOTARIZATION_APPLE_ID: ${{ secrets.SIL_APPLE_NOTARIZATION_USERNAME }}
-#          PROD_MACOS_NOTARIZATION_TEAM_ID: "3YE4W86L3G"
-#          PROD_MACOS_NOTARIZATION_PWD: ${{ secrets.SIL_APPLE_NOTARIZATION_PASSWORD }}
-#        run: |
-#          xcrun notarytool submit LingTreeSigned.dmg --keychain-profile "notary-profile" --wait
-#          xcrun stapler staple LingTreeSigned.dmg
-#          # Store the notarization credentials so that we can prevent a UI password dialog
-#          # from blocking the CI
-#
-#          echo "Create keychain profile"
-#          xcrun notarytool store-credentials "notarytool-profile" --apple-id "$PROD_MACOS_NOTARIZATION_APPLE_ID" --team-id "$PROD_MACOS_NOTARIZATION_TEAM_ID" --password "$PROD_MACOS_NOTARIZATION_PWD"
-#
-#          # We can't notarize an app bundle directly, but we need to compress it as an archive.
-#          # Therefore, we create a zip file containing our app bundle, so that we can send it to the
-#          # notarization service
-#
-#          echo "Creating temp notarization archive"
-#          ditto -c -k --keepParent "LingTreeSigned.dmg" "notarization.zip"
-#          #ditto -c -k --keepParent "dmgContents/LingTree/LingTree.app" "notarization.zip"
-#          #ditto -c -k --keepParent "target/mac/Espanso.app" "notarization.zip"
-#          echo app file is
-#          ls -l LingTreeSigned.dmg
-#          echo zipped file is
-#          ls -l notarization.zip
-#          echo check signature
-#          #codesign -vvv --deep --strict LingTreeSigned.dmg
-
-##          echo Download a log file from a previously failed run
-##          xcrun notarytool log c43c4c48-517e-4796-835c-8100aa281aa6 --keychain-profile "notarytool-profile" developer_log.json
-##          #xcrun notarytool log c43c4c48-517e-4796-835c-8100aa281aa6 --keychain-profile "notarytool-password" developer_log.json
-##          echo Here it is
-##          echo ----------------------
-##          cat developer_log.json
-##          echo ----------------------
-#
-#          # Here we send the notarization request to the Apple's Notarization service, waiting for the result.
-#          # This typically takes a few seconds inside a CI environment, but it might take more depending on the App
-#          # characteristics. Visit the Notarization docs for more information and strategies on how to optimize it if
-#          # you're curious
-#
-#          echo "Notarize app"
-#          xcrun notarytool submit "notarization.zip" --keychain-profile "notarytool-profile" --wait
-#
-#          # Finally, we need to "attach the staple" to our executable, which will allow our app to be
-#          # validated by macOS even when an internet connection is not available.
-#          echo "Attach staple"
-#          xcrun stapler staple "LingTreeSigned.dmg"
-
-      # Install PKG Signing Certificate
-      # NOTE: Working fork of the original apple-actions/import-codesign-certs
-#      - name: Install Apple Developer PKG certificates
-#        uses: ssrobins/import-codesign-certs@04ce695a5e6002f1971a8ed78fedd676318f950f
-#        with:
-#          keychain-password: ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }}
-#          p12-file-base64: ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_CERT }}
-#          p12-password: ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }}
-##          keychain-password: ${{ secrets.PKG_KEYCHAIN_PASSWORD }}
-##          p12-file-base64: ${{ secrets.PKG_CERTIFICATES_P12 }}
-##          p12-password: ${{ secrets.PKG_CERTIFICATES_P12_PASSWORD }}
-#
-#      - name: Download munkipkg and test it can execute with python3 
-#        run: ./.github/workflows/helpers/install_munkipkg.sh
-#
-#      - name: Run the build_package script 
-#        run: ./.github/workflows/helpers/build_package.sh $NOTARIZE_PASSWORD $NOTARIZE_APPLE_ID $NOTARIZE_TEAM_ID
-#
-#      - name: Get Package Details
-#        id: get_package_details
-#        run: |
-#          echo "PACKAGE_NAME=$(/bin/cat ./uploads/build-name.txt)" >> $GITHUB_ENV
-#          echo "PACKAGE_VERSION=$(/bin/cat ./uploads/build-version.txt)" >> $GITHUB_ENV
-
-#      - name: Upload packages to Workflow Artifacts
-#        uses: actions/upload-artifact@v4
-#        with:
-#          name: ${{env.PACKAGE_NAME}}-${{env.PACKAGE_VERSION}}
-#          path: |
-#            uploads
-#            !uploads/*.txt
-#          if-no-files-found: error
-#    uses: sillsdev/codesign/.github/workflows/sign.yml@v2
-#    with:
-#      artifact: LingTree
-#    secrets:
-#      certificate: ${{ secrets.CODESIGN_LSDEVSECTIGOEV }}
-
-#  create-release:
-#    name: Create Release
-#    needs: sign-installer
-#    runs-on: macos-latest
-#
-#    steps:
-#      - uses: actions/download-artifact@v4
-#        with:
-#          name: LingTreeSigned
-#
 #      - name: Create Release
 #        uses: softprops/action-gh-release@v2
 #        with:
@@ -391,3 +278,30 @@ jobs:
 #          body: |
 #            Release for version ${{ github.ref }}
 #          draft: true
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: LingTreeSigned
+          path: LingTree*.dmg
+          #path: LingTree-*.dmg
+          if-no-files-found: error
+
+
+  create-release:
+    name: Create Release
+    needs: sign-installer
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: LingTreeSigned
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: LingTree*.dmg
+          #files: LingTree-*.dmg
+          body: |
+            Release for version ${{ github.ref }}
+          draft: true
