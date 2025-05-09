@@ -158,27 +158,29 @@ jobs:
 
       - name: Sign dmg and app
         run: |
-          #echo make sure xkbswitch is executable
           mkdir dmgContents
           cp -R /Volumes/LingTree dmgContents
           cd dmgContents/LingTree
           #pwd
-          chmod a+w LingTree.app/Contents/app/resources/Keyboards/macOS/xkbswitch
           #echo sign xkbswitch
-          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime  LingTree.app/Contents/app/resources/Keyboards/macOS/xkbswitch -v
           #echo before updating xkbswitch in lingtree.jar
           cd LingTree.app/Contents/app/
           jar uf lingtree.jar resources/Keyboards/macOS/xkbswitch
+          #echo make sure xkbswitch is executable
+          chmod a+w resources/Keyboards/macOS/xkbswitch
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime  resources/Keyboards/macOS/xkbswitch -v
           #echo before updating libjnidispatch.jnilib in jna
           cd libs/jna/
-          jar xf jna-5.11.0.jar com/sun/jna/darwin-aarch64/libjnidispatch.jnilib
+          jar xf jna-5.11.0.jar com/sun/jna/darwin-aarch64/libjnidispatch.jnilib com/sun/jna/darwin-x86-64/libjnidispatch.jnilib
           #echo sign jna
           codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime com/sun/jna/darwin-aarch64/libjnidispatch.jnilib -v
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime com/sun/jna/darwin-x86-64/libjnidispatch.jnilib -v
           #echo update jna
-          jar uf jna-5.11.0.jar com/sun/jna/darwin-aarch64/libjnidispatch.jnilib
+          jar uf jna-5.11.0.jar com/sun/jna/darwin-aarch64/libjnidispatch.jnilib com/sun/jna/darwin-x86-64/libjnidispatch.jnilib
           cd ../../../../..
           #pwd
           codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/MacOS/LingTree -v
+          # -------------  sign all JavaFX runtime executables included in the app
           codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libnet.dylib -v
           codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libnio.dylib -v
           codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libinstrument.dylib -v
@@ -235,6 +237,7 @@ jobs:
           codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/server/libjvm.dylib -v
           codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/server/libjsig.dylib -v
           codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/MacOS/libjli.dylib -v
+          # -------------  sign the main app itself
           echo sign LingTree.app
           codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --deep LingTree.app -v
           echo verify the app
