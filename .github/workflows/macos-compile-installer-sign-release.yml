@@ -94,40 +94,13 @@ jobs:
         with:
           name: LingTree
 
-#      - name: Sign and notarize the release build
-#        uses: toitlang/action-macos-sign-notarize@v1.2.0
-#        with:
-#          certificate: ${{ secrets.CERT_TEST }}
-#          certificate-password: ${{ secrets.SIL_APPLE_DEVELOPER_ID_APPLICATION_PASSWORD }}
-#          username: ${{ secrets.SIL_APPLE_NOTARIZATION_USERNAME }}
-#          password: ${{ secrets.SIL_APPLE_NOTARIZATION_PASSWORD }}
-#          apple-team-id: "3YE4W86L3G" # ${{ vars.APPLE_TEAM_ID }}
-#          app-path: LingTree-${{ env.VERSION }}.dmg
-
-#      # Set up keychain and import certificate
-#      - name: Set up keychain
-#        env:
-#          MACOS_CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE }}
-#          MACOS_CERTIFICATE_PWD: ${{ secrets.MACOS_CERTIFICATE_PWD }}
-#          KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
-#        run: |
-#          # Create a temporary keychain
-#          security create-keychain -p "$KEYCHAIN_PASSWORD" build.keychain
-#          security default-keychain -s build.keychain
-#          security unlock-keychain -p "$KEYCHAIN_PASSWORD" build.keychain
-#
-#          # Import the certificate
-#          echo "$MACOS_CERTIFICATE" | base64 --decode > certificate.p12
-#          security import certificate.p12 -k build.keychain -P "$MACOS_CERTIFICATE_PWD" -T /usr/bin/codesign
-#
-#          # Allow codesign to access the certificate without prompts
-#          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KEYCHAIN_PASSWORD" build.keychain
-
+      # If a notarization fails, uncomment the following and replace thw GUID with the one from
+      # notarization output
       # Get notarization log of last run
       - name: Get notarization log
         run: |
           echo Before trying to get notarization log of last run
-          xcrun notarytool log d5be5631-7cf8-4840-9751-e78e7d28b1cd --apple-id ${{ secrets.SIL_APPLE_NOTARIZATION_USERNAME }} --team-id "3YE4W86L3G" --password ${{ secrets.SIL_APPLE_NOTARIZATION_PASSWORD }}
+          xcrun notarytool log 86fb0e6f-fb16-4663-b90a-5875030d7efa --apple-id ${{ secrets.SIL_APPLE_NOTARIZATION_USERNAME }} --team-id "3YE4W86L3G" --password ${{ secrets.SIL_APPLE_NOTARIZATION_PASSWORD }}
 
       - name: Add certificate to Keychain
         env:
@@ -281,7 +254,7 @@ jobs:
           appstore-connect-username: ${{ secrets.SIL_APPLE_NOTARIZATION_USERNAME }}
           appstore-connect-password: ${{ secrets.SIL_APPLE_NOTARIZATION_PASSWORD }}
           appstore-connect-team-id: "3YE4W86L3G"
-          verbose: true
+#          verbose: true
 #          appstore-connect-team-id: ${{ secrets.APPLE_TEAM_ID }}
 
       # Staple the notarization ticket
