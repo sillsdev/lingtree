@@ -271,11 +271,19 @@ jobs:
           echo rename to include version number
           mv LingTreeSigned.dmg LingTree-${{ env.VERSION }}.dmg
 
-      - uses: actions/upload-artifact@v4
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
         with:
-          name: LingTreeSigned
-          path: LingTree-*.dmg
-          if-no-files-found: error
+          files: LingTree-*.dmg
+          body: |
+            Release for version ${{ github.ref }}
+          draft: true
+
+#      - uses: actions/upload-artifact@v4
+#        with:
+#          name: LingTreeSigned
+#          path: LingTree-*.dmg
+#          if-no-files-found: error
 
 #      - name: "Notarize app bundle"
 #        # Extract the secrets we defined earlier as environment variables
@@ -366,20 +374,20 @@ jobs:
 #    secrets:
 #      certificate: ${{ secrets.CODESIGN_LSDEVSECTIGOEV }}
 
-  create-release:
-    name: Create Release
-    needs: sign-installer
-    runs-on: macos-latest
-
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          name: LingTreeSigned
-
-      - name: Create Release
-        uses: softprops/action-gh-release@v2
-        with:
-          files: LingTree-*.dmg
-          body: |
-            Release for version ${{ github.ref }}
-          draft: true
+#  create-release:
+#    name: Create Release
+#    needs: sign-installer
+#    runs-on: macos-latest
+#
+#    steps:
+#      - uses: actions/download-artifact@v4
+#        with:
+#          name: LingTreeSigned
+#
+#      - name: Create Release
+#        uses: softprops/action-gh-release@v2
+#        with:
+#          files: LingTree-*.dmg
+#          body: |
+#            Release for version ${{ github.ref }}
+#          draft: true
