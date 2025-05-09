@@ -229,13 +229,13 @@ jobs:
           mv LingTreeSigned.dmg ../../LingTreeSigned.dmg
           cd ../..
           echo the signed dmg is located at
-          pwd
-          echo sign dmg
+          #pwd
+          #echo sign dmg
           codesign --deep --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTreeSigned.dmg -v
           #echo rename to include version number
           #mv LingTreeSigned.dmg LingTree-${{ env.VERSION }}.dmg
-          echo time stamp for signed dmg:
-          ls -l LingTreeSigned.dmg
+          #echo time stamp for signed dmg:
+          #ls -l LingTreeSigned.dmg
 
       # Verify the signature
       - name: Verify signature
@@ -262,16 +262,16 @@ jobs:
       # Staple the notarization ticket
       - name: Staple Notarization Ticket
         run: |
-          echo time stamp for stapling
-          ls -l LingTreeSigned.dmg
-          echo before stapling
+          #echo time stamp for stapling
+          #ls -l LingTreeSigned.dmg
+          #echo before stapling
           xcrun stapler staple LingTreeSigned.dmg
-          echo after stapling
-          ls -l LingTreeSigned.dmg
+          #echo after stapling
+          #ls -l LingTreeSigned.dmg
 
       - uses: actions/upload-artifact@v4
         with:
-          name: LingTree
+          name: LingTreeSigned
           path: LingTree-*.dmg
           if-no-files-found: error
 
@@ -372,7 +372,7 @@ jobs:
     steps:
       - uses: actions/download-artifact@v4
         with:
-          name: LingTree
+          name: LingTreeSigned
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
