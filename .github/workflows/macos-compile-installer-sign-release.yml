@@ -163,6 +163,7 @@ jobs:
           cd dmgContents/LingTree
           #pwd
           cd LingTree.app/Contents/app/
+          jar xf lingtree.jar resources/Keyboards/macOS/xkbswitch org/sil/lingtree/resources/Keyboards/macOS/xkbswitch
           chmod a+w resources/Keyboards/macOS/xkbswitch
           chmod a+w org/sil/lingtree/resources/Keyboards/macOS/xkbswitch
           #echo sign xkbswitch
