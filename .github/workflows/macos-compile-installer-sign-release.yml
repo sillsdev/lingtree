@@ -232,7 +232,8 @@ jobs:
           pwd
           mkdir ../SignedLingTreeDmg
           cp -R LingTree/LingTree.app ../SignedLingTreeDmg/
-          #ln -s /Applications ../SignedLingTreeDmg/Applications
+          ln -s /Applications ../SignedLingTreeDmg/Applications
+          xattr -cr ../SignedLingTreeDmg/
           ls -l
           cd ..
           hdiutil create -volname LingTreeInstaller -srcfolder SignedLingTreeDmg -fs HFS+ -format UDRW LingTreeSigned.dmg
