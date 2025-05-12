@@ -133,12 +133,10 @@ jobs:
         run: |
           mkdir dmgContents
           cp -R /Volumes/LingTree dmgContents
+          ls -l dmgContents
           cd dmgContents/LingTree
           #pwd
           cd LingTree.app/Contents/app/
-          echo contents before ---------------------------------------
-          jar tf lingtree.jar
-          echo -------------------------------------------------------
           jar xf lingtree.jar resources/Keyboards/macOS/xkbswitch org/sil/lingtree/resources/Keyboards/macOS/xkbswitch
           chmod a+w resources/Keyboards/macOS/xkbswitch
           chmod a+w org/sil/lingtree/resources/Keyboards/macOS/xkbswitch
@@ -147,9 +145,6 @@ jobs:
           codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime  org/sil/lingtree/resources/Keyboards/macOS/xkbswitch -v
           #echo before updating xkbswitch in lingtree.jar
           jar uf lingtree.jar resources/Keyboards/macOS/xkbswitch org/sil/lingtree/resources/Keyboards/macOS/xkbswitch
-          echo contents after ---------------------------------------
-          jar tf lingtree.jar
-          echo -------------------------------------------------------
           rm -r org
           ##echo sign xkbswitch
           ##echo before updating xkbswitch in lingtree.jar
@@ -235,11 +230,14 @@ jobs:
           cd ..
           echo recreate dmg
           pwd
-          hdiutil create -volname LingTreeInstaller -srcfolder LingTree/LingTree.app -ov -format UDZO LingTreeSigned.dmg
-          mv LingTreeSigned.dmg ../LingTreeSigned.dmg
-          cd ..
+          ls -l
+          #hdiutil create -volname LingTreeInstaller -srcfolder LingTree/LingTree.app -ov -format UDZO LingTreeSigned.dmg
+          hdiutil create -volname LingTreeInstaller -srcfolder . -ov -format UDZO LingTreeSigned.dmg
+          #mv LingTreeSigned.dmg ../LingTreeSigned.dmg
+          #cd ..
           echo the signed dmg is located at
           pwd
+          ls -l
           echo sign dmg
           codesign --deep --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTreeSigned.dmg -v
           #echo rename to include version number
