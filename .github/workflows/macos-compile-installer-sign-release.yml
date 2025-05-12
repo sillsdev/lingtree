@@ -230,14 +230,15 @@ jobs:
           cd ..
           echo recreate dmg
           pwd
-          mkdir ../SignedLingTreeDmg
-          cp -R LingTree/LingTree.app ../SignedLingTreeDmg/
-          ln -s /Applications ../SignedLingTreeDmg/Applications
-          xattr -cr ../SignedLingTreeDmg/
-          ls -l
-          cd ..
-          hdiutil create -volname LingTreeInstaller -srcfolder SignedLingTreeDmg -fs HFS+ -format UDRW LingTreeSigned.dmg
-          #hdiutil create -volname LingTreeInstaller -srcfolder LingTree/LingTree.app -ov -format UDZO LingTreeSigned.dmg
+          #mkdir ../SignedLingTreeDmg
+          #cp -R LingTree/LingTree.app ../SignedLingTreeDmg/
+          #ln -s /Applications ../SignedLingTreeDmg/Applications
+          #xattr -cr ../SignedLingTreeDmg/
+          #ls -l
+          #cd ..
+          ln -s /Applications LingTree/Applications
+          #hdiutil create -volname LingTreeInstaller -srcfolder SignedLingTreeDmg -fs HFS+ -format UDRW LingTreeSigned.dmg
+          hdiutil create -volname LingTreeInstaller -srcfolder LingTree/LingTree.app -ov -format UDZO LingTreeSigned.dmg
           #mv LingTreeSigned.dmg ../LingTreeSigned.dmg
           #cd ..
           echo the signed dmg is located at
