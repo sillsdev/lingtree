@@ -94,13 +94,13 @@ jobs:
         with:
           name: LingTree
 
-      # If a notarization fails, uncomment the following and replace thw GUID with the one from
+      # If a notarization fails, uncomment the following and replace the GUID with the one from
       # notarization output
-      # Get notarization log of last run
-      - name: Get notarization log
-        run: |
-          echo Before trying to get notarization log of last run
-          xcrun notarytool log 86fb0e6f-fb16-4663-b90a-5875030d7efa --apple-id ${{ secrets.SIL_APPLE_NOTARIZATION_USERNAME }} --team-id "3YE4W86L3G" --password ${{ secrets.SIL_APPLE_NOTARIZATION_PASSWORD }}
+#      # Get notarization log of last run
+#      - name: Get notarization log
+#        run: |
+#          echo Before trying to get notarization log of last run
+#          xcrun notarytool log 86fb0e6f-fb16-4663-b90a-5875030d7efa --apple-id ${{ secrets.SIL_APPLE_NOTARIZATION_USERNAME }} --team-id "3YE4W86L3G" --password ${{ secrets.SIL_APPLE_NOTARIZATION_PASSWORD }}
 
       - name: Add certificate to Keychain
         env:
@@ -224,13 +224,14 @@ jobs:
           codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --deep LingTree.app -v
           echo verify the app
           codesign -vvv --deep --strict LingTree.app
-          #echo recreate dmg
+          echo recreate dmg
+          pwd
           hdiutil create -volname LingTreeInstaller -srcfolder LingTree.app -ov -format UDZO LingTreeSigned.dmg
           mv LingTreeSigned.dmg ../../LingTreeSigned.dmg
           cd ../..
           echo the signed dmg is located at
-          #pwd
-          #echo sign dmg
+          pwd
+          echo sign dmg
           codesign --deep --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTreeSigned.dmg -v
           #echo rename to include version number
           #mv LingTreeSigned.dmg LingTree-${{ env.VERSION }}.dmg
