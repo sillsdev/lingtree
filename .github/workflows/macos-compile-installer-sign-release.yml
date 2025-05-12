@@ -135,7 +135,7 @@ jobs:
           cp -R /Volumes/LingTree dmgContents
           ls -l dmgContents
           cd dmgContents/LingTree
-          xattr -cr .
+          sudo xattr -cr .
           #pwd
           cd LingTree.app/Contents/app/
           jar xf lingtree.jar resources/Keyboards/macOS/xkbswitch org/sil/lingtree/resources/Keyboards/macOS/xkbswitch
