@@ -227,9 +227,9 @@ jobs:
           cd ..
           echo recreate dmg
           pwd
-          hdiutil create -volname LingTreeInstaller -srcfolder LingTree.app -ov -format UDZO LingTreeSigned.dmg
-          mv LingTreeSigned.dmg ../../LingTreeSigned.dmg
-          cd ../..
+          hdiutil create -volname LingTreeInstaller -srcfolder LingTree/LingTree.app -ov -format UDZO LingTreeSigned.dmg
+          mv LingTreeSigned.dmg ../LingTreeSigned.dmg
+          cd ..
           echo the signed dmg is located at
           pwd
           echo sign dmg
