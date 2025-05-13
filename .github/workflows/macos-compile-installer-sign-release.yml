@@ -96,11 +96,11 @@ jobs:
 
       # If a notarization fails, uncomment the following and replace the GUID with the one from
       # notarization output
-#      # Get notarization log of last run
-#      - name: Get notarization log
-#        run: |
-#          echo Before trying to get notarization log of last run
-#          xcrun notarytool log 86fb0e6f-fb16-4663-b90a-5875030d7efa --apple-id ${{ secrets.SIL_APPLE_NOTARIZATION_USERNAME }} --team-id "3YE4W86L3G" --password ${{ secrets.SIL_APPLE_NOTARIZATION_PASSWORD }}
+      # Get notarization log of last run
+      - name: Get notarization log
+        run: |
+          echo Before trying to get notarization log of last run
+          xcrun notarytool log f6df393b-e207-4207-bab0-4229c900fbb9 --apple-id ${{ secrets.SIL_APPLE_NOTARIZATION_USERNAME }} --team-id "3YE4W86L3G" --password ${{ secrets.SIL_APPLE_NOTARIZATION_PASSWORD }}
 
       - name: Add certificate to Keychain
         env:
@@ -167,9 +167,9 @@ jobs:
           #pwd
           codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/MacOS/LingTree -v
           # -------------  sign all JavaFX runtime executables included in the app
-          #codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libnet.dylib -v
-          #codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libnio.dylib -v
-          #codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libinstrument.dylib -v
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libnet.dylib -v
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libnio.dylib -v
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libinstrument.dylib -v
           codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libjavafx_iio.dylib -v
           codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libzip.dylib -v
           codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libfreetype.dylib -v
@@ -241,7 +241,8 @@ jobs:
           #hdiutil create -volname LingTreeInstaller -srcfolder SignedLingTreeDmg -fs HFS+ -format UDRW LingTreeSigned.dmg
           #hdiutil create -volname LingTreeInstaller -srcfolder LingTree/LingTree.app -fs HFS+ -format UDRW LingTreeSigned.dmg
           #hdiutil create -volname LingTreeInstaller -srcfolder LingTree -fs HFS+ -format UDRW LingTreeSigned.dmg
-          hdiutil create -volname LingTreeInstaller -srcfolder LingTree/LingTree.app -ov -format UDZO LingTreeSigned.dmg
+          #hdiutil create -volname LingTreeInstaller -srcfolder LingTree/LingTree.app -ov -format UDZO LingTreeSigned.dmg
+          hdiutil create -volname LingTreeInstaller -srcfolder LingTree -ov -format UDZO LingTreeSigned.dmg
           mv LingTreeSigned.dmg ../LingTreeSigned.dmg
           cd ..
           echo the signed dmg is located at
