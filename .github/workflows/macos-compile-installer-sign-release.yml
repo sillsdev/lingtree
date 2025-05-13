@@ -135,7 +135,7 @@ jobs:
           cp -R /Volumes/LingTree dmgContents
           ls -l dmgContents
           cd dmgContents/LingTree
-          sudo xattr -cr .
+          #sudo xattr -cr .
           #pwd
           cd LingTree.app/Contents/app/
           jar xf lingtree.jar resources/Keyboards/macOS/xkbswitch org/sil/lingtree/resources/Keyboards/macOS/xkbswitch
@@ -240,8 +240,8 @@ jobs:
           ln -s /Applications LingTree/Applications
           #hdiutil create -volname LingTreeInstaller -srcfolder SignedLingTreeDmg -fs HFS+ -format UDRW LingTreeSigned.dmg
           #hdiutil create -volname LingTreeInstaller -srcfolder LingTree/LingTree.app -fs HFS+ -format UDRW LingTreeSigned.dmg
-          hdiutil create -volname LingTreeInstaller -srcfolder LingTree -fs HFS+ -format UDRW LingTreeSigned.dmg
-          #hdiutil create -volname LingTreeInstaller -srcfolder LingTree/LingTree.app -ov -format UDZO LingTreeSigned.dmg
+          #hdiutil create -volname LingTreeInstaller -srcfolder LingTree -fs HFS+ -format UDRW LingTreeSigned.dmg
+          hdiutil create -volname LingTreeInstaller -srcfolder LingTree/LingTree.app -ov -format UDZO LingTreeSigned.dmg
           mv LingTreeSigned.dmg ../LingTreeSigned.dmg
           cd ..
           echo the signed dmg is located at
