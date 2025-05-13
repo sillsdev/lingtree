@@ -167,9 +167,9 @@ jobs:
           #pwd
           codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/MacOS/LingTree -v
           # -------------  sign all JavaFX runtime executables included in the app
-          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libnet.dylib -v
-          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libnio.dylib -v
-          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libinstrument.dylib -v
+          #codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libnet.dylib -v
+          #codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libnio.dylib -v
+          #codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libinstrument.dylib -v
           codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libjavafx_iio.dylib -v
           codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libzip.dylib -v
           codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libfreetype.dylib -v
@@ -273,7 +273,7 @@ jobs:
           appstore-connect-username: ${{ secrets.SIL_APPLE_NOTARIZATION_USERNAME }}
           appstore-connect-password: ${{ secrets.SIL_APPLE_NOTARIZATION_PASSWORD }}
           appstore-connect-team-id: "3YE4W86L3G"
-#          verbose: true
+          verbose: true
 #          appstore-connect-team-id: ${{ secrets.APPLE_TEAM_ID }}
 
       # Staple the notarization ticket
