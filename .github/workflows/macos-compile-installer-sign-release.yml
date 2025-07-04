@@ -147,8 +147,10 @@ jobs:
           jar uf lingtree.jar resources/Keyboards/macOS/xkbswitch org/sil/lingtree/resources/Keyboards/macOS/xkbswitch
           rm -r org
           cd libs/jna/
+          echo contents of jna before
+          jar tf jna-5.11.0.jar
           jar xf jna-5.11.0.jar com/sun/jna/darwin-aarch64/libjnidispatch.jnilib com/sun/jna/darwin-x86-64/libjnidispatch.jnilib
-          #echo get before ls -l of jna nd two jnilib fils
+          echo get before ls -l of jna and two jnilib files
           ls -l jna-5.11.0.jar
           ls -l com/sun/jna/darwin-aarch64/libjnidispatch.jnilib com/sun/jna/darwin-x86-64/libjnidispatch.jnilib
           #echo sign jna
@@ -156,9 +158,11 @@ jobs:
           codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime com/sun/jna/darwin-x86-64/libjnidispatch.jnilib -v
           #echo update jna
           jar uf jna-5.11.0.jar com/sun/jna/darwin-aarch64/libjnidispatch.jnilib com/sun/jna/darwin-x86-64/libjnidispatch.jnilib
-          #echo get after ls -l of jna nd two jnilib fils
+          echo get after ls -l of jna and two jnilib files
           ls -l jna-5.11.0.jar
           ls -l com/sun/jna/darwin-aarch64/libjnidispatch.jnilib com/sun/jna/darwin-x86-64/libjnidispatch.jnilib
+          echo contents of jna after
+          jar tf jna-5.11.0.jar
           rm -r com
           cd ../../../../..
           codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/MacOS/LingTree -v
