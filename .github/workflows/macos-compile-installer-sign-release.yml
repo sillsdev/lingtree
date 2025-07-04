@@ -61,7 +61,7 @@ jobs:
           java-version: '17'
           distribution: 'zulu'
           java-package: 'jdk+fx'
-          architecture: 'x64''
+          architecture: 'x64'
       - name: Build with Ant
         run: |
           ant -noinput -buildfile build.xml
