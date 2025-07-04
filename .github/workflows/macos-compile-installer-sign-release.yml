@@ -148,11 +148,17 @@ jobs:
           rm -r org
           cd libs/jna/
           jar xf jna-5.11.0.jar com/sun/jna/darwin-aarch64/libjnidispatch.jnilib com/sun/jna/darwin-x86-64/libjnidispatch.jnilib
+          #echo get before ls -l of jna nd two jnilib fils
+          ls -l jna-5.11.0.jar
+          ls -l com/sun/jna/darwin-aarch64/libjnidispatch.jnilib com/sun/jna/darwin-x86-64/libjnidispatch.jnilib
           #echo sign jna
           codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime com/sun/jna/darwin-aarch64/libjnidispatch.jnilib -v
           codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime com/sun/jna/darwin-x86-64/libjnidispatch.jnilib -v
           #echo update jna
           jar uf jna-5.11.0.jar com/sun/jna/darwin-aarch64/libjnidispatch.jnilib com/sun/jna/darwin-x86-64/libjnidispatch.jnilib
+          #echo get after ls -l of jna nd two jnilib fils
+          ls -l jna-5.11.0.jar
+          ls -l com/sun/jna/darwin-aarch64/libjnidispatch.jnilib com/sun/jna/darwin-x86-64/libjnidispatch.jnilib
           rm -r com
           cd ../../../../..
           codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/MacOS/LingTree -v
