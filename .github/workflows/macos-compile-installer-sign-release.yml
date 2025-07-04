@@ -59,7 +59,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           java-version: '17'
-          distribution: 'zulu'
+          distribution: 'temurin'
           java-package: 'jdk+fx'
           architecture: 'aarch64'
       - name: Build with Ant
