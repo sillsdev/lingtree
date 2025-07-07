@@ -58,7 +58,7 @@ jobs:
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
-          java-version: '17'
+          java-version: '21'
           distribution: 'zulu'
           java-package: 'jdk+fx'
           architecture: 'aarch64'
@@ -223,7 +223,7 @@ jobs:
           cd ..
           echo recreate dmg
           pwd
-          ln -s /Applications LingTree/Applications
+          #ln -s /Applications LingTree/Applications
           #hdiutil create -volname LingTreeInstaller -srcfolder LingTree -fs HFS+ -format UDRW LingTreeSigned.dmg
           hdiutil create -volname LingTreeInstaller -srcfolder LingTree -ov -format UDZO LingTreeSigned.dmg
           mv LingTreeSigned.dmg ../LingTreeSigned.dmg
