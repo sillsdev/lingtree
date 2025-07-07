@@ -58,12 +58,13 @@ jobs:
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
-          java-version: '21'
+          java-version: '17'
           distribution: 'zulu'
           java-package: 'jdk+fx'
           architecture: 'aarch64'
       - name: Build with Ant
         run: |
+          java -version
           ant -noinput -buildfile build.xml
         shell: bash
       - name: Run the macOS installer script
@@ -102,9 +103,14 @@ jobs:
 #      # Get notarization log of last run
       - name: Get notarization log
         run: |
-          echo Before trying to get notarization log of last run
-          xcrun notarytool log 1445e26f-b7dc-409e-a4b5-a7ade66f6bef --apple-id ${{ secrets.SIL_APPLE_NOTARIZATION_USERNAME }} --team-id "3YE4W86L3G" --password ${{ secrets.SIL_APPLE_NOTARIZATION_PASSWORD }}
-
+          #echo Before trying to get notarization log of last run
+          #xcrun notarytool log 1445e26f-b7dc-409e-a4b5-a7ade66f6bef --apple-id ${{ secrets.SIL_APPLE_NOTARIZATION_USERNAME }} --team-id "3YE4W86L3G" --password ${{ secrets.SIL_APPLE_NOTARIZATION_PASSWORD }}
+          pwd
+          cd zulu-17.jdk/Contents/Home/lib/server/
+          echo libjvm.dylib
+          codesign -dvvv libjvm.dylib
+          echo libjavafx_iio.dylib
+          codesign -dvvv libjavafx_iio.dylib
       - name: Add certificate to Keychain
         env:
           MACOS_CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE }}
@@ -184,7 +190,6 @@ jobs:
           codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libjavajpeg.dylib -v
           codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libmlib_image.dylib -v
           codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libjavafx_font.dylib -v
-          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libmanagement.dylib -v
           codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libmanagement.dylib -v
           codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libgstreamer-lite.dylib -v
           codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libjsound.dylib -v
