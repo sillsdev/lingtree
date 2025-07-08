@@ -65,6 +65,9 @@ jobs:
       - name: Build with Ant
         run: |
           java -version
+          echo find thlibjvm library
+          sudo find / -name libjvm.dylib
+          echo build
           ant -noinput -buildfile build.xml
         shell: bash
       - name: Run the macOS installer script
