@@ -64,10 +64,6 @@ jobs:
           architecture: 'aarch64'
       - name: Build with Ant
         run: |
-          #java -version
-          #echo find thlibjvm library
-          #sudo find / -name libjvm.dylib
-          #echo build
           ant -noinput -buildfile build.xml
         shell: bash
       - name: Run the macOS installer script
@@ -108,6 +104,7 @@ jobs:
 #        run: |
 #          echo Before trying to get notarization log of last run
 #          xcrun notarytool log 1445e26f-b7dc-409e-a4b5-a7ade66f6bef --apple-id ${{ secrets.SIL_APPLE_NOTARIZATION_USERNAME }} --team-id "3YE4W86L3G" --password ${{ secrets.SIL_APPLE_NOTARIZATION_PASSWORD }}
+
       - name: Add certificate to Keychain
         env:
           MACOS_CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE }}
@@ -162,62 +159,61 @@ jobs:
           codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/MacOS/LingTree -v
           # -------------  sign all JavaFX runtime executables included in the app
           # without this, the notarization fails.
-          #codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libnet.dylib -v
-          codesign --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libnet.dylib -v
-          codesign --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libnio.dylib -v
-          codesign --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libinstrument.dylib -v
-          codesign --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libjavafx_iio.dylib -v
-          codesign --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libzip.dylib -v
-          codesign --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libfreetype.dylib -v
-          codesign --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libjli.dylib -v
-          codesign --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libsplashscreen.dylib -v
-          codesign --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libmanagement_ext.dylib -v
-          codesign --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libdt_socket.dylib -v
-          codesign --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libj2pkcs11.dylib -v
-          codesign --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libjimage.dylib -v
-          codesign --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libjfxmedia_avf.dylib -v
-          codesign --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libosxkrb5.dylib -v
-          codesign --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libosxui.dylib -v
-          codesign --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libglib-lite.dylib -v
-          codesign --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libmanagement_agent.dylib -v
-          codesign --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/librmi.dylib -v
-          codesign --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libjdwp.dylib -v
-          codesign --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libawt_lwawt.dylib -v
-          codesign --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libfxplugins.dylib -v
-          codesign --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libglass.dylib -v
-          codesign --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libjavajpeg.dylib -v
-          codesign --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libmlib_image.dylib -v
-          codesign --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libjavafx_font.dylib -v
-          codesign --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libmanagement.dylib -v
-          codesign --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libgstreamer-lite.dylib -v
-          codesign --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libjsound.dylib -v
-          codesign --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libjfxwebkit.dylib -v
-          codesign --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libj2pcsc.dylib -v
-          codesign --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libjsig.dylib -v
-          codesign --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libprefs.dylib -v
-          codesign --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libsyslookup.dylib -v
-          codesign --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libjawt.dylib -v
-          codesign --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libattach.dylib -v
-          codesign --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libprism_common.dylib -v
-          codesign --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libprism_es2.dylib -v
-          codesign --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libfontmanager.dylib -v
-          codesign --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/jspawnhelper -v
-          codesign --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libosxsecurity.dylib -v
-          codesign --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libextnet.dylib -v
-          codesign --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libdecora_sse.dylib -v
-          codesign --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libjaas.dylib -v
-          codesign --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/liblcms.dylib -v
-          codesign --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libverify.dylib -v
-          codesign --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libj2gss.dylib -v
-          codesign --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libjava.dylib -v
-          codesign --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libawt.dylib -v
-          codesign --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libosx.dylib -v
-          codesign --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libjfxmedia.dylib -v
-          codesign --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libprism_sw.dylib -v
-          codesign --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libosxapp.dylib -v
-          codesign --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/server/libjvm.dylib -v
-          codesign --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/server/libjsig.dylib -v
-          codesign --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/MacOS/libjli.dylib -v
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libnet.dylib -v
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libnio.dylib -v
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libinstrument.dylib -v
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libjavafx_iio.dylib -v
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libzip.dylib -v
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libfreetype.dylib -v
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libjli.dylib -v
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libsplashscreen.dylib -v
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libmanagement_ext.dylib -v
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libdt_socket.dylib -v
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libj2pkcs11.dylib -v
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libjimage.dylib -v
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libjfxmedia_avf.dylib -v
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libosxkrb5.dylib -v
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libosxui.dylib -v
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libglib-lite.dylib -v
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libmanagement_agent.dylib -v
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/librmi.dylib -v
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libjdwp.dylib -v
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libawt_lwawt.dylib -v
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libfxplugins.dylib -v
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libglass.dylib -v
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libjavajpeg.dylib -v
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libmlib_image.dylib -v
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libjavafx_font.dylib -v
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libmanagement.dylib -v
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libgstreamer-lite.dylib -v
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libjsound.dylib -v
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libjfxwebkit.dylib -v
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libj2pcsc.dylib -v
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libjsig.dylib -v
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libprefs.dylib -v
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libsyslookup.dylib -v
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libjawt.dylib -v
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libattach.dylib -v
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libprism_common.dylib -v
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libprism_es2.dylib -v
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libfontmanager.dylib -v
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/jspawnhelper -v
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libosxsecurity.dylib -v
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libextnet.dylib -v
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libdecora_sse.dylib -v
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libjaas.dylib -v
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/liblcms.dylib -v
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libverify.dylib -v
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libj2gss.dylib -v
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libjava.dylib -v
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libawt.dylib -v
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libosx.dylib -v
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libjfxmedia.dylib -v
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libprism_sw.dylib -v
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/libosxapp.dylib -v
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/server/libjvm.dylib -v
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/Home/lib/server/libjsig.dylib -v
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree.app/Contents/runtime/Contents/MacOS/libjli.dylib -v
           # -------------  sign the main app itself
           echo sign LingTree.app
           codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --deep LingTree.app -v
