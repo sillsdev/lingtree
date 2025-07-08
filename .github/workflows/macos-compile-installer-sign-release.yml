@@ -64,10 +64,10 @@ jobs:
           architecture: 'aarch64'
       - name: Build with Ant
         run: |
-          java -version
-          echo find thlibjvm library
-          sudo find / -name libjvm.dylib
-          echo build
+          #java -version
+          #echo find thlibjvm library
+          #sudo find / -name libjvm.dylib
+          #echo build
           ant -noinput -buildfile build.xml
         shell: bash
       - name: Run the macOS installer script
@@ -103,21 +103,21 @@ jobs:
 
       # If a notarization fails, uncomment the following and replace the GUID with the one from
       # notarization output
-#      # Get notarization log of last run
-#      - name: Get notarization log
-#        run: |
-#          #echo Before trying to get notarization log of last run
-#          #xcrun notarytool log 1445e26f-b7dc-409e-a4b5-a7ade66f6bef --apple-id ${{ secrets.SIL_APPLE_NOTARIZATION_USERNAME }} --team-id "3YE4W86L3G" --password ${{ secrets.SIL_APPLE_NOTARIZATION_PASSWORD }}
-#          pwd
-#          cd zulu-17.jdk/Contents/Home/lib/server/
-#          echo libjvm.dylib
-#          codesign -dvvv libjvm.dylib
-#          echo spctl
-#          spctl -a -vvv libjvm.dylib
-#          echo libjavafx_iio.dylib
-#          codesign -dvvv libjavafx_iio.dylib
-#          echo spctl
-#          spctl -a -vvv libjavafx_iio.dylib
+      # Get notarization log of last run
+      - name: Get notarization log
+        run: |
+          #echo Before trying to get notarization log of last run
+          #xcrun notarytool log 1445e26f-b7dc-409e-a4b5-a7ade66f6bef --apple-id ${{ secrets.SIL_APPLE_NOTARIZATION_USERNAME }} --team-id "3YE4W86L3G" --password ${{ secrets.SIL_APPLE_NOTARIZATION_PASSWORD }}
+          pwd
+          cd /Users/runner/hostedtoolcache/Java_Zulu_jdk+fx/17.0.15-6/aarch64/zulu-17.jdk/Contents/Home/lib/server/
+          echo libjvm.dylib
+          codesign -dvvv libjvm.dylib
+          echo spctl
+          spctl -a -vvv libjvm.dylib
+          echo libjavafx_iio.dylib
+          codesign -dvvv libjavafx_iio.dylib
+          echo spctl
+          spctl -a -vvv libjavafx_iio.dylib
       - name: Add certificate to Keychain
         env:
           MACOS_CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE }}
