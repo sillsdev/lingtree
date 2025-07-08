@@ -4,7 +4,6 @@ name: macOS Build Installer with Version
 
 on:
   push:
-    #branches: [ "buildSignMacOS" ]
     tags:
       - 'v*'  # Build the app for commits that are tagged starting with 'v' e.g. v1.2.3
       # to tag a commit, use "git tag v1.2.3"
@@ -39,8 +38,8 @@ jobs:
             exit 1
           fi
         shell: bash
-      - name: Build version ${{ env.VERSION }}
-      - uses: actions/checkout@v4
+#      - name: Build version ${{ env.VERSION }}
+#      - uses: actions/checkout@v4
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
