@@ -109,7 +109,7 @@ jobs:
           #echo Before trying to get notarization log of last run
           #xcrun notarytool log 1445e26f-b7dc-409e-a4b5-a7ade66f6bef --apple-id ${{ secrets.SIL_APPLE_NOTARIZATION_USERNAME }} --team-id "3YE4W86L3G" --password ${{ secrets.SIL_APPLE_NOTARIZATION_PASSWORD }}
           pwd
-          cd /Users/runner/hostedtoolcache/Java_Zulu_jdk+fx/17.0.15-6/aarch64/zulu-17.jdk/Contents/Home/lib/server/
+          cd /System/Volumes/Data/Users/runner/hostedtoolcache/Java_Zulu_jdk+fx/17.0.15-6/aarch64/zulu-17.jdk/Contents/Home/lib/server
           echo libjvm.dylib
           codesign -dvvv libjvm.dylib
           echo spctl
