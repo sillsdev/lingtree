@@ -283,12 +283,12 @@ jobs:
           #path: LingTree-*.dmg
           if-no-files-found: error
 
-      - uses: actions/upload-artifact@v4
-        with:
-          name: LingTreeApp
-          path: LingTree.App
-          #path: LingTree-*.dmg
-          if-no-files-found: error
+#      - uses: actions/upload-artifact@v4
+#        with:
+#          name: LingTreeApp
+#          path: LingTree.App
+#          #path: LingTree-*.dmg
+#          if-no-files-found: error
 
   create-release:
     name: Create Release
