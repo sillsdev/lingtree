@@ -225,7 +225,7 @@ jobs:
           #ln -s /Applications LingTree/Applications
           #hdiutil create -volname LingTreeInstaller -srcfolder LingTree -fs HFS+ -format UDRW LingTreeSigned.dmg
           hdiutil create -volname LingTreeInstaller -srcfolder LingTree -ov -format UDZO LingTree-1.6.2.dmg
-          mv LingTree-1.6.2.dmg ../LingTree1.6.2.dmg
+          mv LingTree-1.6.2.dmg ../LingTree-1.6.2.dmg
           cd ..
           echo sign dmg
           codesign --deep --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree-1.6.2.dmg -v
