@@ -228,7 +228,7 @@ jobs:
           mv LingTreeSigned.dmg ../LingTreeSigned.dmg
           cd ..
           echo sign dmg
-          codesign --deep --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTreeSigned.dmg -v
+          codesign --deep --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime LingTree-1.6.2.dmg -v
           #echo rename to include version number
           #mv LingTreeSigned.dmg LingTree-${{ env.VERSION }}.dmg
           #echo time stamp for signed dmg:
@@ -237,7 +237,7 @@ jobs:
       # Verify the signature
       - name: Verify signature
         run: |
-          codesign --verify --verbose LingTreeSigned.dmg
+          codesign --verify --verbose LingTree-1.6.2.dmg
 
 #      # Clean up keychain
 #      - name: Clean up keychain
@@ -249,7 +249,7 @@ jobs:
       - name: Notarize DMG
         uses: lando/notarize-action@v2
         with:
-          product-path: LingTreeSigned.dmg
+          product-path: LingTree-1.6.2.dmg
           appstore-connect-username: ${{ secrets.SIL_APPLE_NOTARIZATION_USERNAME }}
           appstore-connect-password: ${{ secrets.SIL_APPLE_NOTARIZATION_PASSWORD }}
           appstore-connect-team-id: "3YE4W86L3G"
@@ -260,13 +260,13 @@ jobs:
       - name: Staple Notarization Ticket
         run: |
           #echo time stamp for stapling
-          #ls -l LingTreeSigned.dmg
+          #ls -l LingTree-1.6.2.dmg
           #echo before stapling
-          xcrun stapler staple LingTreeSigned.dmg
+          xcrun stapler staple LingTree-1.6.2.dmg
           #echo after stapling
           #ls -l LingTreeSigned.dmg
           echo rename to include version number
-          cp LingTreeSigned.dmg LingTree-${{ env.VERSION }}.dmg
+          #cp LingTreeSigned.dmg LingTree-${{ env.VERSION }}.dmg
 
 #      - name: Create Release
 #        uses: softprops/action-gh-release@v2
@@ -283,6 +283,12 @@ jobs:
           #path: LingTree-*.dmg
           if-no-files-found: error
 
+      - uses: actions/upload-artifact@v4
+        with:
+          name: LingTreeApp
+          path: LingTree.App
+          #path: LingTree-*.dmg
+          if-no-files-found: error
 
   create-release:
     name: Create Release
