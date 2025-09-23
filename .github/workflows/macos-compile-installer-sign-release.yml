@@ -255,8 +255,8 @@ jobs:
           password: ${{ secrets.SIL_APPLE_NOTARIZATION_PASSWORD }}
           team_id: "3YE4W86L3G"
           # Not mandatory inputs
-          staple: 'true'
-          xcode_path: '/Applications/Xcode_26.app'
+          staple: 'false'
+          xcode_path: '/Applications/Xcode.app'
 
 #        uses: lando/notarize-action@v2
 #        with:
@@ -267,16 +267,16 @@ jobs:
 #          verbose: true
 
       # Staple the notarization ticket
-#      - name: Staple Notarization Ticket
-#        run: |
-#          #echo time stamp for stapling
-#          #ls -l LingTree-1.6.2.dmg
-#          #echo before stapling
-#          xcrun stapler staple LingTree-1.6.2.dmg
-#          #echo after stapling
-#          #ls -l LingTreeSigned.dmg
-#          echo rename to include version number
-#          #cp LingTreeSigned.dmg LingTree-${{ env.VERSION }}.dmg
+      - name: Staple Notarization Ticket
+        run: |
+          #echo time stamp for stapling
+          #ls -l LingTree-1.6.2.dmg
+          #echo before stapling
+          xcrun stapler staple LingTree-1.6.2.dmg
+          #echo after stapling
+          #ls -l LingTreeSigned.dmg
+          echo rename to include version number
+          #cp LingTreeSigned.dmg LingTree-${{ env.VERSION }}.dmg
 
 #      - name: Create Release
 #        uses: softprops/action-gh-release@v2
