@@ -256,6 +256,7 @@ jobs:
           team_id: "3YE4W86L3G"
           # Not mandatory inputs
           staple: 'false'
+          xcode_path: '/Applications/Xcode.app'
 
 #        uses: lando/notarize-action@v2
 #        with:
