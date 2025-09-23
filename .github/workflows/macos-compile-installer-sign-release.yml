@@ -270,12 +270,12 @@ jobs:
       - name: Staple Notarization Ticket
         run: |
           #echo time stamp for stapling
-          #ls -l LingTree-1.6.2.dmg
-          #echo before stapling
+          echo before stapling
+          ls -l LingTree-1.6.2.dmg
           xcrun stapler staple LingTree-1.6.2.dmg
-          #echo after stapling
-          #ls -l LingTreeSigned.dmg
-          echo rename to include version number
+          echo after stapling
+          ls -l LingTree-1.6.2.dmg
+          #echo rename to include version number
           #cp LingTreeSigned.dmg LingTree-${{ env.VERSION }}.dmg
 
 #      - name: Create Release
@@ -309,6 +309,10 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: LingTreeSigned
+      - name: Check dmg
+        run: |
+          echo Before release
+          ls -l LingTree-1.6.2.dmg
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
