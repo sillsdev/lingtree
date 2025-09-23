@@ -247,14 +247,22 @@ jobs:
 
      # Notarize the DMG
       - name: Notarize DMG
-        uses: lando/notarize-action@v2
+        uses: GuillaumeFalourd/notary-tools@v1
         with:
-          product-path: LingTree-1.6.2.dmg
-          appstore-connect-username: ${{ secrets.SIL_APPLE_NOTARIZATION_USERNAME }}
-          appstore-connect-password: ${{ secrets.SIL_APPLE_NOTARIZATION_PASSWORD }}
-          appstore-connect-team-id: "3YE4W86L3G"
-          verbose: true
-#          appstore-connect-team-id: ${{ secrets.APPLE_TEAM_ID }}
+          product_path: LingTree-1.6.2.dmg
+          apple_id: ${{ secrets.SIL_APPLE_NOTARIZATION_USERNAME }}
+          password: ${{ secrets.SIL_APPLE_NOTARIZATION_PASSWORD }}
+          team_id: "3YE4W86L3G"
+          # Not mandatory inputs
+          staple: 'false'
+
+#        uses: lando/notarize-action@v2
+#        with:
+#          product-path: LingTree-1.6.2.dmg
+#          appstore-connect-username: ${{ secrets.SIL_APPLE_NOTARIZATION_USERNAME }}
+#          appstore-connect-password: ${{ secrets.SIL_APPLE_NOTARIZATION_PASSWORD }}
+#          appstore-connect-team-id: "3YE4W86L3G"
+#          verbose: true
 
       # Staple the notarization ticket
       - name: Staple Notarization Ticket
