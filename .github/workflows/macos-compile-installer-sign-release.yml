@@ -238,6 +238,7 @@ jobs:
       - name: Verify signature
         run: |
           codesign --verify --verbose LingTree-1.6.2.dmg
+          ls -l /Applications
 
 #      # Clean up keychain
 #      - name: Clean up keychain
