@@ -71,7 +71,7 @@ jobs:
     name: Sign with Trusted Signing
     uses: sillsdev/codesign/trusted-signing-action@v3
     with:
-      credentials: ${{ secrets.TRUSTED_SIGNING_CREDENTIALS }}
+      credentials: ${{ secrets.CODESIGN_LSDEVSECTIGOEV }}
       files-folder: ${{ github.workspace }}/artifacts/
       files-folder-filter: exe
       files-folder-recurse: true
