@@ -68,13 +68,23 @@ jobs:
           if-no-files-found: error
 
   sign-installer:
-    name: Sign LingTree installer
-    needs: build-installer
-    uses: sillsdev/codesign/.github/workflows/sign.yml@v2
+  - name: Sign with Trusted Signing
+    uses: sillsdev/codesign/trusted-signing-action@v3
     with:
-      artifact: LingTree
-    secrets:
-      certificate: ${{ secrets.CODESIGN_LSDEVSECTIGOEV }}
+      credentials: ${{ secrets.TRUSTED_SIGNING_CREDENTIALS }}
+      files-folder: ${{ github.workspace }}/artifacts/
+      files-folder-filter: exe
+      files-folder-recurse: true
+      files-folder-depth: 4
+      description:  'Release for version ${{ needs.build.outputs.version }} from branch ${{ github.ref }}'
+      description-url: 'https://software.sil.org/lingtree/'
+#    name: Sign LingTree installer
+#    needs: build-installer
+#    uses: sillsdev/codesign/.github/workflows/sign.yml@v2
+#    with:
+#      artifact: LingTree
+#    secrets:
+#      certificate: ${{ secrets.CODESIGN_LSDEVSECTIGOEV }}
 
   create-release:
     name: Create Release
