@@ -68,7 +68,7 @@ jobs:
           if-no-files-found: error
 
   sign-installer:
-  - name: Sign with Trusted Signing
+    name: Sign with Trusted Signing
     uses: sillsdev/codesign/trusted-signing-action@v3
     with:
       credentials: ${{ secrets.TRUSTED_SIGNING_CREDENTIALS }}
