@@ -28,6 +28,8 @@ public class TreeDrawer {
 
 	private static final double dYCoordAdjustment = 3; // adjustment value
 	protected static final double dTriangleOffset = 3;
+	private static final double dPrefHeight = 1000.0;
+	private static final double dPrefWidth = 1000.0;
 
 	public TreeDrawer(LingTreeTree ltTree) {
 		super();
@@ -348,7 +350,8 @@ public class TreeDrawer {
 		recalculateValues();
 		LingTreeNode node = ltTree.getRootNode();
 		drawNodes(node, pane);
-		pane.setMinWidth(ltTree.getXSize() + 10);
+		pane.setPrefWidth(Math.max(dPrefWidth, ltTree.getXSize() + 75));
+		pane.setPrefHeight(Math.max(dPrefHeight, ltTree.getYSize() + 10));
 		pane.setStyle("-fx-background-color:"
 				+ StringUtilities.toRGBCode(ltTree.getBackgroundColor()) + ";");
 	}
