@@ -67,8 +67,8 @@ jobs:
           path: LingTree-*.exe
           if-no-files-found: error
 
-  sign-installer:
-    name: Sign Installer
+  sign-installer-release:
+    name: Sign Installer and Create Release
     needs: build-installer 
     runs-on: windows-latest
     steps:
@@ -85,17 +85,11 @@ jobs:
           files-folder-depth: 4
           description:  'Release for version ${{ needs.build.outputs.version }} from branch ${{ github.ref }}'
           description-url: 'https://software.sil.org/lingtree/'
-
-  create-release:
-    name: Create Release
-    needs: sign-installer
-    runs-on: windows-latest
-
-    steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/upload-artifact@v4
         with:
-          name: LingTree
-
+          name: LingTreeSigned
+          path: LingTree-*.exe
+          if-no-files-found: error
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
