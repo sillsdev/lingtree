@@ -71,13 +71,14 @@ jobs:
     name: Sign with Trusted Signing
     uses: sillsdev/codesign/trusted-signing-action@v3
     with:
-      credentials: ${{ secrets.CODESIGN_LSDEVSECTIGOEV }}
-      files-folder: ${{ github.workspace }}/artifacts/
-      files-folder-filter: exe
+      credentials: ${{ secrets.TRUSTED_SIGNING_CREDENTIALS }}
+      files-folder: .
+      files-folder-filter: LingTree*.exe
       files-folder-recurse: true
       files-folder-depth: 4
       description:  'Release for version ${{ needs.build.outputs.version }} from branch ${{ github.ref }}'
       description-url: 'https://software.sil.org/lingtree/'
+#       files-folder: ${{ github.workspace }}/artifacts/
 #    name: Sign LingTree installer
 #    needs: build-installer
 #    uses: sillsdev/codesign/.github/workflows/sign.yml@v2
