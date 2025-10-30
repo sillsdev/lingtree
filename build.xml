@@ -34,7 +34,7 @@
         <pathelement location="libs/json/json-20230618.jar"/>
         <pathelement location="libs/ANTLR/antlr-4.7-complete.jar"/>
         <pathelement location="libs/ControlsFX/controlsfx-11.0.2.jar"/>
-        <pathelement location="libs/LibJavaDev/libjavadev-1.7.0.jar"/>
+        <pathelement location="libs/LibJavaDev/libjavadev-1.7.1.jar"/>
     </path>
     <path id="run.BatchTreeHandlerTest.classpath">
         <path refid="lingtree.classpath"/>
@@ -52,7 +52,7 @@
         <pathelement location="libs/json/json-20230618.jar"/>
         <pathelement location="libs/ANTLR/antlr-4.7-complete.jar"/>
         <pathelement location="libs/ControlsFX/controlsfx-11.0.2.jar"/>
-        <pathelement location="libs/LibJavaDev/libjavadev-1.7.0.jar"/>
+        <pathelement location="libs/LibJavaDev/libjavadev-1.7.1.jar"/>
     </path>
     <path id="run.MainApp (4).classpath">
         <path refid="lingtree.classpath"/>
@@ -70,7 +70,7 @@
         <pathelement location="libs/json/json-20230618.jar"/>
         <pathelement location="libs/ANTLR/antlr-4.7-complete.jar"/>
         <pathelement location="libs/ControlsFX/controlsfx-11.0.2.jar"/>
-        <pathelement location="libs/LibJavaDev/libjavadev-1.7.0.jar"/>
+        <pathelement location="libs/LibJavaDev/libjavadev-1.7.1.jar"/>
     </path>
     <path id="run.test (7).classpath">
         <path refid="lingtree.classpath"/>
@@ -88,7 +88,7 @@
         <pathelement location="libs/json/json-20230618.jar"/>
         <pathelement location="libs/ANTLR/antlr-4.7-complete.jar"/>
         <pathelement location="libs/ControlsFX/controlsfx-11.0.2.jar"/>
-        <pathelement location="libs/LibJavaDev/libjavadev-1.7.0.jar"/>
+        <pathelement location="libs/LibJavaDev/libjavadev-1.7.1.jar"/>
     </path>
     <target name="init">
         <mkdir dir="bin"/>
