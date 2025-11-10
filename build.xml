@@ -28,7 +28,7 @@
         <pathelement location="libs/JAXB/jaxb-impl.jar"/>
         <pathelement location="libs/JAXB/jaxb-jxc.jar"/>
         <pathelement location="libs/JAXB/jaxb-xjc.jar"/>
-        <pathelement location="libs/Richtextfx/richtextfx-fat-0.10.7.jar"/>
+        <pathelement location="libs/Richtextfx/richtextfx-fat-0.11.6.jar"/>
         <pathelement location="libs/jna/jna-5.11.0.jar"/>
         <pathelement location="libs/jna/jna-platform-5.11.0.jar"/>
         <pathelement location="libs/json/json-20230618.jar"/>
@@ -46,7 +46,7 @@
         <pathelement location="libs/JAXB/jaxb-impl.jar"/>
         <pathelement location="libs/JAXB/jaxb-xjc.jar"/>
         <pathelement location="libs/JAXB/jaxb-jxc.jar"/>
-        <pathelement location="libs/Richtextfx/richtextfx-fat-0.10.7.jar"/>
+        <pathelement location="libs/Richtextfx/richtextfx-fat-0.11.6.jar"/>
         <pathelement location="libs/jna/jna-5.11.0.jar"/>
         <pathelement location="libs/jna/jna-platform-5.11.0.jar"/>
         <pathelement location="libs/json/json-20230618.jar"/>
@@ -64,7 +64,7 @@
         <pathelement location="libs/JAXB/jaxb-impl.jar"/>
         <pathelement location="libs/JAXB/jaxb-xjc.jar"/>
         <pathelement location="libs/JAXB/jaxb-jxc.jar"/>
-        <pathelement location="libs/Richtextfx/richtextfx-fat-0.10.7.jar"/>
+        <pathelement location="libs/Richtextfx/richtextfx-fat-0.11.6.jar"/>
         <pathelement location="libs/jna/jna-5.11.0.jar"/>
         <pathelement location="libs/jna/jna-platform-5.11.0.jar"/>
         <pathelement location="libs/json/json-20230618.jar"/>
@@ -82,7 +82,7 @@
         <pathelement location="libs/JAXB/jaxb-impl.jar"/>
         <pathelement location="libs/JAXB/jaxb-xjc.jar"/>
         <pathelement location="libs/JAXB/jaxb-jxc.jar"/>
-        <pathelement location="libs/Richtextfx/richtextfx-fat-0.10.7.jar"/>
+        <pathelement location="libs/Richtextfx/richtextfx-fat-0.11.6.jar"/>
         <pathelement location="libs/jna/jna-5.11.0.jar"/>
         <pathelement location="libs/jna/jna-platform-5.11.0.jar"/>
         <pathelement location="libs/json/json-20230618.jar"/>
