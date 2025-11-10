@@ -20,9 +20,9 @@ type="tLingTree"
 ><emailAddress
 >lingtree_support@sil.org</emailAddress
 ><date
->October 30, 2025</date
+>10 November 2025</date
 ><version
->Version 1.6.4</version
+>Version 1.7.0</version
 ><version
 >Copyright © 2002-2025 SIL Global</version
 ><contents
@@ -2841,14 +2841,14 @@ type="tmacOS"
 >, <object
 type="tTool"
 >Keyman</object
-> keyboards are handled as a unit.  That is, if you have two or more of them, you will need to select the Keyman option with the dialog shown in <exampleRef
+> keyboards are handled as a unit. That is, if you have two or more of them, you will need to select the Keyman option with the dialog shown in <exampleRef
 letter="xSetKeyboards"
 num="xSetKeyboards"
 ></exampleRef
->.  <object
+>. <object
 type="tLingTree"
 ></object
-> will use whichever is the currently selected Keyman keyboard.  This is an issue with <object
+> will use whichever is the currently selected Keyman keyboard. This is an issue with <object
 type="tmacOS"
 ></object
 >.</p
