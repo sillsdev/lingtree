@@ -11,7 +11,7 @@ jpackage --type dmg \
 	--name LingTree \
 	--resource-dir input/resources \
 	--app-image output/LingTree.app \
-    --mac-package-name "Linguistic Tree Editor" \
+    --mac-package-name "LingTree Editor" \
 	--license-file License.txt \
 	--temp installtemp \
 	--icon input/LingTree.icns \
