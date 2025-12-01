@@ -221,7 +221,8 @@ public class BuildTreeFromDescriptionListener extends DescriptionBaseListener {
 			} else {
 				// is plain text
 				NodeText nodeText = new NodeText(node);
-				nodeText.setText(daughterText);
+				String plainText = adjustTextContent(daughterText);
+				nodeText.setText(plainText);
 				nodeText.setLineNumInDescription(ctx.start.getLine());
 				nodeText.setCharacterPositionInLine(charPos);
 				nodeText.setItemId(itemId++);

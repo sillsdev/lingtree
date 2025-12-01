@@ -306,6 +306,27 @@ public class BuildTreeFromDescriptionListenerTest extends ServiceBaseTest {
 		node1 = daughters.get(0);
 		checkNodeResult(node1, "Paul (the bear)", "", "", false, false, NodeType.NonTerminal, 2, 0);
 
+		// quoted parentheses with abbreviation example
+		//(NP (Paul \(the bear\)[/ams/A]))
+		ltTree = TreeBuilder
+				.parseAString("(NP (Paul \\(the bear\\)[/ams/A]))", origTree);
+		// root node
+		rootNode = ltTree.getRootNode();
+		checkNodeResult(rootNode, "NP", "", "", false, false, NodeType.NonTerminal, 1, 1);
+		assertNull(rootNode.getMother());
+		assertNull(rootNode.getRightSister());
+		daughters = rootNode.getDaughters();
+		node1 = daughters.get(0);
+		checkNodeResult(node1, "", "", "", false, false, NodeType.NonTerminal, 2, 0);
+		assertTrue(node1.hasAbbreviation());
+		assertEquals(3, node1.getContentsAsList().size());
+		assertEquals("Paul (the bear)[", node1.getContentsAsList().get(0).getText());
+		assertEquals("ms", node1.getContentsAsList().get(1).getText());
+		assertEquals("]", node1.getContentsAsList().get(2).getText());
+		assertTrue(node1.getContentsAsList().get(0).toString().contains("NodeText"));
+		assertTrue(node1.getContentsAsList().get(1).toString().contains("AbbreviationText"));
+		assertTrue(node1.getContentsAsList().get(2).toString().contains("NodeText"));
+
 		// omit lines example
 		ltTree = TreeBuilder
 				.parseAString(
