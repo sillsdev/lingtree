@@ -30,14 +30,11 @@ jobs:
 
       - name: Set VERSION (e.g. 1.0.0) and FULL_VERSION (e.g. 1.0.0-abcdef4)
         run: |
-          VERSION="1.6.3"
+          VERSION="${GITHUB_REF#refs/tags/v}"
           SHORT_SHA=$(git rev-parse --short HEAD)
-          FULL_VERSION="-macOS"
+          FULL_VERSION="${VERSION}-${SHORT_SHA}"
           echo "VERSION=${VERSION}" >> $GITHUB_ENV
           echo "FULL_VERSION=${FULL_VERSION}" >> $GITHUB_ENV
-#          VERSION="${GITHUB_REF#refs/tags/v}"
-#          SHORT_SHA=$(git rev-parse --short HEAD)
-#          FULL_VERSION="${VERSION}-${SHORT_SHA}"
         shell: bash
 
       - name: Validate version format
@@ -50,10 +47,10 @@ jobs:
         shell: bash
 #      - name: Build version ${{ env.VERSION }}
 #      - uses: actions/checkout@v4
-      - name: Set up JDK 17
+      - name: Set up JDK 25
         uses: actions/setup-java@v4
         with:
-          java-version: '17'
+          java-version: '25'
           distribution: 'zulu'
           java-package: 'jdk+fx'
           architecture: 'aarch64'
@@ -67,7 +64,7 @@ jobs:
           chmod +x *.sh
           ./BuildMacOS.sh ${{ env.VERSION }}
         shell: bash
-      - name: Rename dmg file with version and architecture
+      - name: Rename dmg file with version
         env:
           PUBLISH_PATH: 'installer/macos'
         run: |
@@ -299,10 +296,10 @@ jobs:
         run: |
           #echo time stamp for stapling
           echo before stapling
-          ls -l LingTree-1.6.2.dmg
-          xcrun stapler staple LingTree-1.6.2.dmg
+          ls -l LingTree-*.dmg
+          xcrun stapler staple LingTree-${{ env.VERSION }}.dmg
           echo after stapling
-          ls -l LingTree-1.6.2.dmg
+          ls -l LingTree-*.dmg
           #echo rename to include version number
           #cp LingTreeSigned.dmg LingTree-${{ env.VERSION }}.dmg
 
@@ -317,7 +314,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: LingTreeSigned
-          path: LingTree*.dmg
+          path: LingTree-*.dmg
           #path: LingTree-*.dmg
           if-no-files-found: error
 
@@ -340,13 +337,12 @@ jobs:
       - name: Check dmg
         run: |
           echo Before release
-          ls -l LingTree-1.6.2.dmg
+          ls -l LingTree-*.dmg
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
-          files: LingTree*.dmg
-          #files: LingTree-*.dmg
+          files: LingTree-*.dmg
           body: |
             Release for version ${{ github.ref }}
           draft: true
