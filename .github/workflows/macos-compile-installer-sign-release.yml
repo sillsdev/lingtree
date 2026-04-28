@@ -1,11 +1,6 @@
 # This workflow will build a Java project with Ant
 #
-# ===================================================================================================
-# NB: 2025.05.16
-# This was an attempt to build, sign, and notarize LingTree, a JavaFX app.
-# While it does do all three, when invoked, it crashes as if the embedded Java runtime is corrupted.
-# ===================================================================================================
-#
+
 name: macOS Build Installer with Version and sign
 
 env:
@@ -15,11 +10,11 @@ env:
 
 on:
   push:
-    branches: [ "buildSignMacOS" ]
-#    tags:
-#      - 'v*'  # Build the app for commits that are tagged starting with 'v' e.g. v1.2.3
+    tags:
+      - 'v*'  # Build the app for commits that are tagged starting with 'v' e.g. v1.2.3
       # to tag a commit, use "git tag v1.2.3"
       # when you then use "git push origin v1.2.3" this workflow will be invoked
+#    branches: [ "buildSignMacOS" ]
 #  workflow_dispatch:
 
 jobs:
