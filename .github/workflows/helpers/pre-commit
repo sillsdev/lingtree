@@ -1,0 +1,40 @@
+#!/bin/sh
+
+# This script will ensure a BOM file is created or updated at commit
+# File is .git/hooks/pre-commit
+
+MP_BIN_DIR="/tmp/munki-pkg"
+SCRIPT_DIR=$( realpath "${0}" )
+BASE_DIR_1=$( dirname "${SCRIPT_DIR}" )
+BASE_DIR_2=$( dirname "${BASE_DIR_1}" )
+PROJECT_DIR=$( dirname "${BASE_DIR_2}" )
+
+echo "Project directory is: ${PROJECT_DIR}"
+
+# Find the build-info file and set the package directory
+BUILD_INFO_FILE="$( find "${PROJECT_DIR}" -name "build-info*" -print )"
+if [ -z "${BUILD_INFO_FILE}" ]; then
+	echo "Error no build-info file found. This will not be successful." 1>&2
+else
+	PKG_PATH="$( dirname "${BUILD_INFO_FILE}" )"
+	echo "Found package path: ${PKG_PATH}"
+fi
+
+# Create a BOM File when we do git commits
+if [ ! -d "/Users/runner" ]; then
+    echo "Status: We are running locally"
+    echo "Exporting a BOM info file"
+    python3 "${MP_BIN_DIR}/munkipkg" --export-bom-info "$PKG_PATH"
+    EXPORT_STATUS=$?
+fi
+
+# Add BOM file to tacked files
+if [ "${EXPORT_STATUS}" -eq 0 ]; then
+	echo "Adding BOM file to tracked files"
+	git add "${PKG_PATH}"/Bom.txt
+else 
+	echo "Error: Something went wrong with the BOM file" 1>&2
+fi
+
+# Always exit 0 even if not successful
+exit 0
