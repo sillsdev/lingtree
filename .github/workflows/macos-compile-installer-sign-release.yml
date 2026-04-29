@@ -95,7 +95,7 @@ jobs:
       - name: Get notarization log
         run: |
           echo Before trying to get notarization log of last run
-          xcrun notarytool log f161c39a-adfd-4498-be0e-c917409700ad --apple-id ${{ secrets.SIL_APPLE_NOTARIZATION_USERNAME }} --team-id "3YE4W86L3G" --password ${{ secrets.SIL_APPLE_NOTARIZATION_PASSWORD }}
+          xcrun notarytool log 4d230c6e-cf54-4793-b430-ff7f2568f0e6 --apple-id ${{ secrets.SIL_APPLE_NOTARIZATION_USERNAME }} --team-id "3YE4W86L3G" --password ${{ secrets.SIL_APPLE_NOTARIZATION_PASSWORD }}
 
       - name: Add certificate to Keychain
         env:
