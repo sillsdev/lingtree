@@ -279,21 +279,15 @@ jobs:
 
      # Notarize the DMG
       - name: Notarize DMG
-        run: |
-          xcrun notarytool submit LingTree-1.6.2.dmg \
-            --apple-id "$NOTARIZE_APPLE_ID" \
-            --password "$NOTARIZE_PASSWORD" \
-            --team-id "$NOTARIZE_TEAM_ID" \
-            --wait  # <--- CRITICAL: This waits for the "Record" to exist
-#        uses: GuillaumeFalourd/notary-tools@v1
-#        with:
-#          product_path: LingTree-1.6.2.dmg
-#          apple_id: ${{ secrets.SIL_APPLE_NOTARIZATION_USERNAME }}
-#          password: ${{ secrets.SIL_APPLE_NOTARIZATION_PASSWORD }}
-#          team_id: "3YE4W86L3G"
-#          # Not mandatory inputs
-#          staple: 'false'
-#          xcode_path: '/Applications/Xcode.app'
+        uses: GuillaumeFalourd/notary-tools@v1
+        with:
+          product_path: LingTree-1.6.2.dmg
+          apple_id: ${{ secrets.SIL_APPLE_NOTARIZATION_USERNAME }}
+          password: ${{ secrets.SIL_APPLE_NOTARIZATION_PASSWORD }}
+          team_id: "3YE4W86L3G"
+          # Not mandatory inputs
+          staple: 'true'
+          xcode_path: '/Applications/Xcode.app'
 
 #        uses: lando/notarize-action@v2
 #        with:
@@ -302,6 +296,12 @@ jobs:
 #          appstore-connect-password: ${{ secrets.SIL_APPLE_NOTARIZATION_PASSWORD }}
 #          appstore-connect-team-id: "3YE4W86L3G"
 #          verbose: true
+#        run: |
+#          xcrun notarytool submit LingTree-1.6.2.dmg \
+#            --apple-id "$NOTARIZE_APPLE_ID" \
+#            --password "$NOTARIZE_PASSWORD" \
+#            --team-id "$NOTARIZE_TEAM_ID" \
+#            --wait  # <--- CRITICAL: This waits for the "Record" to exist
 
       # Staple the notarization ticket
       - name: Staple Notarization Ticket
@@ -309,9 +309,9 @@ jobs:
           #echo time stamp for stapling
           echo before stapling
           ls -l LingTree-*.dmg
-          xcrun stapler staple LingTree-1.6.2.dmg
-          echo after stapling
-          ls -l LingTree-*.dmg
+          #xcrun stapler staple LingTree-1.6.2.dmg
+          #echo after stapling
+          #ls -l LingTree-*.dmg
           echo rename to include version number
           cp LingTree-1.6.2.dmg LingTree-${{ env.VERSION }}.dmg
 
