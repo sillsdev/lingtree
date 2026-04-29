@@ -21,7 +21,8 @@ jobs:
   build-installer:
 
     runs-on: macos-latest
-
+    outputs:
+      VERSION: ${{ steps.set_version.outputs.VERSION }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -83,6 +84,11 @@ jobs:
     runs-on: macos-latest
 
     steps:
+      - name: Use Version
+        run: |
+          # Access the output from the previous job
+          echo "The version inherited is ${{ needs.build-installer.outputs.VERSION }}"
+
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
       - uses: actions/download-artifact@v4
@@ -92,10 +98,10 @@ jobs:
       # If a notarization fails, uncomment the following and replace the GUID with the one from
       # notarization output
       # Get notarization log of last run
-      - name: Get notarization log
-        run: |
-          echo Before trying to get notarization log of last run
-          xcrun notarytool log 8e14c2f1-b6f8-4b1b-ae6c-450028b45767 --apple-id ${{ secrets.SIL_APPLE_NOTARIZATION_USERNAME }} --team-id "3YE4W86L3G" --password ${{ secrets.SIL_APPLE_NOTARIZATION_PASSWORD }}
+#      - name: Get notarization log
+#        run: |
+#          echo Before trying to get notarization log of last run
+#          xcrun notarytool log 8e14c2f1-b6f8-4b1b-ae6c-450028b45767 --apple-id ${{ secrets.SIL_APPLE_NOTARIZATION_USERNAME }} --team-id "3YE4W86L3G" --password ${{ secrets.SIL_APPLE_NOTARIZATION_PASSWORD }}
 
       - name: Add certificate to Keychain
         env:
@@ -181,11 +187,12 @@ jobs:
           #ls -l
           # -------------  sign all JavaFX runtime executables included in the app
           # without this, the notarization fails.
+          # For some reason, there are two libjli.dylib files; notarization has a problem with this
+          #   so we sign just each individual file instead of finding them all
           ## {} is a placeholder for the filename
           ## + at the end is faster as it passes multiple files to one command
           #find LingTree.app/Contents/runtime -name "*.dylib" -exec \
           #  codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" \
-          #  --identifier "libjli" \
           #  --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist \
           #  {} +
           # JDK 25 files
@@ -318,7 +325,7 @@ jobs:
           echo after stapling
           ls -l LingTree-*.dmg
           echo rename to include version number
-          cp LingTree-1.6.2.dmg LingTree-${{ env.VERSION }}.dmg
+          cp LingTree-1.6.2.dmg LingTree-${{ needs.build-installer.outputs.VERSION }}.dmg
 
 #      - name: Create Release
 #        uses: softprops/action-gh-release@v2
