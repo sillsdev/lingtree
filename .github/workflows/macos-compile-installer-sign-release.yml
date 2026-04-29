@@ -279,15 +279,21 @@ jobs:
 
      # Notarize the DMG
       - name: Notarize DMG
-        uses: GuillaumeFalourd/notary-tools@v1
-        with:
-          product_path: LingTree-1.6.2.dmg
-          apple_id: ${{ secrets.SIL_APPLE_NOTARIZATION_USERNAME }}
-          password: ${{ secrets.SIL_APPLE_NOTARIZATION_PASSWORD }}
-          team_id: "3YE4W86L3G"
-          # Not mandatory inputs
-          staple: 'false'
-          xcode_path: '/Applications/Xcode.app'
+        run: |
+          xcrun notarytool submit LingTree-1.6.2.dmg \
+            --apple-id "$NOTARIZE_APPLE_ID" \
+            --password "$NOTARIZE_PASSWORD" \
+            --team-id "$NOTARIZE_TEAM_ID" \
+            --wait  # <--- CRITICAL: This waits for the "Record" to exist
+#        uses: GuillaumeFalourd/notary-tools@v1
+#        with:
+#          product_path: LingTree-1.6.2.dmg
+#          apple_id: ${{ secrets.SIL_APPLE_NOTARIZATION_USERNAME }}
+#          password: ${{ secrets.SIL_APPLE_NOTARIZATION_PASSWORD }}
+#          team_id: "3YE4W86L3G"
+#          # Not mandatory inputs
+#          staple: 'false'
+#          xcode_path: '/Applications/Xcode.app'
 
 #        uses: lando/notarize-action@v2
 #        with:
