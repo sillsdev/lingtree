@@ -92,10 +92,10 @@ jobs:
       # If a notarization fails, uncomment the following and replace the GUID with the one from
       # notarization output
       # Get notarization log of last run
-#      - name: Get notarization log
-#        run: |
-#          echo Before trying to get notarization log of last run
-#          xcrun notarytool log 1445e26f-b7dc-409e-a4b5-a7ade66f6bef --apple-id ${{ secrets.SIL_APPLE_NOTARIZATION_USERNAME }} --team-id "3YE4W86L3G" --password ${{ secrets.SIL_APPLE_NOTARIZATION_PASSWORD }}
+      - name: Get notarization log
+        run: |
+          echo Before trying to get notarization log of last run
+          xcrun notarytool log a7d36fe2-819f-41a5-b773-f1dd3b89b54a --apple-id ${{ secrets.SIL_APPLE_NOTARIZATION_USERNAME }} --team-id "3YE4W86L3G" --password ${{ secrets.SIL_APPLE_NOTARIZATION_PASSWORD }}
 
       - name: Add certificate to Keychain
         env:
@@ -286,7 +286,7 @@ jobs:
           password: ${{ secrets.SIL_APPLE_NOTARIZATION_PASSWORD }}
           team_id: "3YE4W86L3G"
           # Not mandatory inputs
-          staple: 'true'
+          staple: 'false'
           xcode_path: '/Applications/Xcode.app'
 
 #        uses: lando/notarize-action@v2
@@ -309,9 +309,9 @@ jobs:
           #echo time stamp for stapling
           echo before stapling
           ls -l LingTree-*.dmg
-          #xcrun stapler staple LingTree-1.6.2.dmg
-          #echo after stapling
-          #ls -l LingTree-*.dmg
+          xcrun stapler staple LingTree-1.6.2.dmg
+          echo after stapling
+          ls -l LingTree-*.dmg
           echo rename to include version number
           cp LingTree-1.6.2.dmg LingTree-${{ env.VERSION }}.dmg
 
