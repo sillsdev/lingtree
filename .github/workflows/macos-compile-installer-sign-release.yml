@@ -303,7 +303,7 @@ jobs:
           #echo time stamp for stapling
           echo before stapling
           ls -l LingTree-*.dmg
-          xcrun stapler staple LingTree-1.6.2.dmg --wait
+          xcrun stapler staple LingTree-1.6.2.dmg
           echo after stapling
           ls -l LingTree-*.dmg
           echo rename to include version number
