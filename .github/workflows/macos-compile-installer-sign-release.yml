@@ -242,12 +242,12 @@ jobs:
           #codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/runtime/Contents/Home/lib/server/libjvm.dylib -v
           #codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/runtime/Contents/Home/lib/server/libjsig.dylib -v
           #codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/runtime/Contents/MacOS/libjli.dylib -v
-          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/runtime/Contents/MacOS/libjli.dylib -v
           codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/runtime/Contents/Home/lib/jspawnhelper -v
           codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/MacOS/LingTree -v
           # -------------  sign the main app itself
           echo sign LingTree.app
-          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist --deep LingTree.app -v
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app -v
+          #codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist --deep LingTree.app -v
           echo verify the app
           codesign -vvv --deep --strict LingTree.app
           cd ..
