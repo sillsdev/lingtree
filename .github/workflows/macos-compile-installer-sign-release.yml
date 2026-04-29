@@ -92,10 +92,10 @@ jobs:
       # If a notarization fails, uncomment the following and replace the GUID with the one from
       # notarization output
       # Get notarization log of last run
-      - name: Get notarization log
-        run: |
-          echo Before trying to get notarization log of last run
-          xcrun notarytool log 15003cab-3ed9-45cd-97d4-f91a9ebee04c --apple-id ${{ secrets.SIL_APPLE_NOTARIZATION_USERNAME }} --team-id "3YE4W86L3G" --password ${{ secrets.SIL_APPLE_NOTARIZATION_PASSWORD }}
+#      - name: Get notarization log
+#        run: |
+#          echo Before trying to get notarization log of last run
+#          xcrun notarytool log 15003cab-3ed9-45cd-97d4-f91a9ebee04c --apple-id ${{ secrets.SIL_APPLE_NOTARIZATION_USERNAME }} --team-id "3YE4W86L3G" --password ${{ secrets.SIL_APPLE_NOTARIZATION_PASSWORD }}
 
       - name: Add certificate to Keychain
         env:
@@ -242,6 +242,7 @@ jobs:
           #codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/runtime/Contents/Home/lib/server/libjvm.dylib -v
           #codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/runtime/Contents/Home/lib/server/libjsig.dylib -v
           #codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/runtime/Contents/MacOS/libjli.dylib -v
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/runtime/Contents/MacOS/libjli.dylib -v
           codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/runtime/Contents/Home/lib/jspawnhelper -v
           codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/MacOS/LingTree -v
           # -------------  sign the main app itself
