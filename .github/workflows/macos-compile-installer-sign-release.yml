@@ -185,6 +185,7 @@ jobs:
           # + at the end is faster as it passes multiple files to one command
           find LingTree.app/Contents/runtime -name "*.dylib" -exec \
             codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" \
+            --identifier "libjli" \
             --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist \
             {} +
           #codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/runtime/Contents/Home/lib/libnet.dylib -v
