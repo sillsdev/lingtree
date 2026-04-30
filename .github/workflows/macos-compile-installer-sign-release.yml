@@ -1,4 +1,4 @@
-# This workflow will build a Java project with Ant
+# This workflow will build a Java project with Ant and sign the dmg
 #
 
 name: macOS Build Installer with Version and sign
@@ -15,7 +15,6 @@ on:
       # to tag a commit, use "git tag v1.2.3"
       # when you then use "git push origin v1.2.3" this workflow will be invoked
 #    branches: [ "buildSignMacOS" ]
-#  workflow_dispatch:
 
 jobs:
   build-installer:
@@ -44,8 +43,7 @@ jobs:
             exit 1
           fi
         shell: bash
-#      - name: Build version ${{ env.VERSION }}
-#      - uses: actions/checkout@v4
+
       - name: Set up JDK 25
         uses: actions/setup-java@v4
         with:
@@ -152,6 +150,7 @@ jobs:
 
       - name: Sign dmg and app
         run: |
+          # leaving comments used for debugging in case we need them again
           #echo start
           #pwd
           #ls -l
@@ -190,68 +189,14 @@ jobs:
           # -------------  sign all JavaFX runtime executables included in the app
           # without this, the notarization fails.
           # For some reason, there are two libjli.dylib files; notarization has a problem with this
-          #   so we sign just each individual file instead of finding them all
-          ## {} is a placeholder for the filename
-          ## + at the end is faster as it passes multiple files to one command
-          #find LingTree.app/Contents/runtime -name "*.dylib" -exec \
-          #  codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" \
-          #  --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist \
-          #  {} +
-          # JDK 25 files
-          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/runtime/Contents/Home/lib/libnet.dylib
-          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/runtime/Contents/Home/lib/libnio.dylib
-          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/runtime/Contents/Home/lib/libinstrument.dylib
-          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/runtime/Contents/Home/lib/libjavafx_iio.dylib
-          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/runtime/Contents/Home/lib/libzip.dylib
-          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/runtime/Contents/Home/lib/libprism_mtl.dylib
-          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/runtime/Contents/Home/lib/libfreetype.dylib
-          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/runtime/Contents/Home/lib/libjli.dylib
-          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/runtime/Contents/Home/lib/libsplashscreen.dylib
-          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/runtime/Contents/Home/lib/libmanagement_ext.dylib
-          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/runtime/Contents/Home/lib/libsleef.dylib
-          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/runtime/Contents/Home/lib/libdt_socket.dylib
-          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/runtime/Contents/Home/lib/libjimage.dylib
-          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/runtime/Contents/Home/lib/libjfxmedia_avf.dylib
-          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/runtime/Contents/Home/lib/libosxkrb5.dylib
-          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/runtime/Contents/Home/lib/libosxui.dylib
-          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/runtime/Contents/Home/lib/libglib-lite.dylib
-          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/runtime/Contents/Home/lib/libmanagement_agent.dylib
-          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/runtime/Contents/Home/lib/librmi.dylib
-          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/runtime/Contents/Home/lib/libjdwp.dylib
-          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/runtime/Contents/Home/lib/libawt_lwawt.dylib
-          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/runtime/Contents/Home/lib/libfxplugins.dylib
-          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/runtime/Contents/Home/lib/server/libjvm.dylib
-          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/runtime/Contents/Home/lib/server/libjsig.dylib
-          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/runtime/Contents/Home/lib/libglass.dylib
-          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/runtime/Contents/Home/lib/libjavajpeg.dylib
-          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/runtime/Contents/Home/lib/libmlib_image.dylib
-          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/runtime/Contents/Home/lib/libjavafx_font.dylib
-          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/runtime/Contents/Home/lib/libmanagement.dylib
-          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/runtime/Contents/Home/lib/libgstreamer-lite.dylib
-          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/runtime/Contents/Home/lib/libjsound.dylib
-          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/runtime/Contents/Home/lib/libjfxwebkit.dylib
-          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/runtime/Contents/Home/lib/libj2pcsc.dylib
-          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/runtime/Contents/Home/lib/libjsig.dylib
-          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/runtime/Contents/Home/lib/libprefs.dylib
-          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/runtime/Contents/Home/lib/libsyslookup.dylib
-          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/runtime/Contents/Home/lib/libjawt.dylib
-          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/runtime/Contents/Home/lib/libattach.dylib
-          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/runtime/Contents/Home/lib/libprism_common.dylib
-          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/runtime/Contents/Home/lib/libprism_es2.dylib
-          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/runtime/Contents/Home/lib/libfontmanager.dylib
-          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/runtime/Contents/Home/lib/libosxsecurity.dylib
-          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/runtime/Contents/Home/lib/libextnet.dylib
-          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/runtime/Contents/Home/lib/libdecora_sse.dylib
-          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/runtime/Contents/Home/lib/libjaas.dylib
-          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/runtime/Contents/Home/lib/liblcms.dylib
-          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/runtime/Contents/Home/lib/libverify.dylib
-          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/runtime/Contents/Home/lib/libj2gss.dylib
-          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/runtime/Contents/Home/lib/libjava.dylib
-          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/runtime/Contents/Home/lib/libawt.dylib
-          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/runtime/Contents/Home/lib/libosx.dylib
-          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/runtime/Contents/Home/lib/libjfxmedia.dylib
-          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/runtime/Contents/Home/lib/libprism_sw.dylib
-          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/runtime/Contents/Home/lib/libosxapp.dylib
+          # Find all .dylib files and sign them
+          # {} is a placeholder for the filename
+          # + at the end is faster as it passes multiple files to one command
+          find LingTree.app/Contents/runtime -name "*.dylib" -exec \
+            codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" \
+            --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist \
+            {} +
+          # following is a JDK 25 file
           codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/runtime/Contents/Home/lib/jspawnhelper
           codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app/Contents/MacOS/LingTree -v
           # libjli.dylib is there two times; remove the non -standard one
@@ -259,43 +204,35 @@ jobs:
           # -------------  sign the main app itself
           echo sign LingTree.app
           codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app -v
-          #codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist --deep LingTree.app -v
           echo verify the app
           codesign -vvv --deep --strict LingTree.app
           cd ..
           echo recreate dmg
           #pwd
           # ln -s /Applications LingTree/Applications
-          # hdiutil create -volname LingTreeInstaller -srcfolder LingTree -fs HFS+ -format UDRW LingTreeSigned.dmg
-          hdiutil create -volname LingTreeInstaller -srcfolder LingTree -ov -format UDZO LingTree-${{ env.VERSION }}.dmg
-          mv LingTree-${{ env.VERSION }}.dmg ../LingTree-${{ env.VERSION }}.dmg
+          hdiutil create -volname LingTreeInstaller -srcfolder LingTree -ov -format UDZO LingTree-Signed.dmg
+          mv LingTree-Signed.dmg ../LingTree-Signed.dmg
           cd ..
           echo sign dmg
           #pwd
           #ls -l
-          codesign --deep --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements installer/macos/entitlements.plist LingTree-${{ env.VERSION }}.dmg -v
+          codesign --deep --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements installer/macos/entitlements.plist LingTree-Signed.dmg -v
           #echo rename to include version number
-          #mv LingTree-1.6.2.dmg LingTree-${{ env.VERSION }}.dmg
+          #mv LingTree-1.6.2.dmg LingTree-Signed.dmg
           #echo time stamp for signed dmg:
           #ls -l LingTree*.dmg
 
       # Verify the signature
       - name: Verify signature
         run: |
-          codesign --verify --verbose LingTree-${{ env.VERSION }}.dmg
+          codesign --verify --verbose LingTree-Signed.dmg
           ls -l /Applications
-
-#      # Clean up keychain
-#      - name: Clean up keychain
-#        if: always()
-#        run: |
-#          security delete-keychain build.keychain || true
 
      # Notarize the DMG
       - name: Notarize DMG
         uses: GuillaumeFalourd/notary-tools@v1
         with:
-          product_path: LingTree-${{ env.VERSION }}.dmg
+          product_path: LingTree-Signed.dmg
           apple_id: ${{ secrets.SIL_APPLE_NOTARIZATION_USERNAME }}
           password: ${{ secrets.SIL_APPLE_NOTARIZATION_PASSWORD }}
           team_id: "3YE4W86L3G"
@@ -303,53 +240,23 @@ jobs:
           staple: 'false'
           xcode_path: '/Applications/Xcode.app'
 
-#        uses: lando/notarize-action@v2
-#        with:
-#          product-path: LingTree-${{ env.VERSION }}.dmg
-#          appstore-connect-username: ${{ secrets.SIL_APPLE_NOTARIZATION_USERNAME }}
-#          appstore-connect-password: ${{ secrets.SIL_APPLE_NOTARIZATION_PASSWORD }}
-#          appstore-connect-team-id: "3YE4W86L3G"
-#          verbose: true
-#        run: |
-#          xcrun notarytool submit LingTree-1.6.2.dmg \
-#            --apple-id "$NOTARIZE_APPLE_ID" \
-#            --password "$NOTARIZE_PASSWORD" \
-#            --team-id "$NOTARIZE_TEAM_ID" \
-#            --wait  # <--- CRITICAL: This waits for the "Record" to exist
-
       # Staple the notarization ticket
       - name: Staple Notarization Ticket
         run: |
           #echo time stamp for stapling
           echo before stapling
           ls -l LingTree-*.dmg
-          xcrun stapler staple LingTree-${{ env.VERSION }}.dmg
+          xcrun stapler staple LingTree-Signed.dmg
           echo after stapling
           ls -l LingTree-*.dmg
           echo rename to include version number
-          cp LingTree-${{ env.VERSION }}.dmg LingTree-${{ env.VERSION }}.dmg
-
-#      - name: Create Release
-#        uses: softprops/action-gh-release@v2
-#        with:
-#          files: LingTree-*.dmg
-#          body: |
-#            Release for version ${{ github.ref }}
-#          draft: true
+          mv LingTree-Signed.dmg LingTree-${{ env.VERSION }}.dmg
 
       - uses: actions/upload-artifact@v4
         with:
           name: LingTreeSigned
           path: LingTree-*.dmg
-          #path: LingTree-*.dmg
           if-no-files-found: error
-
-#      - uses: actions/upload-artifact@v4
-#        with:
-#          name: LingTreeApp
-#          path: LingTree.App
-#          #path: LingTree-*.dmg
-#          if-no-files-found: error
 
   create-release:
     name: Create Release
