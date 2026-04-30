@@ -267,22 +267,22 @@ jobs:
           #pwd
           # ln -s /Applications LingTree/Applications
           # hdiutil create -volname LingTreeInstaller -srcfolder LingTree -fs HFS+ -format UDRW LingTreeSigned.dmg
-          hdiutil create -volname LingTreeInstaller -srcfolder LingTree -ov -format UDZO LingTree-${{ env.VERSION }}.dmg
-          mv LingTree-${{ env.VERSION }}.dmg ../LingTree-${{ env.VERSION }}.dmg
+          hdiutil create -volname LingTreeInstaller -srcfolder LingTree -ov -format UDZO LingTree-Signed.dmg
+          mv LingTree-Signed.dmg ../LingTree-Signed.dmg
           cd ..
           echo sign dmg
           #pwd
           #ls -l
-          codesign --deep --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements installer/macos/entitlements.plist LingTree-${{ env.VERSION }}.dmg -v
+          codesign --deep --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements installer/macos/entitlements.plist LingTree-Signed.dmg -v
           #echo rename to include version number
-          #mv LingTree-1.6.2.dmg LingTree-${{ env.VERSION }}.dmg
+          #mv LingTree-1.6.2.dmg LingTree-Signed.dmg
           #echo time stamp for signed dmg:
           #ls -l LingTree*.dmg
 
       # Verify the signature
       - name: Verify signature
         run: |
-          codesign --verify --verbose LingTree-${{ env.VERSION }}.dmg
+          codesign --verify --verbose LingTree-Signed.dmg
           ls -l /Applications
 
 #      # Clean up keychain
@@ -295,7 +295,7 @@ jobs:
       - name: Notarize DMG
         uses: GuillaumeFalourd/notary-tools@v1
         with:
-          product_path: LingTree-${{ env.VERSION }}.dmg
+          product_path: LingTree-Signed.dmg
           apple_id: ${{ secrets.SIL_APPLE_NOTARIZATION_USERNAME }}
           password: ${{ secrets.SIL_APPLE_NOTARIZATION_PASSWORD }}
           team_id: "3YE4W86L3G"
@@ -323,11 +323,11 @@ jobs:
           #echo time stamp for stapling
           echo before stapling
           ls -l LingTree-*.dmg
-          xcrun stapler staple LingTree-${{ env.VERSION }}.dmg
+          xcrun stapler staple LingTree-Signed.dmg
           echo after stapling
           ls -l LingTree-*.dmg
           echo rename to include version number
-          cp LingTree-${{ env.VERSION }}.dmg LingTree-${{ env.VERSION }}.dmg
+          cp LingTree-Signed.dmg LingTree-${{ env.VERSION }}.dmg
 
 #      - name: Create Release
 #        uses: softprops/action-gh-release@v2
