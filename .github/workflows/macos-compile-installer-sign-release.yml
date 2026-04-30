@@ -84,10 +84,14 @@ jobs:
     runs-on: macos-latest
 
     steps:
-      - name: Use Version
+      - name: Set VERSION (e.g. 1.0.0) and FULL_VERSION (e.g. 1.0.0-abcdef4)
         run: |
-          # Access the output from the previous job
-          echo "The version inherited is ${{ needs.build-installer.outputs.VERSION }}"
+          VERSION="${GITHUB_REF#refs/tags/v}"
+          SHORT_SHA=$(git rev-parse --short HEAD)
+          FULL_VERSION="${VERSION}-${SHORT_SHA}"
+          echo "VERSION=${VERSION}" >> $GITHUB_ENV
+          echo "FULL_VERSION=${FULL_VERSION}" >> $GITHUB_ENV
+        shell: bash
 
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
@@ -265,13 +269,13 @@ jobs:
           #pwd
           # ln -s /Applications LingTree/Applications
           # hdiutil create -volname LingTreeInstaller -srcfolder LingTree -fs HFS+ -format UDRW LingTreeSigned.dmg
-          hdiutil create -volname LingTreeInstaller -srcfolder LingTree -ov -format UDZO LingTree-1.6.2.dmg
-          mv LingTree-1.6.2.dmg ../LingTree-1.6.2.dmg
+          hdiutil create -volname LingTreeInstaller -srcfolder LingTree -ov -format UDZO LingTree-${{ env.VERSION }}.dmg
+          mv LingTree-${{ env.VERSION }}.dmg ../LingTree-${{ env.VERSION }}.dmg
           cd ..
           echo sign dmg
           #pwd
           #ls -l
-          codesign --deep --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements installer/macos/entitlements.plist LingTree-1.6.2.dmg -v
+          codesign --deep --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements installer/macos/entitlements.plist LingTree-${{ env.VERSION }}.dmg -v
           #echo rename to include version number
           #mv LingTree-1.6.2.dmg LingTree-${{ env.VERSION }}.dmg
           #echo time stamp for signed dmg:
@@ -280,7 +284,7 @@ jobs:
       # Verify the signature
       - name: Verify signature
         run: |
-          codesign --verify --verbose LingTree-1.6.2.dmg
+          codesign --verify --verbose LingTree-${{ env.VERSION }}.dmg
           ls -l /Applications
 
 #      # Clean up keychain
@@ -293,7 +297,7 @@ jobs:
       - name: Notarize DMG
         uses: GuillaumeFalourd/notary-tools@v1
         with:
-          product_path: LingTree-1.6.2.dmg
+          product_path: LingTree-${{ env.VERSION }}.dmg
           apple_id: ${{ secrets.SIL_APPLE_NOTARIZATION_USERNAME }}
           password: ${{ secrets.SIL_APPLE_NOTARIZATION_PASSWORD }}
           team_id: "3YE4W86L3G"
@@ -321,11 +325,11 @@ jobs:
           #echo time stamp for stapling
           echo before stapling
           ls -l LingTree-*.dmg
-          xcrun stapler staple LingTree-1.6.2.dmg
+          xcrun stapler staple LingTree-${{ env.VERSION }}.dmg
           echo after stapling
           ls -l LingTree-*.dmg
           echo rename to include version number
-          cp LingTree-1.6.2.dmg LingTree-${{ needs.build-installer.outputs.VERSION }}.dmg
+          cp LingTree-${{ env.VERSION }}.dmg LingTree-${{ needs.build-installer.outputs.VERSION }}.dmg
 
 #      - name: Create Release
 #        uses: softprops/action-gh-release@v2
