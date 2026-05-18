@@ -8,9 +8,9 @@ fi
 cp -r ../../libs/ANTLR/* input/libs > /dev/null
 cp -r ../../libs/ControlsFX/* input/libs > /dev/null
 cp -r ../../libs/JAXB/* input/libs > /dev/null
-cp -r ../../libs/jna input/libs > /dev/null
-cp -r ../../libs/json input/libs > /dev/null
-cp -r ../../libs/LibJavaDev input/libs > /dev/null
+cp -r ../../libs/jna/* input/libs > /dev/null
+cp -r ../../libs/json/* input/libs > /dev/null
+cp -r ../../libs/LibJavaDev/* input/libs > /dev/null
 cp -r ../../libs/Richtextfx/* input/libs > /dev/null
 
 echo "	Documentation"
