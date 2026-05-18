@@ -179,18 +179,19 @@ jobs:
           #echo before updating xkbswitch in lingtree.jar
           jar uf lingtree.jar resources/Keyboards/macOS/xkbswitch org/sil/lingtree/resources/Keyboards/macOS/xkbswitch
           rm -r org
-          cd libs/jna/
+          #cd libs/jna/
+          cd libs
           #echo libs/jna
           #pwd
           #ls -l
           jar xf jna-5.11.0.jar com/sun/jna/darwin-aarch64/libjnidispatch.jnilib com/sun/jna/darwin-x86-64/libjnidispatch.jnilib
           #echo sign jna
-          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../../../../../../installer/macos/entitlements.plist com/sun/jna/darwin-aarch64/libjnidispatch.jnilib -v
-          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../../../../../../installer/macos/entitlements.plist com/sun/jna/darwin-x86-64/libjnidispatch.jnilib -v
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../../../../../installer/macos/entitlements.plist com/sun/jna/darwin-aarch64/libjnidispatch.jnilib -v
+          codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../../../../../installer/macos/entitlements.plist com/sun/jna/darwin-x86-64/libjnidispatch.jnilib -v
           #echo update jna
           jar uf jna-5.11.0.jar com/sun/jna/darwin-aarch64/libjnidispatch.jnilib com/sun/jna/darwin-x86-64/libjnidispatch.jnilib
           rm -r com
-          cd ../../../../..
+          cd ../../../..
           #echo fx stuff
           #pwd
           #ls -l
@@ -227,10 +228,10 @@ jobs:
           # -------------  sign the main app itself
           echo sign LingTree.app
           codesign --force --sign "${{ vars.SIL_APPLE_CODESIGN_IDENTITY }}" --timestamp --options runtime --entitlements ../../installer/macos/entitlements.plist LingTree.app -v
-          echo verify the app
+          #echo verify the app
           codesign -vvv --deep --strict LingTree.app
           cd ..
-          echo recreate dmg
+          #echo recreate dmg
           #pwd
           # ln -s /Applications LingTree/Applications
           hdiutil create -volname LingTreeInstaller -srcfolder LingTree -ov -format UDZO LingTree-Signed.dmg
