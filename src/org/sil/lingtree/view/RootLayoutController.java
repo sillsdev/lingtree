@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2025 SIL Global
+ * Copyright (c) 2016-2026 SIL Global
  * This software is licensed under the LGPL, version 2.1 or later
  * (http://www.gnu.org/licenses/lgpl-2.1.html)
  */
@@ -18,7 +18,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-import org.antlr.v4.parse.ATNBuilder.subrule_return;
 import org.fxmisc.richtext.InlineCssTextArea;
 import org.sil.lingtree.MainApp;
 import org.sil.lingtree.model.AbbreviationFontInfo;
@@ -287,7 +286,7 @@ public class RootLayoutController implements Initializable {
 			.getInstance();
 	static {
 		RESOURCE_FACTORY.setResources(ResourceBundle.getBundle(Constants.RESOURCE_LOCATION,
-				new Locale("en")));
+				Locale.of("en")));
 	}
 
 	@Override

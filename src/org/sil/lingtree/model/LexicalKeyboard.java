@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024-2025 SIL Global
+ * Copyright (c) 2024-2026 SIL Global
  * This software is licensed under the LGPL, version 2.1 or later
  * (http://www.gnu.org/licenses/lgpl-2.1.html)
  */
@@ -20,7 +20,7 @@ public class LexicalKeyboard extends KeyboardInfo {
     private static LexicalKeyboard instance;
     
     private LexicalKeyboard(){
-    	super(new Locale("en"), "English", 0);
+    	super(Locale.of("en"), "English", 0);
     }
     
     public static LexicalKeyboard getInstance(){

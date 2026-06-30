@@ -11,7 +11,7 @@ jpackage --type app-image \
 	--dest output \
 	--name LingTree \
 	--main-jar lingtree.jar \
-	--main-class org.sil.lingtree.MainApp \
+	--main-class org.sil.lingtree.Launcher \
 	--java-options --enable-native-access=javafx.graphics \
 	--java-options --enable-native-access=javafx.web \
 	--java-options --enable-native-access=com.sun.jna \
