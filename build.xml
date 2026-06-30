@@ -3,389 +3,105 @@
               Any modifications will be overwritten.
               To include a user specific buildfile here, simply create one in the same
               directory with the processing instruction <?eclipse.ant.import?>
-              as the first entry and export the buildfile again. --><project basedir="." default="build" name="lingtree">
+              as the first entry and export the buildfile again. -->
+<project basedir="." default="build" name="lingtree">
     <property environment="env"/>
-    <property name="ECLIPSE_HOME" value="../../../eclipse/java-2023-09/eclipse/"/>
     <property name="junit.output.dir" value="junit"/>
     <property name="debuglevel" value="source,lines,vars"/>
-    <property name="target" value="17"/>
-    <property name="source" value="17"/>
+    <property name="target" value="25"/>
+    <property name="source" value="25"/>
     <path id="JavaFX SDK.libraryclasspath">
-        <pathelement location="../../../.p2/pool/plugins/org.eclipse.fx.ide.css.jfx8_3.10.0.202303150700.jar"/>
+<!--        <pathelement location="../../../.p2/pool/plugins/org.eclipse.fx.ide.css.jfx8_3.10.0.202303150700.jar"/>-->
+        <pathelement location="../../../Downloads/Java/AzulZulu/zulu17.30.15-ca-fx-jdk17.0.1-win_x64/bin/javac"/>
+    </path>
+    <path id="JUnit 4.libraryclasspath">
+        <pathelement location="libs/JUnit/org.junit_4.13.2.v20230809-1000.jar"/>
+        <pathelement location="libs/JUnit/org.hamcrest_2.2.0.jar"/>
+        <pathelement location="libs/JUnit/org.hamcrest.core_2.2.0.v20230809-1000.jar"/>
     </path>
     <path id="lingtree.classpath">
         <pathelement location="bin"/>
         <path refid="JavaFX SDK.libraryclasspath"/>
+        <path refid="JUnit 4.libraryclasspath"/>
         <pathelement location="libs/JAXB/jakarta.activation.jar"/>
         <pathelement location="libs/JAXB/jakarta.xml.bind-api.jar"/>
         <pathelement location="libs/JAXB/jaxb-core.jar"/>
         <pathelement location="libs/JAXB/jaxb-impl.jar"/>
         <pathelement location="libs/JAXB/jaxb-jxc.jar"/>
         <pathelement location="libs/JAXB/jaxb-xjc.jar"/>
+        <pathelement location="libs/Richtextfx/richtextfx-fat-0.11.6.jar"/>
         <pathelement location="libs/jna/jna-5.11.0.jar"/>
         <pathelement location="libs/jna/jna-platform-5.11.0.jar"/>
+        <pathelement location="libs/json/json-20230618.jar"/>
         <pathelement location="libs/ANTLR/antlr-4.7-complete.jar"/>
         <pathelement location="libs/ControlsFX/controlsfx-11.0.2.jar"/>
-        <pathelement location="libs/json/json-20230618.jar"/>
         <pathelement location="libs/LibJavaDev/libjavadev-1.7.1.jar"/>
-        <pathelement location="libs/Richtextfx/richtextfx-fat-0.11.6.jar"/>
-        <pathelement location="libs/JUnit/org.hamcrest.core_2.2.0.v20230809-1000.jar"/>
-        <pathelement location="libs/JUnit/org.hamcrest_2.2.0.jar"/>
-        <pathelement location="libs/JUnit/org.junit_4.13.2.v20230809-1000.jar"/>
     </path>
     <path id="run.BatchTreeHandlerTest.classpath">
         <path refid="lingtree.classpath"/>
         <path refid="JavaFX SDK.libraryclasspath"/>
+        <path refid="JUnit 4.libraryclasspath"/>
         <pathelement location="libs/JAXB/jakarta.activation.jar"/>
         <pathelement location="libs/JAXB/jakarta.xml.bind-api.jar"/>
         <pathelement location="libs/JAXB/jaxb-core.jar"/>
         <pathelement location="libs/JAXB/jaxb-impl.jar"/>
         <pathelement location="libs/JAXB/jaxb-xjc.jar"/>
         <pathelement location="libs/JAXB/jaxb-jxc.jar"/>
+        <pathelement location="libs/Richtextfx/richtextfx-fat-0.11.6.jar"/>
         <pathelement location="libs/jna/jna-5.11.0.jar"/>
         <pathelement location="libs/jna/jna-platform-5.11.0.jar"/>
+        <pathelement location="libs/json/json-20230618.jar"/>
         <pathelement location="libs/ANTLR/antlr-4.7-complete.jar"/>
         <pathelement location="libs/ControlsFX/controlsfx-11.0.2.jar"/>
-        <pathelement location="libs/json/json-20230618.jar"/>
         <pathelement location="libs/LibJavaDev/libjavadev-1.7.1.jar"/>
-        <pathelement location="libs/Richtextfx/richtextfx-fat-0.11.6.jar"/>
-        <pathelement location="libs/JUnit/org.hamcrest.core_2.2.0.v20230809-1000.jar"/>
-        <pathelement location="libs/JUnit/org.hamcrest_2.2.0.jar"/>
-        <pathelement location="libs/JUnit/org.junit_4.13.2.v20230809-1000.jar"/>
     </path>
-    <path id="run.BuildTreeFromDescriptionListenerTest.classpath">
+    <path id="run.MainApp (4).classpath">
         <path refid="lingtree.classpath"/>
         <path refid="JavaFX SDK.libraryclasspath"/>
+        <path refid="JUnit 4.libraryclasspath"/>
         <pathelement location="libs/JAXB/jakarta.activation.jar"/>
         <pathelement location="libs/JAXB/jakarta.xml.bind-api.jar"/>
         <pathelement location="libs/JAXB/jaxb-core.jar"/>
         <pathelement location="libs/JAXB/jaxb-impl.jar"/>
         <pathelement location="libs/JAXB/jaxb-xjc.jar"/>
         <pathelement location="libs/JAXB/jaxb-jxc.jar"/>
+        <pathelement location="libs/Richtextfx/richtextfx-fat-0.11.6.jar"/>
         <pathelement location="libs/jna/jna-5.11.0.jar"/>
         <pathelement location="libs/jna/jna-platform-5.11.0.jar"/>
+        <pathelement location="libs/json/json-20230618.jar"/>
         <pathelement location="libs/ANTLR/antlr-4.7-complete.jar"/>
         <pathelement location="libs/ControlsFX/controlsfx-11.0.2.jar"/>
-        <pathelement location="libs/json/json-20230618.jar"/>
         <pathelement location="libs/LibJavaDev/libjavadev-1.7.1.jar"/>
-        <pathelement location="libs/Richtextfx/richtextfx-fat-0.11.6.jar"/>
-        <pathelement location="libs/JUnit/org.hamcrest.core_2.2.0.v20230809-1000.jar"/>
-        <pathelement location="libs/JUnit/org.hamcrest_2.2.0.jar"/>
-        <pathelement location="libs/JUnit/org.junit_4.13.2.v20230809-1000.jar"/>
     </path>
-    <path id="run.DescriptionRecognizerTest (1).classpath">
+    <path id="run.test (7).classpath">
         <path refid="lingtree.classpath"/>
         <path refid="JavaFX SDK.libraryclasspath"/>
+        <path refid="JUnit 4.libraryclasspath"/>
         <pathelement location="libs/JAXB/jakarta.activation.jar"/>
         <pathelement location="libs/JAXB/jakarta.xml.bind-api.jar"/>
         <pathelement location="libs/JAXB/jaxb-core.jar"/>
         <pathelement location="libs/JAXB/jaxb-impl.jar"/>
         <pathelement location="libs/JAXB/jaxb-xjc.jar"/>
         <pathelement location="libs/JAXB/jaxb-jxc.jar"/>
+        <pathelement location="libs/Richtextfx/richtextfx-fat-0.11.6.jar"/>
         <pathelement location="libs/jna/jna-5.11.0.jar"/>
         <pathelement location="libs/jna/jna-platform-5.11.0.jar"/>
+        <pathelement location="libs/json/json-20230618.jar"/>
         <pathelement location="libs/ANTLR/antlr-4.7-complete.jar"/>
         <pathelement location="libs/ControlsFX/controlsfx-11.0.2.jar"/>
-        <pathelement location="libs/json/json-20230618.jar"/>
         <pathelement location="libs/LibJavaDev/libjavadev-1.7.1.jar"/>
-        <pathelement location="libs/Richtextfx/richtextfx-fat-0.11.6.jar"/>
-        <pathelement location="libs/JUnit/org.hamcrest.core_2.2.0.v20230809-1000.jar"/>
-        <pathelement location="libs/JUnit/org.hamcrest_2.2.0.jar"/>
-        <pathelement location="libs/JUnit/org.junit_4.13.2.v20230809-1000.jar"/>
-    </path>
-    <path id="run.DescriptionStylerTest.classpath">
-        <path refid="lingtree.classpath"/>
-        <path refid="JavaFX SDK.libraryclasspath"/>
-        <pathelement location="libs/JAXB/jakarta.activation.jar"/>
-        <pathelement location="libs/JAXB/jakarta.xml.bind-api.jar"/>
-        <pathelement location="libs/JAXB/jaxb-core.jar"/>
-        <pathelement location="libs/JAXB/jaxb-impl.jar"/>
-        <pathelement location="libs/JAXB/jaxb-xjc.jar"/>
-        <pathelement location="libs/JAXB/jaxb-jxc.jar"/>
-        <pathelement location="libs/jna/jna-5.11.0.jar"/>
-        <pathelement location="libs/jna/jna-platform-5.11.0.jar"/>
-        <pathelement location="libs/ANTLR/antlr-4.7-complete.jar"/>
-        <pathelement location="libs/ControlsFX/controlsfx-11.0.2.jar"/>
-        <pathelement location="libs/json/json-20230618.jar"/>
-        <pathelement location="libs/LibJavaDev/libjavadev-1.7.1.jar"/>
-        <pathelement location="libs/Richtextfx/richtextfx-fat-0.11.6.jar"/>
-        <pathelement location="libs/JUnit/org.hamcrest.core_2.2.0.v20230809-1000.jar"/>
-        <pathelement location="libs/JUnit/org.hamcrest_2.2.0.jar"/>
-        <pathelement location="libs/JUnit/org.junit_4.13.2.v20230809-1000.jar"/>
-    </path>
-    <path id="run.FontInfoInserterTest.classpath">
-        <path refid="lingtree.classpath"/>
-        <path refid="JavaFX SDK.libraryclasspath"/>
-        <pathelement location="libs/JAXB/jakarta.activation.jar"/>
-        <pathelement location="libs/JAXB/jakarta.xml.bind-api.jar"/>
-        <pathelement location="libs/JAXB/jaxb-core.jar"/>
-        <pathelement location="libs/JAXB/jaxb-impl.jar"/>
-        <pathelement location="libs/JAXB/jaxb-xjc.jar"/>
-        <pathelement location="libs/JAXB/jaxb-jxc.jar"/>
-        <pathelement location="libs/jna/jna-5.11.0.jar"/>
-        <pathelement location="libs/jna/jna-platform-5.11.0.jar"/>
-        <pathelement location="libs/ANTLR/antlr-4.7-complete.jar"/>
-        <pathelement location="libs/ControlsFX/controlsfx-11.0.2.jar"/>
-        <pathelement location="libs/json/json-20230618.jar"/>
-        <pathelement location="libs/LibJavaDev/libjavadev-1.7.1.jar"/>
-        <pathelement location="libs/Richtextfx/richtextfx-fat-0.11.6.jar"/>
-        <pathelement location="libs/JUnit/org.hamcrest.core_2.2.0.v20230809-1000.jar"/>
-        <pathelement location="libs/JUnit/org.hamcrest_2.2.0.jar"/>
-        <pathelement location="libs/JUnit/org.junit_4.13.2.v20230809-1000.jar"/>
-    </path>
-    <path id="run.FontInfoParserTest.classpath">
-        <path refid="lingtree.classpath"/>
-        <path refid="JavaFX SDK.libraryclasspath"/>
-        <pathelement location="libs/JAXB/jakarta.activation.jar"/>
-        <pathelement location="libs/JAXB/jakarta.xml.bind-api.jar"/>
-        <pathelement location="libs/JAXB/jaxb-core.jar"/>
-        <pathelement location="libs/JAXB/jaxb-impl.jar"/>
-        <pathelement location="libs/JAXB/jaxb-xjc.jar"/>
-        <pathelement location="libs/JAXB/jaxb-jxc.jar"/>
-        <pathelement location="libs/jna/jna-5.11.0.jar"/>
-        <pathelement location="libs/jna/jna-platform-5.11.0.jar"/>
-        <pathelement location="libs/ANTLR/antlr-4.7-complete.jar"/>
-        <pathelement location="libs/ControlsFX/controlsfx-11.0.2.jar"/>
-        <pathelement location="libs/json/json-20230618.jar"/>
-        <pathelement location="libs/LibJavaDev/libjavadev-1.7.1.jar"/>
-        <pathelement location="libs/Richtextfx/richtextfx-fat-0.11.6.jar"/>
-        <pathelement location="libs/JUnit/org.hamcrest.core_2.2.0.v20230809-1000.jar"/>
-        <pathelement location="libs/JUnit/org.hamcrest_2.2.0.jar"/>
-        <pathelement location="libs/JUnit/org.junit_4.13.2.v20230809-1000.jar"/>
-    </path>
-    <path id="run.LingTree.classpath">
-        <path refid="lingtree.classpath"/>
-        <path refid="JavaFX SDK.libraryclasspath"/>
-        <pathelement location="libs/JAXB/jakarta.activation.jar"/>
-        <pathelement location="libs/JAXB/jakarta.xml.bind-api.jar"/>
-        <pathelement location="libs/JAXB/jaxb-core.jar"/>
-        <pathelement location="libs/JAXB/jaxb-impl.jar"/>
-        <pathelement location="libs/JAXB/jaxb-xjc.jar"/>
-        <pathelement location="libs/JAXB/jaxb-jxc.jar"/>
-        <pathelement location="libs/jna/jna-5.11.0.jar"/>
-        <pathelement location="libs/jna/jna-platform-5.11.0.jar"/>
-        <pathelement location="libs/ANTLR/antlr-4.7-complete.jar"/>
-        <pathelement location="libs/ControlsFX/controlsfx-11.0.2.jar"/>
-        <pathelement location="libs/json/json-20230618.jar"/>
-        <pathelement location="libs/LibJavaDev/libjavadev-1.7.1.jar"/>
-        <pathelement location="libs/Richtextfx/richtextfx-fat-0.11.6.jar"/>
-        <pathelement location="libs/JUnit/org.hamcrest.core_2.2.0.v20230809-1000.jar"/>
-        <pathelement location="libs/JUnit/org.hamcrest_2.2.0.jar"/>
-        <pathelement location="libs/JUnit/org.junit_4.13.2.v20230809-1000.jar"/>
-    </path>
-    <path id="run.LingTreeNodeTest.classpath">
-        <path refid="lingtree.classpath"/>
-        <path refid="JavaFX SDK.libraryclasspath"/>
-        <pathelement location="libs/JAXB/jakarta.activation.jar"/>
-        <pathelement location="libs/JAXB/jakarta.xml.bind-api.jar"/>
-        <pathelement location="libs/JAXB/jaxb-core.jar"/>
-        <pathelement location="libs/JAXB/jaxb-impl.jar"/>
-        <pathelement location="libs/JAXB/jaxb-xjc.jar"/>
-        <pathelement location="libs/JAXB/jaxb-jxc.jar"/>
-        <pathelement location="libs/jna/jna-5.11.0.jar"/>
-        <pathelement location="libs/jna/jna-platform-5.11.0.jar"/>
-        <pathelement location="libs/ANTLR/antlr-4.7-complete.jar"/>
-        <pathelement location="libs/ControlsFX/controlsfx-11.0.2.jar"/>
-        <pathelement location="libs/json/json-20230618.jar"/>
-        <pathelement location="libs/LibJavaDev/libjavadev-1.7.1.jar"/>
-        <pathelement location="libs/Richtextfx/richtextfx-fat-0.11.6.jar"/>
-        <pathelement location="libs/JUnit/org.hamcrest.core_2.2.0.v20230809-1000.jar"/>
-        <pathelement location="libs/JUnit/org.hamcrest_2.2.0.jar"/>
-        <pathelement location="libs/JUnit/org.junit_4.13.2.v20230809-1000.jar"/>
-    </path>
-    <path id="run.NodeFinderTest.classpath">
-        <path refid="lingtree.classpath"/>
-        <path refid="JavaFX SDK.libraryclasspath"/>
-        <pathelement location="libs/JAXB/jakarta.activation.jar"/>
-        <pathelement location="libs/JAXB/jakarta.xml.bind-api.jar"/>
-        <pathelement location="libs/JAXB/jaxb-core.jar"/>
-        <pathelement location="libs/JAXB/jaxb-impl.jar"/>
-        <pathelement location="libs/JAXB/jaxb-xjc.jar"/>
-        <pathelement location="libs/JAXB/jaxb-jxc.jar"/>
-        <pathelement location="libs/jna/jna-5.11.0.jar"/>
-        <pathelement location="libs/jna/jna-platform-5.11.0.jar"/>
-        <pathelement location="libs/ANTLR/antlr-4.7-complete.jar"/>
-        <pathelement location="libs/ControlsFX/controlsfx-11.0.2.jar"/>
-        <pathelement location="libs/json/json-20230618.jar"/>
-        <pathelement location="libs/LibJavaDev/libjavadev-1.7.1.jar"/>
-        <pathelement location="libs/Richtextfx/richtextfx-fat-0.11.6.jar"/>
-        <pathelement location="libs/JUnit/org.hamcrest.core_2.2.0.v20230809-1000.jar"/>
-        <pathelement location="libs/JUnit/org.hamcrest_2.2.0.jar"/>
-        <pathelement location="libs/JUnit/org.junit_4.13.2.v20230809-1000.jar"/>
-    </path>
-    <path id="run.NodeTextFinderTest.classpath">
-        <path refid="lingtree.classpath"/>
-        <path refid="JavaFX SDK.libraryclasspath"/>
-        <pathelement location="libs/JAXB/jakarta.activation.jar"/>
-        <pathelement location="libs/JAXB/jakarta.xml.bind-api.jar"/>
-        <pathelement location="libs/JAXB/jaxb-core.jar"/>
-        <pathelement location="libs/JAXB/jaxb-impl.jar"/>
-        <pathelement location="libs/JAXB/jaxb-xjc.jar"/>
-        <pathelement location="libs/JAXB/jaxb-jxc.jar"/>
-        <pathelement location="libs/jna/jna-5.11.0.jar"/>
-        <pathelement location="libs/jna/jna-platform-5.11.0.jar"/>
-        <pathelement location="libs/ANTLR/antlr-4.7-complete.jar"/>
-        <pathelement location="libs/ControlsFX/controlsfx-11.0.2.jar"/>
-        <pathelement location="libs/json/json-20230618.jar"/>
-        <pathelement location="libs/LibJavaDev/libjavadev-1.7.1.jar"/>
-        <pathelement location="libs/Richtextfx/richtextfx-fat-0.11.6.jar"/>
-        <pathelement location="libs/JUnit/org.hamcrest.core_2.2.0.v20230809-1000.jar"/>
-        <pathelement location="libs/JUnit/org.hamcrest_2.2.0.jar"/>
-        <pathelement location="libs/JUnit/org.junit_4.13.2.v20230809-1000.jar"/>
-    </path>
-    <path id="run.NodeTypeDeterminerTest.classpath">
-        <path refid="lingtree.classpath"/>
-        <path refid="JavaFX SDK.libraryclasspath"/>
-        <pathelement location="libs/JAXB/jakarta.activation.jar"/>
-        <pathelement location="libs/JAXB/jakarta.xml.bind-api.jar"/>
-        <pathelement location="libs/JAXB/jaxb-core.jar"/>
-        <pathelement location="libs/JAXB/jaxb-impl.jar"/>
-        <pathelement location="libs/JAXB/jaxb-xjc.jar"/>
-        <pathelement location="libs/JAXB/jaxb-jxc.jar"/>
-        <pathelement location="libs/jna/jna-5.11.0.jar"/>
-        <pathelement location="libs/jna/jna-platform-5.11.0.jar"/>
-        <pathelement location="libs/ANTLR/antlr-4.7-complete.jar"/>
-        <pathelement location="libs/ControlsFX/controlsfx-11.0.2.jar"/>
-        <pathelement location="libs/json/json-20230618.jar"/>
-        <pathelement location="libs/LibJavaDev/libjavadev-1.7.1.jar"/>
-        <pathelement location="libs/Richtextfx/richtextfx-fat-0.11.6.jar"/>
-        <pathelement location="libs/JUnit/org.hamcrest.core_2.2.0.v20230809-1000.jar"/>
-        <pathelement location="libs/JUnit/org.hamcrest_2.2.0.jar"/>
-        <pathelement location="libs/JUnit/org.junit_4.13.2.v20230809-1000.jar"/>
-    </path>
-    <path id="run.org.sil.lingtree.descriptionparser.classpath">
-        <path refid="lingtree.classpath"/>
-        <path refid="JavaFX SDK.libraryclasspath"/>
-        <pathelement location="libs/JAXB/jakarta.activation.jar"/>
-        <pathelement location="libs/JAXB/jakarta.xml.bind-api.jar"/>
-        <pathelement location="libs/JAXB/jaxb-core.jar"/>
-        <pathelement location="libs/JAXB/jaxb-impl.jar"/>
-        <pathelement location="libs/JAXB/jaxb-xjc.jar"/>
-        <pathelement location="libs/JAXB/jaxb-jxc.jar"/>
-        <pathelement location="libs/jna/jna-5.11.0.jar"/>
-        <pathelement location="libs/jna/jna-platform-5.11.0.jar"/>
-        <pathelement location="libs/ANTLR/antlr-4.7-complete.jar"/>
-        <pathelement location="libs/ControlsFX/controlsfx-11.0.2.jar"/>
-        <pathelement location="libs/json/json-20230618.jar"/>
-        <pathelement location="libs/LibJavaDev/libjavadev-1.7.1.jar"/>
-        <pathelement location="libs/Richtextfx/richtextfx-fat-0.11.6.jar"/>
-        <pathelement location="libs/JUnit/org.hamcrest.core_2.2.0.v20230809-1000.jar"/>
-        <pathelement location="libs/JUnit/org.hamcrest_2.2.0.jar"/>
-        <pathelement location="libs/JUnit/org.junit_4.13.2.v20230809-1000.jar"/>
-    </path>
-    <path id="run.org.sil.lingtree.model.classpath">
-        <path refid="lingtree.classpath"/>
-        <path refid="JavaFX SDK.libraryclasspath"/>
-        <pathelement location="libs/JAXB/jakarta.activation.jar"/>
-        <pathelement location="libs/JAXB/jakarta.xml.bind-api.jar"/>
-        <pathelement location="libs/JAXB/jaxb-core.jar"/>
-        <pathelement location="libs/JAXB/jaxb-impl.jar"/>
-        <pathelement location="libs/JAXB/jaxb-xjc.jar"/>
-        <pathelement location="libs/JAXB/jaxb-jxc.jar"/>
-        <pathelement location="libs/jna/jna-5.11.0.jar"/>
-        <pathelement location="libs/jna/jna-platform-5.11.0.jar"/>
-        <pathelement location="libs/ANTLR/antlr-4.7-complete.jar"/>
-        <pathelement location="libs/ControlsFX/controlsfx-11.0.2.jar"/>
-        <pathelement location="libs/json/json-20230618.jar"/>
-        <pathelement location="libs/LibJavaDev/libjavadev-1.7.1.jar"/>
-        <pathelement location="libs/Richtextfx/richtextfx-fat-0.11.6.jar"/>
-        <pathelement location="libs/JUnit/org.hamcrest.core_2.2.0.v20230809-1000.jar"/>
-        <pathelement location="libs/JUnit/org.hamcrest_2.2.0.jar"/>
-        <pathelement location="libs/JUnit/org.junit_4.13.2.v20230809-1000.jar"/>
-    </path>
-    <path id="run.org.sil.lingtree.service.classpath">
-        <path refid="lingtree.classpath"/>
-        <path refid="JavaFX SDK.libraryclasspath"/>
-        <pathelement location="libs/JAXB/jakarta.activation.jar"/>
-        <pathelement location="libs/JAXB/jakarta.xml.bind-api.jar"/>
-        <pathelement location="libs/JAXB/jaxb-core.jar"/>
-        <pathelement location="libs/JAXB/jaxb-impl.jar"/>
-        <pathelement location="libs/JAXB/jaxb-xjc.jar"/>
-        <pathelement location="libs/JAXB/jaxb-jxc.jar"/>
-        <pathelement location="libs/jna/jna-5.11.0.jar"/>
-        <pathelement location="libs/jna/jna-platform-5.11.0.jar"/>
-        <pathelement location="libs/ANTLR/antlr-4.7-complete.jar"/>
-        <pathelement location="libs/ControlsFX/controlsfx-11.0.2.jar"/>
-        <pathelement location="libs/json/json-20230618.jar"/>
-        <pathelement location="libs/LibJavaDev/libjavadev-1.7.1.jar"/>
-        <pathelement location="libs/Richtextfx/richtextfx-fat-0.11.6.jar"/>
-        <pathelement location="libs/JUnit/org.hamcrest.core_2.2.0.v20230809-1000.jar"/>
-        <pathelement location="libs/JUnit/org.hamcrest_2.2.0.jar"/>
-        <pathelement location="libs/JUnit/org.junit_4.13.2.v20230809-1000.jar"/>
-    </path>
-    <path id="run.org.sil.lingtree.view.classpath">
-        <path refid="lingtree.classpath"/>
-        <path refid="JavaFX SDK.libraryclasspath"/>
-        <pathelement location="libs/JAXB/jakarta.activation.jar"/>
-        <pathelement location="libs/JAXB/jakarta.xml.bind-api.jar"/>
-        <pathelement location="libs/JAXB/jaxb-core.jar"/>
-        <pathelement location="libs/JAXB/jaxb-impl.jar"/>
-        <pathelement location="libs/JAXB/jaxb-xjc.jar"/>
-        <pathelement location="libs/JAXB/jaxb-jxc.jar"/>
-        <pathelement location="libs/jna/jna-5.11.0.jar"/>
-        <pathelement location="libs/jna/jna-platform-5.11.0.jar"/>
-        <pathelement location="libs/ANTLR/antlr-4.7-complete.jar"/>
-        <pathelement location="libs/ControlsFX/controlsfx-11.0.2.jar"/>
-        <pathelement location="libs/json/json-20230618.jar"/>
-        <pathelement location="libs/LibJavaDev/libjavadev-1.7.1.jar"/>
-        <pathelement location="libs/Richtextfx/richtextfx-fat-0.11.6.jar"/>
-        <pathelement location="libs/JUnit/org.hamcrest.core_2.2.0.v20230809-1000.jar"/>
-        <pathelement location="libs/JUnit/org.hamcrest_2.2.0.jar"/>
-        <pathelement location="libs/JUnit/org.junit_4.13.2.v20230809-1000.jar"/>
-    </path>
-    <path id="run.TreeDrawerTest.classpath">
-        <path refid="lingtree.classpath"/>
-        <path refid="JavaFX SDK.libraryclasspath"/>
-        <pathelement location="libs/JAXB/jakarta.activation.jar"/>
-        <pathelement location="libs/JAXB/jakarta.xml.bind-api.jar"/>
-        <pathelement location="libs/JAXB/jaxb-core.jar"/>
-        <pathelement location="libs/JAXB/jaxb-impl.jar"/>
-        <pathelement location="libs/JAXB/jaxb-xjc.jar"/>
-        <pathelement location="libs/JAXB/jaxb-jxc.jar"/>
-        <pathelement location="libs/jna/jna-5.11.0.jar"/>
-        <pathelement location="libs/jna/jna-platform-5.11.0.jar"/>
-        <pathelement location="libs/ANTLR/antlr-4.7-complete.jar"/>
-        <pathelement location="libs/ControlsFX/controlsfx-11.0.2.jar"/>
-        <pathelement location="libs/json/json-20230618.jar"/>
-        <pathelement location="libs/LibJavaDev/libjavadev-1.7.1.jar"/>
-        <pathelement location="libs/Richtextfx/richtextfx-fat-0.11.6.jar"/>
-        <pathelement location="libs/JUnit/org.hamcrest.core_2.2.0.v20230809-1000.jar"/>
-        <pathelement location="libs/JUnit/org.hamcrest_2.2.0.jar"/>
-        <pathelement location="libs/JUnit/org.junit_4.13.2.v20230809-1000.jar"/>
-    </path>
-    <path id="run.LingTreeTest.classpath">
-        <path refid="lingtree.classpath"/>
-        <path refid="JavaFX SDK.libraryclasspath"/>
-        <pathelement location="libs/JAXB/jakarta.activation.jar"/>
-        <pathelement location="libs/JAXB/jakarta.xml.bind-api.jar"/>
-        <pathelement location="libs/JAXB/jaxb-core.jar"/>
-        <pathelement location="libs/JAXB/jaxb-impl.jar"/>
-        <pathelement location="libs/JAXB/jaxb-xjc.jar"/>
-        <pathelement location="libs/JAXB/jaxb-jxc.jar"/>
-        <pathelement location="libs/jna/jna-5.11.0.jar"/>
-        <pathelement location="libs/jna/jna-platform-5.11.0.jar"/>
-        <pathelement location="libs/ANTLR/antlr-4.7-complete.jar"/>
-        <pathelement location="libs/ControlsFX/controlsfx-11.0.2.jar"/>
-        <pathelement location="libs/json/json-20230618.jar"/>
-        <pathelement location="libs/LibJavaDev/libjavadev-1.7.1.jar"/>
-        <pathelement location="libs/Richtextfx/richtextfx-fat-0.11.6.jar"/>
-        <pathelement location="libs/JUnit/org.hamcrest.core_2.2.0.v20230809-1000.jar"/>
-        <pathelement location="libs/JUnit/org.hamcrest_2.2.0.jar"/>
-        <pathelement location="libs/JUnit/org.junit_4.13.2.v20230809-1000.jar"/>
     </path>
     <target name="init">
         <mkdir dir="bin"/>
         <copy includeemptydirs="false" todir="bin">
             <fileset dir="src">
                 <exclude name="**/*.launch"/>
-                <exclude name="**/*.xtend"/>
                 <exclude name="**/*.java"/>
             </fileset>
         </copy>
         <copy includeemptydirs="false" todir="bin">
             <fileset dir="test">
                 <exclude name="**/*.launch"/>
-                <exclude name="**/*.xtend"/>
                 <exclude name="**/*.java"/>
             </fileset>
         </copy>
@@ -398,26 +114,13 @@
     <target name="build-subprojects"/>
     <target depends="init" name="build-project">
         <echo message="${ant.project.name}: ${ant.file}"/>
-        <javac debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false" source="${source}" target="${target}">
+        <javac debug="true" debuglevel="${debuglevel}" destdir="bin" encoding="utf-8" includeantruntime="false" source="${source}" target="${target}">
             <src path="src"/>
             <src path="test"/>
-            <classpath refid="lingtree.classpath"/>
+            <modulepath refid="lingtree.classpath"/>
         </javac>
     </target>
     <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects"/>
-    <target description="copy Eclipse compiler jars to ant lib directory" name="init-eclipse-compiler">
-        <copy todir="${ant.library.dir}">
-            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
-        </copy>
-        <unzip dest="${ant.library.dir}">
-            <patternset includes="jdtCompilerAdapter.jar"/>
-            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
-        </unzip>
-    </target>
-    <target description="compile project with Eclipse compiler" name="build-eclipse-compiler">
-        <property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
-        <antcall target="build"/>
-    </target>
     <target name="BatchTreeHandlerTest">
         <mkdir dir="${junit.output.dir}"/>
         <junit fork="yes" printsummary="withOutAndErr">
@@ -427,153 +130,12 @@
             <classpath refid="run.BatchTreeHandlerTest.classpath"/>
         </junit>
     </target>
-    <target name="BuildTreeFromDescriptionListenerTest">
-        <mkdir dir="${junit.output.dir}"/>
-        <junit fork="yes" printsummary="withOutAndErr">
-            <formatter type="xml"/>
-            <test name="org.sil.lingtree.service.BuildTreeFromDescriptionListenerTest" todir="${junit.output.dir}"/>
-            <jvmarg line="-ea"/>
-            <classpath refid="run.BuildTreeFromDescriptionListenerTest.classpath"/>
-        </junit>
-    </target>
-    <target name="DescriptionRecognizerTest (1)">
-        <mkdir dir="${junit.output.dir}"/>
-        <junit fork="yes" printsummary="withOutAndErr">
-            <formatter type="xml"/>
-            <test name="org.sil.lingtree.descriptionparser.DescriptionRecognizerTest" todir="${junit.output.dir}"/>
-            <jvmarg line="-ea"/>
-            <classpath refid="run.DescriptionRecognizerTest (1).classpath"/>
-        </junit>
-    </target>
-    <target name="DescriptionStylerTest">
-        <mkdir dir="${junit.output.dir}"/>
-        <junit fork="yes" printsummary="withOutAndErr">
-            <formatter type="xml"/>
-            <test name="org.sil.lingtree.service.DescriptionStylerTest" todir="${junit.output.dir}"/>
-            <jvmarg line="-ea"/>
-            <classpath refid="run.DescriptionStylerTest.classpath"/>
-        </junit>
-    </target>
-    <target name="FontInfoInserterTest">
-        <mkdir dir="${junit.output.dir}"/>
-        <junit fork="yes" printsummary="withOutAndErr">
-            <formatter type="xml"/>
-            <test name="org.sil.lingtree.service.FontInfoInserterTest" todir="${junit.output.dir}"/>
-            <jvmarg line="-ea"/>
-            <classpath refid="run.FontInfoInserterTest.classpath"/>
-        </junit>
-    </target>
-    <target name="FontInfoParserTest">
-        <mkdir dir="${junit.output.dir}"/>
-        <junit fork="yes" printsummary="withOutAndErr">
-            <formatter type="xml"/>
-            <test name="org.sil.lingtree.service.FontInfoParserTest" todir="${junit.output.dir}"/>
-            <jvmarg line="-ea"/>
-            <classpath refid="run.FontInfoParserTest.classpath"/>
-        </junit>
-    </target>
-    <target name="LingTree">
-        <java classname="org.sil.lingtree.Launcher" failonerror="true" fork="yes">
-            <jvmarg line="--enable-native-access=javafx.graphics&#13;&#10;--enable-native-access=com.sun.jna"/>
-            <classpath refid="run.LingTree.classpath"/>
+    <target name="MainApp (4)">
+        <java classname="org.sil.lingtree.MainApp" failonerror="true" fork="yes">
+            <classpath refid="run.MainApp (4).classpath"/>
         </java>
     </target>
-    <target name="LingTreeNodeTest">
-        <mkdir dir="${junit.output.dir}"/>
-        <junit fork="yes" printsummary="withOutAndErr">
-            <formatter type="xml"/>
-            <test name="org.sil.lingtree.model.LingTreeNodeTest" todir="${junit.output.dir}"/>
-            <jvmarg line="-ea"/>
-            <classpath refid="run.LingTreeNodeTest.classpath"/>
-        </junit>
-    </target>
-    <target name="NodeFinderTest">
-        <mkdir dir="${junit.output.dir}"/>
-        <junit fork="yes" printsummary="withOutAndErr">
-            <formatter type="xml"/>
-            <test name="org.sil.lingtree.service.NodeFinderTest" todir="${junit.output.dir}"/>
-            <jvmarg line="-ea"/>
-            <classpath refid="run.NodeFinderTest.classpath"/>
-        </junit>
-    </target>
-    <target name="NodeTextFinderTest">
-        <mkdir dir="${junit.output.dir}"/>
-        <junit fork="yes" printsummary="withOutAndErr">
-            <formatter type="xml"/>
-            <test name="org.sil.lingtree.service.NodeTextFinderTest" todir="${junit.output.dir}"/>
-            <jvmarg line="-ea"/>
-            <classpath refid="run.NodeTextFinderTest.classpath"/>
-        </junit>
-    </target>
-    <target name="NodeTypeDeterminerTest">
-        <mkdir dir="${junit.output.dir}"/>
-        <junit fork="yes" printsummary="withOutAndErr">
-            <formatter type="xml"/>
-            <test name="org.sil.lingtree.service.NodeTypeDeterminerTest" todir="${junit.output.dir}"/>
-            <jvmarg line="-ea"/>
-            <classpath refid="run.NodeTypeDeterminerTest.classpath"/>
-        </junit>
-    </target>
-    <target name="org.sil.lingtree.descriptionparser">
-        <mkdir dir="${junit.output.dir}"/>
-        <junit fork="yes" printsummary="withOutAndErr">
-            <formatter type="xml"/>
-            <test name="org.sil.lingtree.descriptionparser.DescriptionRecognizerTest" todir="${junit.output.dir}"/>
-            <jvmarg line="-ea"/>
-            <classpath refid="run.org.sil.lingtree.descriptionparser.classpath"/>
-        </junit>
-    </target>
-    <target name="org.sil.lingtree.model">
-        <mkdir dir="${junit.output.dir}"/>
-        <junit fork="yes" printsummary="withOutAndErr">
-            <formatter type="xml"/>
-            <test name="org.sil.lingtree.model.ColorXmlAdaptorTest" todir="${junit.output.dir}"/>
-            <test name="org.sil.lingtree.model.FontInfoTest" todir="${junit.output.dir}"/>
-            <test name="org.sil.lingtree.model.LingTreeNodeTest" todir="${junit.output.dir}"/>
-            <test name="org.sil.lingtree.model.LingTreeTreeTest" todir="${junit.output.dir}"/>
-            <jvmarg line="-ea"/>
-            <classpath refid="run.org.sil.lingtree.model.classpath"/>
-        </junit>
-    </target>
-    <target name="org.sil.lingtree.service">
-        <mkdir dir="${junit.output.dir}"/>
-        <junit fork="yes" printsummary="withOutAndErr">
-            <formatter type="xml"/>
-            <test name="org.sil.lingtree.service.BatchTreeHandlerTest" todir="${junit.output.dir}"/>
-            <test name="org.sil.lingtree.service.BuildTreeFromDescriptionListenerTest" todir="${junit.output.dir}"/>
-            <test name="org.sil.lingtree.service.CollapsibleSVGDrawerTest" todir="${junit.output.dir}"/>
-            <test name="org.sil.lingtree.service.DatabaseMigratorTest" todir="${junit.output.dir}"/>
-            <test name="org.sil.lingtree.service.DescriptionStylerTest" todir="${junit.output.dir}"/>
-            <test name="org.sil.lingtree.service.FontInfoInserterTest" todir="${junit.output.dir}"/>
-            <test name="org.sil.lingtree.service.FontInfoParserTest" todir="${junit.output.dir}"/>
-            <test name="org.sil.lingtree.service.NodeFinderTest" todir="${junit.output.dir}"/>
-            <test name="org.sil.lingtree.service.NodeTextFinderTest" todir="${junit.output.dir}"/>
-            <test name="org.sil.lingtree.service.NodeTypeDeterminerTest" todir="${junit.output.dir}"/>
-            <test name="org.sil.lingtree.service.SVGDrawerTest" todir="${junit.output.dir}"/>
-            <test name="org.sil.lingtree.service.TreeDrawerTest" todir="${junit.output.dir}"/>
-            <jvmarg line="-ea"/>
-            <classpath refid="run.org.sil.lingtree.service.classpath"/>
-        </junit>
-    </target>
-    <target name="org.sil.lingtree.view">
-        <mkdir dir="${junit.output.dir}"/>
-        <junit fork="yes" printsummary="withOutAndErr">
-            <formatter type="xml"/>
-            <test name="org.sil.lingtree.view.TreeDescriptionUIServiceTest" todir="${junit.output.dir}"/>
-            <jvmarg line="-ea"/>
-            <classpath refid="run.org.sil.lingtree.view.classpath"/>
-        </junit>
-    </target>
-    <target name="TreeDrawerTest">
-        <mkdir dir="${junit.output.dir}"/>
-        <junit fork="yes" printsummary="withOutAndErr">
-            <formatter type="xml"/>
-            <test name="org.sil.lingtree.service.TreeDrawerTest" todir="${junit.output.dir}"/>
-            <jvmarg line="-ea"/>
-            <classpath refid="run.TreeDrawerTest.classpath"/>
-        </junit>
-    </target>
-    <target name="LingTreeTest">
+    <target name="test (7)">
         <mkdir dir="${junit.output.dir}"/>
         <junit fork="yes" printsummary="withOutAndErr">
             <formatter type="xml"/>
@@ -586,19 +148,12 @@
             <test name="org.sil.lingtree.model.LingTreeTreeTest" todir="${junit.output.dir}"/>
             <test name="org.sil.lingtree.service.BatchTreeHandlerTest" todir="${junit.output.dir}"/>
             <test name="org.sil.lingtree.service.BuildTreeFromDescriptionListenerTest" todir="${junit.output.dir}"/>
-            <test name="org.sil.lingtree.service.CollapsibleSVGDrawerTest" todir="${junit.output.dir}"/>
             <test name="org.sil.lingtree.service.DatabaseMigratorTest" todir="${junit.output.dir}"/>
-            <test name="org.sil.lingtree.service.DescriptionStylerTest" todir="${junit.output.dir}"/>
-            <test name="org.sil.lingtree.service.FontInfoInserterTest" todir="${junit.output.dir}"/>
-            <test name="org.sil.lingtree.service.FontInfoParserTest" todir="${junit.output.dir}"/>
-            <test name="org.sil.lingtree.service.NodeFinderTest" todir="${junit.output.dir}"/>
-            <test name="org.sil.lingtree.service.NodeTextFinderTest" todir="${junit.output.dir}"/>
             <test name="org.sil.lingtree.service.NodeTypeDeterminerTest" todir="${junit.output.dir}"/>
-            <test name="org.sil.lingtree.service.SVGDrawerTest" todir="${junit.output.dir}"/>
             <test name="org.sil.lingtree.service.TreeDrawerTest" todir="${junit.output.dir}"/>
             <test name="org.sil.lingtree.view.TreeDescriptionUIServiceTest" todir="${junit.output.dir}"/>
-            <jvmarg line="-ea&#13;&#10;--enable-native-access=javafx.graphics"/>
-            <classpath refid="run.LingTreeTest.classpath"/>
+            <jvmarg line="-ea"/>
+            <classpath refid="run.test (7).classpath"/>
         </junit>
     </target>
     <target name="junitreport">
