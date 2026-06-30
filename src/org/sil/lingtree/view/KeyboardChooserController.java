@@ -1,4 +1,4 @@
-// Copyright (c) 2024-2025 SIL Global 
+// Copyright (c) 2024-2026 SIL Global 
 // This software is licensed under the LGPL, version 2.1 or later 
 // (http://www.gnu.org/licenses/lgpl-2.1.html) 
 /**
@@ -44,11 +44,11 @@ public class KeyboardChooserController implements Initializable {
 	@FXML
 	private ComboBox<KeyboardInfo> emptyelement = new ComboBox<KeyboardInfo>();
 
-	KeyboardInfo lexicalKeyboardInfo = new KeyboardInfo(new Locale("en"), "English"); 
-	KeyboardInfo glossKeyboardInfo = new KeyboardInfo(new Locale("en"), "English"); 
-	KeyboardInfo nonTerminalKeyboardInfo = new KeyboardInfo(new Locale("en"), "English"); 
-	KeyboardInfo emptyElementKeyboardInfo = new KeyboardInfo(new Locale("en"), "English"); 
-	KeyboardInfo syntagmemeKeyboardInfo = new KeyboardInfo(new Locale("en"), "English"); 
+	KeyboardInfo lexicalKeyboardInfo = new KeyboardInfo(Locale.of("en"), "English"); 
+	KeyboardInfo glossKeyboardInfo = new KeyboardInfo(Locale.of("en"), "English"); 
+	KeyboardInfo nonTerminalKeyboardInfo = new KeyboardInfo(Locale.of("en"), "English"); 
+	KeyboardInfo emptyElementKeyboardInfo = new KeyboardInfo(Locale.of("en"), "English"); 
+	KeyboardInfo syntagmemeKeyboardInfo = new KeyboardInfo(Locale.of("en"), "English"); 
 	private Text keyboardText = new Text();
 	
 	Stage dialogStage;

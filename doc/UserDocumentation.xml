@@ -20,11 +20,11 @@ type="tLingTree"
 ><emailAddress
 >lingtree_support@sil.org</emailAddress
 ><date
->10 November 2025</date
+>30 June 2026</date
 ><version
->Version 1.7.0</version
+>Version 1.8.0</version
 ><version
->Copyright © 2002-2025 SIL Global</version
+>Copyright © 2002-2026 SIL Global</version
 ><contents
 ></contents
 ></frontMatter
@@ -3976,26 +3976,6 @@ term="iColumnOrientedAlgorithm"
 sec="sUseColumnOrientedAlgorithm"
 ></sectionRef
 >.</li
-><li
-><indexedItem
-term="iMac"
-></indexedItem
->On <object
-type="tmacOS"
-></object
->: if you double click a tree description file in <object
-type="tTool"
->Finder</object
->, then <object
-type="tLingTree"
-></object
-> will open the last opened file, not the one you clicked on. This is due to a communication problem between the <object
-type="tmacOS"
-></object
-> operating system and the Java language <object
-type="tLingTree"
-></object
-> is written in.</li
 ><li
 ><indexedItem
 term="iKeyboards"

@@ -58,6 +58,19 @@ public class MainApp extends Application implements MainAppUtilities {
 	double dividerPosition;
 	int dividerChangeCounter = 0;
 
+	private static MainApp instance;
+
+	public MainApp() {
+		instance = this;
+	}
+
+	public static MainApp getInstance() {
+		if (instance == null) {
+			instance = new MainApp();
+		}
+		return instance;
+	}
+
 	static String[] userArgs;
 
 	public Stage getPrimaryStage() {
@@ -76,7 +89,7 @@ public class MainApp extends Application implements MainAppUtilities {
 	public void start(Stage primaryStage) {
 		try {
 			applicationPreferences = new ApplicationPreferences(this);
-			locale = new Locale(applicationPreferences.getLastLocaleLanguage());
+			locale = Locale.of(applicationPreferences.getLastLocaleLanguage());
 
 			ltTree = new LingTreeTree();
 			xmlBackEndProvider = new XMLBackEndProvider(ltTree, locale);
@@ -107,7 +120,7 @@ public class MainApp extends Application implements MainAppUtilities {
 		}
 	}
 
-	public static void main(String[] args) throws IOException {
+	public void performLaunch(String[] args) throws IOException {
 		userArgs = args;
 //		MainApp.showDebugMessage("main:");
 //		for (int i = 0; i < args.length; i++) {
@@ -130,7 +143,7 @@ public class MainApp extends Application implements MainAppUtilities {
 
 	public static void processAsBatchFile() throws IOException {
 		ApplicationPreferences prefs = new ApplicationPreferences(new LingTreeTree());
-		Locale locale = new Locale(prefs.getLastLocaleLanguage());
+		Locale locale = Locale.of(prefs.getLastLocaleLanguage());
 		ResourceBundle bundle = ResourceBundle.getBundle(Constants.RESOURCE_LOCATION, locale);
 		String sFilePath = userArgs[1];
 		if (!sFilePath.contains(":") && !sFilePath.startsWith("/")) {
