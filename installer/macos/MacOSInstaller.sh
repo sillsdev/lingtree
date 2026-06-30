@@ -6,14 +6,12 @@ fi
 echo "	invoking jpackage, part 2"
 # 	--verbose \
 jpackage --type dmg \
-	--copyright "2021-2024 SIL International" \
+	--copyright "2021-2026 SIL Global" \
 	--description "Linguistic Tree Editor" \
 	--name LingTree \
 	--resource-dir input/resources \
 	--app-image output/LingTree.app \
         --mac-package-name "Linguistic Tree Editor" \
-	--mac-sign \
-	--mac-signing-key-user-name "Developer ID Application: Summer Institute of Linguistics, Inc (SIL) (3YE4W86L3G)" \
 	--license-file License.txt \
 	--temp installtemp \
 	--icon input/LingTree.icns \
@@ -21,3 +19,5 @@ jpackage --type dmg \
 	--file-associations lingtree.properties \
 	--vendor "SIL Global"
 
+#	--mac-sign \
+#	--mac-signing-key-user-name "Developer ID Application: Summer Institute of Linguistics, Inc (SIL) (3YE4W86L3G)" \

@@ -32,6 +32,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuBar;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.SplitPane.Divider;
@@ -165,7 +166,15 @@ public class MainApp extends Application implements MainAppUtilities {
 			ResourceBundle bundle = ResourceBundle.getBundle(Constants.RESOURCE_LOCATION, locale);
 			loader.setResources(bundle);
 			rootLayout = (BorderPane) loader.load();
-			ControllerUtilities.adjustMenusIfNeeded(sOperatingSystem, rootLayout);
+//			ControllerUtilities.adjustMenusIfNeeded(sOperatingSystem, rootLayout);
+			if (sOperatingSystem.toLowerCase().contains("mac")) {
+				System.out.println("menu thang");
+				   VBox vbox = (VBox) rootLayout.getChildren().get(0);
+				   MenuBar menuBar = (MenuBar) vbox.getChildren().get(0);
+				   menuBar.useSystemMenuBarProperty().set(false);
+				   menuBar.useSystemMenuBarProperty().set(true);
+				}
+
 
 			// Show the scene containing the root layout.
 			Scene scene = new Scene(rootLayout);
